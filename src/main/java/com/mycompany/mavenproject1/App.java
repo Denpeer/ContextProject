@@ -8,6 +8,8 @@ package com.mycompany.mavenproject1;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Spline;
+import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
@@ -28,30 +30,26 @@ public class App extends SimpleApplication {
         
         
         Vector3f[] points = TestPoints();
-        Bezier bez = new Bezier(points);
+        //Bezier bez = new Bezier(points);
+        //bez.drawCompleteCurve(rootNode, assetManager);
 
-  
-
-        double t = 0;
-        while(t + 0.01 < 1){
-            Vector3f vec = bez.getPointOnFrame(t);
-            Vector3f vec1 = bez.getPointOnFrame(t + 0.01);
-        	Line lc = new Line(vec, vec1);
-        	Geometry geomLine = new Geometry("curve", lc);
-            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            mat.setColor("Color", ColorRGBA.Orange);
-            geomLine.setMaterial(mat);
-            rootNode.attachChild(geomLine);
-            t = t + 0.01;
-        }
-       
+        SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.5, true);
+        sp.drawCurve(rootNode, assetManager);
+        
     }
     public Vector3f[] TestPoints(){
-    	Vector3f[] points = new Vector3f[4];
+    	Vector3f[] points = new Vector3f[11];
     	points[0] = new Vector3f(0,0,0);
-    	points[1] = new Vector3f(2,2,0);
-    	points[2] = new Vector3f(4,0,0);
-    	points[3] = new Vector3f(6,0,0);	
+    	points[1] = new Vector3f(2,4,0);
+    	points[2] = new Vector3f(4,1,0);
+    	points[3] = new Vector3f(6,3,0);
+    	points[4] = new Vector3f(8,0,0);
+    	points[5] = new Vector3f(10,6,0);
+    	points[6] = new Vector3f(12,2,0);
+    	points[7] = new Vector3f(14,2,0);
+    	points[8] = new Vector3f(16,1,0);
+    	points[9] = new Vector3f(18,5,0);
+    	points[10] = new Vector3f(20,0,0);
     	return points;
     }
     @Override
