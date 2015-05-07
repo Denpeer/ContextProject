@@ -97,14 +97,88 @@
         
       </plugins>
     </reporting>
-
+<repositories>
+ <repository>
+ <id>jmonkey</id>
+ <name>Jmonkey repository</name>
+ <url>http://updates.jmonkeyengine.org/maven/</url>
+ </repository>
+ </repositories>
   <dependencies>
+      <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-core</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+          <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-desktop</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+          <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-lwjgl</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+        <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-effects</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-networking</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-plugins</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-jogg </artifactId>
+      <version>3.0.10</version>
+    </dependency>                
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-terrain </artifactId>
+      <version>3.0.10</version>
+    </dependency>  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-blender</artifactId>
+      <version>3.0.10</version>
+    </dependency>  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-jbullet</artifactId>
+      <version>3.0.10</version>
+    </dependency>          
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-bullet</artifactId>
+      <version>3.0.10</version>
+    </dependency>                  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-bullet-natives</artifactId>
+      <version>3.0.10</version>
+    </dependency>  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-niftygui</artifactId>
+      <version>3.0.10</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    
+
+    
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-checkstyle-plugin</artifactId>
