@@ -20,6 +20,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 
@@ -31,15 +32,17 @@ public class App extends SimpleApplication {
 	Material ball_mat;
 	Material floor_mat;
 	
-	private RigidBodyControl ball_phy;
-	private Sphere sphere;
+	Geometry floor_geom;
+	
 	private Box floor;
 	private RigidBodyControl floor_phy;
+	
+	Node floornode;
 	
 	
     public AnalogListener analogListener = new AnalogListener() {
         public void onAnalog(String name, float value, float tpf) {
-            System.out.println(name + " = " + value);
+
         }
     };
 
@@ -58,15 +61,6 @@ public class App extends SimpleApplication {
         bulletAppState.getPhysicsSpace().setGravity(new Vector3f(0f,-9.81f,0f));
 //    	flyCam.setEnabled(false);
         
-//        Quad ground = new Quad(4f, 4f);
-//        Geometry groundgeom = new Geometry("Ground", ground);
-//        Material groundmat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//        groundmat.setColor("Color", ColorRGBA.DarkGray);
-//        groundgeom.setMaterial(groundmat);
-//        groundgeom.addControl(floor_phy);
-        
-//        rootNode.attachChild(groundgeom);
-       
         initWorld();
         
         inputManager.addMapping("MouseMovement",
@@ -79,64 +73,67 @@ public class App extends SimpleApplication {
     
     public void initWorld(){
     	/* physics control */
-    	SphereCollisionShape shape = new SphereCollisionShape(2f);
-    	ball_phy = new RigidBodyControl(shape, 1f);
-    	ball_phy.setLinearVelocity(new Vector3f(0.0f, 10.0f, 0.0f));
-    	
-    	//SimplexCollisionShape lineshape = new SimplexCollisionShape(new Vector3f(15.0f, 1f, 0f), new Vector3f(-15.0f, -1f, 0f));
     	floor_phy = new RigidBodyControl(/*lineshape,*/ 0.0f);
     	
-    	Node node = new Node("physics controlled ball");
-    	node.addControl(ball_phy);
-    	
     	/* Line */    	
-//    	Line line = new Line(new Vector3f(15.0f, 1f, 0f), new Vector3f(-15.0f, 1f, 0f));
-//        Geometry linegeom = new Geometry("Line", line);
-//        Material linemat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//        linemat.setColor("Color", ColorRGBA.Red);
-//        linegeom.setMaterial(linemat);
+    	/*Line line = new Line(new Vector3f(15.0f, 1f, 0f), new Vector3f(-15.0f, 1f, 0f));
+        Geometry linegeom = new Geometry("Line", line);
+        Material linemat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        linemat.setColor("Color", ColorRGBA.Red);
+        linegeom.setMaterial(linemat);*/
         
         /* Ball */
-        sphere = new Sphere(20, 20, 2);
-        Geometry geom = new Geometry("Sphere", sphere);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Blue);
-        geom.setMaterial(mat);
-        geom.setLocalTranslation(new Vector3f(0f, 0.0f, 0f));
-        
+    	makeBall();
         
         /* Floor */
-        floor = new Box(10f, 0.1f, 3f);
-        Geometry floor_geom = new Geometry("Floor", floor);
+        floor = new Box(20f, 0.1f,1f);
+        floor_geom = new Geometry("Floor", floor);
         floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         floor_geom.setMaterial(floor_mat);
         floor_geom.addControl(floor_phy);
-        Node floornode = new Node("floor");
+        floornode = new Node("floor");
         floornode.attachChild(floor_geom);
         
-//        
-//        Quaternion pitch90 = new Quaternion();
-//        pitch90.fromAngleAxis(FastMath.PI/2, new Vector3f(1,0,0));
-//        floornode.setLocalRotation(pitch90);
-//        floornode.updateModelBound();
-//        floornode.updateGeometricState();
-
         getPhysicsSpace().add(floor_phy);
-        getPhysicsSpace().add(ball_phy);
         
-//        floornode.rotate(0, 0, FastMath.DEG_TO_RAD * 45);
         rootNode.attachChild(floornode);
-//      rootNode.attachChild(floor_geom);
-
-        floornode.rotate(FastMath.DEG_TO_RAD * 30f, FastMath.DEG_TO_RAD * 30f, 0);
-		node.attachChild(geom);
-
-		rootNode.attachChild(node);
+		
+		floornode.rotate(0, 0, -FastMath.DEG_TO_RAD * 20);
+		floor_geom.addControl(floor_phy);
+		cam.setLocation( new Vector3f(0, 0, 50));
     }
-
+    
+    float c = 0;
     @Override
     public void simpleUpdate(float tpf) {
-        //TODO: add update code
+    	c = (c + 1/tpf);
+    	if(c % 50 < 1){
+    		makeBall();
+    		
+    	}
+    }
+    
+    private void makeBall(){
+    	/* Ball physics control */
+    	RigidBodyControl ball_phy = new RigidBodyControl(new SphereCollisionShape(0.5f), 1f);
+    	
+    	/*  Ball spatial */ 
+    	Sphere ball = new Sphere(20, 20, 0.5f);
+        Geometry geom = new Geometry("Sphere", ball);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Blue);
+        geom.setMaterial(mat);
+        
+        /* Ball node */
+        Node node = new Node("physics controlled ball");
+        node.setLocalTranslation(new Vector3f(0f, 30.0f, 0f));	//Move the ball up
+        node.addControl(ball_phy);
+        node.attachChild(geom);
+        
+        /* attach node and add the physics controller to the game */
+		rootNode.attachChild(node);
+        getPhysicsSpace().add(ball_phy);
+
     }
 
     @Override
