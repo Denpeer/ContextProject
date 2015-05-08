@@ -15,12 +15,16 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Spline;
+import com.jme3.math.Spline.SplineType;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Curve;
+import com.jme3.scene.shape.Line;
 import com.jme3.scene.shape.Sphere;
 
 public class App extends SimpleApplication {
@@ -66,58 +70,50 @@ public class App extends SimpleApplication {
         
         inputManager.addListener(analogListener, "MouseMovement");
 
+    	
+        Vector3f[] points = TestPoints();
+       
+        SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.6, true);
+        sp.drawCurve(rootNode, assetManager, getPhysicsSpace());
+
+        cam.setLocation(new Vector3f(30, 4, 40));
+        
+    }
+    public Vector3f[] TestPoints(){
+    	Vector3f[] points = new Vector3f[11];
+    	points[0] = new Vector3f(0,6,0);
+    	points[1] = new Vector3f(10,6,0);
+    	points[2] = new Vector3f(15,1,0);
+    	points[3] = new Vector3f(20,3,0);
+    	points[4] = new Vector3f(25,0,0);
+    	points[5] = new Vector3f(30,6,0);
+    	points[6] = new Vector3f(35,2,0);
+    	points[7] = new Vector3f(40,2,0);
+    	points[8] = new Vector3f(45,1,0);
+    	points[9] = new Vector3f(50,5,0);
+    	points[10] = new Vector3f(70,3,0);
+    	return points;
+    }
+    
+    float time = 1;
+    float timeCount =0;
+    @Override
+    public void simpleUpdate(float tpf) {
+    	timeCount += tpf;
+        
+    	if(timeCount > time){
+    		makeBall();
+    		timeCount = 0;
+    	}
+
     }
     
     public void initWorld(){
     	/* physics control */
-//    	SimplexCollisionShape lineshape = new SimplexCollisionShape(new Vector3f(-50.0f, 5f, 0f), new Vector3f(50.0f, 5f, 0f));
-//    	RigidBodyControl line_phy = new RigidBodyControl(lineshape, 0f);
-    	floor_phy = new RigidBodyControl(/*lineshape,*/ 0.0f);
     	
-    	/* Line */    	
-//    	Line line = new Line(new Vector3f(-50.0f, 5f, 0f), new Vector3f(50.0f, 5f, 0f));
-//        Geometry linegeom = new Geometry("Line", line);
-//        line.setLineWidth(50);
-//        Material linemat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//        linemat.setColor("Color", ColorRGBA.Red);
-//        linegeom.setMaterial(linemat);
-        
         /* Ball */
     	makeBall();
         
-        /* Floor */
-        floor = new Box(20f, 0.1f,1f);
-        floor_geom = new Geometry("Floor", floor);
-        floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        floor_geom.setMaterial(floor_mat);
-        floornode = new Node("floor");
-        floor_geom.addControl(floor_phy);
-        floornode.attachChild(floor_geom);
-        
-        getPhysicsSpace().add(floor_phy);
-//      getPhysicsSpace().add(line_phy);
-        rootNode.attachChild(floornode);
-        
-//      linegeom.addControl(line_phy);
-//		rootNode.attachChild(linegeom);
-		
-		floornode.rotate(0, 0, -FastMath.DEG_TO_RAD * 15);
-//		floor_geom.removeControl(floor_phy);
-		floornode.addControl(floor_phy); //IMPORTANT TO DO THE ROTATION
-		
-		cam.setLocation( new Vector3f(0, 0, 50) );
-    }
-    
-    float c = 0;
-    @Override
-    public void simpleUpdate(float tpf) {
-    	c = (c + 1/tpf);
-    	if(c % 50 < 1){
-    		makeBall();
-    		
-    	}
-    	if(c < 0)
-    		c = 0;
     }
     
     private void makeBall(){
@@ -133,14 +129,15 @@ public class App extends SimpleApplication {
         
         /* Ball node */
         Node node = new Node("physics controlled ball");
-        node.setLocalTranslation(new Vector3f(0f, 30.0f, 0f));	//Move the ball up
+        node.setLocalTranslation(new Vector3f(30f, 30.0f, 0f));	//Move the ball up
         node.addControl(ball_phy);
         node.attachChild(geom);
-        
+
         /* attach node and add the physics controller to the game */
 		rootNode.attachChild(node);
         getPhysicsSpace().add(ball_phy);
-
+        
+        System.out.println("ball made");
     }
     
 

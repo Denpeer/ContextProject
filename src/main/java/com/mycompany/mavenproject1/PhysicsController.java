@@ -25,34 +25,18 @@ public class PhysicsController extends RigidBodyControl implements
 	}
 
 	public void physicsTick(PhysicsSpace arg0, float arg1) {
-//		Vector3f velocity = getLinearVelocity();
-//		Vector3f loc = getPhysicsLocation();
-		Vector3f angularvel = getAngularVelocity();
-		if(angularvel.z > 0)
-			System.out.println("Angular: x: "+ angularvel.x + "  y : " + angularvel.y + "   z : " + angularvel.z);
-//		velocity.z = 0;
-//		loc.z = 0;
-//		setPhysicsLocation(loc);
-//		setLinearVelocity(velocity);
-		angularvel.y = 0;
-
-		setAngularVelocity(angularvel);
 	}
 
 	public void prePhysicsTick(PhysicsSpace arg0, float arg1) {
-//		Vector3f velocity = getLinearVelocity();
-//		Vector3f loc = getPhysicsLocation();
-		Vector3f angularvel = getAngularVelocity();
-		if(angularvel.z > 0)
-			System.out.println("Angular: x: "+ angularvel.x + "  y : " + angularvel.y + "   z : " + angularvel.z);
-//		velocity.z = 0;
-//		loc.z = 0;
-//		setPhysicsLocation(loc);
-//		setLinearVelocity(velocity);
-		angularvel.y = 0;
-
-		setAngularVelocity(angularvel);
-
+		//Vector3f velocity = getLinearVelocity();
+		Vector3f loc = getPhysicsLocation();
+		//Vector3f angularvel = getAngularVelocity();
+		//velocity.z = 0;
+		loc.z = 0;
+		//angularvel.y = 0;
+		setPhysicsLocation(loc);
+		//setLinearVelocity(velocity);
+		//setAngularVelocity(angularvel);
 	}
 
 }
