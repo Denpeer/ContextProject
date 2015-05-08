@@ -96,10 +96,10 @@ public class App extends SimpleApplication {
     }
     
     float time = 1;
-    float timeCount;
+    float timeCount =0;
     @Override
     public void simpleUpdate(float tpf) {
-    	timeCount =+ tpf;
+    	timeCount += tpf;
         
     	if(timeCount > time){
     		makeBall();
