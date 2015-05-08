@@ -24,7 +24,7 @@ public class SplineCurveTest {
     	AssetManager assetManager = app.getAssetManager();
     	
 		SplineCurve sp = new SplineCurve(SplineType.CatmullRom, vecs, (float)0.5, true);
-		sp.drawCurve(rootNode, assetManager);
+		//sp.drawCurve(rootNode, assetManager);
 		assertEquals(rootNode.getChildren().size(), 100);
 	}
 
