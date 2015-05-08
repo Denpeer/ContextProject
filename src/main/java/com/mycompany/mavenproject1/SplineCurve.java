@@ -19,17 +19,27 @@ public class SplineCurve extends Spline {
 	public void drawCurve(Node rootNode, AssetManager assetManager){
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Blue);
+		
 		for(int i = 0; i < getControlPoints().size() - 1; i++){
 			double t = 0;
 			while(t + 0.1 <= 1){
-	            Vector3f vec = interpolate((float)t, i, null);
-	            Vector3f vec1 = interpolate((float)(t + 0.1), i, null);
-	            System.out.println(vec.toString());
-	            System.out.println(vec1.toString());
+				Vector3f vec;
+	            Vector3f vec1;
+				if(i == 0){
+					vec = this.getControlPoints().get(0);
+		            vec1 = this.getControlPoints().get(1);
+		            t++;
+				}else if(i == getControlPoints().size() - 2){
+					vec = this.getControlPoints().get(this.getControlPoints().size() - 2);
+		            vec1 = this.getControlPoints().get(this.getControlPoints().size() - 1);
+		            t++;
+				}else{
+					vec = interpolate((float)t, i, null);
+		            vec1 = interpolate((float)(t + 0.1), i, null);
+				}
+	            
 	        	Line lc = new Line(vec, vec1);
-	        	Geometry geomLine = new Geometry("curve", lc);
-	            
-	            
+	        	Geometry geomLine = new Geometry("curve", lc);            
 	            geomLine.setMaterial(mat);
 	            rootNode.attachChild(geomLine);
 				t = t + 0.1;

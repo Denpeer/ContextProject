@@ -27,29 +27,30 @@ public class App extends SimpleApplication {
     @Override
     public void simpleInitApp() {
       //  Box b = new Box(1, 1, 1);
-        
-        
+
         Vector3f[] points = TestPoints();
         //Bezier bez = new Bezier(points);
         //bez.drawCompleteCurve(rootNode, assetManager);
 
-        SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.5, true);
+        SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.7, true);
         sp.drawCurve(rootNode, assetManager);
+        flyCam.setEnabled(false);
+        cam.setLocation(new Vector3f(35, 4, 40));
         
     }
     public Vector3f[] TestPoints(){
     	Vector3f[] points = new Vector3f[11];
-    	points[0] = new Vector3f(0,0,0);
-    	points[1] = new Vector3f(2,4,0);
-    	points[2] = new Vector3f(4,1,0);
-    	points[3] = new Vector3f(6,3,0);
-    	points[4] = new Vector3f(8,0,0);
-    	points[5] = new Vector3f(10,6,0);
-    	points[6] = new Vector3f(12,2,0);
-    	points[7] = new Vector3f(14,2,0);
-    	points[8] = new Vector3f(16,1,0);
-    	points[9] = new Vector3f(18,5,0);
-    	points[10] = new Vector3f(20,0,0);
+    	points[0] = new Vector3f(8,7,0);
+    	points[1] = new Vector3f(10,6,0);
+    	points[2] = new Vector3f(15,1,0);
+    	points[3] = new Vector3f(20,3,0);
+    	points[4] = new Vector3f(25,0,0);
+    	points[5] = new Vector3f(30,6,0);
+    	points[6] = new Vector3f(35,2,0);
+    	points[7] = new Vector3f(40,2,0);
+    	points[8] = new Vector3f(45,1,0);
+    	points[9] = new Vector3f(50,5,0);
+    	points[10] = new Vector3f(70,3,0);
     	return points;
     }
     @Override
