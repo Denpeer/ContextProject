@@ -8,6 +8,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Line;
+import com.jme3.scene.shape.Quad;
 
 public class SplineCurve extends Spline {
 	
@@ -18,11 +19,11 @@ public class SplineCurve extends Spline {
 	
 	public void drawCurve(Node rootNode, AssetManager assetManager){
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Blue);
+		mat.setColor("Color", ColorRGBA.Orange);
 		
 		for(int i = 0; i < getControlPoints().size() - 1; i++){
 			double t = 0;
-			while(t + 0.1 <= 1){
+			while(t  <= 1){
 				Vector3f vec;
 	            Vector3f vec1;
 				if(i == 0){
@@ -35,15 +36,19 @@ public class SplineCurve extends Spline {
 		            t++;
 				}else{
 					vec = interpolate((float)t, i, null);
-		            vec1 = interpolate((float)(t + 0.1), i, null);
+		            vec1 = interpolate((float)(t + 0.01), i, null);
 				}
-	            
-	        	Line lc = new Line(vec, vec1);
-	        	Geometry geomLine = new Geometry("curve", lc);            
-	            geomLine.setMaterial(mat);
-	            rootNode.attachChild(geomLine);
-				t = t + 0.1;
+		            
+		            Quad square = new Quad((float)vec1.x - vec.x, vec.getY());
+		            Geometry squad = new Geometry("square", square);
+		            squad.move(vec.x, -11, 0);
+		            squad.setMaterial(mat);
+		            rootNode.attachChild(squad);
+
+		            
+				t = t + 0.01;
 			}
+			
 			
 		}
 	}

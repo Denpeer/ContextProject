@@ -32,15 +32,15 @@ public class App extends SimpleApplication {
         //Bezier bez = new Bezier(points);
         //bez.drawCompleteCurve(rootNode, assetManager);
 
-        SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.7, true);
+        SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.6, true);
         sp.drawCurve(rootNode, assetManager);
         flyCam.setEnabled(false);
-        cam.setLocation(new Vector3f(35, 4, 40));
+        cam.setLocation(new Vector3f(30, 4, 40));
         
     }
     public Vector3f[] TestPoints(){
     	Vector3f[] points = new Vector3f[11];
-    	points[0] = new Vector3f(8,7,0);
+    	points[0] = new Vector3f(0,6,0);
     	points[1] = new Vector3f(10,6,0);
     	points[2] = new Vector3f(15,1,0);
     	points[3] = new Vector3f(20,3,0);
