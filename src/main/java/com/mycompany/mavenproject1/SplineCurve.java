@@ -7,6 +7,7 @@ import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Line;
 import com.jme3.scene.shape.Quad;
 
@@ -17,9 +18,14 @@ public class SplineCurve extends Spline {
 		super(splineType, controlPoints, curveTension, cycle);
 	}
 	
+	/**
+	 * This methods draws the curve with quads
+	 * @param rootNode
+	 * @param assetManager
+	 */
 	public void drawCurve(Node rootNode, AssetManager assetManager){
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Orange);
+		mat.setColor("Color", ColorRGBA.Cyan);
 		
 		for(int i = 0; i < getControlPoints().size() - 1; i++){
 			double t = 0;
@@ -39,9 +45,9 @@ public class SplineCurve extends Spline {
 		            vec1 = interpolate((float)(t + 0.01), i, null);
 				}
 		            
-		            Quad square = new Quad((float)vec1.x - vec.x, vec.getY());
-		            Geometry squad = new Geometry("square", square);
-		            squad.move(vec.x, -11, 0);
+		            Quad box = new Quad((float)vec1.x - vec.x, vec.getY() + 10);
+		            Geometry squad = new Geometry("square", box);
+		            squad.move(vec.x, -15, 0);
 		            squad.setMaterial(mat);
 		            rootNode.attachChild(squad);
 

@@ -26,13 +26,10 @@ public class App extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-      //  Box b = new Box(1, 1, 1);
 
         Vector3f[] points = TestPoints();
-        //Bezier bez = new Bezier(points);
-        //bez.drawCompleteCurve(rootNode, assetManager);
-
-        SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.6, true);
+       
+       SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float)0.6, true);
         sp.drawCurve(rootNode, assetManager);
         flyCam.setEnabled(false);
         cam.setLocation(new Vector3f(30, 4, 40));
@@ -53,6 +50,7 @@ public class App extends SimpleApplication {
     	points[10] = new Vector3f(70,3,0);
     	return points;
     }
+    
     @Override
     public void simpleUpdate(float tpf) {
         //TODO: add update code
