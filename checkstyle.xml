@@ -106,8 +106,12 @@ Slightly modified version of Sun Checks that better matches the default code for
       <property name="max" value="50"/>
     </module>
     <module name="MultipleStringLiterals"/>
+    <module name="FinalLocalVariable"/>
   </module>
-  <module name="JavadocPackage"/>
+  <module name="JavadocPackage">
+    <property name="severity" value="ignore"/>
+    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+  </module>
   <module name="NewlineAtEndOfFile">
     <property name="severity" value="ignore"/>
     <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
