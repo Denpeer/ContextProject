@@ -20,49 +20,71 @@ public class SplineCurve extends Spline {
 
 	/**
 	 * This methods draws the curve with quads
-	 * 
-	 * @param rootNode
-	 * @param assetManager
+	 * @param rootNode the rootnode
+	 * @param assetManager the assetmanager
 	 */
-
-	public void drawCurve(Node rootNode, AssetManager assetManager,
-			PhysicsSpace physics_space) {
+	public void drawCurve(Node rootNode, AssetManager assetManager, PhysicsSpace physics_space) {
 		Material mat = new Material(assetManager,
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Cyan);
 		Node node = new Node("curve");
+		loopThroughSpline(node, assetManager, physics_space, mat);
+		rootNode.attachChild(node);
+	}
+	
+	/**
+	 * This method loops through the whole spine
+	 * @param node is the curve node
+	 * @param assetManager the assetmanager
+	 * @param physics_space the physic space
+	 * @param mat the material
+	 */
+	public void loopThroughSpline(Node node, AssetManager assetManager, PhysicsSpace physics_space, Material mat){
 		for (int i = 0; i < getControlPoints().size() - 1; i++) {
 			double t = 0;
 			while (t <= 1) {
-				//BoxCollisionShape shape = new BoxCollisionShape();
-				RigidBodyControl phys = new RigidBodyControl(0f);
-				Vector3f vec;
-				Vector3f vec1;
-				if (i == 0) {
-					vec = this.getControlPoints().get(0);
-					vec1 = this.getControlPoints().get(1);
-					t++;
-				} /*else if (i == getControlPoints().size() - 2) {
-					vec = this.getControlPoints().get(
-							this.getControlPoints().size() - 2);
-					vec1 = this.getControlPoints().get(
-							this.getControlPoints().size() - 1);
-					t++;
-				} */else {
-					vec = interpolate((float) t, i, null);
-					vec1 = interpolate((float) (t + 0.01), i, null);
-				}
-
-				Box box = new Box((float) vec1.x - vec.x , vec.getY() + 10, 1f);
-				Geometry squad = new Geometry("square", box);
-				squad.move(vec.x, -15, 0);
-				squad.setMaterial(mat);
-				node.attachChild(squad);
+				Vector3f[] vecs = getTwoVectors(i,t);
+				drawBox(vecs, mat, physics_space, node);
 				t = t + 0.01;
-				squad.addControl(phys);
-				physics_space.add(phys);
 			}
 		}
-		rootNode.attachChild(node);
+	}
+	
+	/**
+	 * This method takes care of drawing a box and the collision of it
+	 * @param vecs the coordinates where the box needs to be drawn
+	 * @param mat the material of the box
+	 * @param physics_space the physics of the box
+	 * @param node the node
+	 */
+	public void drawBox(Vector3f[] vecs, Material mat, PhysicsSpace physics_space, Node node){
+		RigidBodyControl phys = new RigidBodyControl(0f);
+		Box box = new Box((float) vecs[0].x - vecs[1].x , vecs[0].getY() + 10, 1f);
+		Geometry squad = new Geometry("square", box);
+		squad.move(vecs[0].x, -15, 0);
+		squad.setMaterial(mat);
+		node.attachChild(squad);
+		
+		squad.addControl(phys);
+		physics_space.add(phys);
+	}
+	
+	/**
+	 * This method return the coordinates of two close vectors on the spline
+	 * @param controlPoint the controlpoint
+	 * @param t how far until next controlpoint (0 is current controlpoint, 1 is next)
+	 * @return an array with 2 vectors
+	 */
+	public Vector3f[] getTwoVectors(int controlPoint, double t){
+		Vector3f[] vecs = new Vector3f[2];
+		if (controlPoint == 0) {
+			vecs[0] = this.getControlPoints().get(0);
+			vecs[1] = this.getControlPoints().get(1);
+			t++;
+		} else {
+			vecs[0] = interpolate((float)t, controlPoint, null);
+			vecs[1] = interpolate((float)(t + 0.01), controlPoint, null);
+		}
+		return vecs;
 	}
 }
