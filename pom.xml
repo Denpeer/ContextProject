@@ -45,6 +45,10 @@
               </reports>
             </reportSet>
           </reportSets>
+          <configuration>
+ 			  <failOnViolation>false</failOnViolation>
+ 			  <configLocation>checkstyle.xml</configLocation>
+ 		  </configuration>
         </plugin>
         
         <plugin>
@@ -69,6 +73,7 @@
           <xmlOutput>true</xmlOutput>
           <!-- Optional directory to put findbugs xdoc xml report -->
           <xmlOutputDirectory>target/site</xmlOutputDirectory>
+    	  <failOnError>false</failOnError>
         </configuration>
 	  </plugin>
     
@@ -87,6 +92,9 @@
     	    <groupId>org.apache.maven.plugins</groupId>
     	    <artifactId>maven-pmd-plugin</artifactId>
     	    <version>3.4</version>
+    	    <configuration>
+  				<format>xml</format>
+			</configuration>
     	  </plugin>
 		
 		 <plugin>
@@ -105,11 +113,6 @@
  </repository>
  </repositories>
   <dependencies>
-  <dependency>
-      <groupId>nu.pattern</groupId>
-      <artifactId>opencv</artifactId>
-      <version>2.4.9-7</version>
-    </dependency>
       <dependency>
       <groupId>com.jme3</groupId>
       <artifactId>jme3-core</artifactId>
@@ -181,14 +184,17 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    
-
-    
+    <dependency>
+		<groupId>org.bytedeco</groupId>
+		<artifactId>javacv</artifactId>
+ 		<version>0.11</version>
+ 	</dependency>
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-checkstyle-plugin</artifactId>
       <version>2.15</version>
       <type>maven-plugin</type>
+     
     </dependency>
   </dependencies>
   
