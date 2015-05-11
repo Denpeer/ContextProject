@@ -8,7 +8,11 @@ package com.mycompany.mavenproject1;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
@@ -19,19 +23,29 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 /**
  * 
- * @author Jonathan
  *
  */
 public class App extends SimpleApplication {
 	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
 	private static final float BALL_RADIUS = 0.5f;
-	private static final Vector3f BALL_SPAWN_LOCATION = new Vector3f(30f, 30f, 0f);
+	private static final Vector3f BALL_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
 	private static final Vector3f CAM_LOCATION = new Vector3f(30, 4, 40);
+	private static final Vector3f BALL_INITIAL_SPEED = new Vector3f(5, -22, 0);
+	private static final String ACTION_SPAWN_BALL = "Spawn Ball";
 
 	private BulletAppState bulletAppState;
 	
 	private PhysicsController ballPhy;
 	
+	private ActionListener actionListener = new ActionListener() {
+		public void onAction(final String name, final boolean keyPressed,
+				final float tpf) {
+			if (name.equals(ACTION_SPAWN_BALL) && !keyPressed) { // test?
+				makeBall();
+			}
+		}
+	};
+
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -47,7 +61,7 @@ public class App extends SimpleApplication {
 		/* Set up physics */
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-//		bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		// flyCam.setEnabled(false);
 
@@ -57,9 +71,11 @@ public class App extends SimpleApplication {
 
 		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
 		sp.drawCurve(rootNode, assetManager, getPhysicsSpace());
-
 		cam.setLocation(CAM_LOCATION);
-
+		
+		//Control for spawing balls
+		inputManager.addMapping(ACTION_SPAWN_BALL, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+		inputManager.addListener(actionListener, new String[]{ACTION_SPAWN_BALL});
 	}
 
 	public Vector3f[] TestPoints() {
@@ -86,7 +102,7 @@ public class App extends SimpleApplication {
 		timeCount += tpf;
 
 		if (timeCount > time) {
-			makeBall();
+		//	makeBall();
 			timeCount = 0;
 		}
 
@@ -104,6 +120,7 @@ public class App extends SimpleApplication {
 	private void makeBall() {
 		/* Ball physics control */
 		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
+		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
 
 		/* Ball spatial */
 		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
@@ -114,16 +131,15 @@ public class App extends SimpleApplication {
 		geom.setMaterial(mat);
 
 		/* Ball node */
-		final Node node = new Node("physics controlled ball");
-		node.setLocalTranslation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
+		final Node node = new Node("ball");
 		node.addControl(ballPhy);
 		node.attachChild(geom);
-
 		/* attach node and add the physics controller to the game */
 		rootNode.attachChild(node);
 		getPhysicsSpace().add(ballPhy);
-
-		System.out.println("ball made");
+		ballPhy.setRestitution(1f);
+		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
+		ballPhy.addCollideWithGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
 	}
 
 	@Override
