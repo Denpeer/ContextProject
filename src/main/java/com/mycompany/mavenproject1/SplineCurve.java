@@ -11,79 +11,102 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
+/**
+ * This class represent the spline(curve).
+ * 
+ * @author SDumasy
+ *
+ */
 public class SplineCurve extends Spline {
-
-	public SplineCurve(SplineType splineType, Vector3f[] controlPoints,
-			float curveTension, boolean cycle) {
+	
+	private static final double BOXWIDTH = 0.01;
+	private static final double ADDITIONALBOXHEIGHT = 10;
+	private static final float YCURVETRANSLATION = 15;
+	/**
+	 * The constructor of the SplineCurve class.
+	 * @param splineType the type of the SplineCurve, in our case Catmulrom
+	 * @param controlPoints the controlpoints of the curve
+	 * @param curveTension the tension of the curve, betweeen 0-1
+	 * @param cycle the cycle of the curve
+	 */
+	public SplineCurve(final SplineType splineType, 
+			final Vector3f[] controlPoints, final float curveTension, 
+			final boolean cycle) {
 		super(splineType, controlPoints, curveTension, cycle);
 	}
 
 	/**
-	 * This methods draws the curve with quads
-	 * @param rootNode the rootnode
-	 * @param assetManager the assetmanager
+	 * This method draws the curve.
+	 * @param rootNode the rootnode of the program
+	 * @param assetManager the assetManager
+	 * @param physicsSpace the physic space
 	 */
-	public void drawCurve(Node rootNode, AssetManager assetManager, PhysicsSpace physics_space) {
-		Material mat = new Material(assetManager,
+	public final void drawCurve(final Node rootNode, 
+			final AssetManager assetManager, final PhysicsSpace physicsSpace) {
+		final Material mat = new Material(assetManager,
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Cyan);
-		Node node = new Node("curve");
-		loopThroughSpline(node, assetManager, physics_space, mat);
+		final Node node = new Node("curve");
+		loopThroughSpline(node, assetManager, physicsSpace, mat);
 		rootNode.attachChild(node);
 	}
 	
 	/**
-	 * This method loops through the whole spine
+	 * This method loops through the whole spine.
 	 * @param node is the curve node
 	 * @param assetManager the assetmanager
-	 * @param physics_space the physic space
+	 * @param physicsSpace the physic space
 	 * @param mat the material
 	 */
-	public void loopThroughSpline(Node node, AssetManager assetManager, PhysicsSpace physics_space, Material mat){
+	public final void loopThroughSpline(final Node node, 
+			final AssetManager assetManager,
+			final PhysicsSpace physicsSpace, final Material mat) { 
 		for (int i = 0; i < getControlPoints().size() - 1; i++) {
 			double t = 0;
 			while (t <= 1) {
-				Vector3f[] vecs = getTwoVectors(i,t);
-				drawBox(vecs, mat, physics_space, node);
-				t = t + 0.01;
+				final Vector3f[] vecs = getTwoVectors(i, t);
+				drawBox(vecs, mat, physicsSpace, node);
+				t = t + BOXWIDTH;
 			}
 		}
 	}
 	
 	/**
-	 * This method takes care of drawing a box and the collision of it
+	 * This method takes care of drawing a box and the collision of it.
 	 * @param vecs the coordinates where the box needs to be drawn
 	 * @param mat the material of the box
-	 * @param physics_space the physics of the box
+	 * @param physicsSpace the physics of the box
 	 * @param node the node
 	 */
-	public void drawBox(Vector3f[] vecs, Material mat, PhysicsSpace physics_space, Node node){
-		RigidBodyControl phys = new RigidBodyControl(0f);
-		Box box = new Box((float) vecs[0].x - vecs[1].x , vecs[0].getY() + 10, 1f);
-		Geometry squad = new Geometry("square", box);
-		squad.move(vecs[0].x, -15, 0);
+	public final void drawBox(final Vector3f[] vecs, final Material mat,
+			final PhysicsSpace physicsSpace, final Node node) {
+		final RigidBodyControl phys = new RigidBodyControl(0f);
+		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
+				(float) (vecs[0].getY() + ADDITIONALBOXHEIGHT), 1f);
+		final Geometry squad = new Geometry("square", box);
+		squad.move(vecs[0].x, YCURVETRANSLATION, 0);
 		squad.setMaterial(mat);
 		node.attachChild(squad);
 		
 		squad.addControl(phys);
-		physics_space.add(phys);
+		physicsSpace.add(phys);
 	}
 	
 	/**
-	 * This method return the coordinates of two close vectors on the spline
+	 * This method return the coordinates of two close vectors on the spline.
 	 * @param controlPoint the controlpoint
-	 * @param t how far until next controlpoint (0 is current controlpoint, 1 is next)
+	 * @param t how far until next controlpoint 
 	 * @return an array with 2 vectors
 	 */
-	public Vector3f[] getTwoVectors(int controlPoint, double t){
-		Vector3f[] vecs = new Vector3f[2];
+	public final Vector3f[] getTwoVectors(final int controlPoint,
+			final double t) {
+		final Vector3f[] vecs = new Vector3f[2];
 		if (controlPoint == 0) {
 			vecs[0] = this.getControlPoints().get(0);
 			vecs[1] = this.getControlPoints().get(1);
-			t++;
 		} else {
-			vecs[0] = interpolate((float)t, controlPoint, null);
-			vecs[1] = interpolate((float)(t + 0.01), controlPoint, null);
+			vecs[0] = interpolate((float) t, controlPoint, null);
+			vecs[1] = interpolate((float) (t + BOXWIDTH), controlPoint, null);
 		}
 		return vecs;
 	}
