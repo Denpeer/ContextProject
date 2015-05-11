@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -21,7 +21,7 @@ public class SplineCurve extends Spline {
 	
 	private static final double BOXWIDTH = 0.01;
 	private static final double ADDITIONALBOXHEIGHT = 10;
-	private static final float YCURVETRANSLATION = 15;
+	private static final float YCURVETRANSLATION = -15;
 	/**
 	 * The constructor of the SplineCurve class.
 	 * @param splineType the type of the SplineCurve, in our case Catmulrom
