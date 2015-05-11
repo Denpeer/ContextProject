@@ -35,7 +35,10 @@ Slightly modified version of Sun Checks that better matches the default code for
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
-    <module name="LineLength"/>
+    <module name="LineLength">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
     <module name="EmptyForIteratorPad"/>
@@ -112,8 +115,16 @@ Slightly modified version of Sun Checks that better matches the default code for
       <property name="tabWidth" value="4"/>
     </module>
     <module name="LineLength">
+      <property name="severity" value="ignore"/>
       <property name="max" value="100"/>
       <property name="tabWidth" value="4"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="LineLength">
+      <property name="severity" value="ignore"/>
+      <property name="max" value="100"/>
+      <property name="tabWidth" value="4"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
   </module>
   <module name="JavadocPackage">
