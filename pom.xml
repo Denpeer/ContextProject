@@ -45,6 +45,10 @@
               </reports>
             </reportSet>
           </reportSets>
+          <configuration>
+ 			  <failOnViolation>false</failOnViolation>
+ 			  <configLocation>checkstyle.xml</configLocation>
+ 		  </configuration>
         </plugin>
         
         <plugin>
@@ -69,6 +73,7 @@
           <xmlOutput>true</xmlOutput>
           <!-- Optional directory to put findbugs xdoc xml report -->
           <xmlOutputDirectory>target/site</xmlOutputDirectory>
+    	  <failOnError>false</failOnError>
         </configuration>
 	  </plugin>
     
@@ -87,6 +92,9 @@
     	    <groupId>org.apache.maven.plugins</groupId>
     	    <artifactId>maven-pmd-plugin</artifactId>
     	    <version>3.4</version>
+    	    <configuration>
+  				<format>xml</format>
+			</configuration>
     	  </plugin>
 		
 		 <plugin>
@@ -97,8 +105,79 @@
         
       </plugins>
     </reporting>
-
+<repositories>
+ <repository>
+ <id>jmonkey</id>
+ <name>Jmonkey repository</name>
+ <url>http://updates.jmonkeyengine.org/maven/</url>
+ </repository>
+ </repositories>
   <dependencies>
+      <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-core</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+          <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-desktop</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+          <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-lwjgl</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+        <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-effects</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-networking</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-plugins</artifactId>
+      <version>3.0.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-jogg </artifactId>
+      <version>3.0.10</version>
+    </dependency>                
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-terrain </artifactId>
+      <version>3.0.10</version>
+    </dependency>  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-blender</artifactId>
+      <version>3.0.10</version>
+    </dependency>  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-jbullet</artifactId>
+      <version>3.0.10</version>
+    </dependency>          
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-bullet</artifactId>
+      <version>3.0.10</version>
+    </dependency>                  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-bullet-natives</artifactId>
+      <version>3.0.10</version>
+    </dependency>  
+    <dependency>
+      <groupId>com.jme3</groupId>
+      <artifactId>jme3-niftygui</artifactId>
+      <version>3.0.10</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -106,10 +185,16 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+		<groupId>org.bytedeco</groupId>
+		<artifactId>javacv</artifactId>
+ 		<version>0.11</version>
+ 	</dependency>
+    <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-checkstyle-plugin</artifactId>
       <version>2.15</version>
       <type>maven-plugin</type>
+     
     </dependency>
   </dependencies>
   
