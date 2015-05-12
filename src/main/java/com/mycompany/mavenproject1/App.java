@@ -35,13 +35,12 @@ public class App extends SimpleApplication {
 
 	private BulletAppState bulletAppState;
 	
-	private PhysicsController ballPhy;
-	
 	private ActionListener actionListener = new ActionListener() {
 		public void onAction(final String name, final boolean keyPressed,
 				final float tpf) {
 			if (name.equals(ACTION_SPAWN_BALL) && !keyPressed) { 
-				makeBall();
+				final Ball ball = new Ball(BALL_RADIUS, assetManager);
+				ball.spawn(rootNode, getPhysicsSpace(), BALL_SPAWN_LOCATION, BALL_INITIAL_SPEED);
 			}
 		}
 	};
@@ -64,8 +63,6 @@ public class App extends SimpleApplication {
 		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		// flyCam.setEnabled(false);
-
-		initWorld();
 
 		final Vector3f[] points = TestPoints();
 
@@ -102,45 +99,38 @@ public class App extends SimpleApplication {
 		timeCount += tpf;
 
 		if (timeCount > time) {
-		//	makeBall();
 			timeCount = 0;
 		}
 
 	}
 
-	public void initWorld() {
-		/* Ball */
-		makeBall();
-	}
-	
-	/**
-	 * Creates a new ball object and instantiates a physics controller for it.
-	 * Adds the physics controller to the physics space and the ball to the scene
-	 */
-	private void makeBall() {
-		/* Ball physics control */
-		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
-		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
-
-		/* Ball spatial */
-		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
-		final Geometry geom = new Geometry("Sphere", ball);
-		final Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Blue);
-		geom.setMaterial(mat);
-
-		/* Ball node */
-		final Node node = new Node("ball");
-		node.addControl(ballPhy);
-		node.attachChild(geom);
-		/* attach node and add the physics controller to the game */
-		rootNode.attachChild(node);
-		getPhysicsSpace().add(ballPhy);
-		ballPhy.setRestitution(1f);
-		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
-		ballPhy.addCollideWithGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
-	}
+//	/**
+//	 * Creates a new ball object and instantiates a physics controller for it.
+//	 * Adds the physics controller to the physics space and the ball to the scene
+//	 */
+//	private void makeBall() {
+//		/* Ball physics control */
+//		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
+//		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
+//
+//		/* Ball spatial */
+//		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
+//		final Geometry geom = new Geometry("Sphere", ball);
+//		final Material mat = new Material(assetManager,
+//				"Common/MatDefs/Misc/Unshaded.j3md");
+//		mat.setColor("Color", ColorRGBA.Blue);
+//		geom.setMaterial(mat);
+//
+//		/* Ball node */
+//		final Node node = new Node("ball");
+//		node.addControl(ballPhy);
+//		node.attachChild(geom);
+//		/* attach node and add the physics controller to the game */
+//		rootNode.attachChild(node);
+//		getPhysicsSpace().add(ballPhy);
+//		ballPhy.setRestitution(1f);
+//		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
+//	}
 
 	@Override
 	public void simpleRender(final RenderManager rm) {
