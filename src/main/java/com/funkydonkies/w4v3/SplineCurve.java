@@ -49,6 +49,7 @@ public class SplineCurve extends Spline {
 		final Node node = new Node("curve");
 		loopThroughSpline(node, assetManager, physicsSpace, mat);
 		rootNode.attachChild(node);
+
 	}
 	
 	/**
@@ -78,7 +79,7 @@ public class SplineCurve extends Spline {
 	 * @param physicsSpace the physics of the box
 	 * @param node the node
 	 */
-	public final void drawBox(final Vector3f[] vecs, final Material mat,
+	public final Geometry drawBox(final Vector3f[] vecs, final Material mat,
 			final PhysicsSpace physicsSpace, final Node node) {
 		final RigidBodyControl phys = new RigidBodyControl(0f);
 		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
@@ -90,6 +91,7 @@ public class SplineCurve extends Spline {
 		
 		squad.addControl(phys);
 		physicsSpace.add(phys);
+		return squad;
 	}
 	
 	/**

@@ -5,7 +5,10 @@ package com.funkydonkies.w4v3;
  *
  */
 
+import com.funkydonkies.w4v3.obstacles.ClosingBox;
+import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -29,7 +32,7 @@ public class App extends SimpleApplication {
 	private static final float GRAVITY = -9.81f;
 
 	private BulletAppState bulletAppState;
-	
+	private ClosingBox clBox;
 	private PhysicsController ball_phy;
 
 
@@ -48,12 +51,13 @@ public class App extends SimpleApplication {
 	public final void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
 		/* Set up physics */
+;
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(
 				new Vector3f(0f, GRAVITY, 0f));
-		// flyCam.setEnabled(false);
+		 flyCam.setEnabled(false);
 
 		initWorld();
 
@@ -68,9 +72,12 @@ public class App extends SimpleApplication {
 		SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points,
 				(float) 0.6, true);
 		sp.drawCurve(rootNode, assetManager, getPhysicsSpace());
-
+		ObstacleFactory facto = new ObstacleFactory();
+		
+		clBox = (ClosingBox) facto.makeObstacle("CLOSINGBOX");
+		clBox.draw(assetManager, getPhysicsSpace(),rootNode);
 		cam.setLocation(new Vector3f(30, 4, 40));
-
+		
 	}
 
 	public Vector3f[] TestPoints() {
@@ -94,12 +101,15 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf) {
+		clBox.move();
 		timeCount += tpf;
 
 		if (timeCount > time) {
 			makeBall();
 			timeCount = 0;
 		}
+		
+		
 
 	}
 
@@ -145,4 +155,5 @@ public class App extends SimpleApplication {
 	private PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
+	
 }
