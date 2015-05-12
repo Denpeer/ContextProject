@@ -2,6 +2,7 @@ package com.mycompany.mavenproject1;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -21,7 +22,7 @@ public class SplineCurve extends Spline {
 	
 	private static final double BOXWIDTH = 0.01;
 	private static final double ADDITIONALBOXHEIGHT = 10;
-	private static final float YCURVETRANSLATION = 15;
+	private static final float YCURVETRANSLATION = -15;
 	/**
 	 * The constructor of the SplineCurve class.
 	 * @param splineType the type of the SplineCurve, in our case Catmulrom
@@ -43,12 +44,15 @@ public class SplineCurve extends Spline {
 	 */
 	public final void drawCurve(final Node rootNode, 
 			final AssetManager assetManager, final PhysicsSpace physicsSpace) {
+		final RigidBodyControl phys = new RigidBodyControl(0f);
 		final Material mat = new Material(assetManager,
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Cyan);
 		final Node node = new Node("curve");
 		loopThroughSpline(node, assetManager, physicsSpace, mat);
 		rootNode.attachChild(node);
+		node.addControl(phys);
+		physicsSpace.add(phys);
 	}
 	
 	/**
@@ -80,7 +84,7 @@ public class SplineCurve extends Spline {
 	 */
 	public final void drawBox(final Vector3f[] vecs, final Material mat,
 			final PhysicsSpace physicsSpace, final Node node) {
-		final RigidBodyControl phys = new RigidBodyControl(0f);
+		
 		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
 				(float) (vecs[0].getY() + ADDITIONALBOXHEIGHT), 1f);
 		final Geometry squad = new Geometry("square", box);
@@ -88,8 +92,6 @@ public class SplineCurve extends Spline {
 		squad.setMaterial(mat);
 		node.attachChild(squad);
 		
-		squad.addControl(phys);
-		physicsSpace.add(phys);
 	}
 	
 	/**

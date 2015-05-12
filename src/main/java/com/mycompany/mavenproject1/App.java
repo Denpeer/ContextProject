@@ -26,12 +26,12 @@ import com.jme3.scene.shape.Sphere;
  *
  */
 public class App extends SimpleApplication {
-	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
-	private static final float BALL_RADIUS = 0.5f;
-	private static final Vector3f BALL_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
-	private static final Vector3f CAM_LOCATION = new Vector3f(30, 4, 40);
-	private static final Vector3f BALL_INITIAL_SPEED = new Vector3f(5, -22, 0);
-	private static final String ACTION_SPAWN_BALL = "Spawn Ball";
+	private static final Vector3f 	GRAVITY = new Vector3f(0f, -9.81f, 0f);
+	private static final float 		BALL_RADIUS = 0.5f;
+	private static final Vector3f 	BALL_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
+	private static final Vector3f 	CAM_LOCATION = new Vector3f(30, 4, 40);
+	private static final Vector3f 	BALL_INITIAL_SPEED = new Vector3f(5, -22, 0);
+	private static final String		ACTION_SPAWN_BALL = "Spawn Ball";
 
 	private BulletAppState bulletAppState;
 	
@@ -40,7 +40,7 @@ public class App extends SimpleApplication {
 	private ActionListener actionListener = new ActionListener() {
 		public void onAction(final String name, final boolean keyPressed,
 				final float tpf) {
-			if (name.equals(ACTION_SPAWN_BALL) && !keyPressed) { // test?
+			if (name.equals(ACTION_SPAWN_BALL) && !keyPressed) { 
 				makeBall();
 			}
 		}

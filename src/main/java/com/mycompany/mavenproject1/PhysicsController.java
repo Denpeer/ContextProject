@@ -71,7 +71,9 @@ public class PhysicsController extends RigidBodyControl implements
 	 * @param event a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public final void collision(final PhysicsCollisionEvent event) {
-		if ("ball".equals(event.getNodeA().getName())) {
+//		System.out.println("coll");
+		if ("ball".equals(event.getNodeA().getName()) 
+				&& "curve".equals(event.getNodeB().getName())) {
 			final Vector3f velocity = getLinearVelocity();
 			if (velocity.x <= 1) {
 				velocity.x = 2;
