@@ -5,15 +5,18 @@ notifications:
     - http://octopull.rmhartog.me/api/travis/webhook
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout HEAD^2 && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
-  - sudo apt-get install build-essential
-  - curl -sL https://github.com/Itseez/opencv/archive/2.4.10.zip > opencv.zip
-  - unzip opencv.zip
-  - rm opencv.zip
-  - mkdir opencv-build
-  - cd opencv-build/
-  - cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_opencv_java=ON ../opencv-2.4.10/
-  - sudo make install
-  - cd ..
+  - sudo apt-get update
+
+before_script:
+  - git clone https://github.com/Itseez/opencv.git
+  - cd opencv
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make -j4
+  - sudo make -j4 install
+  - mvn install:install-file -Dfile=C:/opencv/build/java/x64/opencv-2410.jar -DgroupId=opencv -DartifactId=opencv -Dversion=2.4.10 -Dpackaging=jar
+  - cd ../..
 env:
   - BUILD_PR_BRANCH=true
   - BUILD_PR_BRANCH=false
