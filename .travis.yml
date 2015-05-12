@@ -13,7 +13,7 @@ before_install:
   - cmake ..
   - make -j4
   - sudo make -j4 install
-  - mvn install:install-file -Dfile=java/opencv-2410.jar -DgroupId=opencv -DartifactId=opencv -Dversion=2.4.10 -Dpackaging=jar
+  - mvn install:install-file -Dfile=/usr/local/share/OpenCV/java/opencv-2410.jar -DgroupId=opencv -DartifactId=opencv -Dversion=2.4.10 -Dpackaging=jar
   - cd ../..
 env:
   - BUILD_PR_BRANCH=true
