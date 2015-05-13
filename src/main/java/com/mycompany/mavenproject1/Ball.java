@@ -85,6 +85,7 @@ public class Ball {
 	
 	/**
 	 * Spawns the ball by adding the physics and adding the spatial to the node.
+	 * @param useDefaults used to choose to whether to use default spawn location and speed
 	 * @param node Node, the node to which the spatial is attached
 	 * @param space PhysicsSpace the physicsSpace to which to add the physics control
 	 */
