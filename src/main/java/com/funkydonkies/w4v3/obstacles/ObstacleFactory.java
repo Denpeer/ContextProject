@@ -1,20 +1,26 @@
 package com.funkydonkies.w4v3.obstacles;
 
-import com.jme3.scene.Geometry;
-
+/**
+ * ObstacleFactory is the class for obstacles.
+ * @author SDumasy
+ *
+ */
 public class ObstacleFactory {
-	public Obstacle makeObstacle(String type){
-	      if(type == null){
-	          return null;
-	       }		
-	       if(type.equalsIgnoreCase("SPIKE")){
-	          return new Spike(10, 10);
-	          
-	       } else if(type.equalsIgnoreCase("CLOSINGBOX")){
-	          return new ClosingBox(2,4,1);
-	          
-	       } else {   
-	    	   return null;
-	       }
+	
+	/**
+	 * This method instantiates obstacle objects.
+	 * @param type the type of the obstacle
+	 * @param width the width of the obstacle
+	 * @param height the height of the obstacle
+	 * @param depth the depth of the obstacle
+	 * @return the obstacle object or null if invalid obstacle type
+	 */
+	public final Obstacle makeObstacle(final String type, final double width,
+			final double height, final double depth) {
+		if (("MOVINGBOX").equalsIgnoreCase(type)) {
+	          return new MovingBox(width, height, depth);
+	     } else {   
+	    	  return null;
+	     }
 	}
 }

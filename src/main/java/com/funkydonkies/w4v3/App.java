@@ -5,7 +5,7 @@ package com.funkydonkies.w4v3;
  *
  */
 
-import com.funkydonkies.w4v3.obstacles.ClosingBox;
+import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
@@ -32,7 +32,7 @@ public class App extends SimpleApplication {
 	private static final float GRAVITY = -9.81f;
 
 	private BulletAppState bulletAppState;
-	private ClosingBox clBox;
+	private MovingBox clBox;
 	private PhysicsController ball_phy;
 
 
@@ -74,8 +74,11 @@ public class App extends SimpleApplication {
 		sp.drawCurve(rootNode, assetManager, getPhysicsSpace());
 		ObstacleFactory facto = new ObstacleFactory();
 		
-		clBox = (ClosingBox) facto.makeObstacle("CLOSINGBOX");
-		clBox.draw(assetManager, getPhysicsSpace(),rootNode);
+		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", 2, 4, 1);
+		final Material mat = new Material(assetManager,
+				"Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setColor("Color", ColorRGBA.Red);
+		clBox.draw(mat, getPhysicsSpace(),rootNode);
 		cam.setLocation(new Vector3f(30, 4, 40));
 		
 	}

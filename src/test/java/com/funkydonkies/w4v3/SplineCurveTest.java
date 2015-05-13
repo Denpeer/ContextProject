@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -16,23 +16,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
 public class SplineCurveTest {
-
-	
-	/*@Test
-	 public void testDoSmth() {
-		Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Cyan);
-		Node node = new Node("curve")
-		SplineCurve testMock = mock(SplineCurve.class);
-		Vector3f[] vecs = new Vector3f[3];
-    	vecs[0] = new Vector3f(0,0,0);
-    	vecs[1] = new Vector3f(2,4,0);
-    	vecs[2] = new Vector3f(4,1,0);
-		SplineCurve sp = new SplineCurve(SplineType.CatmullRom, vecs, 0.5f, false);
-		testMock.loopThroughSpline();
-		verify(testMock, times(3)).getTwoVectors(Mockito.anyInt(), Mockito.anyDouble());
-	 }*/
 
 	@Test
 	public void getBeginTwoVectorsTest(){
