@@ -8,9 +8,6 @@ package com.mycompany.mavenproject1;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.input.MouseInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
@@ -22,24 +19,11 @@ import com.jme3.renderer.RenderManager;
  */
 public class App extends SimpleApplication {
 	private static final Vector3f 	GRAVITY = new Vector3f(0f, -9.81f, 0f);
-	private static final float 		BALL_RADIUS = 0.5f;
-	private static final Vector3f 	BALL_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
 	private static final Vector3f 	CAM_LOCATION = new Vector3f(30, 4, 40);
-	private static final Vector3f 	BALL_INITIAL_SPEED = new Vector3f(5, -22, 0);
-	private static final String		ACTION_SPAWN_BALL = "Spawn Ball";
 
 	private BulletAppState bulletAppState;
+	private GameInputState gameInputState;
 	
-	private ActionListener actionListener = new ActionListener() {
-		public void onAction(final String name, final boolean keyPressed,
-				final float tpf) {
-			if (name.equals(ACTION_SPAWN_BALL) && !keyPressed) { 
-				final Ball ball = new Ball(BALL_RADIUS, assetManager);
-				ball.spawn(rootNode, getPhysicsSpace(), BALL_SPAWN_LOCATION, BALL_INITIAL_SPEED);
-			}
-		}
-	};
-
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -58,6 +42,9 @@ public class App extends SimpleApplication {
 		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		// flyCam.setEnabled(false);
+		
+		gameInputState = new GameInputState();
+		stateManager.attach(gameInputState);
 
 		final Vector3f[] points = testPoints();
 
@@ -68,9 +55,6 @@ public class App extends SimpleApplication {
 		sp.drawCurve(rootNode, mat, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
 		
-		//Control for spawing balls
-		inputManager.addMapping(ACTION_SPAWN_BALL, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-		inputManager.addListener(actionListener, new String[]{ACTION_SPAWN_BALL});
 	}
 
 	/**
@@ -145,9 +129,9 @@ public class App extends SimpleApplication {
 
 	/**
 	 * For easy access, returns the physics space used by the application.
-	 * @return PhysicsSpace 
+	 * @return PhysicsSpace jme3 object
 	 */
-	private PhysicsSpace getPhysicsSpace() {
+	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
 }

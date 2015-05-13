@@ -21,20 +21,22 @@ public class Ball {
 	private Geometry geom;
 	private Material mat;
 	private RigidBodyControl phy;
+	private static final float DEFAULT_RADIUS = 0.5f;
+	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);;
+	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(5, -22, 0);;
 	
 	/**
 	 * Constructor for Ball, initializes its attributes itself with default settings.
-	 * @param radius radius for the ball.
 	 * @param assetManager assetmanager to be used in the material creation
 	 */
-	public Ball(final float radius, final AssetManager assetManager) {
-		sphere = new Sphere(SAMPLES, SAMPLES, radius);
+	public Ball(final AssetManager assetManager) {
+		sphere = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
 		geom = new Geometry("ball", sphere);
 		mat = new Material(assetManager,
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Blue);
 		geom.setMaterial(mat);
-		phy = new PhysicsController(new SphereCollisionShape(radius), radius * 2);
+		phy = new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), DEFAULT_RADIUS * 2);
 		phy.setRestitution(1);
 	}
 	
@@ -94,6 +96,8 @@ public class Ball {
 			space.add(phy);
 		}
 		node.attachChild(geom);
+		setLocation(DEFAULT_SPAWN_LOCATION);
+		setSpeed(DEFAULT_INITIAL_SPEED);
 	}
 	
 	/**
@@ -102,6 +106,7 @@ public class Ball {
 	 * @param space PhysicsSpace the physicsSpace to which to add the physics control.
 	 * @param location Vector3f, location at which to spawn the ball.
 	 */
+	@Deprecated
 	public void spawn(final Node node, final  PhysicsSpace space, final Vector3f location) {
 		spawn(node, space);
 		setLocation(location);
@@ -114,10 +119,12 @@ public class Ball {
 	 * @param location Vector3f, location at which to spawn the ball.
 	 * @param speed Vector3f, the ball's initial speed.
 	 */
+	@Deprecated
 	public void spawn(final Node node, final PhysicsSpace space, final Vector3f location
 			, final Vector3f speed) {
 		spawn(node, space);
 		setLocation(location);
 		setSpeed(speed);
 	}
+
 }
