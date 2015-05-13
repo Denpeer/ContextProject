@@ -36,6 +36,8 @@ public class GameInputState extends AbstractAppState {
 		this.app = (App) appl;
 		this.inputManager = this.app.getInputManager();
 		
+		int I_WANT_A_CHECKSTYLE_WARNING = 2201012;
+		
 		initKeys();
 		
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
