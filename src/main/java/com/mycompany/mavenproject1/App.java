@@ -1,44 +1,153 @@
 package com.mycompany.mavenproject1;
 
 /**
- * Hello world!
+ * Wave
  *
  */
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
-
+/**
+ * 
+ *
+ */
 public class App extends SimpleApplication {
+	private static final Vector3f 	GRAVITY = new Vector3f(0f, -9.81f, 0f);
+	private static final float 		BALL_RADIUS = 0.5f;
+	private static final Vector3f 	BALL_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
+	private static final Vector3f 	CAM_LOCATION = new Vector3f(30, 4, 40);
+	private static final Vector3f 	BALL_INITIAL_SPEED = new Vector3f(5, -22, 0);
+	private static final String		ACTION_SPAWN_BALL = "Spawn Ball";
 
-    public static void main(String[] args) {
-        App app = new App();
-        app.start();
-    }
+	private BulletAppState bulletAppState;
+	
+	private ActionListener actionListener = new ActionListener() {
+		public void onAction(final String name, final boolean keyPressed,
+				final float tpf) {
+			if (name.equals(ACTION_SPAWN_BALL) && !keyPressed) { 
+				final Ball ball = new Ball(BALL_RADIUS, assetManager);
+				ball.spawn(rootNode, getPhysicsSpace(), BALL_SPAWN_LOCATION, BALL_INITIAL_SPEED);
+			}
+		}
+	};
 
-    @Override
-    public void simpleInitApp() {
-        Box b = new Box(1, 1, 1);
-        Geometry geom = new Geometry("Box", b);
+	/**
+	 * Main method. Instantiates the app and starts its execution.
+	 * @param args run arguments
+	 */
+	public static void main(final String[] args) {
+		final App app = new App();
+		app.start();
+	}
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Blue);
-        geom.setMaterial(mat);
+	@Override
+	public void simpleInitApp() {
+		// inputManager.setCursorVisible( true );
+		/* Set up physics */
+		bulletAppState = new BulletAppState();
+		stateManager.attach(bulletAppState);
+		//bulletAppState.setDebugEnabled(true);
+		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
+		// flyCam.setEnabled(false);
 
-        rootNode.attachChild(geom);
-    }
+		final Vector3f[] points = testPoints();
 
-    @Override
-    public void simpleUpdate(float tpf) {
-        //TODO: add update code
-    }
+		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
+		final Material mat = new Material(assetManager,
+				"Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setColor("Color", ColorRGBA.Orange);
+		sp.drawCurve(rootNode, mat, getPhysicsSpace());
+		cam.setLocation(CAM_LOCATION);
+		
+		//Control for spawing balls
+		inputManager.addMapping(ACTION_SPAWN_BALL, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+		inputManager.addListener(actionListener, new String[]{ACTION_SPAWN_BALL});
+	}
 
-    @Override
-    public void simpleRender(RenderManager rm) {
-        //TODO: add render code
-    }
+	/**
+	 * Used to generate testPoints for the curve.
+	 * 
+	 * @return A variable length Vector3f array
+	 */
+	public Vector3f[] testPoints() {
+		
+		final Vector3f v0 = new Vector3f(0, 6, 0),
+				v1 = new Vector3f(10, 6, 0),
+				v2 = new Vector3f(15, 1, 0),
+				v3 = new Vector3f(20, 3, 0),
+				v4 = new Vector3f(25, 0, 0),
+				v5 = new Vector3f(30, 6, 0),
+				v6 = new Vector3f(35, 2, 0),
+				v7 = new Vector3f(40, 2, 0),
+				v8 = new Vector3f(45, 1, 0),
+				v9 = new Vector3f(50, 5, 0),
+				v10 = new Vector3f(70, 3, 0);
+		
+		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
+		
+		return points;
+	}
+
+	private float time = 1;
+	private float timeCount = 0;
+
+	@Override
+	public void simpleUpdate(final float tpf) {
+		timeCount += tpf;
+
+		if (timeCount > time) {
+			timeCount = 0;
+		}
+
+	}
+
+//	/**
+//	 * Creates a new ball object and instantiates a physics controller for it.
+//	 * Adds the physics controller to the physics space and the ball to the scene
+//	 */
+//	private void makeBall() {
+//		/* Ball physics control */
+//		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
+//		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
+//
+//		/* Ball spatial */
+//		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
+//		final Geometry geom = new Geometry("Sphere", ball);
+//		final Material mat = new Material(assetManager,
+//				"Common/MatDefs/Misc/Unshaded.j3md");
+//		mat.setColor("Color", ColorRGBA.Blue);
+//		geom.setMaterial(mat);
+//
+//		/* Ball node */
+//		final Node node = new Node("ball");
+//		node.addControl(ballPhy);
+//		node.attachChild(geom);
+//		/* attach node and add the physics controller to the game */
+//		rootNode.attachChild(node);
+//		getPhysicsSpace().add(ballPhy);
+//		ballPhy.setRestitution(1f);
+//		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
+//	}
+
+	@Override
+	public void simpleRender(final RenderManager rm) {
+		// TODO: add render code
+	}
+
+	/**
+	 * For easy access, returns the physics space used by the application.
+	 * @return PhysicsSpace 
+	 */
+	private PhysicsSpace getPhysicsSpace() {
+		return bulletAppState.getPhysicsSpace();
+	}
 }
