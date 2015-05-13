@@ -5,21 +5,15 @@ notifications:
     - http://octopull.rmhartog.me/api/travis/webhook
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout HEAD^2 && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
-  - git clone https://github.com/Itseez/opencv.git
-  - cd opencv
-  - git checkout 2.4
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make -j8
-  - sudo make -j8 install
-  - cd ../..
-  - mkdir -p native/linux/x86_64
-  - cp opencv/build/lib/libopencv_java248.so native/linux/x86_64/libopencv_java248.so
-  - cp opencv/build/bin/opencv-248.jar .
-  - jar -cMf opencv-native-248.jar native
-  - lein2 localrepo install opencv-248.jar opencv/opencv 2.4.8
-  - lein2 localrepo install opencv-native-248.jar opencv/opencv-native 2.4.8
+  - sudo apt-get install build-essential
+  - curl -sL https://github.com/Itseez/opencv/archive/2.4.6.1.zip > opencv.zip
+  - unzip opencv.zip
+  - rm opencv.zip
+  - mkdir opencv-build
+  - cd opencv-build/
+  - cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_DOCS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_opencv_java=ON -DBUILD_JASPER=ON -DWITH_JASPER=ON -DBUILD_ZLIB=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DWITH_OPENEXR=OFF -DBUILD_PNG=ON -DWITH_PNG=ON -DWITH_TIFF=ON -DBUILD_TIFF=ON -DWITH_WEBP=OFF -DWITH_JPEG=ON -DBUILD_JPEG=ON ../opencv-2.4.6.1/
+  - sudo make install
+  - cd ..
 env:
   - BUILD_PR_BRANCH=true
   - BUILD_PR_BRANCH=false
