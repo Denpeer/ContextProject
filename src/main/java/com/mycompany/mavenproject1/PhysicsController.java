@@ -27,6 +27,7 @@ public class PhysicsController extends RigidBodyControl implements
 	
 	/**
 	 * Set the physics space and add this controller as tick listener.
+	 * @param space takes a pre-defined jme3 physicsSpace
 	 */
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {

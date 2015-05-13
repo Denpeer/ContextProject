@@ -1,11 +1,8 @@
 package com.mycompany.mavenproject1;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -39,11 +36,11 @@ public class SplineCurve extends Spline {
 	/**
 	 * This method draws the curve.
 	 * @param rootNode the rootnode of the program
-	 * @param assetManager the assetManager
-	 * @param physicsSpace the physic space
+	 * @param mat takes a pre-defined jme3 material
+	 * @param physicsSpace takes a pre-defined jme3 physicsSpace
 	 */
-	public void drawCurve(final Node rootNode, 
-			final Material mat, final PhysicsSpace physicsSpace) {
+	public void drawCurve(final Node rootNode, final Material mat, 
+			final PhysicsSpace physicsSpace) {
 		final RigidBodyControl phys = new RigidBodyControl(0f);
 		final Node node = new Node("curve");
 		loopThroughSpline(node, physicsSpace, mat);
@@ -55,7 +52,6 @@ public class SplineCurve extends Spline {
 	/**
 	 * This method loops through the whole spine.
 	 * @param node is the curve node
-	 * @param assetManager the assetmanager
 	 * @param physicsSpace the physic space
 	 * @param mat the material
 	 */
@@ -77,6 +73,8 @@ public class SplineCurve extends Spline {
 	 * @param mat the material of the box
 	 * @param physicsSpace the physics of the box
 	 * @param node the node
+	 * 
+	 * @return returns a node... what node?
 	 */
 	public Node drawBox(final Vector3f[] vecs, final Material mat,
 			final PhysicsSpace physicsSpace, final Node node) {

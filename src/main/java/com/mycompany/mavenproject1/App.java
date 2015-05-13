@@ -8,8 +8,6 @@ package com.mycompany.mavenproject1;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.collision.PhysicsCollisionObject;
-import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -18,9 +16,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
-import com.jme3.scene.shape.Sphere;
 /**
  * 
  *
@@ -64,10 +59,10 @@ public class App extends SimpleApplication {
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		// flyCam.setEnabled(false);
 
-		final Vector3f[] points = TestPoints();
+		final Vector3f[] points = testPoints();
 
 		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		Material mat = new Material(assetManager,
+		final Material mat = new Material(assetManager,
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Orange);
 		sp.drawCurve(rootNode, mat, getPhysicsSpace());
@@ -78,19 +73,27 @@ public class App extends SimpleApplication {
 		inputManager.addListener(actionListener, new String[]{ACTION_SPAWN_BALL});
 	}
 
-	public Vector3f[] TestPoints() {
-		Vector3f[] points = new Vector3f[11];
-		points[0] = new Vector3f(0, 6, 0);
-		points[1] = new Vector3f(10, 6, 0);
-		points[2] = new Vector3f(15, 1, 0);
-		points[3] = new Vector3f(20, 3, 0);
-		points[4] = new Vector3f(25, 0, 0);
-		points[5] = new Vector3f(30, 6, 0);
-		points[6] = new Vector3f(35, 2, 0);
-		points[7] = new Vector3f(40, 2, 0);
-		points[8] = new Vector3f(45, 1, 0);
-		points[9] = new Vector3f(50, 5, 0);
-		points[10] = new Vector3f(70, 3, 0);
+	/**
+	 * Used to generate testPoints for the curve.
+	 * 
+	 * @return A variable length Vector3f array
+	 */
+	public Vector3f[] testPoints() {
+		
+		final Vector3f v0 = new Vector3f(0, 6, 0),
+				v1 = new Vector3f(10, 6, 0),
+				v2 = new Vector3f(15, 1, 0),
+				v3 = new Vector3f(20, 3, 0),
+				v4 = new Vector3f(25, 0, 0),
+				v5 = new Vector3f(30, 6, 0),
+				v6 = new Vector3f(35, 2, 0),
+				v7 = new Vector3f(40, 2, 0),
+				v8 = new Vector3f(45, 1, 0),
+				v9 = new Vector3f(50, 5, 0),
+				v10 = new Vector3f(70, 3, 0);
+		
+		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
+		
 		return points;
 	}
 
