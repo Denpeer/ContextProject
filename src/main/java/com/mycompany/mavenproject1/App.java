@@ -1,18 +1,10 @@
 package com.mycompany.mavenproject1;
 
-/**
- * Wave
- *
- */
-
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.input.MouseInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
@@ -21,8 +13,9 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
+
 /**
- * 
+ * Application startup. Contains all AppStates.
  *
  */
 public class App extends SimpleApplication {
@@ -31,21 +24,12 @@ public class App extends SimpleApplication {
 	private static final Vector3f BALL_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
 	private static final Vector3f CAM_LOCATION = new Vector3f(30, 4, 40);
 	private static final Vector3f BALL_INITIAL_SPEED = new Vector3f(5, -22, 0);
-	private static final String ACTION_SPAWN_BALL = "Spawn Ball";
 
 	private BulletAppState bulletAppState;
+	private GameInputState gameInputState;
 	
 	private PhysicsController ballPhy;
 	
-	private ActionListener actionListener = new ActionListener() {
-		public void onAction(final String name, final boolean keyPressed,
-				final float tpf) {
-			if (name.equals(ACTION_SPAWN_BALL) && !keyPressed) { // test?
-				makeBall();
-			}
-		}
-	};
-
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -61,54 +45,56 @@ public class App extends SimpleApplication {
 		/* Set up physics */
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+//		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		// flyCam.setEnabled(false);
+		
+		gameInputState = new GameInputState();
+		stateManager.attach(gameInputState);
 
 		initWorld();
-
-		final Vector3f[] points = TestPoints();
+		
+		final Vector3f[] points = testPoints();
 
 		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
 		sp.drawCurve(rootNode, assetManager, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
 		
-		//Control for spawing balls
-		inputManager.addMapping(ACTION_SPAWN_BALL, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-		inputManager.addListener(actionListener, new String[]{ACTION_SPAWN_BALL});
+		
 	}
 
-	public Vector3f[] TestPoints() {
-		Vector3f[] points = new Vector3f[11];
-		points[0] = new Vector3f(0, 6, 0);
-		points[1] = new Vector3f(10, 6, 0);
-		points[2] = new Vector3f(15, 1, 0);
-		points[3] = new Vector3f(20, 3, 0);
-		points[4] = new Vector3f(25, 0, 0);
-		points[5] = new Vector3f(30, 6, 0);
-		points[6] = new Vector3f(35, 2, 0);
-		points[7] = new Vector3f(40, 2, 0);
-		points[8] = new Vector3f(45, 1, 0);
-		points[9] = new Vector3f(50, 5, 0);
-		points[10] = new Vector3f(70, 3, 0);
+	/** Generates test points, array filled with Vector3fs.
+	 * 
+	 * @return an array of points filled with Vector3fs
+	 */
+	public final Vector3f[] testPoints() {
+		
+		final Vector3f v0 = new Vector3f(0, 6, 0), 
+				v1 = new Vector3f(10, 6, 0), 
+				v2 = new Vector3f(15, 1, 0), 
+				v3 = new Vector3f(20, 3, 0), 
+				v4 = new Vector3f(25, 0, 0), 
+				v5 = new Vector3f(30, 6, 0), 
+				v6 = new Vector3f(35, 2, 0), 
+				v7 = new Vector3f(40, 2, 0), 
+				v8  = new Vector3f(45, 1, 0), 
+				v9 = new Vector3f(50, 5, 0), 
+				v10 = new Vector3f(70, 3, 0);
+		
+		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
+
 		return points;
 	}
 
-	private float time = 1;
-	private float timeCount = 0;
-
 	@Override
 	public final void simpleUpdate(final float tpf) {
-		timeCount += tpf;
-
-		if (timeCount > time) {
-		//	makeBall();
-			timeCount = 0;
-		}
 
 	}
 
-	public void initWorld() {
+	/**
+	 *  Testing ball spawning. 
+	 */
+	public final void initWorld() {
 		/* Ball */
 		makeBall();
 	}
@@ -117,8 +103,11 @@ public class App extends SimpleApplication {
 	 * Creates a new ball object and instantiates a physics controller for it.
 	 * Adds the physics controller to the physics space and the ball to the scene
 	 */
-	private void makeBall() {
+	public final void makeBall() {
 		/* Ball physics control */
+		
+		System.out.println("make ball");
+		
 		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
 		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
 
