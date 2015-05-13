@@ -5,17 +5,21 @@ notifications:
     - http://octopull.rmhartog.me/api/travis/webhook
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout HEAD^2 && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
-  - sudo apt-get update
   - git clone https://github.com/Itseez/opencv.git
   - cd opencv
   - git checkout 2.4
   - mkdir build
   - cd build
   - cmake ..
-  - make -j4
-  - sudo make -j4 install
-  - mvn install:install-file -Dfile=/usr/local/share/OpenCV/java/opencv-2410.jar -DgroupId=opencv -DartifactId=opencv -Dversion=2.4.10 -Dpackaging=jar
+  - make -j8
+  - sudo make -j8 install
   - cd ../..
+  - mkdir -p native/linux/x86_64
+  - cp opencv/build/lib/libopencv_java248.so native/linux/x86_64/libopencv_java248.so
+  - cp opencv/build/bin/opencv-248.jar .
+  - jar -cMf opencv-native-248.jar native
+  - lein2 localrepo install opencv-248.jar opencv/opencv 2.4.8
+  - lein2 localrepo install opencv-native-248.jar opencv/opencv-native 2.4.8
 env:
   - BUILD_PR_BRANCH=true
   - BUILD_PR_BRANCH=false

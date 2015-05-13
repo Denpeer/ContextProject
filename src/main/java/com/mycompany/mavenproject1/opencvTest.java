@@ -13,6 +13,11 @@ class opencvTest {
 	  Mat m = new Mat(n, n, CvType.CV_8UC1, new Scalar(0));
 	  return m;
   }
+  
+  public static void setupCam() {
+	  //checkout https://github.com/andrewssobral/java_motion_detection/blob/master/src/javaopencv/Main.java
+	  
+  }
 
   public static void main(String[] args) {
 //    System.out.println("Welcome to OpenCV " + Core.VERSION);
