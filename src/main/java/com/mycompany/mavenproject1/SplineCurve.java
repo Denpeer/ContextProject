@@ -42,7 +42,7 @@ public class SplineCurve extends Spline {
 	 * @param assetManager the assetManager
 	 * @param physicsSpace the physic space
 	 */
-	public final void drawCurve(final Node rootNode, 
+	public void drawCurve(final Node rootNode, 
 			final Material mat, final PhysicsSpace physicsSpace) {
 		final RigidBodyControl phys = new RigidBodyControl(0f);
 		final Node node = new Node("curve");
