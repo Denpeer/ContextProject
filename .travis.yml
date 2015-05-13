@@ -7,13 +7,13 @@ before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout HEAD^2 && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
   - git clone https://github.com/Itseez/opencv.git
   - cd opencv
-  - git checkout 2.4.11
+  - git checkout 2.4.10
   - mkdir build
   - cd build
   - cmake ..
   - make -j4
   - sudo make -j4 install
-  - mvn install:install-file -Dfile=/usr/local/share/OpenCV/java/opencv-2411.jar -DgroupId=opencv -DartifactId=opencv -Dversion=2.4.11 -Dpackaging=jar
+  - mvn install:install-file -Dfile=/usr/local/share/OpenCV/java/opencv-2410.jar -DgroupId=opencv -DartifactId=opencv -Dversion=2.4.10 -Dpackaging=jar
   - cd ../..
 env:
   - BUILD_PR_BRANCH=true
