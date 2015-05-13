@@ -1,5 +1,5 @@
-language:
- java
+language: java
+sudo: required
 notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook
