@@ -6,8 +6,8 @@ notifications:
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout HEAD^2 && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
   - git clone https://github.com/Itseez/opencv.git
-  - git checkout 2.4.11
   - cd opencv
+  - git checkout 2.4.11
   - mkdir build
   - cd build
   - cmake ..
