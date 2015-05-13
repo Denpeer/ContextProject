@@ -59,7 +59,7 @@ public class SplineCurve extends Spline {
 	 * @param physicsSpace the physic space
 	 * @param mat the material
 	 */
-	public final void loopThroughSpline(final Node node, 
+	public void loopThroughSpline(final Node node, 
 			final PhysicsSpace physicsSpace, final Material mat) { 
 		for (int i = 0; i < getControlPoints().size() - 1; i++) {
 			double t = 0;
@@ -78,7 +78,7 @@ public class SplineCurve extends Spline {
 	 * @param physicsSpace the physics of the box
 	 * @param node the node
 	 */
-	public final Node drawBox(final Vector3f[] vecs, final Material mat,
+	public Node drawBox(final Vector3f[] vecs, final Material mat,
 			final PhysicsSpace physicsSpace, final Node node) {
 		
 		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
@@ -96,7 +96,7 @@ public class SplineCurve extends Spline {
 	 * @param t how far until next controlpoint 
 	 * @return an array with 2 vectors
 	 */
-	public final Vector3f[] getTwoVectors(final int controlPoint,
+	public Vector3f[] getTwoVectors(final int controlPoint,
 			final double t) {
 		final Vector3f[] vecs = new Vector3f[2];
 		if (controlPoint == 0) {

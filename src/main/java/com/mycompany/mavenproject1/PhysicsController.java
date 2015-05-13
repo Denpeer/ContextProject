@@ -29,7 +29,7 @@ public class PhysicsController extends RigidBodyControl implements
 	 * Set the physics space and add this controller as tick listener.
 	 */
 	@Override
-	public final void setPhysicsSpace(final PhysicsSpace space) {
+	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addTickListener(this);
 		space.addCollisionListener(this);
@@ -53,7 +53,7 @@ public class PhysicsController extends RigidBodyControl implements
 	 * @param tpf time per frame in seconds (time since last frame) 
 	 * 	for normalizing in faster computers 
 	 */
-	public final void prePhysicsTick(final PhysicsSpace space, 
+	public void prePhysicsTick(final PhysicsSpace space, 
 			final float tpf) {
 		final Vector3f loc = getPhysicsLocation();
 		//Vector3f angularvel = getAngularVelocity();
@@ -70,7 +70,7 @@ public class PhysicsController extends RigidBodyControl implements
 	 * low, increase it so that the ball can move uphill
 	 * @param event a PhysicsCollisionEvent which stores information about the collision
 	 */
-	public final void collision(final PhysicsCollisionEvent event) {
+	public void collision(final PhysicsCollisionEvent event) {
 //		System.out.println("coll");
 		if ("ball".equals(event.getNodeA().getName()) 
 				&& "curve".equals(event.getNodeB().getName())) {
