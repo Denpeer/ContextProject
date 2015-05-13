@@ -61,7 +61,7 @@ public class Ball {
 	 * @param name String, name of the color.
 	 * @param value ColorRGBA, the color value.
 	 */
-	public final void setColor(final String name, final ColorRGBA value) {
+	public void setColor(final String name, final ColorRGBA value) {
 		mat.setColor(name, value);
 	}
 	
@@ -69,7 +69,7 @@ public class Ball {
 	 * Sets the speed for the Ball by calling setLinVelocity on the physics.
 	 * @param vel Vector3f, speed to set on the ball
 	 */
-	public final void setSpeed(final Vector3f vel) {
+	public void setSpeed(final Vector3f vel) {
 		phy.setLinearVelocity(vel);
 	}
 	
@@ -77,7 +77,7 @@ public class Ball {
 	 * Sets the ball´s location by calling setPhysicsLocation on its physics.
 	 * @param loc Vector3f the new location
 	 */
-	public final void setLocation(final Vector3f loc) {
+	public void setLocation(final Vector3f loc) {
 		phy.setPhysicsLocation(loc);
 	}
 	
@@ -86,7 +86,7 @@ public class Ball {
 	 * @param node Node, the node to which the spatial is attached
 	 * @param space PhysicsSpace the physicsSpace to which to add the physics control
 	 */
-	public final void spawn(final Node node, final PhysicsSpace space) {
+	public void spawn(final Node node, final PhysicsSpace space) {
 		if (phy != null) {
 			geom.addControl(phy);
 		}
@@ -102,7 +102,7 @@ public class Ball {
 	 * @param space PhysicsSpace the physicsSpace to which to add the physics control.
 	 * @param location Vector3f, location at which to spawn the ball.
 	 */
-	public final void spawn(final Node node, final  PhysicsSpace space, final Vector3f location) {
+	public void spawn(final Node node, final  PhysicsSpace space, final Vector3f location) {
 		spawn(node, space);
 		setLocation(location);
 	}
@@ -114,7 +114,7 @@ public class Ball {
 	 * @param location Vector3f, location at which to spawn the ball.
 	 * @param speed Vector3f, the ball's initial speed.
 	 */
-	public final void spawn(final Node node, final PhysicsSpace space, final Vector3f location
+	public void spawn(final Node node, final PhysicsSpace space, final Vector3f location
 			, final Vector3f speed) {
 		spawn(node, space);
 		setLocation(location);

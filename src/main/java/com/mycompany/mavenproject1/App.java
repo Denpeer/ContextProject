@@ -55,7 +55,7 @@ public class App extends SimpleApplication {
 	}
 
 	@Override
-	public final void simpleInitApp() {
+	public void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
 		/* Set up physics */
 		bulletAppState = new BulletAppState();
@@ -98,7 +98,7 @@ public class App extends SimpleApplication {
 	private float timeCount = 0;
 
 	@Override
-	public final void simpleUpdate(final float tpf) {
+	public void simpleUpdate(final float tpf) {
 		timeCount += tpf;
 
 		if (timeCount > time) {
