@@ -60,14 +60,17 @@ public class App extends SimpleApplication {
 		/* Set up physics */
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		// flyCam.setEnabled(false);
 
 		final Vector3f[] points = TestPoints();
 
 		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		sp.drawCurve(rootNode, assetManager, getPhysicsSpace());
+		Material mat = new Material(assetManager,
+				"Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setColor("Color", ColorRGBA.Orange);
+		sp.drawCurve(rootNode, mat, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
 		
 		//Control for spawing balls

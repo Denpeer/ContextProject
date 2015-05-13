@@ -43,13 +43,10 @@ public class SplineCurve extends Spline {
 	 * @param physicsSpace the physic space
 	 */
 	public final void drawCurve(final Node rootNode, 
-			final AssetManager assetManager, final PhysicsSpace physicsSpace) {
+			final Material mat, final PhysicsSpace physicsSpace) {
 		final RigidBodyControl phys = new RigidBodyControl(0f);
-		final Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Cyan);
 		final Node node = new Node("curve");
-		loopThroughSpline(node, assetManager, physicsSpace, mat);
+		loopThroughSpline(node, physicsSpace, mat);
 		rootNode.attachChild(node);
 		node.addControl(phys);
 		physicsSpace.add(phys);
@@ -63,7 +60,6 @@ public class SplineCurve extends Spline {
 	 * @param mat the material
 	 */
 	public final void loopThroughSpline(final Node node, 
-			final AssetManager assetManager,
 			final PhysicsSpace physicsSpace, final Material mat) { 
 		for (int i = 0; i < getControlPoints().size() - 1; i++) {
 			double t = 0;
@@ -82,7 +78,7 @@ public class SplineCurve extends Spline {
 	 * @param physicsSpace the physics of the box
 	 * @param node the node
 	 */
-	public final void drawBox(final Vector3f[] vecs, final Material mat,
+	public final Node drawBox(final Vector3f[] vecs, final Material mat,
 			final PhysicsSpace physicsSpace, final Node node) {
 		
 		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
@@ -91,7 +87,7 @@ public class SplineCurve extends Spline {
 		squad.move(vecs[0].x, YCURVETRANSLATION, 0);
 		squad.setMaterial(mat);
 		node.attachChild(squad);
-		
+		return node;
 	}
 	
 	/**
