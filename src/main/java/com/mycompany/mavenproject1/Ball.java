@@ -88,7 +88,7 @@ public class Ball {
 	 * @param node Node, the node to which the spatial is attached
 	 * @param space PhysicsSpace the physicsSpace to which to add the physics control
 	 */
-	public void spawn(final Node node, final PhysicsSpace space) {
+	public void spawn(final Node node, final PhysicsSpace space, final boolean useDefaults) {
 		if (phy != null) {
 			geom.addControl(phy);
 		}
@@ -96,8 +96,11 @@ public class Ball {
 			space.add(phy);
 		}
 		node.attachChild(geom);
-		setLocation(DEFAULT_SPAWN_LOCATION);
-		setSpeed(DEFAULT_INITIAL_SPEED);
+		
+		if (useDefaults) {
+			setLocation(DEFAULT_SPAWN_LOCATION);
+			setSpeed(DEFAULT_INITIAL_SPEED);
+		}
 	}
 	
 	/**
@@ -108,7 +111,7 @@ public class Ball {
 	 */
 	@Deprecated
 	public void spawn(final Node node, final  PhysicsSpace space, final Vector3f location) {
-		spawn(node, space);
+		spawn(node, space, false);
 		setLocation(location);
 	}
 	
@@ -122,7 +125,7 @@ public class Ball {
 	@Deprecated
 	public void spawn(final Node node, final PhysicsSpace space, final Vector3f location
 			, final Vector3f speed) {
-		spawn(node, space);
+		spawn(node, space, false);
 		setLocation(location);
 		setSpeed(speed);
 	}

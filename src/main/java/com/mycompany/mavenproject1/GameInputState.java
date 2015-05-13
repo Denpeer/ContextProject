@@ -127,7 +127,7 @@ public class GameInputState extends AbstractAppState {
 //			}
 			if (name.equals(MAPPING_NAME_SPAWN_BALL)) {
 				final Ball ball = new Ball(assetManager);
-				ball.spawn(app.getRootNode(), app.getPhysicsSpace());
+				ball.spawn(app.getRootNode(), app.getPhysicsSpace(), true);
 			}
 		
 		}

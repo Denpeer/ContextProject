@@ -85,7 +85,7 @@ public class BallTest {
 	 */
 	@Test
 	public final void testSpawn() {
-		ball.spawn(root, space);
+		ball.spawn(root, space, false);
 		verify(g).addControl(phy);
 		verify(space).add(phy);
 		verify(root).attachChild(g);
@@ -125,7 +125,7 @@ public class BallTest {
 	@Test
 	public final void testSpawnWithoutPhysics() {
 		ball = new Ball(shape, g, mat, null);
-		ball.spawn(root, null);
+		ball.spawn(root, null, false);
 		verifyNoMoreInteractions(phy);
 		verifyNoMoreInteractions(space);
 		verify(root).attachChild(g);
