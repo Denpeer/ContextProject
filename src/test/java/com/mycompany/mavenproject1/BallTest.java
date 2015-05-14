@@ -22,6 +22,8 @@ import com.jme3.scene.shape.Sphere;
 public class BallTest {
 	private static final String COLOR_NAME = "Color";
 	private static final Sphere SHAPE =  new Sphere(20, 20, 0.5f);
+	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);;
+	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(5, -22, 0);;
 	
 	private Ball ball;
 	private Material mat;
@@ -120,6 +122,19 @@ public class BallTest {
 	}
 	
 	/**
+	 * Tests the spawn method that uses the default values
+	 */
+	@Test
+	public final void testSpawnUsingDefaults(){
+		ball.spawn(root, space, true);
+		verify(phy).setPhysicsLocation(DEFAULT_SPAWN_LOCATION);
+		verify(phy).setLinearVelocity(DEFAULT_INITIAL_SPEED);
+		verify(g).addControl(phy);
+		verify(space).add(phy);
+		verify(root).attachChild(g);
+	}
+	
+	/**
 	 * Tests the ball's spawn method when no physics or physicsSpace were defined.
 	 */
 	@Test
@@ -130,4 +145,5 @@ public class BallTest {
 		verifyNoMoreInteractions(space);
 		verify(root).attachChild(g);
 	}
+	
 }

@@ -22,8 +22,8 @@ public class Ball {
 	private Material mat;
 	private RigidBodyControl phy;
 	private static final float DEFAULT_RADIUS = 0.5f;
-	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);;
-	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(5, -22, 0);;
+	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
+	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(5, -22, 0);
 	
 	/**
 	 * Constructor for Ball, initializes its attributes itself with default settings.
