@@ -75,12 +75,13 @@ public class App extends SimpleApplication {
 		ObstacleFactory facto = new ObstacleFactory();
 		
 		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", 2, 4, 1);
+		
 		final Material mat = new Material(assetManager,
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Red);
 		clBox.draw(mat, getPhysicsSpace(),rootNode);
 		cam.setLocation(new Vector3f(30, 4, 40));
-		
+
 	}
 
 	public Vector3f[] TestPoints() {

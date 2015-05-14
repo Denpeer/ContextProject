@@ -50,27 +50,27 @@ public class MovingBoxTest {
 		assertEquals(vec, vec2);	
 	}
 	
-//	@Test
-//	public void changeMoveUpTest(){
-//		Geometry geom = mBox.getGeometry();
-//		Vector3f vec = geom.getLocalTranslation();
-//		while(vec.getY() <= 1.5* mBox.getHeight())
-//			mBox.move();
-//		Vector3f vec2 = geom.getLocalTranslation();
-//		vec2.setY((float)(vec.getY() - 1.51));
-//		assertEquals(vec, vec2);	
-//	}
-	
-//	@Test
-//	public void moveDownTest(){
-//		Geometry geom = mBox.getGeometry();
-//		Vector3f vec = geom.getLocalTranslation();
-//		while(vec.getY() <= 1.5* mBox.getHeight())
-//			mBox.move();
-//		mBox.move();
-//		Vector3f vec2 = geom.getLocalTranslation();
-//		vec2.setY((float)(vec.getY() - 1.50));
-//		assertEquals(vec, vec2);	
-//	}
+	@Test
+	public void changeMoveUpTest(){
+		Geometry geom = mBox.getGeometry();
+		Vector3f vec = geom.getLocalTranslation();
+		while(vec.getY() <= mBox.getHeight())
+			mBox.move();
+		Vector3f vec2 = geom.getLocalTranslation();
+		vec2.setY((float)(vec.getY() - 1.01));
+		assertEquals(vec, vec2);	
+	}
+
+	@Test
+	public void moveDownTest(){
+		Geometry geom = mBox.getGeometry();
+		Vector3f vec = geom.getLocalTranslation();
+		while(vec.getY() <= mBox.getHeight())
+			mBox.move();
+		mBox.move();
+		Vector3f vec2 = geom.getLocalTranslation();
+		vec2.setY((float)(vec.getY() - 1));
+		assertEquals(vec, vec2);	
+	}
 
 }

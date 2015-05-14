@@ -20,7 +20,7 @@ public class MovingBox extends Obstacle {
 	private boolean moveUp;
 	private final RigidBodyControl phys;
 	private final float zTrans = 0.5f;
-	private final float xTrans = 0.1f;
+	private final float xTrans = 20;
 	private final float boxSpeed = 0.1f;
 
 	/**
