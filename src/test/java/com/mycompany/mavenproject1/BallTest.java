@@ -98,6 +98,7 @@ public class BallTest {
 	 * Tests Ball's second spawn method, which sets the location in addition to the physics 
 	 * and adding the ball to the scene.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public final void testSpawn2() {
 		ball.spawn(root, space, loc);
@@ -111,6 +112,7 @@ public class BallTest {
 	 * Tests Ball's third spawn method, which sets the location and speed in addition to the 
 	 * physics and adding the ball to the scene.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public final void testSpawn3() {
 		ball.spawn(root, space, loc, speed);
@@ -122,10 +124,10 @@ public class BallTest {
 	}
 	
 	/**
-	 * Tests the spawn method that uses the default values
+	 * Tests the spawn method that uses the default values.
 	 */
 	@Test
-	public final void testSpawnUsingDefaults(){
+	public final void testSpawnUsingDefaults() {
 		ball.spawn(root, space, true);
 		verify(phy).setPhysicsLocation(DEFAULT_SPAWN_LOCATION);
 		verify(phy).setLinearVelocity(DEFAULT_INITIAL_SPEED);
