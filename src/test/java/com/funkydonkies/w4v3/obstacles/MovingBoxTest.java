@@ -24,6 +24,7 @@ public class MovingBoxTest {
 	private static Node rootNode;
 	private static final double SPEED = 0.01;
 	private static final double MOVEDOWN = 1.01;
+	private static final float TIME_PER_FRAME = 0.01f;
 	
 	private static final int WIDTH = 2;
 	private static final int HEIGHT = 4;
@@ -59,7 +60,7 @@ public class MovingBoxTest {
 		final Geometry geom = mBox.getGeometry();
 		final Vector3f vec = geom.getLocalTranslation();
 		mBox.draw(mat, psySpace, rootNode);
-		mBox.move();
+		mBox.move(TIME_PER_FRAME);
 		final Vector3f vec2 = geom.getLocalTranslation();
 		vec2.setY((float) (vec.getY() - SPEED));
 		assertEquals(vec, vec2);	
@@ -73,7 +74,7 @@ public class MovingBoxTest {
 		final Geometry geom = mBox.getGeometry();
 		final Vector3f vec = geom.getLocalTranslation();
 		while (vec.getY() <= mBox.getHeight()) {
-			mBox.move();
+			mBox.move(TIME_PER_FRAME);
 		}
 		
 		final Vector3f vec2 = geom.getLocalTranslation();
@@ -89,9 +90,9 @@ public class MovingBoxTest {
 		final Geometry geom = mBox.getGeometry();
 		final Vector3f vec = geom.getLocalTranslation();
 		while (vec.getY() <= mBox.getHeight()) {
-			mBox.move();
+			mBox.move(TIME_PER_FRAME);
 		}
-		mBox.move();
+		mBox.move(TIME_PER_FRAME);
 		final Vector3f vec2 = geom.getLocalTranslation();
 		vec2.setY((float) (vec.getY() - 1));
 		assertEquals(vec, vec2);	

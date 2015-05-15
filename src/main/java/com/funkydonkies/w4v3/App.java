@@ -104,7 +104,7 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-		clBox.move();
+		clBox.move(tpf);
 		timeCount += tpf;
 
 		if (timeCount > time) {

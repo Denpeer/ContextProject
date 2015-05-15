@@ -19,7 +19,7 @@ public class MovingBox extends Obstacle {
 	private Box box;
 	private boolean moveUp;
 	private final RigidBodyControl phys;
-	private static final float BOX_SPEED = 0.1f;
+	private static final float BOX_SPEED = 10f;
 
 	/**
 	 * The constructor of the class.
@@ -53,18 +53,19 @@ public class MovingBox extends Obstacle {
 	}
 	/**
 	 * This method moves the box up and down.
+	 * @param tpf float, time per frame; used for normalizing the speed of different speed machines
 	 */
-	public final void move() {
+	public final void move(final float tpf) {
 		final Vector3f vec = geom.getLocalTranslation();
 		if (moveUp) {
-			vec.setY(vec.getY() + BOX_SPEED);
+			vec.setY(vec.getY() + (BOX_SPEED * tpf));
 			phys.setPhysicsLocation(vec);
 			geom.setLocalTranslation(phys.getPhysicsLocation());
 			if (vec.getY() > getHeight()) {
 				moveUp = false;
 			}	
 		} else {
-			vec.setY(vec.getY() - BOX_SPEED);
+			vec.setY(vec.getY() - (BOX_SPEED * tpf));
 			phys.setPhysicsLocation(vec);
 			geom.setLocalTranslation(phys.getPhysicsLocation());
 			if (vec.getY() < -getHeight()) {
