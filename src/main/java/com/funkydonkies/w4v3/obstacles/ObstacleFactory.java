@@ -17,7 +17,7 @@ public class ObstacleFactory {
 	 */
 	public final Obstacle makeObstacle(final String type, final double width,
 			final double height, final double depth) {
-		if (("MOVINGBOX").equalsIgnoreCase(type)) {
+		if ("MOVINGBOX".equalsIgnoreCase(type)) {
 	          return new MovingBox(width, height, depth);
 	     } else {   
 	    	  return null;

@@ -19,9 +19,7 @@ public class MovingBox extends Obstacle {
 	private Box box;
 	private boolean moveUp;
 	private final RigidBodyControl phys;
-	private final float zTrans = 0.5f;
-	private final float xTrans = 20;
-	private final float boxSpeed = 0.1f;
+	private static final float BOX_SPEED = 0.1f;
 
 	/**
 	 * The constructor of the class.
@@ -44,7 +42,9 @@ public class MovingBox extends Obstacle {
 	 * @param rootNode the root node
 	 */
 	@Override
-	public final void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode) {	
+	public final void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode) {
+		final float xTrans = 20f;
+		final float zTrans = 0.5f;
 		geom.move(xTrans, 0, zTrans);
 		geom.setMaterial(mat);
 		geom.addControl(phys);
@@ -57,14 +57,14 @@ public class MovingBox extends Obstacle {
 	public final void move() {
 		final Vector3f vec = geom.getLocalTranslation();
 		if (moveUp) {
-			vec.setY(vec.getY() + boxSpeed);
+			vec.setY(vec.getY() + BOX_SPEED);
 			phys.setPhysicsLocation(vec);
 			geom.setLocalTranslation(phys.getPhysicsLocation());
 			if (vec.getY() > getHeight()) {
 				moveUp = false;
 			}	
 		} else {
-			vec.setY(vec.getY() - boxSpeed);
+			vec.setY(vec.getY() - BOX_SPEED);
 			phys.setPhysicsLocation(vec);
 			geom.setLocalTranslation(phys.getPhysicsLocation());
 			if (vec.getY() < -getHeight()) {

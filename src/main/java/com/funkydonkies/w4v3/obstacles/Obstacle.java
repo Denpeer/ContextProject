@@ -21,9 +21,9 @@ public abstract class Obstacle {
 	 * @param d the depth of the obstacle
 	 */
 	public Obstacle(final double w, final double h, final double d) {
-		this.width = w;
+		this.setWidth(w);
 		this.setHeight(h);
-		this.depth = d;
+		this.setDepth(d);
 	}
 	
 	/**
@@ -35,17 +35,47 @@ public abstract class Obstacle {
 	public abstract void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode);
 	
 	/**
-	 * This method return the height.
-	 * @return the height of the obstacle
+	 * This method returns the height of the obstacle.
+	 * @return current height of obstacle
 	 */
 	public final double getHeight() {
 		return height;
 	}
+	
 	/**
 	 * This method sets the height of the obstacle.
-	 * @param h is the height
+	 * @param h desired height of obstacle
 	 */
 	public final void setHeight(final double h) {
 		this.height = h;
+	}
+	
+	
+	/** Get width of the obstacle.
+	 * @return current width of the obstacle
+	 */
+	public double getWidth() {
+		return width;
+	}
+
+	/** This method sets the width of the obstacle.
+	 * @param w desired width of obstacle
+	 */
+	public void setWidth(final double w) {
+		this.width = w;
+	}
+
+	/** Get depth of the obstacle.
+	 * @return current depth of obstacle
+	 */
+	public double getDepth() {
+		return depth;
+	}
+
+	/** This method sets the depth of the obstacle.
+	 * @param d desired depth of obstacle
+	 */
+	public void setDepth(final double d) {
+		this.depth = d;
 	}
 }

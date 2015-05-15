@@ -8,7 +8,6 @@ package com.funkydonkies.w4v3;
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -30,11 +29,16 @@ import com.jme3.scene.shape.Sphere;
  */
 public class App extends SimpleApplication {
 	private static final float GRAVITY = -9.81f;
+	private static final String COLOR = "Color";
+	private static final String MOUSEMOVEMENT = "MouseMovement";
+	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
 	private BulletAppState bulletAppState;
 	private MovingBox clBox;
-	private PhysicsController ball_phy;
+	private PhysicsController ballPhy;
 
+	private float time = 1;
+	private float timeCount = 0;
 
 	public AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(String name, float value, float tpf) {
@@ -42,8 +46,11 @@ public class App extends SimpleApplication {
 		}
 	};
 
-	public static void main(String[] args) {
-		App app = new App();
+	/**
+	 * @param args params
+	 */
+	public static void main(final String[] args) {
+		final App app = new App();
 		app.start();
 	}
 
@@ -51,7 +58,7 @@ public class App extends SimpleApplication {
 	public final void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
 		/* Set up physics */
-;
+
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
 		//bulletAppState.setDebugEnabled(true);
@@ -61,30 +68,35 @@ public class App extends SimpleApplication {
 
 		initWorld();
 
-		inputManager.addMapping("MouseMovement", new MouseAxisTrigger(
+		inputManager.addMapping(MOUSEMOVEMENT, new MouseAxisTrigger(
 				MouseInput.AXIS_X, false), new MouseAxisTrigger(
 				MouseInput.AXIS_X, true));
 
-		inputManager.addListener(analogListener, "MouseMovement");
+		inputManager.addListener(analogListener, MOUSEMOVEMENT);
 
-		Vector3f[] points = TestPoints();
+		final Vector3f[] points = testPoints();
 
-		SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points,
+		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points,
 				(float) 0.6, true);
 		sp.drawCurve(rootNode, assetManager, getPhysicsSpace());
-		ObstacleFactory facto = new ObstacleFactory();
+		final ObstacleFactory facto = new ObstacleFactory();
 		
-		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", 2, 4, 1);
+		final int obstacleWidth = 2;
+		final int obstacleHeight = 4;
+		final int obstacleDepth = 1;
 		
-		final Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Red);
-		clBox.draw(mat, getPhysicsSpace(),rootNode);
-		cam.setLocation(new Vector3f(30, 4, 40));
+		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
+				obstacleDepth);
+		
+		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, ColorRGBA.Red);
+		clBox.draw(mat, getPhysicsSpace(), rootNode);
+		final Vector3f camLocation = new Vector3f(30, 4, 40);
+		cam.setLocation(camLocation);
 
 	}
 
-	public Vector3f[] TestPoints() {
+	public Vector3f[] testPoints() {
 		Vector3f[] points = new Vector3f[11];
 		points[0] = new Vector3f(0, 6, 0);
 		points[1] = new Vector3f(10, 6, 0);
@@ -100,11 +112,8 @@ public class App extends SimpleApplication {
 		return points;
 	}
 
-	float time = 1;
-	float timeCount = 0;
-
 	@Override
-	public void simpleUpdate(float tpf) {
+	public void simpleUpdate(final float tpf) {
 		clBox.move();
 		timeCount += tpf;
 
@@ -127,35 +136,38 @@ public class App extends SimpleApplication {
 
 	private void makeBall() {
 		/* Ball physics control */
-		ball_phy = new PhysicsController(new SphereCollisionShape(0.5f), 1f);
+		ballPhy = new PhysicsController(new SphereCollisionShape(0.5f), 1f);
 
 		/* Ball spatial */
-		Sphere ball = new Sphere(20, 20, 0.5f);
-		Geometry geom = new Geometry("Sphere", ball);
-		Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Blue);
+		final Sphere ball = new Sphere(20, 20, 0.5f);
+		final Geometry geom = new Geometry("Sphere", ball);
+		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, ColorRGBA.Blue);
 		geom.setMaterial(mat);
 
 		/* Ball node */
-		Node node = new Node("physics controlled ball");
-		node.setLocalTranslation(new Vector3f(30f, 30.0f, 0f)); // Move the ball
-																// up
-		node.addControl(ball_phy);
+		final Node node = new Node("physics controlled ball");
+		final Vector3f translation = new Vector3f(30f, 30f, 0f);
+		node.setLocalTranslation(translation); // Move the ball up
+		node.addControl(ballPhy);
 		node.attachChild(geom);
 
 		/* attach node and add the physics controller to the game */
 		rootNode.attachChild(node);
-		getPhysicsSpace().add(ball_phy);
+		getPhysicsSpace().add(ballPhy);
 
 		System.out.println("ball made");
 	}
 
 	@Override
-	public void simpleRender(RenderManager rm) {
+	public void simpleRender(final RenderManager rm) {
 		// TODO: add render code
 	}
 
+	/**
+	 * 	Convenient getter.
+	 * @return jme3 PhysicsSpace object
+	 */
 	private PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
