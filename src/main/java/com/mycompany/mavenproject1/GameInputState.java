@@ -86,7 +86,7 @@ public class GameInputState extends AbstractAppState {
 	}
 
 	/** Custom Keybinding: Map named actions to inputs. */
-	private void initKeys() {
+	public void initKeys() {
 //		inputManager.addMapping(MAPPING_NAME_LEFT, new KeyTrigger(KeyInput.KEY_J));
 //		inputManager.addMapping(MAPPING_NAME_RIGHT, new KeyTrigger(KeyInput.KEY_K));
 //		inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
@@ -132,6 +132,7 @@ public class GameInputState extends AbstractAppState {
 		
 		}
 	};
+	
 	
 	
 	
