@@ -35,6 +35,7 @@ Slightly modified version of Sun Checks that better matches the default code for
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
+
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
     <module name="EmptyForIteratorPad"/>
@@ -68,6 +69,7 @@ Slightly modified version of Sun Checks that better matches the default code for
     <module name="MissingSwitchDefault"/>
     <module name="SimplifyBooleanExpression"/>
     <module name="SimplifyBooleanReturn"/>
+    <!-- <module name="DesignForExtension"/> -->
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor"/>
     <module name="InterfaceIsType"/>
@@ -106,8 +108,10 @@ Slightly modified version of Sun Checks that better matches the default code for
     <module name="MultipleStringLiterals"/>
     <module name="FinalLocalVariable"/>
     <module name="LineLength">
+      <property name="severity" value="ignore"/>
       <property name="max" value="100"/>
       <property name="tabWidth" value="4"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
   </module>
   <module name="JavadocPackage">

@@ -1,10 +1,8 @@
 package com.funkydonkies.w4v3;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -38,29 +36,26 @@ public class SplineCurve extends Spline {
 	/**
 	 * This method draws the curve.
 	 * @param rootNode the rootnode of the program
-	 * @param assetManager the assetManager
-	 * @param physicsSpace the physic space
+	 * @param mat takes a pre-defined jme3 material
+	 * @param physicsSpace takes a pre-defined jme3 physicsSpace
 	 */
-	public final void drawCurve(final Node rootNode, 
-			final AssetManager assetManager, final PhysicsSpace physicsSpace) {
-		final Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Cyan);
+	public void drawCurve(final Node rootNode, final Material mat, 
+			final PhysicsSpace physicsSpace) {
+		final RigidBodyControl phys = new RigidBodyControl(0f);
 		final Node node = new Node("curve");
-		loopThroughSpline(node, assetManager, physicsSpace, mat);
+		loopThroughSpline(node, physicsSpace, mat);
 		rootNode.attachChild(node);
-
+		node.addControl(phys);
+		physicsSpace.add(phys);
 	}
 	
 	/**
 	 * This method loops through the whole spine.
 	 * @param node is the curve node
-	 * @param assetManager the assetmanager
 	 * @param physicsSpace the physic space
 	 * @param mat the material
 	 */
-	public final void loopThroughSpline(final Node node, 
-			final AssetManager assetManager,
+	public void loopThroughSpline(final Node node, 
 			final PhysicsSpace physicsSpace, final Material mat) { 
 		for (int i = 0; i < getControlPoints().size() - 1; i++) {
 			double t = 0;
@@ -77,21 +72,20 @@ public class SplineCurve extends Spline {
 	 * @param vecs the coordinates where the box needs to be drawn
 	 * @param mat the material of the box
 	 * @param physicsSpace the physics of the box
-	 * @param node the node
+	 * @param node the node ???
+	 * 
+	 * @return returns a node... what node?
 	 */
-	public final Geometry drawBox(final Vector3f[] vecs, final Material mat,
+	public Node drawBox(final Vector3f[] vecs, final Material mat,
 			final PhysicsSpace physicsSpace, final Node node) {
-		final RigidBodyControl phys = new RigidBodyControl(0f);
+		
 		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
 				(float) (vecs[0].getY() + ADDITIONALBOXHEIGHT), 1f);
 		final Geometry squad = new Geometry("square", box);
 		squad.move(vecs[0].x, YCURVETRANSLATION, 0);
 		squad.setMaterial(mat);
 		node.attachChild(squad);
-		
-		squad.addControl(phys);
-		physicsSpace.add(phys);
-		return squad;
+		return node;
 	}
 	
 	/**
@@ -100,7 +94,7 @@ public class SplineCurve extends Spline {
 	 * @param t how far until next controlpoint 
 	 * @return an array with 2 vectors
 	 */
-	public final Vector3f[] getTwoVectors(final int controlPoint,
+	public Vector3f[] getTwoVectors(final int controlPoint,
 			final double t) {
 		final Vector3f[] vecs = new Vector3f[2];
 		if (controlPoint == 0) {
