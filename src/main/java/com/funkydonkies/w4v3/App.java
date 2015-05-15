@@ -1,10 +1,7 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
-/**
- * Wave
- *
- */
-
+import com.funkydonkies.w4v3.obstacles.MovingBox;
+import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -13,23 +10,33 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
+import com.mycompany.mavenproject1.GameInputState;
 /**
- * 
+ * Game is run through this class.
  *
  */
 public class App extends SimpleApplication {
-	private static final Vector3f 	GRAVITY = new Vector3f(0f, -9.81f, 0f);
-	private static final Vector3f 	CAM_LOCATION = new Vector3f(30, 4, 40);
+	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
+	private static final String COLOR = "Color";
+	private static final Vector3f CAM_LOCATION = new Vector3f(30, 4, 40);
+	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
 	
+	private MovingBox clBox;
+	//private PhysicsController ballPhy;
+	
+	private float time = 1;		// needs better name
+	private float timeCount = 0;	// needs better name
+
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
 	 */
 	public static void main(final String[] args) {
 		final App app = new App();
+
 		app.start();
 	}
 
@@ -37,11 +44,12 @@ public class App extends SimpleApplication {
 	public void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
 		/* Set up physics */
+
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
 		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		// flyCam.setEnabled(false);
+		//flyCam.setEnabled(false);
 		
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
@@ -49,16 +57,28 @@ public class App extends SimpleApplication {
 		final Vector3f[] points = testPoints();
 
 		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		final Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Orange);
+		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, ColorRGBA.Orange);
 		sp.drawCurve(rootNode, mat, getPhysicsSpace());
+		
+		final ObstacleFactory facto = new ObstacleFactory();
+		
+		final int obstacleWidth = 2;
+		final int obstacleHeight = 4;
+		final int obstacleDepth = 1;
+		
+		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
+				obstacleDepth);
+		
+		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		mat2.setColor(COLOR, ColorRGBA.Red);
+		clBox.draw(mat2, getPhysicsSpace(), rootNode);
+		
 		cam.setLocation(CAM_LOCATION);
 		
 	}
 
-	/**
-	 * Used to generate testPoints for the curve.
+	/** Used to generate testPoints for the curve.
 	 * 
 	 * @return A variable length Vector3f array
 	 */
@@ -75,22 +95,23 @@ public class App extends SimpleApplication {
 				v8 = new Vector3f(45, 1, 0),
 				v9 = new Vector3f(50, 5, 0),
 				v10 = new Vector3f(70, 3, 0);
+
 		
 		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
 		
 		return points;
 	}
 
-	private float time = 1;
-	private float timeCount = 0;
-
 	@Override
 	public void simpleUpdate(final float tpf) {
+		clBox.move(tpf);
 		timeCount += tpf;
 
 		if (timeCount > time) {
 			timeCount = 0;
 		}
+		
+		
 
 	}
 
@@ -134,4 +155,5 @@ public class App extends SimpleApplication {
 	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
+	
 }

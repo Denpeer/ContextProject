@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -59,10 +59,11 @@ public class PhysicsController extends RigidBodyControl implements
 		final Vector3f loc = getPhysicsLocation();
 		//Vector3f angularvel = getAngularVelocity();
 		//velocity.z = 0;
-		loc.z = 0;
+		if (loc.z != 0) {
+			loc.z = 0;
+			setPhysicsLocation(loc);
+		}
 		//angularvel.y = 0;
-		setPhysicsLocation(loc);
-		
 		//setAngularVelocity(angularvel);
 	}
 	
@@ -72,7 +73,6 @@ public class PhysicsController extends RigidBodyControl implements
 	 * @param event a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-//		System.out.println("coll");
 		if ("ball".equals(event.getNodeA().getName()) 
 				&& "curve".equals(event.getNodeB().getName())) {
 			final Vector3f velocity = getLinearVelocity();

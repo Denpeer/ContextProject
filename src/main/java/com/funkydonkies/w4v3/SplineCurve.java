@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -72,7 +72,7 @@ public class SplineCurve extends Spline {
 	 * @param vecs the coordinates where the box needs to be drawn
 	 * @param mat the material of the box
 	 * @param physicsSpace the physics of the box
-	 * @param node the node
+	 * @param node the node ???
 	 * 
 	 * @return returns a node... what node?
 	 */

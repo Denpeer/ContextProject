@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
