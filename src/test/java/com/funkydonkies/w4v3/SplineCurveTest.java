@@ -1,11 +1,10 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.DesktopAssetManager;

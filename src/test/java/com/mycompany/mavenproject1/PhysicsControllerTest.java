@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.w4v3.PhysicsController;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -41,6 +42,10 @@ public class PhysicsControllerTest {
 	private static Spatial ballSpatialMock;
 	private static Spatial curveSpatialMock;
 	
+	/** Initialize test variables once.
+	 * 
+	 * @throws Exception -
+	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		contr = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
@@ -51,12 +56,18 @@ public class PhysicsControllerTest {
 		when(eventMock.getNodeB()).thenReturn(curveSpatialMock);
 	}
 	
+	/**
+	 *  Initialize test variables before every test.
+	 */
 	@Before
 	public void setUp() {
 		when(ballSpatialMock.getName()).thenReturn(BALL_NAME);
 		when(curveSpatialMock.getName()).thenReturn(CURVE_NAME);
 	}
 	
+	/**
+	 * Test ? TODO
+	 */
 	@Test
 	public void resetZTest() {
 		contr.setPhysicsLocation(new Vector3f(1f, 1f, 1f));
@@ -66,6 +77,9 @@ public class PhysicsControllerTest {
 		assertEquals(new Vector3f(1f, 1f, 0f), contr.getPhysicsLocation());
 	}
 	
+	/**
+	 *  Test ? TODO
+	 */
 	@Test
 	public void resetNegativeZtest() {
 		contr.setPhysicsLocation(new Vector3f(1f, 1f, -1f));
@@ -75,6 +89,9 @@ public class PhysicsControllerTest {
 		assertEquals(new Vector3f(1f, 1f, 0f), contr.getPhysicsLocation());
 	}
 	
+	/**
+	 *  Test ? TODO
+	 */
 	@Test
 	public void collisionTestOnStillBall() {
 		contr.setLinearVelocity(SPEED_ZERO);
@@ -84,6 +101,9 @@ public class PhysicsControllerTest {
 		assertEquals(new Vector3f(2f, 0f, 0f), contr.getLinearVelocity());
 	}
 	
+	/**
+	 * Test ? TODO
+	 */
 	@Test
 	public void collisionTestOn1fBall() {
 		contr.setLinearVelocity(SPEED_LOW);
@@ -93,6 +113,9 @@ public class PhysicsControllerTest {
 		assertEquals(SPEED_NORMAL, contr.getLinearVelocity());
 	}
 	
+	/**
+	 * Test ? TODO
+	 */
 	@Test
 	public void collisionTestOnNotAffectedBall() {
 		contr.setLinearVelocity(SPEED_HIGH);
@@ -102,6 +125,9 @@ public class PhysicsControllerTest {
 		assertEquals(SPEED_HIGH, contr.getLinearVelocity());
 	}
 	
+	/**
+	 * Test ? TODO
+	 */
 	@Test
 	public void collisionTestOnBallNotCollidingWithCurve() {
 		contr.setLinearVelocity(SPEED_ZERO);
@@ -112,6 +138,9 @@ public class PhysicsControllerTest {
 		assertEquals(SPEED_ZERO, contr.getLinearVelocity());
 	}
 	
+	/**
+	 * Test ? TODO
+	 */
 	@Test
 	public void testSetPhysicsSpace() {
 		final PhysicsSpace space = mock(PhysicsSpace.class);

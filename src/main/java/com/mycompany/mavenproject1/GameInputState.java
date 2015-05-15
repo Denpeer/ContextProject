@@ -1,5 +1,6 @@
 package com.mycompany.mavenproject1;
 
+import com.funkydonkies.w4v3.App;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -20,6 +21,10 @@ public class GameInputState extends AbstractAppState {
 //	private static final String MAPPING_NAME_RIGHT = "Right";
 //	private static final String MAPPING_NAME_ROTATE = "Rotate";
 	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
+	private static final float TIME_PER_BALL_SPAWN = 0.5f;
+	
+	private float time = TIME_PER_BALL_SPAWN;
+	private float timeCount = 0;
 	
 	private static final int FLY_BY_CAM_MOVE_SPEED = 50;
 	
@@ -111,7 +116,6 @@ public class GameInputState extends AbstractAppState {
 //	
 //		}
 //	};
-
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
 //			if (name.equals(MAPPING_NAME_ROTATE)) {
@@ -126,8 +130,12 @@ public class GameInputState extends AbstractAppState {
 ////				player.setLocalTranslation(v.x - value * speed, v.y, v.z);
 //			}
 			if (name.equals(MAPPING_NAME_SPAWN_BALL)) {
-				final Ball ball = new Ball(assetManager);
-				ball.spawn(app.getRootNode(), app.getPhysicsSpace(), true);
+				timeCount += tpf;
+				if (timeCount > time) {
+					final Ball ball = new Ball(assetManager);
+					ball.spawn(app.getRootNode(), app.getPhysicsSpace(), true);
+					timeCount = 0;
+				}
 			}
 		
 		}
