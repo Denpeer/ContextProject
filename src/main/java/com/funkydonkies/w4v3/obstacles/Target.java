@@ -1,7 +1,11 @@
 package com.funkydonkies.w4v3.obstacles;
 
+import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.collision.CollisionResults;
 import com.jme3.material.Material;
+import com.jme3.math.Transform;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
@@ -14,6 +18,7 @@ import com.jme3.scene.shape.Box;
 public class Target extends Obstacle {
 	private Geometry geom;
 	private final Box box;
+	private BoundingBox bBox;
 	
 	/**
 	 * This is the constructor of the Target Class.
@@ -24,6 +29,7 @@ public class Target extends Obstacle {
 	public Target(final double w, final double h, final double d) {
 		super(w, h, d);
 		box = new Box((float) w, (float) h, (float) d);
+		
 	}
 
 	/**
@@ -31,15 +37,34 @@ public class Target extends Obstacle {
 	 */
 	@Override
 	public void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode) {
-		System.out.println("fdaf");
 		geom = new Geometry("target", box);
 		final float xTrans = 30f;
 		final float zTrans = 0.5f;
 		final float yTrans = 1f;
-		geom.move(xTrans, yTrans, zTrans);
+		final Vector3f vec = new Vector3f(xTrans, yTrans, zTrans);
+		final Transform trans = new Transform(vec);
+		geom.setLocalTranslation(xTrans, yTrans, zTrans);
 		geom.setMaterial(mat);
+		bBox = (BoundingBox) geom.getModelBound();
+		bBox = (BoundingBox) bBox.transform(trans);
 		rootNode.attachChild(geom);
-
+	}
+	
+	/**
+	 * This method checks if something collides with the target.
+	 * @param rootNode the node for the root
+	 */
+	public void collides(final Node rootNode) {
+		
+		for (int i = 0; i < rootNode.getChildren().size(); i++) {
+			if (("ball").equals(rootNode.getChild(i).getName())) {
+				final CollisionResults results = new CollisionResults();
+				rootNode.getChild(i).collideWith(bBox, results);
+				if (results.size() > 0) {
+					rootNode.detachChild(geom);
+				}
+			}
+		}
 	}
 
 }

@@ -117,9 +117,7 @@ public class App extends SimpleApplication {
 		clBox.move(tpf);
 		timeCount += tpf;
 
-		if (timeCount > time) {
-			timeCount = 0;
-		}
+		tar.collides(rootNode);
 		
 		
 
