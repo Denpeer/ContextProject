@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3;
+ package com.funkydonkies.w4v3;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -11,15 +11,14 @@ import com.jme3.scene.shape.Box;
 
 /**
  * This class represent the spline(curve).
- * 
- * @author SDumasy
- *
+ * It is responsible for drawing the curve from a set of points. 
  */
 public class SplineCurve extends Spline {
 	
 	private static final double BOXWIDTH = 0.01;
 	private static final double ADDITIONALBOXHEIGHT = 10;
 	private static final float YCURVETRANSLATION = -15;
+	
 	/**
 	 * The constructor of the SplineCurve class.
 	 * @param splineType the type of the SplineCurve, in our case Catmulrom
@@ -36,14 +35,14 @@ public class SplineCurve extends Spline {
 	/**
 	 * This method draws the curve.
 	 * @param rootNode the rootnode of the program
-	 * @param mat takes a pre-defined jme3 material
-	 * @param physicsSpace takes a pre-defined jme3 physicsSpace
+	 * @param mat Material that will be used to draw the curve
+	 * @param physicsSpace the physics space of the application to add the physics controller
 	 */
 	public void drawCurve(final Node rootNode, final Material mat, 
 			final PhysicsSpace physicsSpace) {
 		final RigidBodyControl phys = new RigidBodyControl(0f);
 		final Node node = new Node("curve");
-		loopThroughSpline(node, physicsSpace, mat);
+		loopThroughSpline(node, mat);
 		rootNode.attachChild(node);
 		node.addControl(phys);
 		physicsSpace.add(phys);
@@ -52,32 +51,27 @@ public class SplineCurve extends Spline {
 	/**
 	 * This method loops through the whole spine.
 	 * @param node is the curve node
-	 * @param physicsSpace the physic space
-	 * @param mat the material
+	 * @param mat the material to create the curve from
 	 */
-	public void loopThroughSpline(final Node node, 
-			final PhysicsSpace physicsSpace, final Material mat) { 
+	public void loopThroughSpline(final Node node, final Material mat) { 
 		for (int i = 0; i < getControlPoints().size() - 1; i++) {
 			double t = 0;
 			while (t <= 1) {
 				final Vector3f[] vecs = getTwoVectors(i, t);
-				drawBox(vecs, mat, physicsSpace, node);
+				drawBox(vecs, mat, node);
 				t = t + BOXWIDTH;
 			}
 		}
 	}
 	
 	/**
-	 * This method takes care of drawing a box and the collision of it.
+	 * Creates and draws the box on screen
 	 * @param vecs the coordinates where the box needs to be drawn
-	 * @param mat the material of the box
-	 * @param physicsSpace the physics of the box
-	 * @param node the node ???
-	 * 
-	 * @return returns a node... what node?
+	 * @param mat the material to be used for the box
+	 * @param node the node to attach the spatial to, in order to add it to the scene
 	 */
-	public Node drawBox(final Vector3f[] vecs, final Material mat,
-			final PhysicsSpace physicsSpace, final Node node) {
+	public void drawBox(final Vector3f[] vecs, final Material mat,
+			final Node node) {
 		
 		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
 				(float) (vecs[0].getY() + ADDITIONALBOXHEIGHT), 1f);
@@ -85,11 +79,11 @@ public class SplineCurve extends Spline {
 		squad.move(vecs[0].x, YCURVETRANSLATION, 0);
 		squad.setMaterial(mat);
 		node.attachChild(squad);
-		return node;
 	}
 	
 	/**
-	 * This method return the coordinates of two close vectors on the spline.
+	 * This method returns the coordinates of two close vectors on the spline. Between these 
+	 * locations the new box will be drawn.
 	 * @param controlPoint the controlpoint
 	 * @param t how far until next controlpoint 
 	 * @return an array with 2 vectors
