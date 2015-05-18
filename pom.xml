@@ -15,44 +15,82 @@
   </properties>
 
   <build>
-  	<pluginManagement>
+  	
+    <pluginManagement>
    		<plugins>
-    		<plugin>
+    	
+      	<plugin>
     			<groupId>org.apache.maven.plugins</groupId>
        			<artifactId>maven-site-plugin</artifactId>
     			<version>3.3</version>
    			</plugin>
-   			
-   			<plugin>
-           		<artifactId>maven-project-info-reports-plugin</artifactId>
-       		    <version>2.7</version>
-    	    </plugin>
+
    		</plugins>
 	  </pluginManagement>
+
 	</build>
 
-   <reporting>
-      <plugins>
+  <reporting>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.1</version>
+        <configuration>
+          <failOnError>false</failOnError>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <id>default</id>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
       
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.15</version>
-          <reportSets>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.6</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+				<report>cim</report>
+				<report>index</report>
+				<report>modules</report>
+				<report>plugins</report>
+				<report>scm</report>
+				<report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+            <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+            <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.14</version>
+        <reportSets>
             <reportSet>
               <reports>
                 <report>checkstyle</report>
               </reports>
             </reportSet>
-          </reportSets>
-          <configuration>
- 			  <failOnViolation>false</failOnViolation>
- 			  <configLocation>checkstyle.xml</configLocation>
- 		  </configuration>
-        </plugin>
+        </reportSets>
+        <configuration>
+   			  <failOnViolation>false</failOnViolation>
+   			  <configLocation>checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
         
-        <plugin>
-		<groupId>org.codehaus.mojo</groupId>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
         <version>2.7</version>
         <reportSets>
@@ -62,79 +100,111 @@
             </reports>
           </reportSet>
         </reportSets>
-        </plugin>
+        <configuration>
+          <formats>
+            <format>html</format>
+            <format>xml</format>
+          </formats>
+        </configuration>
+      </plugin> 
 		
 		
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>3.0.1</version>
-		<configuration>
+		    <configuration>
           <xmlOutput>true</xmlOutput>
           <!-- Optional directory to put findbugs xdoc xml report -->
           <xmlOutputDirectory>target/site</xmlOutputDirectory>
-    	  <failOnError>false</failOnError>
+          <failOnError>false</failOnError>
         </configuration>
-	  </plugin>
+      </plugin>
     
 		
-        <plugin>
-		  <artifactId>maven-assembly-plugin</artifactId>
-		  <version>2.2-beta-5</version>
-		  <configuration>
-			<descriptorRefs>
-			  <descriptorRef>bin</descriptorRef>
-			</descriptorRefs>
-		  </configuration>
-		</plugin>
+      <plugin>
+  		  <artifactId>maven-assembly-plugin</artifactId>
+  		  <version>2.2-beta-5</version>
+  		  <configuration>
+    			<descriptorRefs>
+    			  <descriptorRef>bin</descriptorRef>
+    			</descriptorRefs>
+  		  </configuration>
+	    </plugin>
 		
-    	  <plugin>
-    	    <groupId>org.apache.maven.plugins</groupId>
-    	    <artifactId>maven-pmd-plugin</artifactId>
-    	    <version>3.4</version>
-    	    <configuration>
-  				<format>xml</format>
-			</configuration>
-    	  </plugin>
+  	  <plugin>
+  	    <groupId>org.apache.maven.plugins</groupId>
+  	    <artifactId>maven-pmd-plugin</artifactId>
+  	    <version>3.4</version>
+        <configuration>
+          <format>xml</format>
+        </configuration>
+  	  </plugin>
 		
-		 <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jxr-plugin</artifactId>
-            <version>2.3</version>
-        </plugin>
+	    <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jxr-plugin</artifactId>
+          <version>2.3</version>
+      </plugin>
         
-      </plugins>
-    </reporting>
-<repositories>
+      <plugin> <!-- JUnit report -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.18.1</version>
+      </plugin>
+
+    </plugins>
+
+  </reporting>
+	
+  <repositories>
+ 
+    <repository>
+      <id>jmonkey</id>
+      <name>Jmonkey repository</name>
+      <url>http://updates.jmonkeyengine.org/maven/</url>
+    </repository>
  <repository>
- <id>jmonkey</id>
- <name>Jmonkey repository</name>
- <url>http://updates.jmonkeyengine.org/maven/</url>
- </repository>
- </repositories>
+      <id>javaopencvbook</id>
+      <url>https://raw.github.com/JavaOpenCVBook/code/maven2/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
-  	<dependency>
-      <groupId>opencv</groupId>
-      <artifactId>opencv</artifactId>
-      <version>2.4.10</version>
-      <scope>compile</scope>
+
+    <dependency>
+	<groupId>org.bytedeco.javacpp-presets</groupId>
+	<artifactId>opencv</artifactId>
+	<version>2.4.10-0.10</version>
+</dependency>
+ <dependency>
+    	<groupId>org.javaopencvbook</groupId>
+    	<artifactId>opencvjar</artifactId>
+    	<version>2.4.7</version>    	     
     </dependency>
+	
+	<dependency>
+		<groupId>org.javaopencvbook</groupId>
+		<artifactId>opencvjar-runtime</artifactId>
+		<version>2.4.7</version>
+		<classifier>natives-windows-x86</classifier>
+	</dependency>
       <dependency>
       <groupId>com.jme3</groupId>
       <artifactId>jme3-core</artifactId>
       <version>3.0.10</version>
     </dependency>
-          <dependency>
+    <dependency>
       <groupId>com.jme3</groupId>
       <artifactId>jme3-desktop</artifactId>
       <version>3.0.10</version>
     </dependency>
-          <dependency>
+    <dependency>
       <groupId>com.jme3</groupId>
       <artifactId>jme3-lwjgl</artifactId>
       <version>3.0.10</version>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>com.jme3</groupId>
       <artifactId>jme3-effects</artifactId>
       <version>3.0.10</version>
@@ -185,19 +255,17 @@
       <version>3.0.10</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.12</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-checkstyle-plugin</artifactId>
-      <version>2.15</version>
-      <type>maven-plugin</type>
-     
+    	<groupId>org.mockito</groupId>
+  	 	<artifactId>mockito-core</artifactId>
+   		<version>2.0.7-beta</version>
+		<scope>test</scope>
     </dependency>
+
   </dependencies>
-  
   
 </project>
