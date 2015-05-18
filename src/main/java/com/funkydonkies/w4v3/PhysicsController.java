@@ -59,7 +59,7 @@ public class PhysicsController extends RigidBodyControl implements
 		final Vector3f loc = getPhysicsLocation();
 		//Vector3f angularvel = getAngularVelocity();
 		//velocity.z = 0;
-		if (loc.z != 0) {
+		if (loc.z > 0.2f || loc.z < -0.2f) {
 			loc.z = 0;
 			setPhysicsLocation(loc);
 		}
