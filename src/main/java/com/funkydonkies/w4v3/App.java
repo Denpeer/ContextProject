@@ -2,6 +2,7 @@ package com.funkydonkies.w4v3;
 
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
+import com.funkydonkies.w4v3.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -25,6 +26,7 @@ public class App extends SimpleApplication {
 	private GameInputState gameInputState;
 	
 	private MovingBox clBox;
+	private Target tar;
 	//private PhysicsController ballPhy;
 	
 	private float time = 1;		// needs better name
@@ -67,13 +69,21 @@ public class App extends SimpleApplication {
 		final int obstacleHeight = 4;
 		final int obstacleDepth = 1;
 		
+		final int targetWidth = 1;
+		final int targetHeight = 1;
+		final int targetDepth = 1;
+		
 		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
 				obstacleDepth);
+		
+		tar = (Target) facto.makeObstacle("TARGET", targetWidth, targetHeight, targetDepth);
 		
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
 		clBox.draw(mat2, getPhysicsSpace(), rootNode);
-		
+		final Material mat3 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		mat3.setColor(COLOR, ColorRGBA.Yellow);
+		tar.draw(mat3, getPhysicsSpace(), rootNode);
 		cam.setLocation(CAM_LOCATION);
 		
 	}
@@ -89,7 +99,7 @@ public class App extends SimpleApplication {
 				v2 = new Vector3f(15, 1, 0),
 				v3 = new Vector3f(20, 3, 0),
 				v4 = new Vector3f(25, 0, 0),
-				v5 = new Vector3f(30, 6, 0),
+				v5 = new Vector3f(30, 5, 0),
 				v6 = new Vector3f(35, 2, 0),
 				v7 = new Vector3f(40, 2, 0),
 				v8 = new Vector3f(45, 1, 0),

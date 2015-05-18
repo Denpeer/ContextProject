@@ -94,7 +94,7 @@ public class MovingBoxTest {
 		}
 		mBox.move(TIME_PER_FRAME);
 		final Vector3f vec2 = geom.getLocalTranslation();
-		vec2.setY((float) (vec.getY() - 1));
+		vec2.setY(vec.getY() - 1);
 		assertEquals(vec, vec2);	
 	}
 

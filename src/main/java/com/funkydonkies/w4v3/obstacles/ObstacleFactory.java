@@ -17,10 +17,12 @@ public class ObstacleFactory {
 	 */
 	public final Obstacle makeObstacle(final String type, final double width,
 			final double height, final double depth) {
-		if ("MOVINGBOX".equalsIgnoreCase(type)) {
-	          return new MovingBox(width, height, depth);
-	     } else {   
-	    	  return null;
+		if ("TARGET".equals(type)) {
+	          return new Target(width, height, depth);
+	     } else if ("MOVINGBOX".equals(type)) {   
+	    	  return new MovingBox(width, height, depth);
+	     } else {
+	    	 return null;
 	     }
 	}
 }
