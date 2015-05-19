@@ -22,9 +22,9 @@ public class Ball {
 	private Geometry geom;
 	private Material mat;
 	private RigidBodyControl phy;
-	private static final float DEFAULT_RADIUS = 0.5f;
-	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
-	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(5, -22, 0);
+	private static final float DEFAULT_RADIUS = 6f;
+	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(-150f, 200, 0f);
+	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(25, -100, 0);
 	
 	/**
 	 * Constructor for Ball, initializes its attributes itself with default settings.
@@ -33,8 +33,7 @@ public class Ball {
 	public Ball(final AssetManager assetManager) {
 		sphere = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
 		geom = new Geometry("ball", sphere);
-		mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
+		mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Blue);
 		geom.setMaterial(mat);
 		phy = new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), DEFAULT_RADIUS * 2);
