@@ -6,6 +6,7 @@ import com.funkydonkies.w4v3.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
@@ -32,6 +33,8 @@ public class App extends SimpleApplication {
 	private float time = 1;		// needs better name
 	private float timeCount = 0;	// needs better name
 
+	private Combo combo;
+	
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -49,7 +52,7 @@ public class App extends SimpleApplication {
 
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		//bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		//flyCam.setEnabled(false);
 		
@@ -73,19 +76,24 @@ public class App extends SimpleApplication {
 		final int targetHeight = 1;
 		final int targetDepth = 1;
 		
-		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
-				obstacleDepth);
+		BitmapText comboText = new BitmapText(assetManager.loadFont("Interface/Fonts/Console.fnt"),
+				false);
+		combo = new Combo(guiNode, comboText);
 		
-		tar = (Target) facto.makeObstacle("TARGET", targetWidth, targetHeight, targetDepth);
+		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
+				obstacleDepth, rootNode, assetManager, combo );
+		
+		tar = (Target) facto.makeObstacle("TARGET", targetWidth, targetHeight, targetDepth, 
+				rootNode, assetManager, combo);
 		
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
-		clBox.draw(mat2, getPhysicsSpace(), rootNode);
-		final Material mat3 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat3.setColor(COLOR, ColorRGBA.Yellow);
-		tar.draw(mat3, getPhysicsSpace(), rootNode);
+//		clBox.draw(mat2, getPhysicsSpace());
+//		final Material mat3 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+//		mat3.setColor(COLOR, ColorRGBA.Yellow);
+		tar.draw(mat2, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
-		
+		combo.display();
 	}
 
 	/** Used to generate testPoints for the curve.
@@ -114,11 +122,10 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-		clBox.move(tpf);
+//		clBox.move(tpf);
 		timeCount += tpf;
 
-		tar.collides(rootNode);
-		
+//		tar.collides(rootNode);
 		
 
 	}

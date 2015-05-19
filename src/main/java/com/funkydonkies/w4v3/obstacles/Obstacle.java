@@ -13,6 +13,7 @@ public abstract class Obstacle {
 	private double width;
 	private double height;
 	private double depth;
+	protected Node node;
 	
 	/**
 	 * The constructor of the obstacle class.
@@ -20,10 +21,11 @@ public abstract class Obstacle {
 	 * @param h the height of the obstacle
 	 * @param d the depth of the obstacle
 	 */
-	public Obstacle(final double w, final double h, final double d) {
+	public Obstacle(final double w, final double h, final double d, Node n) {
 		this.setWidth(w);
 		this.setHeight(h);
 		this.setDepth(d);
+		node = n;
 	}
 	
 	/**
@@ -32,7 +34,7 @@ public abstract class Obstacle {
 	 * @param psySpace the physic space
 	 * @param rootNode the rootNode
 	 */
-	public abstract void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode);
+	public abstract void draw(final Material mat, final PhysicsSpace psySpace);
 	
 	/**
 	 * This method returns the height of the obstacle.

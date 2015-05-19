@@ -81,6 +81,9 @@ public class PhysicsController extends RigidBodyControl implements
 				setLinearVelocity(velocity);
 			}
 		}
+		if("target".equals(event.getNodeB().getName())){
+			System.out.println("HIT");
+		}
 	}
 
 }

@@ -27,8 +27,8 @@ public class MovingBox extends Obstacle {
 	 * @param height the height of the box 
 	 * @param depth the height of the box
 	 */
-	public MovingBox(final double width, final double height, final double depth) {
-		super(width, height, depth);
+	public MovingBox(final double width, final double height, final double depth, Node node) {
+		super(width, height, depth, node);
 		box = new Box((float) width, (float) height, (float) depth);
 		geom = new Geometry("closingBox", box);
 		phys = new RigidBodyControl(0f);
@@ -42,14 +42,14 @@ public class MovingBox extends Obstacle {
 	 * @param rootNode the root node
 	 */
 	@Override
-	public final void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode) {
+	public final void draw(final Material mat, final PhysicsSpace psySpace) {
 		final float xTrans = 20f;
 		final float zTrans = 0.5f;
 		geom.move(xTrans, 0, zTrans);
 		geom.setMaterial(mat);
 		geom.addControl(phys);
 		psySpace.add(phys);
-		rootNode.attachChild(geom);
+		node.attachChild(geom);
 	}
 	/**
 	 * This method moves the box up and down.
