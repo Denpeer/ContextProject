@@ -74,8 +74,6 @@ public class Mat2Image implements Bridge{
     public void drawInterestPoints(Mat im, float[] iP){
     	Imgproc.cvtColor(im,im,Imgproc.COLOR_GRAY2BGR);//convert back to bgr to draw interest points for visual feedback255
     	double[] red = {0,0,255};
-    	int size = (int)im.channels();
-    	System.out.println(size);
     	for(int i = 0; i < iP.length; i++){
     		im.put((int)iP[i], i*xdist, red);
     	}
