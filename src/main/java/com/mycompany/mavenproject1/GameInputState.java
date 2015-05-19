@@ -1,14 +1,18 @@
 package com.mycompany.mavenproject1;
 
 import com.funkydonkies.w4v3.App;
+import com.funkydonkies.w4v3.WaveState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.Vector2f;
+import com.jme3.terrain.geomipmap.TerrainQuad;
 
 /**
  * Changes the control in-game.
@@ -17,8 +21,8 @@ import com.jme3.input.controls.KeyTrigger;
  *
  */
 public class GameInputState extends AbstractAppState {
-//	private static final String MAPPING_NAME_LEFT = "Left";
-//	private static final String MAPPING_NAME_RIGHT = "Right";
+	private static final String MAPPING_NAME_LEFT = "Left";
+	private static final String MAPPING_NAME_RIGHT = "Right";
 //	private static final String MAPPING_NAME_ROTATE = "Rotate";
 	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
 	private static final float TIME_PER_BALL_SPAWN = 0.5f;
@@ -26,16 +30,17 @@ public class GameInputState extends AbstractAppState {
 	private float time = TIME_PER_BALL_SPAWN;
 	private float timeCount = 0;
 	
-	private static final int FLY_BY_CAM_MOVE_SPEED = 50;
+	private static final int FLY_BY_CAM_MOVE_SPEED = 125;
 	
 	private App app;
 	private InputManager inputManager;
 	private AssetManager assetManager;
-
+	private WaveState waveState;
+	
 	@Override
-	public final void initialize(final AppStateManager sManager,
+	public final void initialize(final AppStateManager stateManager,
 			final Application appl) {
-		super.initialize(sManager, appl);
+		super.initialize(stateManager, appl);
 
 		if (appl instanceof App) {
 			this.app = (App) appl;
@@ -44,6 +49,8 @@ public class GameInputState extends AbstractAppState {
 		}
 		this.inputManager = this.app.getInputManager();
 		this.assetManager = this.app.getAssetManager();
+		
+		this.waveState = stateManager.getState(WaveState.class);
 		
 		initKeys();
 		
@@ -87,13 +94,13 @@ public class GameInputState extends AbstractAppState {
 		// this.app.getRootNode().getChild("blah").scale(tpf); // modify scene
 		// graph...
 		// x.setUserData(...); // call some methods...
-
+		
 	}
 
 	/** Custom Keybinding: Map named actions to inputs. */
 	public void initKeys() {
-//		inputManager.addMapping(MAPPING_NAME_LEFT, new KeyTrigger(KeyInput.KEY_J));
-//		inputManager.addMapping(MAPPING_NAME_RIGHT, new KeyTrigger(KeyInput.KEY_K));
+		inputManager.addMapping(MAPPING_NAME_LEFT, new KeyTrigger(KeyInput.KEY_J));
+		inputManager.addMapping(MAPPING_NAME_RIGHT, new KeyTrigger(KeyInput.KEY_K));
 //		inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
 		
 		//Control for spawing balls
@@ -102,32 +109,44 @@ public class GameInputState extends AbstractAppState {
 		
 		// Add the names to the action listener
 //		inputManager.addListener(actionListener, MAPPING_NAME_SPAWN_BALL);
-//		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
+		inputManager.addListener(actionListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT); 
 //				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_NAME_SPAWN_BALL);
 
 	}
 
-//	private ActionListener actionListener = new ActionListener() {
-//		public void onAction(final String name, final boolean keyPressed, final float tpf) {
+	private ActionListener actionListener = new ActionListener() {
+		public void onAction(final String name, final boolean keyPressed, final float tpf) {
 //			if (name.equals(MAPPING_NAME_PAUSE) && !keyPressed) {
 //				// pause game
 //			}
-//	
-//		}
-//	};
+			if (name.equals(MAPPING_NAME_RIGHT)) {
+//				final TerrainQuad terrain = app.getRootNode().getChild("curve").getUserData("terrain");
+//				terrain.setLocked(false);
+//				for (int i = -512; i < 512; i++) {
+//					for (int j = -512; j < 512; j++) {
+//						terrain.adjustHeight(new Vector2f(i, j), 1);
+//					}
+//				}
+				waveState.setRaiseTerrain(keyPressed);
+			}
+			if (name.equals(MAPPING_NAME_LEFT)) {
+//				final TerrainQuad terrain = app.getRootNode().getChild("curve").getUserData("terrain");
+//				terrain.setLocked(false);
+//				for (int i = 0; i < 512; i++) {
+//					for (int j = 0; j < 512; j++) {
+//						terrain.adjustHeight(new Vector2f(i, j), 1);
+//					}
+//				}
+				waveState.setLowerTerrain(keyPressed);
+			}
+	
+		}
+	};
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
 //			if (name.equals(MAPPING_NAME_ROTATE)) {
 //				player.rotate(0, value * speed, 0);
-//			}
-//			if (name.equals(MAPPING_NAME_RIGHT)) {
-////				Vector3f v = player.getLocalTranslation();
-////				player.setLocalTranslation(v.x + value * speed, v.y, v.z);
-//			}
-//			if (name.equals(MAPPING_NAME_LEFT)) {
-////				Vector3f v = player.getLocalTranslation();
-////				player.setLocalTranslation(v.x - value * speed, v.y, v.z);
 //			}
 			if (name.equals(MAPPING_NAME_SPAWN_BALL)) {
 				timeCount += tpf;

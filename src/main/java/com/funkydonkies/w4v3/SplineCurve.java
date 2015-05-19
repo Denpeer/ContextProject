@@ -17,7 +17,7 @@ import com.jme3.scene.shape.Box;
  */
 public class SplineCurve extends Spline {
 	
-	private static final double BOXWIDTH = 0.01;
+	private static final double BOXWIDTH = 0.1;
 	private static final double ADDITIONALBOXHEIGHT = 10;
 	private static final float YCURVETRANSLATION = -15;
 	/**
