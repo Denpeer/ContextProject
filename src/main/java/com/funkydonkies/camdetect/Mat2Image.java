@@ -80,7 +80,7 @@ public class Mat2Image implements Bridge{
     	//xdist = 20; xrange = 640; total interest points = 32;
     	interestPoints = new float[32];//TODO: change from hardcoded to variables
     	//for every chosen x find the highest pixel value equal to 0
-    	for(int i = 0; i < 24; i++){//TODO: change from hardcoded to variables
+    	for(int i = 0; i < 32; i++){//TODO: change from hardcoded to variables
     		for(int j = 0; j< 480; j++){//TODO: change from hardcoded to variables
     			double val = im.get(j, i*xdist)[0];
     			if(val==0.0){
