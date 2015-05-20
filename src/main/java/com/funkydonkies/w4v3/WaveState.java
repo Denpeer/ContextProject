@@ -162,38 +162,37 @@ public class WaveState extends AbstractAppState {
 		if (raiseTerrain) {
             
             if (intersection != null) {
-                adjustHeight(intersection, tpf * 100, tpf);
+//                adjustHeight(intersection, tpf * 100, tpf); // non-radial
+            	adjustHeight(intersection, 64, tpf * 100);
             }
         } else if (lowerTerrain) {
             if (intersection != null) {
-                adjustHeight(intersection, -tpf * 100, tpf);
+//                adjustHeight(intersection, -tpf * 100, tpf); // non-radial
+            	adjustHeight(intersection, 64, -tpf * 100);
             }
         }
 		
 	}
-	/*
+
 	private void adjustHeight(final Vector3f loc, final float radius, final float height) {
 
         // offset it by radius because in the loop we iterate through 2 radii
         final int radiusStepsX = (int) (radius / terrain.getLocalScale().x);
-        final int radiusStepsZ = (int) (radius / terrain.getLocalScale().z);
 
         final float xStepAmount = terrain.getLocalScale().x;
-        final float zStepAmount = terrain.getLocalScale().z;
         
         final List<Vector2f> locs = new ArrayList<Vector2f>();
         final List<Float> heights = new ArrayList<Float>();
         
-        for (int z = -radiusStepsZ; z < radiusStepsZ; z++) {
+        for (int i = -512; i < 512; i++) {
             for (int x = -radiusStepsX; x < radiusStepsX; x++) {
 
                 final float locX = loc.x + (x * xStepAmount);
-                final float locZ = loc.z + (z * zStepAmount);
 
                 // see if it is in the radius of the tool
-                if (isInRadius(locX - loc.x, locZ - loc.z, radius)) {
-                    final float h = calculateHeight(radius, height, locX - loc.x, locZ - loc.z);
-                    locs.add(new Vector2f(locX, locZ));
+                if (isInRadius(locX - loc.x, loc.z - loc.z, radius)) {
+                    final float h = calculateHeight(radius, height, locX - loc.x, loc.z - loc.z);
+                    locs.add(new Vector2f(locX, i));
                     heights.add(h);
                 }
             }
@@ -201,9 +200,12 @@ public class WaveState extends AbstractAppState {
 
         ((TerrainQuad) terrain).adjustHeight(locs, heights);
         terrain.updateModelBound();
+        CollisionShape colShape = CollisionShapeFactory.createDynamicMeshShape(terrain); 
+//        CollisionShape colShape = new HeightfieldCollisionShape(new float[1]);
+//        HullCollisionShape colShape = new HullCollisionShape(terrain);
+        terrain.getControl(RigidBodyControl.class).setCollisionShape(colShape);
     }
-    */
-	
+/*
 	private void adjustHeight(final Vector3f loc, final float height, final float tpf) {
 
         final float xStepAmount = terrain.getLocalScale().x;
@@ -235,6 +237,7 @@ public class WaveState extends AbstractAppState {
         CollisionShape colShape = CollisionShapeFactory.createDynamicMeshShape(terrain); 
         terrain.getControl(RigidBodyControl.class).setCollisionShape(colShape);
     }
+	*/
 	
 	/** Returns true if the distance is less than or equal to the radius.
 	 * @param x x-coordinate

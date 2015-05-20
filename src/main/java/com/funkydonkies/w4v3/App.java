@@ -17,10 +17,11 @@ import com.mycompany.mavenproject1.GameInputState;
  *
  */
 public class App extends SimpleApplication {
-	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
+	private static final Vector3f GRAVITY = new Vector3f(0f, -15.81f, 0f);
 	private static final String COLOR = "Color";
 	private static final Vector3f CAM_LOCATION = new Vector3f(0, 150, 600);
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String SHADED_MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
@@ -49,8 +50,9 @@ public class App extends SimpleApplication {
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
 		
-		bulletAppState.setDebugEnabled(true);
+//		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
+		bulletAppState.getPhysicsSpace().setAccuracy(1f/80f);
 		//flyCam.setEnabled(false);
 
 		gameInputState = new GameInputState();
@@ -68,10 +70,13 @@ public class App extends SimpleApplication {
 		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
 				obstacleDepth);
 		
-		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat2.setColor(COLOR, ColorRGBA.Red);
+		final Material mat2 = new Material(assetManager, SHADED_MATERIAL_PATH);
+		mat2.setBoolean("UseMaterialColors", true);    
+	    mat2.setColor("Diffuse", ColorRGBA.Green);  // minimum material color
+	    mat2.setColor("Specular", ColorRGBA.White); // for shininess
+	    mat2.setFloat("Shininess", 64f); // [1,128] for shininess
 		
-		clBox.draw(mat2, getPhysicsSpace(), rootNode);
+//		clBox.draw(mat2, getPhysicsSpace(), rootNode);
 		
 		cam.setLocation(CAM_LOCATION);
 		
@@ -79,7 +84,7 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-		clBox.move(tpf);
+//		clBox.move(tpf);
 		timeCount += tpf;
 
 		if (timeCount > time) {

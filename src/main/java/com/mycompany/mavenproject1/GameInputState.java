@@ -8,9 +8,11 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 
@@ -99,8 +101,8 @@ public class GameInputState extends AbstractAppState {
 
 	/** Custom Keybinding: Map named actions to inputs. */
 	public void initKeys() {
-		inputManager.addMapping(MAPPING_NAME_LEFT, new KeyTrigger(KeyInput.KEY_J));
-		inputManager.addMapping(MAPPING_NAME_RIGHT, new KeyTrigger(KeyInput.KEY_K));
+		inputManager.addMapping(MAPPING_NAME_LEFT, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+		inputManager.addMapping(MAPPING_NAME_RIGHT, new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
 //		inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
 		
 		//Control for spawing balls
@@ -128,7 +130,7 @@ public class GameInputState extends AbstractAppState {
 //						terrain.adjustHeight(new Vector2f(i, j), 1);
 //					}
 //				}
-				waveState.setRaiseTerrain(keyPressed);
+				waveState.setLowerTerrain(keyPressed);
 			}
 			if (name.equals(MAPPING_NAME_LEFT)) {
 //				final TerrainQuad terrain = app.getRootNode().getChild("curve").getUserData("terrain");
@@ -138,7 +140,7 @@ public class GameInputState extends AbstractAppState {
 //						terrain.adjustHeight(new Vector2f(i, j), 1);
 //					}
 //				}
-				waveState.setLowerTerrain(keyPressed);
+				waveState.setRaiseTerrain(keyPressed);
 			}
 	
 		}

@@ -13,4 +13,5 @@ public interface Bridge {
 	 * @return dataset containing the points on the curve
 	 */
 	float[] getControlPoints();
+	int xdist = 1; //default value = 1 -> means for every pixel along the horizontal axis
 }
