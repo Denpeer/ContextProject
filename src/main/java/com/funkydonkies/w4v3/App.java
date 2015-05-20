@@ -2,9 +2,11 @@ package com.funkydonkies.w4v3;
 
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
+import com.funkydonkies.w4v3.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
@@ -25,11 +27,9 @@ public class App extends SimpleApplication {
 	private GameInputState gameInputState;
 	
 	private MovingBox clBox;
-	//private PhysicsController ballPhy;
+	private Target tar;
+	private Combo combo;
 	
-	private float time = 1;		// needs better name
-	private float timeCount = 0;	// needs better name
-
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -47,7 +47,7 @@ public class App extends SimpleApplication {
 
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		//bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		//flyCam.setEnabled(false);
 		
@@ -57,9 +57,9 @@ public class App extends SimpleApplication {
 		final Vector3f[] points = testPoints();
 
 		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Orange);
-		sp.drawCurve(rootNode, mat, getPhysicsSpace());
+		final Material curveMat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		curveMat.setColor(COLOR, ColorRGBA.Orange);
+		sp.drawCurve(rootNode, curveMat, getPhysicsSpace());
 		
 		final ObstacleFactory facto = new ObstacleFactory();
 		
@@ -67,15 +67,26 @@ public class App extends SimpleApplication {
 		final int obstacleHeight = 4;
 		final int obstacleDepth = 1;
 		
-		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
-				obstacleDepth);
+		final int targetWidth = 1;
+		final int targetHeight = 1;
+		final int targetDepth = 1;
 		
+		final BitmapText comboText = new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"),
+				false);
+		combo = new Combo(guiNode, comboText);
+		
+		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
+				obstacleDepth, rootNode, assetManager, combo);
+		
+		tar = (Target) facto.makeObstacle("TARGET", targetWidth, targetHeight, targetDepth, 
+				rootNode, assetManager, combo);
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
-		clBox.draw(mat2, getPhysicsSpace(), rootNode);
-		
+		tar.draw(mat2, getPhysicsSpace());
+		mat2.setColor(COLOR, ColorRGBA.Red);
+		clBox.draw(mat2, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
-		
+		combo.display();
 	}
 
 	/** Used to generate testPoints for the curve.
@@ -89,7 +100,7 @@ public class App extends SimpleApplication {
 				v2 = new Vector3f(15, 1, 0),
 				v3 = new Vector3f(20, 3, 0),
 				v4 = new Vector3f(25, 0, 0),
-				v5 = new Vector3f(30, 6, 0),
+				v5 = new Vector3f(30, 5, 0),
 				v6 = new Vector3f(35, 2, 0),
 				v7 = new Vector3f(40, 2, 0),
 				v8 = new Vector3f(45, 1, 0),
@@ -105,43 +116,7 @@ public class App extends SimpleApplication {
 	@Override
 	public void simpleUpdate(final float tpf) {
 		clBox.move(tpf);
-		timeCount += tpf;
-
-		if (timeCount > time) {
-			timeCount = 0;
-		}
-		
-		
-
 	}
-
-//	/**
-//	 * Creates a new ball object and instantiates a physics controller for it.
-//	 * Adds the physics controller to the physics space and the ball to the scene
-//	 */
-//	private void makeBall() {
-//		/* Ball physics control */
-//		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
-//		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
-//
-//		/* Ball spatial */
-//		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
-//		final Geometry geom = new Geometry("Sphere", ball);
-//		final Material mat = new Material(assetManager,
-//				"Common/MatDefs/Misc/Unshaded.j3md");
-//		mat.setColor("Color", ColorRGBA.Blue);
-//		geom.setMaterial(mat);
-//
-//		/* Ball node */
-//		final Node node = new Node("ball");
-//		node.addControl(ballPhy);
-//		node.attachChild(geom);
-//		/* attach node and add the physics controller to the game */
-//		rootNode.attachChild(node);
-//		getPhysicsSpace().add(ballPhy);
-//		ballPhy.setRestitution(1f);
-//		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
-//	}
 
 	@Override
 	public void simpleRender(final RenderManager rm) {
