@@ -7,6 +7,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
@@ -41,6 +42,8 @@ public class WaveState extends AbstractAppState {
 	
 	private App app;
 	private AssetManager assetManager;
+	private PhysicsSpace physicsSpace;
+	
 	private Vector3f intersection;
 	
 	private Node curve;
@@ -66,6 +69,7 @@ public class WaveState extends AbstractAppState {
 		}
 		
 		this.assetManager = this.app.getAssetManager();
+		this.physicsSpace = this.app.getPhysicsSpace();
 		
 		final Material mat = new Material(assetManager, SHADED_MATERIAL_PATH);
 //		mat.getAdditionalRenderState().setWireframe(true);
@@ -106,12 +110,16 @@ public class WaveState extends AbstractAppState {
         // add terrain to physicsSpace
         final RigidBodyControl RigidBControl = new RigidBodyControl(0);
         terrain.addControl(RigidBControl);
-        this.app.getPhysicsSpace().add(RigidBControl);
-        this.app.getPhysicsSpace().addAll(terrain);
+        this.physicsSpace.add(RigidBControl);
+        this.physicsSpace.addAll(terrain);
+        
+        // add Listener to physicsSpace that updates collisionShape of terrain
+        new UpdateTerrain(this.physicsSpace, (TerrainQuad) terrain);
         
         this.app.getRootNode().attachChild(curve);
         
         terrain.addControl(new DetectionInterpreterControl());
+        
         
 		// this.app.getRootNode();
 		// this.app.getStateManager();
@@ -198,13 +206,8 @@ public class WaveState extends AbstractAppState {
                 }
             }
         }
-
         ((TerrainQuad) terrain).adjustHeight(locs, heights);
         terrain.updateModelBound();
-        CollisionShape colShape = CollisionShapeFactory.createDynamicMeshShape(terrain); 
-//        CollisionShape colShape = new HeightfieldCollisionShape(new float[1]);
-//        HullCollisionShape colShape = new HullCollisionShape(terrain);
-        terrain.getControl(RigidBodyControl.class).setCollisionShape(colShape);
     }
 /*
 	private void adjustHeight(final Vector3f loc, final float height, final float tpf) {
