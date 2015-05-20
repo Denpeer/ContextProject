@@ -40,7 +40,9 @@ public class App extends SimpleApplication {
 	 */
 	public static void main(final String[] args) {
 		final App app = new App();
-		bridge = new MyFrame().getVideoCap().getMat2Image();
+		MyFrame frame = new MyFrame();
+		bridge = frame.getVideoCap().getMat2Image();
+		(new Thread(frame)).start();
 		app.start();
 	}
 
