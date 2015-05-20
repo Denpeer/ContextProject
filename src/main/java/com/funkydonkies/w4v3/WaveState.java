@@ -321,7 +321,6 @@ public class WaveState extends AbstractAppState {
 			}
 		}
 		raiseTerrain = false;
-		System.out.println(current);
 	}
 	
 	public boolean getLowerTerrain() {

@@ -26,9 +26,14 @@ public class MovingBox extends Obstacle {
 	 * @param width the width of the box
 	 * @param height the height of the box 
 	 * @param depth the height of the box
+	 * @param node Node to attach the spatial to to draw in on the scene.
+	 * @param x the x coordinate of the box
+	 * @param y the y coordinate of the box
+	 * @param z the z coordinate of the box
 	 */
-	public MovingBox(final double width, final double height, final double depth) {
-		super(width, height, depth);
+	public MovingBox(final double width, final double height, final double depth,
+			final double x, final double y, final double z, final Node node) {
+		super(width, height, depth, x, y, z, node);
 		box = new Box((float) width, (float) height, (float) depth);
 		geom = new Geometry("closingBox", box);
 		phys = new RigidBodyControl(0f);
@@ -39,17 +44,18 @@ public class MovingBox extends Obstacle {
 	 * This method draws the box.
 	 * @param mat the material of the box
 	 * @param psySpace the physic space 
-	 * @param rootNode the root node
 	 */
 	@Override
-	public final void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode) {
+	public final void draw(final Material mat, final PhysicsSpace psySpace) {
 		final float xTrans = 20f;
 		final float zTrans = 0.5f;
 		geom.move(xTrans, 50, zTrans);
 		geom.setMaterial(mat);
 		geom.addControl(phys);
 		psySpace.add(phys);
-		rootNode.attachChild(geom);
+		//phys.setPhysicsLocation(new Vector3f().add((float) getxCoord(), (float) getyCoord(), (float) getzCoord()));
+		geom.setLocalTranslation(phys.getPhysicsLocation());
+		super.getNode().attachChild(geom);
 	}
 	/**
 	 * This method moves the box up and down.

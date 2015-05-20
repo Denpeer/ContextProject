@@ -2,12 +2,15 @@ package com.funkydonkies.w4v3;
 
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
+import com.funkydonkies.w4v3.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
@@ -26,13 +29,11 @@ public class App extends SimpleApplication {
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
 	private WaveState waveState;
+	private ObstacleFactory factory;
+	private MovingBox movBox;
+	private Target target;
+	private Combo combo;
 	
-	private MovingBox clBox;
-	//private PhysicsController ballPhy;
-	
-	private float time = 1;		// needs better name
-	private float timeCount = 0;	// needs better name
-
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -46,10 +47,9 @@ public class App extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
-
+		factory = new ObstacleFactory();
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		
 //		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		bulletAppState.getPhysicsSpace().setAccuracy(1f/80f);
@@ -61,67 +61,32 @@ public class App extends SimpleApplication {
 		waveState = new WaveState();
 		stateManager.attach(waveState);
 		
-		final ObstacleFactory facto = new ObstacleFactory();
+		final BitmapText comboText = new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"),
+				false);
+		combo = new Combo(guiNode, comboText);
+		movBox = factory.makeMovingBox(rootNode, assetManager);
+		target = factory.makeTarget(rootNode, assetManager, combo);
 		
-		final int obstacleWidth = 20;
-		final int obstacleHeight = 40;
-		final int obstacleDepth = 10;
 		
-		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
-				obstacleDepth);
 		
 		final Material mat2 = new Material(assetManager, SHADED_MATERIAL_PATH);
 		mat2.setBoolean("UseMaterialColors", true);    
-	    mat2.setColor("Diffuse", ColorRGBA.Green);  // minimum material color
+		 mat2.setColor("Diffuse", ColorRGBA.Green);  // minimum material color
 	    mat2.setColor("Specular", ColorRGBA.White); // for shininess
 	    mat2.setFloat("Shininess", 64f); // [1,128] for shininess
-		
-		clBox.draw(mat2, getPhysicsSpace(), rootNode);
+	    
+		movBox.draw(mat2, getPhysicsSpace());
+		target.draw(null, getPhysicsSpace());
+	    mat2.setFloat("Shininess", 64f); // [1,128] for shininess
 		
 		cam.setLocation(CAM_LOCATION);
-		
+		combo.display();
 	}
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-//		clBox.move(tpf);
-		timeCount += tpf;
-
-		if (timeCount > time) {
-			timeCount = 0;
-		}
-		
-		
-
+//		
 	}
-
-//	/**
-//	 * Creates a new ball object and instantiates a physics controller for it.
-//	 * Adds the physics controller to the physics space and the ball to the scene
-//	 */
-//	private void makeBall() {
-//		/* Ball physics control */
-//		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
-//		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
-//
-//		/* Ball spatial */
-//		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
-//		final Geometry geom = new Geometry("Sphere", ball);
-//		final Material mat = new Material(assetManager,
-//				"Common/MatDefs/Misc/Unshaded.j3md");
-//		mat.setColor("Color", ColorRGBA.Blue);
-//		geom.setMaterial(mat);
-//
-//		/* Ball node */
-//		final Node node = new Node("ball");
-//		node.addControl(ballPhy);
-//		node.attachChild(geom);
-//		/* attach node and add the physics controller to the game */
-//		rootNode.attachChild(node);
-//		getPhysicsSpace().add(ballPhy);
-//		ballPhy.setRestitution(1f);
-//		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
-//	}
 
 	@Override
 	public void simpleRender(final RenderManager rm) {

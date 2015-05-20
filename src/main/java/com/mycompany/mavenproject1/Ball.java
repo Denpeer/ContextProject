@@ -135,5 +135,13 @@ public class Ball {
 		setLocation(location);
 		setSpeed(speed);
 	}
+	
+	/**
+	 * This method returns the geometry of the ball.
+	 * @return the geometry of the ball
+	 */
+	public final Geometry getGeometry() {
+		return geom;
+	}
 
 }
