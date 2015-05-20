@@ -5,11 +5,21 @@ import java.util.Arrays;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.highgui.Highgui;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import com.funkydonkies.w4v3.Bridge;
 
+/**
+ * This class performs the image matrix math and is used by VideoCap to get the current image to display in the frame
+ * this includes setting the bg, thresholding into foreground/background, and identifying the interestPoints
+ * which are used as controlPoints and can be accessed via the Bridge method getControlPoints() 
+ * and getxdist() to know the x interval between elements of the array returned by getControlPoints()
+ * also the found interestPoints are draws on the image as visual reference
+ * @author Olivier Dikken
+ *
+ */
 public class Mat2Image implements Bridge{
 	//init variables
     Mat mat = new Mat();
@@ -26,6 +36,7 @@ public class Mat2Image implements Bridge{
      */
     public Mat2Image() {
     }
+    
     /**
      * mat matrix to image; get space of mat matrix -> does image processing and finds interest points
      * @param mat matrix of image
@@ -33,13 +44,20 @@ public class Mat2Image implements Bridge{
     public Mat2Image(Mat mat) {
         getSpace(mat);
     }
-    public void setBg(){//save the current mat as the background to work with
+    
+    /**
+     * when 'b' is pressed the class MyFrame calls setBG on VideoCap which calls this method
+     * the current image matrix becomes the mat matrix identifying the background (used by threshIt method)
+     */
+    public void setBg(){
     	this.bg = mat.clone();
     	bgSet = true;
     	System.out.println("Background has been set");
     }
+    
     /**
      * absdiff(img,bg)>img2GRAY>blur>thresh
+     * res is used instead of mat to keep mat as the 'input matrix'
      * @param mat incomming frame
      * @param bg background
      * @param res result mat structure 
@@ -52,6 +70,7 @@ public class Mat2Image implements Bridge{
     	Imgproc.adaptiveThreshold(res, res, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 71, 7);
     	return res;
     }
+    
     /**
      * curerntly this method finds the highest point for every x belonging to xdist*k with k a natural
      * @param im
@@ -71,13 +90,20 @@ public class Mat2Image implements Bridge{
     		}
     	}
     }
+    
+    /**
+     * draws red dots at the locations of the found interestPoints to be used as visual feedback
+     * @param im the image matrix
+     * @param iP array of interestPoints
+     */
     public void drawInterestPoints(Mat im, float[] iP){
-    	Imgproc.cvtColor(im,im,Imgproc.COLOR_GRAY2BGR);//convert back to bgr to draw interest points for visual feedback255
-    	double[] red = {0,0,255};
+    	Imgproc.cvtColor(im,im,Imgproc.COLOR_GRAY2BGR);//convert back to bgr to draw interest points for visual feedback
     	for(int i = 0; i < iP.length; i++){
-    		im.put((int)iP[i], i*xdist, red);
+    		//im.put((int)iP[i], i*xdist, red);
+    		Core.circle(im, new Point(i*xdist,iP[i]), 5, new Scalar(255,0,0), 2);
     	}
     }
+    
     /**
      * make sure the byte and bufferedimage are of right size and 'color' settings
      * @param mat matrix of the image
@@ -91,6 +117,13 @@ public class Mat2Image implements Bridge{
                 img = new BufferedImage(w, h, 
                             BufferedImage.TYPE_3BYTE_BGR);
     }
+    
+    /**
+     * sets the matrix properties
+     * calls the methods to threshold the matrix (foreground/background)
+     * then calls the methods to update the interestPoints and draw them on the image as visual feedback
+     * @param mat the image matrix
+     */
     public void getSpace(Mat mat) {
     	//convert from RGB to BGR
     	Imgproc.cvtColor(mat,mat,Imgproc.COLOR_RGB2BGR);
@@ -106,10 +139,12 @@ public class Mat2Image implements Bridge{
         	prepareSpace(res);
         }
     }
+    
     /**
-     * 
+     * this method is called by the VideoCap class
+     * it calls the image processing method and returns the processed segmented contoured image
      * @param mat matrix of image
-     * @return processed frame
+     * @return processed image matrix as image
      */
         BufferedImage getImage(Mat mat){
             getSpace(mat);
@@ -121,8 +156,21 @@ public class Mat2Image implements Bridge{
     static{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
+    
+    /**
+     * method comes from implementing the bridge interface
+     * used by classes outside of camdetect package to access the control points
+     */
 	public float[] getControlPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return interestPoints;
+	}
+	
+	/**
+     * method comes from implementing the bridge interface
+     * used by classes outside of camdetect package to access horizontal interval between control points
+     * this is used to be able to interpret the interestPoints array returned by the getControlPoints() method
+     */
+	public int getxdist() {
+		return xdist;
 	}
 }

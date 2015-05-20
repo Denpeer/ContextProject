@@ -13,5 +13,9 @@ public interface Bridge {
 	 * @return dataset containing the points on the curve
 	 */
 	float[] getControlPoints();
-	int xdist = 1; //default value = 1 -> means for every pixel along the horizontal axis
+	/**
+	 * gets dataset control points horizontal interval.
+	 * @return int representing the x interval between elements of the array returned by getControlPoints()
+	 */
+	int getxdist();//returns the horizontal interval between control points
 }
