@@ -1,6 +1,8 @@
 package com.funkydonkies.camdetect;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -91,6 +93,7 @@ public class Mat2Image implements Bridge {
     	final double tempdiv = im.size().width / xdist;
     	final int numPoints = (int) Math.floor(tempdiv);
     	interestPoints = new float[numPoints];
+    	Arrays.fill(interestPoints, (float) im.size().height);
     	//for every chosen x find the highest pixel value equal to 0
     	for (int i = 0; i < numPoints; i++) {
     		for (int j = 0; j < im.size().height; j++) {
