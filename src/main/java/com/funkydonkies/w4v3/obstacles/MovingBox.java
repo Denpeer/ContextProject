@@ -49,7 +49,7 @@ public class MovingBox extends Obstacle {
 		geom.setMaterial(mat);
 		geom.addControl(phys);
 		psySpace.add(phys);
-		node.attachChild(geom);
+		super.getNode().attachChild(geom);
 	}
 	/**
 	 * This method moves the box up and down.

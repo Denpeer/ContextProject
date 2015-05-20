@@ -13,7 +13,7 @@ public abstract class Obstacle {
 	private double width;
 	private double height;
 	private double depth;
-	protected Node node;
+	private Node node;
 	
 	/**
 	 * The constructor of the obstacle class.
@@ -27,6 +27,14 @@ public abstract class Obstacle {
 		this.setHeight(h);
 		this.setDepth(d);
 		node = n;
+	}
+	
+	/**Accessor method for the node.
+	 * 
+	 * @return node
+	 */
+	public Node getNode() {
+		return node;
 	}
 	
 	/**

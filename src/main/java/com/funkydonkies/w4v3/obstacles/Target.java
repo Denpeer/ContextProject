@@ -56,7 +56,7 @@ public class Target extends Obstacle {
 
 		geom.addControl(control);
 		phySpace.add(control);
-		node.attachChild(geom);
+		super.getNode().attachChild(geom);
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class Target extends Obstacle {
 	public void destroy() {
 //		control.delete();
 //		geom.removeControl(control);
-		node.detachChild(geom);
+		super.getNode().detachChild(geom);
 	}
 	
 	/**
