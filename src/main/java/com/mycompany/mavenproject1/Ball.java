@@ -37,7 +37,7 @@ public class Ball {
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Blue);
 		geom.setMaterial(mat);
-		phy = new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), DEFAULT_RADIUS * 2);
+		phy = new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
 		phy.setRestitution(1);
 	}
 	

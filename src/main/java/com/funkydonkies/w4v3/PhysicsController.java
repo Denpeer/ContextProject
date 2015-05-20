@@ -20,7 +20,7 @@ public class PhysicsController extends RigidBodyControl implements
 	/**
 	 * Constructor for ball physics controller.
 	 * @param sphereCollisionShape Collision shape used by the physics
-	 * @param f Diameter of the sphere
+	 * @param f mass of the sphere
 	 */
 	public PhysicsController(final SphereCollisionShape sphereCollisionShape, 
 			final float f) {
