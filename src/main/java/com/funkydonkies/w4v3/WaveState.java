@@ -292,7 +292,8 @@ public class WaveState extends AbstractAppState {
 	public void loadHintText() {
         hintText = new BitmapText(guiFont, false);
         hintText.setLocalTranslation(0, app.getCamera().getHeight(), 0);
-        hintText.setText("Hit 1 to raise terrain, hit 2 to lower terrain");
+        hintText.setText("Hit left mouse to raise terrain, hit right mouse to lower terrain \n "
+        		+ "please lower the terrain first as it starts at its maximum");
         guiNode.attachChild(hintText);
     }
 
@@ -303,7 +304,7 @@ public class WaveState extends AbstractAppState {
         String targetText = "";
         if (target!= null)
             targetText = "  intersect: "+target.toString();
-        hintText.setText("Press left mouse button to raise terrain, press right mouse button to lower terrain.  " + x + "," + y + "," + z+targetText);
+        hintText.setText("Press left mouse button to raise terrain, press right mouse button to lower terrain.  " + x + "," + y + "," + z+targetText + "\n please lower the terrain first as it starts at its maximum");
     }
 	
 	public boolean getRaiseTerrain() {
