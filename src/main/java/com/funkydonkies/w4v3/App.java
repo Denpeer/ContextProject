@@ -34,6 +34,8 @@ public class App extends SimpleApplication {
 	private Target target;
 	private Combo combo;
 	
+	private float ballSpawntimer = 0;
+	private float spawnPerSec = 1;
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
