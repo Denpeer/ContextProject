@@ -82,6 +82,7 @@ public class WaveState extends AbstractAppState {
 		this.heightmap.load();
 		
 		this.guiNode = this.app.getGuiNode();
+		
 		this.guiFont = this.app.getGuiFont();
 		
 		loadHintText();

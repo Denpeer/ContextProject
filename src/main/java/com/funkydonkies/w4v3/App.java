@@ -1,5 +1,6 @@
 package com.funkydonkies.w4v3;
 
+import com.funkydonkies.camdetect.MyFrame;
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
@@ -39,7 +40,7 @@ public class App extends SimpleApplication {
 	 */
 	public static void main(final String[] args) {
 		final App app = new App();
-
+		MyFrame.main(null);
 		app.start();
 	}
 
@@ -52,7 +53,7 @@ public class App extends SimpleApplication {
 		
 //		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		bulletAppState.getPhysicsSpace().setAccuracy(1f/80f);
+		bulletAppState.getPhysicsSpace().setAccuracy(1f/60f);
 		//flyCam.setEnabled(false);
 
 		gameInputState = new GameInputState();
