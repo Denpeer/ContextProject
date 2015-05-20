@@ -11,36 +11,52 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
+import com.funkydonkies.camdetect.VideoCap.CameraNotOnException;
+
+/**
+ * Makes frame to display videocapture images.
+ * Keeps frame updated by repainting most recent images
+ * @author Olivier Dikken
+ *
+ */
 public class MyFrame extends JFrame {
-    private JPanel contentPane;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
 
   /**
   * Launch the application.
+  * @param args -
   */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    MyFrame frame = new MyFrame();
+                    final MyFrame frame = new MyFrame();
                     frame.setVisible(true);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    VideoCap videoCap = new VideoCap();
+    private VideoCap videoCap = new VideoCap();
     
   /**
   * Create the frame.
+  * Start the thread.
   */
     public MyFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 650, 490);
+        final int xbound = 100, ybound = 100, boundwidth = 650, boundheight = 490;
+        setBounds(xbound, ybound, boundwidth, boundheight);
         contentPane = new JPanel();
         initBgSetKey();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        final int top = 5, left = 5, bottom = 5, right = 5;
+        contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
         setContentPane(contentPane);
         contentPane.setLayout(null);
         
@@ -48,35 +64,49 @@ public class MyFrame extends JFrame {
     }
     
     /**
-     * press 'b' to set background to current frame
-     * currently there is an error every second time the 'b' key is pressed
-     * the error does not conflict with the functioning of the program
+     * press 'b' to set background to current frame.
      */
-    public void initBgSetKey(){
+    public void initBgSetKey() {
     	//create action
-        Action setTheBg = new AbstractAction(){
-			public void actionPerformed(ActionEvent e) {
+        Action setTheBg = new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
 				videoCap.setBg();
 			}
         };
         //add keypress 'b' sets current frame as background
-        contentPane.getInputMap().put(KeyStroke.getKeyStroke('b'),"setBg");
-        contentPane.getActionMap().put("setBg", setTheBg);
+        final String callSetTheBg = "callSetTheBg";
+        contentPane.getInputMap().put(KeyStroke.getKeyStroke('b'), callSetTheBg);
+        contentPane.getActionMap().put(callSetTheBg, setTheBg);
     }
  
- 
-    public void paint(Graphics g){
-        g = contentPane.getGraphics();
-        g.drawImage(videoCap.getOneFrame(), 0, 0, this);
+    /**
+     * draws the next frame to be displayed.
+     * calls videocap.[...] method which returns a processed video frame
+     * @param g 
+     */
+    public void paint(final Graphics g) {
+        try {
+			g.drawImage(videoCap.getOneFrame(), 0, 0, this);
+		} catch (final CameraNotOnException e) {
+			e.printStackTrace();
+		}
     }
- 
-    class MyThread extends Thread{
+    /** Thread that updates the frame.
+     * 
+     * @author Olivier Dikken
+     *
+     */
+    class MyThread extends Thread {
+    	private final int sleepTime = 30;
         @Override
         public void run() {
-            for (;;){
+            for (;;) {
                 repaint();
-                try { Thread.sleep(30);
-                } catch (InterruptedException e) {    }
+                try { 
+                	Thread.sleep(sleepTime);
+                } catch (final InterruptedException e) {    }
             }  
         } 
     }

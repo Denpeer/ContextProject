@@ -17,5 +17,5 @@ public interface Bridge {
 	 * gets dataset control points horizontal interval.
 	 * @return int representing the x interval between elements of the array returned by getControlPoints()
 	 */
-	int getxdist();//returns the horizontal interval between control points
+	int getxdist();
 }
