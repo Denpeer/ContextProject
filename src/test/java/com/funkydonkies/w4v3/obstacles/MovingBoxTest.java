@@ -1,10 +1,12 @@
 package com.funkydonkies.w4v3.obstacles;
-import static org.mockito.Mockito.mock;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.funkydonkies.w4v3.Combo;
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
@@ -26,24 +28,31 @@ public class MovingBoxTest {
 	private static final double MOVEDOWN = 1.01;
 	private static final float TIME_PER_FRAME = 0.01f;
 	
+	private static final int WIDTH = 2;
+	private static final int HEIGHT = 4;
+	private static final int DEPTH = 1;
+	private static AssetManager assetManager;
+	private static Combo combo;
 	/**
 	 * The setup, needed to instantiate and mock objects.
 	 */
 	@BeforeClass
 	public static void setup() {
 		obF = new ObstacleFactory();
+		assetManager = mock(AssetManager.class);
+		combo = mock(Combo.class);
+		rootNode = new Node();
 		mBox = obF.makeMovingBox();
 		mat = mock(Material.class);
 		psySpace = mock(PhysicsSpace.class); 
-		rootNode = new Node();
 	}
 	
 	/**
 	 * Tests if the box is succesfully attached to the rootnode.
 	 */
 	@Test
-	public final void drawTest() {		
-		mBox.draw(mat, psySpace, rootNode);
+	public final void drawTest() {
+		mBox.draw(mat, psySpace);
 		assertEquals(rootNode.getChildren().size(), 1);
 	}
 	
@@ -54,7 +63,7 @@ public class MovingBoxTest {
 	public final void moveUpTest() {
 		final Geometry geom = mBox.getGeometry();
 		final Vector3f vec = geom.getLocalTranslation();
-		mBox.draw(mat, psySpace, rootNode);
+		mBox.draw(mat, psySpace);
 		mBox.move(TIME_PER_FRAME);
 		final Vector3f vec2 = geom.getLocalTranslation();
 		vec2.setY((float) (vec.getY() - SPEED));

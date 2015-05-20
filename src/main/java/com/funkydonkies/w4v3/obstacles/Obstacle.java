@@ -16,33 +16,43 @@ public abstract class Obstacle {
 	private double xCoord;
 	private double yCoord;
 	private double zCoord;
+	private Node node;
 	
 	/**
 	 * The constructor of the obstacle class.
 	 * @param w the width of the obstacle
 	 * @param h the height of the obstacle
 	 * @param d the depth of the obstacle
+	 * @param n Node to attach the obstacle to the scene
 	 * @param x the x coordinate of the obstacle
 	 * @param y the y coordinate of the obstacle
 	 * @param z the z coordinate of the obstacle
 	 */
 	public Obstacle(final double w, final double h, final double d, final double x,
-			final double y, final double z) {
+			final double y, final double z, final Node n) {
 		this.setWidth(w);
 		this.setHeight(h);
 		this.setDepth(d);
 		this.setxCoord(x);
 		this.setyCoord(y);
 		this.setzCoord(z);
+		node = n;
+	}
+		
+	/**Accessor method for the node.
+	 * 
+	 * @return node
+	 */
+	public Node getNode() {
+		return node;
 	}
 	
 	/**
 	 * The draw method that every obstacle needs.
 	 * @param mat the material
 	 * @param psySpace the physic space
-	 * @param rootNode the rootNode
 	 */
-	public abstract void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode);
+	public abstract void draw(final Material mat, final PhysicsSpace psySpace);
 	
 	/**
 	 * This method returns the height of the obstacle.

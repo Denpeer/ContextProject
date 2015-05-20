@@ -6,6 +6,7 @@ import com.funkydonkies.w4v3.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
@@ -24,13 +25,11 @@ public class App extends SimpleApplication {
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
-	
+	private ObstacleFactory factory;
 	private MovingBox movBox;
 	private Target target;
-	//private PhysicsController ballPhy;
+	private Combo combo;
 	
-	private ObstacleFactory factory;
-
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -48,7 +47,7 @@ public class App extends SimpleApplication {
 		factory = new ObstacleFactory();
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		//bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		//flyCam.setEnabled(false);
 		
@@ -58,21 +57,22 @@ public class App extends SimpleApplication {
 		final Vector3f[] points = testPoints();
 
 		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Orange);
-		sp.drawCurve(rootNode, mat, getPhysicsSpace());
+		final Material curveMat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		curveMat.setColor(COLOR, ColorRGBA.Orange);
+		sp.drawCurve(rootNode, curveMat, getPhysicsSpace());
 		
-		movBox = factory.makeMovingBox();
-		target = factory.makeTarget();
+		final BitmapText comboText = new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"),
+				false);
+		combo = new Combo(guiNode, comboText);
+		movBox = factory.makeMovingBox(rootNode, assetManager);
+		target = factory.makeTarget(rootNode, assetManager, combo);
 		
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
-		movBox.draw(mat2, getPhysicsSpace(), rootNode);
-		final Material mat3 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat3.setColor(COLOR, ColorRGBA.Yellow);
-		target.draw(mat3, getPhysicsSpace(), rootNode);
+		movBox.draw(mat2, getPhysicsSpace());
+		target.draw(null, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
-		
+		combo.display();
 	}
 
 	/** Used to generate testPoints for the curve.
@@ -93,7 +93,6 @@ public class App extends SimpleApplication {
 				v9 = new Vector3f(50, 5, 0),
 				v10 = new Vector3f(70, 3, 0);
 
-		
 		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
 		
 		return points;
@@ -102,8 +101,6 @@ public class App extends SimpleApplication {
 	@Override
 	public void simpleUpdate(final float tpf) {
 		movBox.move(tpf);
-
-		target.collides(rootNode);
 	}
 
 	@Override
