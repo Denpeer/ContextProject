@@ -73,7 +73,7 @@ public class SplineCurve extends Spline {
 	public void drawBox(final Vector3f[] vecs, final Material mat,
 			final Node node) {
 		
-		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
+		final Box box = new Box(vecs[0].x - vecs[1].x , 
 				(float) (vecs[0].getY() + ADDITIONALBOXHEIGHT), 1f);
 		final Geometry squad = new Geometry("square", box);
 		squad.move(vecs[0].x, YCURVETRANSLATION, 0);
