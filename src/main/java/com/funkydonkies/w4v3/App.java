@@ -14,6 +14,7 @@ import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
+import com.mycompany.mavenproject1.Ball;
 import com.mycompany.mavenproject1.GameInputState;
 /**
  * Game is run through this class.
@@ -87,6 +88,12 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
+		ballSpawntimer = ballSpawntimer + tpf;
+		if (ballSpawntimer > spawnPerSec) {
+			ballSpawntimer = 0;
+			final Ball ball = new Ball(assetManager);
+			ball.spawn(rootNode, getPhysicsSpace(), true);
+		}
 //		
 	}
 
