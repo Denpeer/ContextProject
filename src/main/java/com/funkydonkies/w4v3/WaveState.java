@@ -58,7 +58,8 @@ public class WaveState extends AbstractAppState {
 
 	private float time = 0;
 	private boolean normalized = false;
-	private boolean printed = false;
+	private boolean counted = false;
+	
 	@Override
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
@@ -169,7 +170,7 @@ public class WaveState extends AbstractAppState {
 		float[] points = new float[32];
 		Arrays.fill(points, 480);
 		for (int i = 10; i < 15; i++) {	// TESTING CODE
-			points[i] = 240;
+			points[i] = 150 + 10 * (i - 9);
 		}
 		if (controlsEnabled /*&& time > 25*/) {
 			time = 0;
@@ -261,11 +262,14 @@ public class WaveState extends AbstractAppState {
 		int elem = 0;
 		for (int z = -256; z < 256; z++) {
 			elem = 0;
-			for (int x = -247; x < 256; x += 16) {
+			for (int x = -247; x < 255; x += 16) {
 				float current = ((TerrainQuad) terrain).getHeight(new Vector2f(x, 0));
 				
 				float desired1 = points[elem];
-				float desired2 = points[elem+1];
+				float desired2 = desired1;
+				if (elem + 1 != points.length) {
+					desired2 = points[elem+1];
+				}
 				
 				float desiredDelta = Math.abs(desired1 - desired2);
 				
@@ -303,61 +307,61 @@ public class WaveState extends AbstractAppState {
 			
 			elem = 0;
 		
-		for (int x = -255; x < 255; x += 16) {
-
-//			for (int circleX = 0; circleX < 1; circleX++) {
-			for (int circleX = -radius; circleX < radius; circleX++) {
-				if (Math.abs(circleX) == radius) {
-					continue;
-				}
-				final float locX = x + circleX;
-
-				if (isInRadius(locX - x, 0, radius)) {
-					// get current height and increment so range (0, 256)
-					float current = ((TerrainQuad) terrain).getHeight(new Vector2f(locX, 0));
-//					current = current + 128;
-					
-					float desired = points[elem];
-					float delta = Math.abs(current - desired);
-					
-					if (delta < 5) {
+			for (int x = -255; x < 255; x += 16) {
+	
+//				for (int circleX = 0; circleX < 1; circleX++) {
+				for (int circleX = -radius; circleX < radius; circleX++) {
+					if (Math.abs(circleX) == radius) {
 						continue;
 					}
-					
-//					if (locX == 0 && x == 1) {
-//						System.out.println("C: " + current + " D: " + desired + " delta: " + delta);
-//					}
-					
-					float height = 0;
-
-					if (current <= desired) {
-						height = Math.min(delta, 20);
-					} else {
-						height = Math.max(-delta, -20);
+					final float locX = x + circleX;
+	
+					if (isInRadius(locX - x, 0, radius)) {
+						// get current height and increment so range (0, 256)
+						float current = ((TerrainQuad) terrain).getHeight(new Vector2f(locX, 0));
+//						current = current + 128;
+						
+						float desired = points[elem];
+						float delta = Math.abs(current - desired);
+						
+						if (delta < 5) {
+							continue;
+						}
+						
+//						if (locX == 0 && x == 1) {
+//							System.out.println("C: " + current + " D: " + desired + " delta: " + delta);
+//						}
+						
+						float height = 0;
+	
+						if (current <= desired) {
+							height = Math.min(delta, 20);
+						} else {
+							height = Math.max(-delta, -20);
+						}
+						
+//						System.out.println((radius - (Math.abs(x - locX))) / radius);
+						
+						height = height * (((radius + 2) - (Math.abs(x - locX))) / (radius + 2));
+						
+//						height = calculateHeight(radius, tpf, locX - x, 1);
+//						System.out.println(height);
+						
+//						if (x == 1 && !printed) {
+//							System.out.println(locX);
+//						}
+	
+						locs.add(new Vector2f(locX, z));
+						heights.add(height * tpf);
 					}
-					
-//					System.out.println((offset - (Math.abs(x - locX))) / offset);
-					
-					height = height * ((radius - (Math.abs(x - locX))) / radius);
-					
-//					height = calculateHeight(radius, tpf, locX - x, 1);
-//					System.out.println(height);
-					
-//					if (x == 1 && !printed) {
-//						System.out.println(locX);
-//					}
-
-					locs.add(new Vector2f(locX, z));
-					heights.add(height * tpf);
 				}
+	
+				elem++;
+//				if (x == 1) { 
+//					printed = true;
+//				}
 			}
-
-			elem++;
-//			if (x == 1) { 
-//				printed = true;
-//			}
 		}
-	}
 
 		// for (int i = -256; i < 256; i++) {
 		// for (int x = -radiusStepsX; x < radiusStepsX; x++) {
@@ -371,6 +375,8 @@ public class WaveState extends AbstractAppState {
 		// }
 		// }
 		// }
+		
+		counted = true;
 		((TerrainQuad) terrain).adjustHeight(locs, heights);
 		 terrain.updateModelBound();
 	}
