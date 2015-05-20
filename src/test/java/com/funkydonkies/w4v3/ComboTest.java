@@ -1,8 +1,8 @@
 package com.funkydonkies.w4v3;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
@@ -36,10 +36,12 @@ public class ComboTest {
 	public void testResetCombo() {
 		assertEquals(combo.getCombo(), 0);
 		combo.incCombo();
-		assertNotEquals(combo.getCombo(), 0);
+		assertEquals(combo.getCombo(), 1);
 		combo.resetCombo();
 		assertEquals(combo.getCombo(), 0);
-		verify(text).setText(("Current combo: 0"));
+		verify(text, times(2)).setText(("Current combo: 0"));
+		verify(text).setText(("Current combo: 1"));
+
 	}
 
 	@Test

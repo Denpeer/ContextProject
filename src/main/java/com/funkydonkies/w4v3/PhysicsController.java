@@ -14,6 +14,8 @@ import com.jme3.math.Vector3f;
  */
 public class PhysicsController extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
+	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
+	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
 	
 	/**
 	 * Constructor for ball physics controller.
@@ -57,14 +59,18 @@ public class PhysicsController extends RigidBodyControl implements
 	public void prePhysicsTick(final PhysicsSpace space, 
 			final float tpf) {
 		final Vector3f loc = getPhysicsLocation();
-		//Vector3f angularvel = getAngularVelocity();
+		final Vector3f angularvel = getAngularVelocity();
 		//velocity.z = 0;
-		if (loc.z != 0) {
+		if (Math.abs(loc.z) > MAX_DEVIANCE_ON_Z) {
 			loc.z = 0;
 			setPhysicsLocation(loc);
 		}
-		//angularvel.y = 0;
-		//setAngularVelocity(angularvel);
+		if (Math.abs(angularvel.x) > MAX_ROTATIONAL_DEVIANCE 
+				|| Math.abs(angularvel.y) > MAX_ROTATIONAL_DEVIANCE) {
+			angularvel.y = 0;
+			angularvel.x = 0;
+			setAngularVelocity(angularvel);
+		}
 	}
 	
 	/**
@@ -80,9 +86,6 @@ public class PhysicsController extends RigidBodyControl implements
 				velocity.x = 2;
 				setLinearVelocity(velocity);
 			}
-		}
-		if("target".equals(event.getNodeB().getName())){
-			System.out.println("HIT");
 		}
 	}
 

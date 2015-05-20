@@ -6,12 +6,22 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.GhostControl;
-
+/**
+ * Control class for the target. Takes care of collisions between the ball and target.
+ */
 public class TargetControl extends GhostControl implements PhysicsCollisionListener {
+	private static final String BALL_NAME = "ball";
+	private static final String TARGET_NAME = "target";
 	private Target target;
 	private Combo combo;
 
-	public TargetControl(CollisionShape shape, Target t, Combo c) {
+	/**
+	 * Constructor method for target control.
+	 * @param shape Collisionshape for the target
+	 * @param t Target the target to control
+	 * @param c Combo the combo object of the game
+	 */
+	public TargetControl(final CollisionShape shape, final Target t, final Combo c) {
 		super(shape);
 		target = t;
 		combo = c;
@@ -27,15 +37,23 @@ public class TargetControl extends GhostControl implements PhysicsCollisionListe
 		space.addCollisionListener(this);
 	}
 	
-	public void delete(){
+	/**
+	 * Removes the control from the physics space.
+	 */
+	public void delete() {
 		space.removeCollisionListener(this);
 	}
 
-	public void collision(PhysicsCollisionEvent event) {
-		if(("target".equals(event.getNodeA().getName()) 
-				&& "ball".equals(event.getNodeB().getName()))
-				|| ("ball".equals(event.getNodeA().getName()) 
-						&& "target".equals(event.getNodeB().getName()))){
+	/**
+	 * Handles a collision between ball and target.
+	 * Calls methods to increase the combo and respawn the target.
+	 * @param event PhysicsCollisionEvent containing information about the collision
+	 */
+	public void collision(final PhysicsCollisionEvent event) {
+		if (TARGET_NAME.equals(event.getNodeA().getName()) 
+				&& BALL_NAME.equals(event.getNodeB().getName())
+				|| BALL_NAME.equals(event.getNodeA().getName()) 
+						&& TARGET_NAME.equals(event.getNodeB().getName())) {
 			combo.incCombo();
 			target.respawn();
 		}

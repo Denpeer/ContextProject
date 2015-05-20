@@ -20,8 +20,9 @@ public abstract class Obstacle {
 	 * @param w the width of the obstacle
 	 * @param h the height of the obstacle
 	 * @param d the depth of the obstacle
+	 * @param n Node to attach the obstacle to the scene
 	 */
-	public Obstacle(final double w, final double h, final double d, Node n) {
+	public Obstacle(final double w, final double h, final double d, final Node n) {
 		this.setWidth(w);
 		this.setHeight(h);
 		this.setDepth(d);
@@ -32,7 +33,6 @@ public abstract class Obstacle {
 	 * The draw method that every obstacle needs.
 	 * @param mat the material
 	 * @param psySpace the physic space
-	 * @param rootNode the rootNode
 	 */
 	public abstract void draw(final Material mat, final PhysicsSpace psySpace);
 	

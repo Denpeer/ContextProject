@@ -1,27 +1,28 @@
 package com.funkydonkies.w4v3;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.funkydonkies.w4v3.obstacles.Target;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.scene.Spatial;
 
 public class TargetControlTest {
-	static TargetControl control;
-	static CollisionShape shape;
-	static Target target;
-	static Combo combo;
+	private static TargetControl control;
+	private static CollisionShape shape;
+	private static Target target;
+	private static Combo combo;
 	private static PhysicsCollisionEvent event;
 	private static Spatial ballSpatial;
 	private static Spatial targetSpatial;
+	private static PhysicsSpace space;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -32,6 +33,7 @@ public class TargetControlTest {
 		control = new TargetControl(shape, target, combo);
 		ballSpatial = mock(Spatial.class);
 		targetSpatial = mock(Spatial.class);
+		space = mock(PhysicsSpace.class);
 		when(ballSpatial.getName()).thenReturn("ball");
 		when(targetSpatial.getName()).thenReturn("target");
 		when(event.getNodeA()).thenReturn(ballSpatial);
@@ -60,6 +62,19 @@ public class TargetControlTest {
 		control.collision(event);
 		verifyNoMoreInteractions(target);
 		verifyNoMoreInteractions(combo);
+	}
+	
+	@Test
+	public void testSetPhysicsSpace(){
+		control.setPhysicsSpace(space);
+		verify(space).addCollisionListener(control);
+	}
+	
+	@Test
+	public void testDelete(){
+		control.setPhysicsSpace(space);
+		control.delete(); 
+		verify(space).removeCollisionListener(control);
 	}
 
 }
