@@ -25,12 +25,11 @@ public class App extends SimpleApplication {
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
 	
-	private MovingBox clBox;
-	private Target tar;
+	private MovingBox movBox;
+	private Target target;
 	//private PhysicsController ballPhy;
 	
-	private float time = 1;		// needs better name
-	private float timeCount = 0;	// needs better name
+	private ObstacleFactory factory;
 
 	/**
 	 * Main method. Instantiates the app and starts its execution.
@@ -46,7 +45,7 @@ public class App extends SimpleApplication {
 	public void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
 		/* Set up physics */
-
+		factory = new ObstacleFactory();
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
 		//bulletAppState.setDebugEnabled(true);
@@ -63,27 +62,15 @@ public class App extends SimpleApplication {
 		mat.setColor(COLOR, ColorRGBA.Orange);
 		sp.drawCurve(rootNode, mat, getPhysicsSpace());
 		
-		final ObstacleFactory facto = new ObstacleFactory();
-		
-		final int obstacleWidth = 2;
-		final int obstacleHeight = 4;
-		final int obstacleDepth = 1;
-		
-		final int targetWidth = 1;
-		final int targetHeight = 1;
-		final int targetDepth = 1;
-		
-		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
-				obstacleDepth);
-		
-		tar = (Target) facto.makeObstacle("TARGET", targetWidth, targetHeight, targetDepth);
+		movBox = factory.makeMovingBox();
+		target = factory.makeTarget();
 		
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
-		clBox.draw(mat2, getPhysicsSpace(), rootNode);
+		movBox.draw(mat2, getPhysicsSpace(), rootNode);
 		final Material mat3 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat3.setColor(COLOR, ColorRGBA.Yellow);
-		tar.draw(mat3, getPhysicsSpace(), rootNode);
+		target.draw(mat3, getPhysicsSpace(), rootNode);
 		cam.setLocation(CAM_LOCATION);
 		
 	}
@@ -114,42 +101,10 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-		clBox.move(tpf);
-		timeCount += tpf;
+		movBox.move(tpf);
 
-		tar.collides(rootNode);
-		
-		
-
+		target.collides(rootNode);
 	}
-
-//	/**
-//	 * Creates a new ball object and instantiates a physics controller for it.
-//	 * Adds the physics controller to the physics space and the ball to the scene
-//	 */
-//	private void makeBall() {
-//		/* Ball physics control */
-//		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
-//		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
-//
-//		/* Ball spatial */
-//		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
-//		final Geometry geom = new Geometry("Sphere", ball);
-//		final Material mat = new Material(assetManager,
-//				"Common/MatDefs/Misc/Unshaded.j3md");
-//		mat.setColor("Color", ColorRGBA.Blue);
-//		geom.setMaterial(mat);
-//
-//		/* Ball node */
-//		final Node node = new Node("ball");
-//		node.addControl(ballPhy);
-//		node.attachChild(geom);
-//		/* attach node and add the physics controller to the game */
-//		rootNode.attachChild(node);
-//		getPhysicsSpace().add(ballPhy);
-//		ballPhy.setRestitution(1f);
-//		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
-//	}
 
 	@Override
 	public void simpleRender(final RenderManager rm) {

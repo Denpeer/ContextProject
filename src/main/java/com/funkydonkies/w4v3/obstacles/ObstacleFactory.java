@@ -8,21 +8,32 @@ package com.funkydonkies.w4v3.obstacles;
 public class ObstacleFactory {
 	
 	/**
-	 * This method instantiates obstacle objects.
-	 * @param type the type of the obstacle
-	 * @param width the width of the obstacle
-	 * @param height the height of the obstacle
-	 * @param depth the depth of the obstacle
-	 * @return the obstacle object or null if invalid obstacle type
+	 * This method creates a moving box obstacle with the specified parameters.
+	 * @return a MovingBox object
 	 */
-	public final Obstacle makeObstacle(final String type, final double width,
-			final double height, final double depth) {
-		if ("TARGET".equals(type)) {
-	          return new Target(width, height, depth);
-	     } else if ("MOVINGBOX".equals(type)) {   
-	    	  return new MovingBox(width, height, depth);
-	     } else {
-	    	 return null;
-	     }
+	public final MovingBox makeMovingBox() {
+		final float obstacleWidth = 2;
+		final float obstacleHeight = 4;
+		final float obstacleDepth = 1;
+		final float obstacleX = 20;
+		final float obstacleY = 0;
+		final float obstacleZ = 0.5f;
+		return new MovingBox(obstacleWidth, obstacleHeight, obstacleDepth,
+				obstacleX, obstacleY, obstacleZ);
+	}
+	
+	/**
+	 * This method creates a target with the specified parameters.
+	 * @return a target object
+	 */
+	public final Target makeTarget() {
+		final float targetWidth = 1;
+		final float targetHeight = 1;
+		final float targetDepth = 1;
+		final float targetX = 30;
+		final float targetY = 0.5f;
+		final float targetZ = 1;
+		return new Target(targetWidth, targetHeight, targetDepth,
+				targetX, targetY, targetZ);
 	}
 }

@@ -28,7 +28,7 @@ public class ObstacleFactoryTest {
 	 */
 	@Test
 	public final void instantiateMovingBox() {
-		final MovingBox mBox = (MovingBox) obF.makeObstacle("MOVINGBOX", 2, 4, 1);
+		final MovingBox mBox = obF.makeMovingBox();
 		assertNotEquals(mBox, null);
 	}
 	
@@ -36,9 +36,9 @@ public class ObstacleFactoryTest {
 	 * Test if the not valid objects aren't instantiated.
 	 */
 	@Test
-	public final void instantiateNotExisting() {
-		final Obstacle notValidOb = obF.makeObstacle("NOTVALID", 2, 4, 1);
-		assertEquals(notValidOb, null);
+	public final void instantiateTarget() {
+		final Obstacle notValidOb = obF.makeTarget();
+		assertNotEquals(notValidOb, null);
 	}
 
 }

@@ -26,18 +26,13 @@ public class MovingBoxTest {
 	private static final double MOVEDOWN = 1.01;
 	private static final float TIME_PER_FRAME = 0.01f;
 	
-	private static final int WIDTH = 2;
-	private static final int HEIGHT = 4;
-	private static final int DEPTH = 1;
-
-
 	/**
 	 * The setup, needed to instantiate and mock objects.
 	 */
 	@BeforeClass
 	public static void setup() {
 		obF = new ObstacleFactory();
-		mBox = (MovingBox) obF.makeObstacle("MOVINGBOX", WIDTH, HEIGHT, DEPTH);
+		mBox = obF.makeMovingBox();
 		mat = mock(Material.class);
 		psySpace = mock(PhysicsSpace.class); 
 		rootNode = new Node();

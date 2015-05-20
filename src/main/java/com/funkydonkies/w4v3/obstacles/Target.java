@@ -25,15 +25,22 @@ public class Target extends Obstacle {
 	 * @param w the width of the target	
 	 * @param h the height of the target
 	 * @param d the depth of the target
+	 * @param x the x coordinate of the box
+	 * @param y the y coordinate of the box
+	 * @param z the z coordinate of the box
 	 */
-	public Target(final double w, final double h, final double d) {
-		super(w, h, d);
+	public Target(final double w, final double h, final double d,
+			final double x, final double y, final double z) {
+		super(w, h, d, x, y, z);
 		box = new Box((float) w, (float) h, (float) d);
 		
 	}
 
 	/**
 	 * This method draws the target.
+	 * @param mat the material
+	 * @param psySpace the physic space
+	 * @param rootNode the node where everything gets attached to
 	 */
 	@Override
 	public void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode) {
