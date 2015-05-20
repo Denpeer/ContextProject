@@ -263,9 +263,9 @@ public class WaveState extends AbstractAppState {
                     	float height = 0;
                     	
                     	if (delta >= 0) {
-                    		height = Math.min(delta, 20);
+                    		height = Math.min(delta, 40);
                     	} else {
-                    		height = Math.max(delta, -20);
+                    		height = Math.max(delta, -40);
                     	}
                     	
                     	locs.add(new Vector2f(locX, z));
