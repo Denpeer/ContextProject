@@ -133,7 +133,7 @@ public class GameInputState extends AbstractAppState {
 				waveState.setLowerTerrain(keyPressed);
 			}
 			if (name.equals(MAPPING_NAME_LEFT)) {
-//				final TerrainQuad terrain = app.getRootNode().getChild("curve").getUserData("terrain");
+				final TerrainQuad terrain = app.getRootNode().getChild("curve").getUserData("terrain");
 //				terrain.setLocked(false);
 //				for (int i = 0; i < 512; i++) {
 //					for (int j = 0; j < 512; j++) {

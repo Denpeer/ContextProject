@@ -63,9 +63,9 @@ public class App extends SimpleApplication {
 		
 		final ObstacleFactory facto = new ObstacleFactory();
 		
-		final int obstacleWidth = 2;
-		final int obstacleHeight = 4;
-		final int obstacleDepth = 1;
+		final int obstacleWidth = 20;
+		final int obstacleHeight = 40;
+		final int obstacleDepth = 10;
 		
 		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
 				obstacleDepth);
@@ -76,7 +76,7 @@ public class App extends SimpleApplication {
 	    mat2.setColor("Specular", ColorRGBA.White); // for shininess
 	    mat2.setFloat("Shininess", 64f); // [1,128] for shininess
 		
-//		clBox.draw(mat2, getPhysicsSpace(), rootNode);
+		clBox.draw(mat2, getPhysicsSpace(), rootNode);
 		
 		cam.setLocation(CAM_LOCATION);
 		

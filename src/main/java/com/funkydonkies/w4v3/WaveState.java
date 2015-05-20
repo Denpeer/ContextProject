@@ -110,7 +110,7 @@ public class WaveState extends AbstractAppState {
         
         this.app.getRootNode().attachChild(curve);
         
-        terrain.addControl(new DetectionInterpreterControl());
+//        terrain.addControl(new DetectionInterpreterControl());
         
 		// this.app.getRootNode();
 		// this.app.getStateManager();
@@ -311,7 +311,17 @@ public class WaveState extends AbstractAppState {
 	}
 	
 	public void setRaiseTerrain(final boolean rt) {
-		raiseTerrain = rt;
+		Vector3f inetersection = getWorldIntersection();
+		float current = 0;
+		if(intersection != null) {
+			current = ((TerrainQuad) terrain).getHeight(new Vector2f(intersection.x, 0));
+			if(current < 70) {
+				raiseTerrain = rt;
+				return;
+			}
+		}
+		raiseTerrain = false;
+		System.out.println(current);
 	}
 	
 	public boolean getLowerTerrain() {
@@ -319,7 +329,16 @@ public class WaveState extends AbstractAppState {
 	}
 	
 	public void setLowerTerrain(final boolean lt) {
-		lowerTerrain = lt;
+		Vector3f inetersection = getWorldIntersection();
+		float current = 0;
+		if(intersection != null) {
+			current = ((TerrainQuad) terrain).getHeight(new Vector2f(intersection.x, 0));
+			if(current > 0) {
+				lowerTerrain = lt;
+				return;
+			}
+		}
+		raiseTerrain = false;
 	}
 	
 }
