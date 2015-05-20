@@ -65,7 +65,7 @@ public class SplineCurve extends Spline {
 	}
 	
 	/**
-	 * Creates and draws the box on screen
+	 * Creates and draws the box on screen.
 	 * @param vecs the coordinates where the box needs to be drawn
 	 * @param mat the material to be used for the box
 	 * @param node the node to attach the spatial to, in order to add it to the scene
