@@ -1,6 +1,5 @@
 package com.funkydonkies.camdetect;
 
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 
@@ -19,31 +18,25 @@ import com.funkydonkies.camdetect.VideoCap.CameraNotOnException;
  * @author Olivier Dikken
  *
  */
-public class MyFrame extends JFrame {
-    /**
-	 * 
-	 */
+public class MyFrame extends JFrame implements Runnable {
+
 	private static final long serialVersionUID = 1L;
+	private static final int SLEEP_TIME = 30;
 	private JPanel contentPane;
 
   /**
-  * Launch the application.
+  * Launches the application.
   * @param args -
   */
     public static void main(final String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    final MyFrame frame = new MyFrame();
-                    frame.setVisible(true);
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    	new MyFrame();
     }
-
+    
     private VideoCap videoCap = new VideoCap();
+    
+    public VideoCap getVideoCap() {
+    	return videoCap;
+    }
     
   /**
   * Create the frame.
@@ -59,8 +52,7 @@ public class MyFrame extends JFrame {
         contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-        
-        new MyThread().start();
+        setVisible(true);
     }
     
     /**
@@ -87,27 +79,15 @@ public class MyFrame extends JFrame {
      * @param g 
      */
     public void paint(final Graphics g) {
-        try {
-			g.drawImage(videoCap.getOneFrame(), 0, 0, this);
-		} catch (final CameraNotOnException e) {
-			e.printStackTrace();
-		}
+        g.drawImage(videoCap.getOneFrame(), 0, 0, this);
     }
-    /** Thread that updates the frame.
-     * 
-     * @author Olivier Dikken
-     *
-     */
-    class MyThread extends Thread {
-    	private final int sleepTime = 30;
-        @Override
-        public void run() {
-            for (;;) {
-                repaint();
-                try { 
-                	Thread.sleep(sleepTime);
-                } catch (final InterruptedException e) {    }
-            }  
-        } 
-    }
+
+    public void run() {
+		for (;;) {
+            repaint();
+            try { 
+            	Thread.sleep(SLEEP_TIME);
+            } catch (final InterruptedException e) {    }
+        }  
+	}
 }

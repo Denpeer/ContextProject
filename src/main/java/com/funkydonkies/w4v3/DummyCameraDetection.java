@@ -18,12 +18,17 @@ public class DummyCameraDetection implements Bridge {
 
 		for (int z = 0; z < SIZE; z++) {
 			for (int x = 0; x < SIZE; x++) {
-				final float temp = (float) 150 / SIZE;
+				final float temp = (float) 128 / SIZE;
 				ret[x + (z * SIZE)] = temp * CLAMP;
 			}
 		}
 
 		return ret;
+	}
+
+	public int getxdist() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

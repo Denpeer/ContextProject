@@ -27,6 +27,7 @@ public class GameInputState extends AbstractAppState {
 	private static final String MAPPING_NAME_RIGHT = "Right";
 //	private static final String MAPPING_NAME_ROTATE = "Rotate";
 	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
+	private static final String MAPPING_TOGGLE_CONTROLS = "Toggle Controls";
 	private static final float TIME_PER_BALL_SPAWN = 0.5f;
 	
 	private float time = TIME_PER_BALL_SPAWN;
@@ -103,6 +104,7 @@ public class GameInputState extends AbstractAppState {
 	public void initKeys() {
 		inputManager.addMapping(MAPPING_NAME_LEFT, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
 		inputManager.addMapping(MAPPING_NAME_RIGHT, new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+		inputManager.addMapping(MAPPING_TOGGLE_CONTROLS, new KeyTrigger(KeyInput.KEY_C));
 //		inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
 		
 		//Control for spawing balls
@@ -111,7 +113,8 @@ public class GameInputState extends AbstractAppState {
 		
 		// Add the names to the action listener
 //		inputManager.addListener(actionListener, MAPPING_NAME_SPAWN_BALL);
-		inputManager.addListener(actionListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT); 
+		inputManager.addListener(actionListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
+				MAPPING_TOGGLE_CONTROLS); 
 //				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_NAME_SPAWN_BALL);
 
@@ -123,24 +126,13 @@ public class GameInputState extends AbstractAppState {
 //				// pause game
 //			}
 			if (name.equals(MAPPING_NAME_RIGHT)) {
-//				final TerrainQuad terrain = app.getRootNode().getChild("curve").getUserData("terrain");
-//				terrain.setLocked(false);
-//				for (int i = -512; i < 512; i++) {
-//					for (int j = -512; j < 512; j++) {
-//						terrain.adjustHeight(new Vector2f(i, j), 1);
-//					}
-//				}
 				waveState.setLowerTerrain(keyPressed);
 			}
 			if (name.equals(MAPPING_NAME_LEFT)) {
-//				final TerrainQuad terrain = app.getRootNode().getChild("curve").getUserData("terrain");
-//				terrain.setLocked(false);
-//				for (int i = 0; i < 512; i++) {
-//					for (int j = 0; j < 512; j++) {
-//						terrain.adjustHeight(new Vector2f(i, j), 1);
-//					}
-//				}
 				waveState.setRaiseTerrain(keyPressed);
+			}
+			if (name.equals(MAPPING_TOGGLE_CONTROLS) && !keyPressed) {
+				waveState.setControlsEnabled(!waveState.getControlsEnabled());
 			}
 	
 		}

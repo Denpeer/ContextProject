@@ -3,14 +3,13 @@ package com.funkydonkies.w4v3;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.funkydonkies.camdetect.Mat2Image;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.font.BitmapFont;
@@ -23,10 +22,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.terrain.Terrain;
-import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
-import com.jme3.terrain.geomipmap.lodcalc.DistanceLodCalculator;
 import com.jme3.terrain.heightmap.HeightMap;
 import com.mycompany.mavenproject1.BadDynamicTypeException;
 
@@ -34,7 +30,7 @@ import com.mycompany.mavenproject1.BadDynamicTypeException;
  * Interfaces with openCV to interpret dataset and change curve.
  */
 public class WaveState extends AbstractAppState {
-//	private Bridge bridge;
+	private Bridge bridge;
 	
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String SHADED_MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
@@ -51,11 +47,16 @@ public class WaveState extends AbstractAppState {
 	private HeightMap heightmap;
 	private Spatial terrain;
 	
-	private boolean raiseTerrain;
-	private boolean lowerTerrain;
+	private boolean raiseTerrain = false;
+	private boolean lowerTerrain = false;
+	private boolean controlsEnabled = false;
+	
 	private Node guiNode;
 	private BitmapFont guiFont;
 	private BitmapText hintText;
+	
+	private float time = 0;
+	private boolean normalized = false;
 	
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -70,6 +71,7 @@ public class WaveState extends AbstractAppState {
 		
 		this.assetManager = this.app.getAssetManager();
 		this.physicsSpace = this.app.getPhysicsSpace();
+		this.bridge = this.app.getBridge();
 		
 		final Material mat = new Material(assetManager, SHADED_MATERIAL_PATH);
 //		mat.getAdditionalRenderState().setWireframe(true);
@@ -95,9 +97,9 @@ public class WaveState extends AbstractAppState {
 		final int blockSize = 513;
 		
 		terrain = new TerrainQuad("myWave", tileSize, blockSize, this.heightmap.getHeightMap());
-        final TerrainLodControl lODcontrol = 
-        		new TerrainLodControl((Terrain) terrain, this.app.getCamera());
-        lODcontrol.setLodCalculator(new DistanceLodCalculator(65, 1.2f)); // patch size, multiplier
+//        final TerrainLodControl lODcontrol = 
+//        		new TerrainLodControl((Terrain) terrain, this.app.getCamera());
+//        lODcontrol.setLodCalculator(new DistanceLodCalculator(65, 1.2f)); // patch size, multiplier
 //        terrain.addControl(lODcontrol);
         terrain.setMaterial(mat);
 //        terrain.move(30, -150, -200);
@@ -120,19 +122,14 @@ public class WaveState extends AbstractAppState {
         
         terrain.addControl(new DetectionInterpreterControl());
         
-        
-		// this.app.getRootNode();
-		// this.app.getStateManager();
-		// this.app.getViewPort();
 		// this.stateManager.getState(BulletAppState.class);
-
-		// init stuff that is independent of whether state is PAUSED or RUNNING
-		// this.app.doSomething(); // call custom methods...
         
         DirectionalLight sun = new DirectionalLight();
         sun.setDirection(new Vector3f(1, -10, -2).normalizeLocal());
         sun.setColor(ColorRGBA.White);
         app.getRootNode().addLight(sun);
+        
+//        adjustHeight(-50);
 	}
 
 	@Override
@@ -159,41 +156,60 @@ public class WaveState extends AbstractAppState {
 	// Note that update is only called while the state is both attached and enabled
 	@Override
 	public final void update(final float tpf) {
-		// do the following while game is RUNNING
 		// this.app.getRootNode().getChild("blah").scale(tpf); // modify scene
-		// graph...
-		// x.setUserData(...); // call some methods...
-		
+		time += tpf * 100;
 		intersection = getWorldIntersection();
+		
+		if (controlsEnabled && time > 100) {
+			time = 0;
+//			((Mat2Image) bridge).refreshInterestPoints();
+			final float[] points = bridge.getControlPoints();
+			
+			if (!normalized) {
+				normalize(points, 480);
+				normalized = true;
+			}
+			adjustHeight(points, tpf);
+		}
 		
 		updateHintText(intersection);
 		
+		final int changeSpeed = 20;
 		if (raiseTerrain) {
             
             if (intersection != null) {
 //                adjustHeight(intersection, tpf * 100, tpf); // non-radial
-            	adjustHeight(intersection, 64, tpf * 100);
+            	adjustHeight(intersection, 64, tpf * changeSpeed);
             }
         } else if (lowerTerrain) {
             if (intersection != null) {
 //                adjustHeight(intersection, -tpf * 100, tpf); // non-radial
-            	adjustHeight(intersection, 64, -tpf * 100);
+            	adjustHeight(intersection, 64, -tpf * changeSpeed);
             }
         }
-		
+	}
+	
+	private void normalize(final float[] points, final int screenHeight) {
+		for (int i = 0; i < points.length; i ++) {
+			float point = points[i];
+			point = point / screenHeight;
+			point = point * 256;
+			points[i] = point;
+		}
 	}
 
 	private void adjustHeight(final Vector3f loc, final float radius, final float height) {
 
         // offset it by radius because in the loop we iterate through 2 radii
         final int radiusStepsX = (int) (radius / terrain.getLocalScale().x);
+        System.out.println(radiusStepsX);
 
         final float xStepAmount = terrain.getLocalScale().x;
         
         final List<Vector2f> locs = new ArrayList<Vector2f>();
         final List<Float> heights = new ArrayList<Float>();
         
-        for (int i = -512; i < 512; i++) {
+        for (int i = -256; i < 256; i++) {
             for (int x = -radiusStepsX; x < radiusStepsX; x++) {
 
                 final float locX = loc.x + (x * xStepAmount);
@@ -207,41 +223,75 @@ public class WaveState extends AbstractAppState {
             }
         }
         ((TerrainQuad) terrain).adjustHeight(locs, heights);
-        terrain.updateModelBound();
+//        terrain.updateModelBound();
     }
-/*
-	private void adjustHeight(final Vector3f loc, final float height, final float tpf) {
-
-        final float xStepAmount = terrain.getLocalScale().x;
-        final float zStepAmount = terrain.getLocalScale().z;
-        
-        final List<Vector2f> locs = new ArrayList<Vector2f>();
+	
+	
+	/** 
+	 * @param points
+	 * 				point values are expected to be in the range (0, 255)
+	 * @param tpf
+	 */
+	private void adjustHeight(final float[] points, final float tpf) {
+		final int radius = 10;
+		
+		final int radiusStepsX = (int) (radius / terrain.getLocalScale().x);
+		
+		final float xStepAmount = terrain.getLocalScale().x;
+		
+		final List<Vector2f> locs = new ArrayList<Vector2f>();
         final List<Float> heights = new ArrayList<Float>();
         
-        final float locX = loc.x + (0 * xStepAmount);
-        
-//        final float locZ = loc.z + (0 * zStepAmount);
+        // 32 iterations
+        int elem = 0;
+        for (int z = -256; z < 256; z++) {
+        	elem = 0;
+        	for (int x = -255; x < 255; x += 16) {
+            	
+                
+                for (int circleX = -radius; circleX < radius; circleX++) {
 
-        for (int i = -512; i < 512; i++) {
-        	final float h = height;
-	        locs.add(new Vector2f(locX, i));
-	        heights.add(h);
+                    final float locX = x + circleX;
+
+                    if (isInRadius(locX - x, 0, radius)) {
+                    	// get current height and increment so range (0, 256)
+                    	float current = ((TerrainQuad) terrain).getHeight(new Vector2f(locX, 0));
+                    	current = current + 128;
+                    	
+                    	float desired = points[elem];
+                    	float delta = current - desired;
+                    	float height = 0;
+                    	
+                    	if (delta >= 0) {
+                    		height = Math.min(delta, 20);
+                    	} else {
+                    		height = Math.max(delta, -20);
+                    	}
+                    	
+                    	locs.add(new Vector2f(locX, z));
+                        heights.add(height * tpf);
+                    }
+                }
+            	
+            	elem++;
+            }
         }
-        
-        // see if it is in the radius of the tool
-//        if (isInRadius(locX - loc.x, locZ - loc.z, radius)) {
-//        final float h = calculateHeight(radius, height, locX - loc.x, locZ - loc.z);
-//	        final float h = height;
-//	        locs.add(new Vector2f(locX, locZ));
-//	        heights.add(h);
+		
+//		for (int i = -256; i < 256; i++) {
+//            for (int x = -radiusStepsX; x < radiusStepsX; x++) {
+//
+//                final float locX = x + (x * xStepAmount);
+//
+//                if (isInRadius(locX - x, 0, radius)) {
+//                    final float h = calculateHeight(radius, tpf * 20, locX - x, 0);
+//                    locs.add(new Vector2f(locX, i));
+//                    heights.add(h);
+//                }
+//            }
 //        }
-
         ((TerrainQuad) terrain).adjustHeight(locs, heights);
-        terrain.updateModelBound();
-        CollisionShape colShape = CollisionShapeFactory.createDynamicMeshShape(terrain); 
-        terrain.getControl(RigidBodyControl.class).setCollisionShape(colShape);
+//        terrain.updateModelBound();
     }
-	*/
 	
 	/** Returns true if the distance is less than or equal to the radius.
 	 * @param x x-coordinate
@@ -326,4 +376,11 @@ public class WaveState extends AbstractAppState {
 		lowerTerrain = lt;
 	}
 	
+	public void setControlsEnabled(final boolean e) {
+		controlsEnabled = e;
+	}
+	
+	public boolean getControlsEnabled() {
+		return controlsEnabled;
+	}
 }

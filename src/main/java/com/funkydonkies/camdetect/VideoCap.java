@@ -1,6 +1,7 @@
 package com.funkydonkies.camdetect;
 
 import java.awt.image.BufferedImage;
+
 import org.opencv.core.Core;
 import org.opencv.highgui.VideoCapture;
 
@@ -20,6 +21,10 @@ public class VideoCap {
     private Mat2Image mat2Img = new Mat2Image();
     private final int inputSourceNumber = 1;
     private boolean camOn = false;
+    
+    public Mat2Image getMat2Image() {
+    	return mat2Img;
+    }
 
     /**
      * 
@@ -60,12 +65,16 @@ public class VideoCap {
      * @return next frame to be displayed as buffered image
      * @throws CameraNotOnException if camera source not open
      */
-    BufferedImage getOneFrame() throws CameraNotOnException {
-    	if (camOn) {
+    BufferedImage getOneFrame() {
+    	try {
+    		if (camOn) {
     		cap.read(mat2Img.getMat());
     		return mat2Img.getImage(mat2Img.getMat());
+    		}
+    	} catch (final Exception e) {
+    		
     	}
-    	throw new CameraNotOnException("Camera input not found.");
+    	return null;
     }
 
     /**

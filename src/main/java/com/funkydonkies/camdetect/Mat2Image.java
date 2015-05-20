@@ -39,6 +39,14 @@ public class Mat2Image implements Bridge {
      * empty constructor without args for now.
      */
     public Mat2Image() {
+    	refreshInterestPoints();
+    }
+    
+    public void refreshInterestPoints() {
+    	interestPoints = new float[32];
+    	for (int i = 0; i < interestPoints.length; i++) {
+    		interestPoints[i] = (float) (Math.random() * 480);
+    	}
     }
     
     /**

@@ -1,8 +1,6 @@
 package com.funkydonkies.w4v3;
 
 import com.funkydonkies.camdetect.MyFrame;
-import com.funkydonkies.w4v3.obstacles.MovingBox;
-import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -18,17 +16,19 @@ import com.mycompany.mavenproject1.GameInputState;
  *
  */
 public class App extends SimpleApplication {
-	private static final Vector3f GRAVITY = new Vector3f(0f, -15.81f, 0f);
-	private static final String COLOR = "Color";
-	private static final Vector3f CAM_LOCATION = new Vector3f(0, 150, 600);
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final Vector3f GRAVITY = new Vector3f(0f, -30f, 0f);
+//	private static final String COLOR = "Color";
+	private static final Vector3f CAM_LOCATION = new Vector3f(0, 150, 500);
+//	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String SHADED_MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
 	private WaveState waveState;
 	
-	private MovingBox clBox;
+	private static Bridge bridge;
+	
+//	private MovingBox clBox;
 	//private PhysicsController ballPhy;
 	
 	private float time = 1;		// needs better name
@@ -40,7 +40,7 @@ public class App extends SimpleApplication {
 	 */
 	public static void main(final String[] args) {
 		final App app = new App();
-		MyFrame.main(null);
+		bridge = new MyFrame().getVideoCap().getMat2Image();
 		app.start();
 	}
 
@@ -62,14 +62,14 @@ public class App extends SimpleApplication {
 		waveState = new WaveState();
 		stateManager.attach(waveState);
 		
-		final ObstacleFactory facto = new ObstacleFactory();
+//		final ObstacleFactory facto = new ObstacleFactory();
+//		
+//		final int obstacleWidth = 2;
+//		final int obstacleHeight = 4;
+//		final int obstacleDepth = 1;
 		
-		final int obstacleWidth = 2;
-		final int obstacleHeight = 4;
-		final int obstacleDepth = 1;
-		
-		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
-				obstacleDepth);
+//		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
+//				obstacleDepth);
 		
 		final Material mat2 = new Material(assetManager, SHADED_MATERIAL_PATH);
 		mat2.setBoolean("UseMaterialColors", true);    
@@ -91,8 +91,6 @@ public class App extends SimpleApplication {
 		if (timeCount > time) {
 			timeCount = 0;
 		}
-		
-		
 
 	}
 
@@ -143,6 +141,10 @@ public class App extends SimpleApplication {
 
 	public BitmapFont getGuiFont() {
 		return guiFont;
+	}
+	
+	public Bridge getBridge() {
+		return bridge;
 	}
 	
 }
