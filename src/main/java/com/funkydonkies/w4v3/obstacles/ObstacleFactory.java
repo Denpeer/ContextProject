@@ -31,9 +31,10 @@ public class ObstacleFactory {
 	/**
 	 * This method creates a target with the specified parameters.
 	 * @param combo Combo needed for creating Targets so that they can manipulate the combo count
+	 * @param node Node the node that the target will be attached to
 	 * @return a target object
 	 */
-	public final Target makeTarget(final Node node, final AssetManager assetManager,
+	public final Target makeTarget(final Node node,
 			final Combo combo) {
 		final float targetWidth = 1;
 		final float targetHeight = 1;
@@ -42,6 +43,6 @@ public class ObstacleFactory {
 		final float targetY = 0.5f;
 		final float targetZ = 1;
 		return new Target(targetWidth, targetHeight, targetDepth,
-				targetX, targetY, targetZ, node, assetManager, combo);
+				targetX, targetY, targetZ, node, combo);
 	}
 }

@@ -65,7 +65,7 @@ public class App extends SimpleApplication {
 				false);
 		combo = new Combo(guiNode, comboText);
 		movBox = factory.makeMovingBox(rootNode, assetManager);
-		target = factory.makeTarget(rootNode, assetManager, combo);
+		target = factory.makeTarget(rootNode, combo);
 		
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);

@@ -5,7 +5,6 @@ import static org.mockito.Mockito.mock;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.funkydonkies.w4v3.Combo;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
@@ -27,12 +26,8 @@ public class MovingBoxTest {
 	private static final double SPEED = 0.01;
 	private static final double MOVEDOWN = 1.01;
 	private static final float TIME_PER_FRAME = 0.01f;
-	
-	private static final int WIDTH = 2;
-	private static final int HEIGHT = 4;
-	private static final int DEPTH = 1;
 	private static AssetManager assetManager;
-	private static Combo combo;
+
 	/**
 	 * The setup, needed to instantiate and mock objects.
 	 */
@@ -40,9 +35,8 @@ public class MovingBoxTest {
 	public static void setup() {
 		obF = new ObstacleFactory();
 		assetManager = mock(AssetManager.class);
-		combo = mock(Combo.class);
 		rootNode = new Node();
-		mBox = obF.makeMovingBox();
+		mBox = obF.makeMovingBox(rootNode, assetManager);
 		mat = mock(Material.class);
 		psySpace = mock(PhysicsSpace.class); 
 	}
