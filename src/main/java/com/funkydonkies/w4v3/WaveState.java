@@ -295,7 +295,7 @@ public class WaveState extends AbstractAppState {
 		int elem = 0;
 		for (int z = -256; z < 256; z++) {
 			elem = 0;
-			for (int x = 0; x < points.length; x++) {
+			for (int x = -256; x < points.length - 256; x++) {
 				float current = ((TerrainQuad) terrain).getHeight(new Vector2f(x, 0));
 				
 				float desired = points[elem];
