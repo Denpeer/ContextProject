@@ -179,11 +179,11 @@ public class WaveState extends AbstractAppState {
 //			points = bridge.getControlPoints();
 			normalize(points, 480);
 			
-			// if (!normalized) {
-//			System.out.println(Arrays.toString(points));
-			// normalized = true;
-			// }
-			adjustHeight(points, tpf);
+			float[] gradientPoints = new float[512];
+			
+			fill(gradientPoints, points);
+			
+			adjustHeight(gradientPoints, tpf);
 		}
 		
 		updateHintText(intersection);
@@ -201,6 +201,44 @@ public class WaveState extends AbstractAppState {
 				adjustHeight(intersection, 64, -tpf * changeSpeed);
 			}
 		}
+	}
+
+	private void fill(final float[] gradientPoints, final float[] points) {
+		final int distance = gradientPoints.length / points.length;
+		int elem = 0;
+
+		for (int i = 0; i < gradientPoints.length - 16; i++) {
+			float valL = points[elem];
+			float valR = points[elem + 1];
+			
+			boolean incremented = false;
+			
+			if  (i % distance == 0 && i != 0) {
+				elem++;
+				incremented = true;
+			}
+			
+			int gradient = i % distance;
+			
+			float delta = Math.abs(valL - valR);
+			
+			if (i % distance != 0) {
+				if (valL <= valR) {
+					gradientPoints[i] = valL + delta * (gradient / distance);
+				} else {
+					
+				}
+			} else if (i % distance == 0) {
+				if (incremented) {
+					gradientPoints[i] = valR;
+				} else {
+					gradientPoints[i] = valL;
+				}
+			}
+		}
+		
+		
+		
 	}
 
 	private void normalize(final float[] points, final int screenHeight) {
@@ -245,15 +283,10 @@ public class WaveState extends AbstractAppState {
 
 	/**
 	 * @param points
-	 *            point values are expected to be in the range (0, 255)
+	 *            point values are expected to be in the range (0, 128)
 	 * @param tpf
 	 */
 	private void adjustHeight(final float[] points, final float tpf) {
-		final int radius = 8;
-
-		final int radiusStepsX = (int) (radius / terrain.getLocalScale().x);
-
-		final float xStepAmount = terrain.getLocalScale().x;
 
 		final List<Vector2f> locs = new ArrayList<Vector2f>();
 		final List<Float> heights = new ArrayList<Float>();
@@ -262,28 +295,10 @@ public class WaveState extends AbstractAppState {
 		int elem = 0;
 		for (int z = -256; z < 256; z++) {
 			elem = 0;
-			for (int x = -247; x < 255; x += 16) {
+			for (int x = 0; x < points.length; x++) {
 				float current = ((TerrainQuad) terrain).getHeight(new Vector2f(x, 0));
 				
-				float desired1 = points[elem];
-				float desired2 = desired1;
-				if (elem + 1 != points.length) {
-					desired2 = points[elem+1];
-				}
-				
-				float desiredDelta = Math.abs(desired1 - desired2);
-				
-//				System.out.println("D1: " + desired1 + " D2: " + desired2 + " DD: " + desiredDelta);
-				
-				float desired = 0;
-				
-				if (desired1 < desired2) {
-					desired = desired1 + desiredDelta/2;
-				} else if (desired1 > desired2) {
-					desired = desired2 + desiredDelta/2;
-				} else if (desired1 == desired2) {
-					desired = desired1;
-				}
+				float desired = points[elem];
 				
 				float delta = Math.abs(current - desired);
 				
@@ -304,79 +319,8 @@ public class WaveState extends AbstractAppState {
 				
 				elem++;
 			}
-			
-			elem = 0;
-		
-			for (int x = -255; x < 255; x += 16) {
-	
-//				for (int circleX = 0; circleX < 1; circleX++) {
-				for (int circleX = -radius; circleX < radius; circleX++) {
-					if (Math.abs(circleX) == radius) {
-						continue;
-					}
-					final float locX = x + circleX;
-	
-					if (isInRadius(locX - x, 0, radius)) {
-						// get current height and increment so range (0, 256)
-						float current = ((TerrainQuad) terrain).getHeight(new Vector2f(locX, 0));
-//						current = current + 128;
-						
-						float desired = points[elem];
-						float delta = Math.abs(current - desired);
-						
-						if (delta < 5) {
-							continue;
-						}
-						
-//						if (locX == 0 && x == 1) {
-//							System.out.println("C: " + current + " D: " + desired + " delta: " + delta);
-//						}
-						
-						float height = 0;
-	
-						if (current <= desired) {
-							height = Math.min(delta, 20);
-						} else {
-							height = Math.max(-delta, -20);
-						}
-						
-//						System.out.println((radius - (Math.abs(x - locX))) / radius);
-						
-						height = height * (((radius + 2) - (Math.abs(x - locX))) / (radius + 2));
-						
-//						height = calculateHeight(radius, tpf, locX - x, 1);
-//						System.out.println(height);
-						
-//						if (x == 1 && !printed) {
-//							System.out.println(locX);
-//						}
-	
-						locs.add(new Vector2f(locX, z));
-						heights.add(height * tpf);
-					}
-				}
-	
-				elem++;
-//				if (x == 1) { 
-//					printed = true;
-//				}
-			}
 		}
-
-		// for (int i = -256; i < 256; i++) {
-		// for (int x = -radiusStepsX; x < radiusStepsX; x++) {
-		//
-		// final float locX = x + (x * xStepAmount);
-		//
-		// if (isInRadius(locX - x, 0, radius)) {
-		// final float h = calculateHeight(radius, tpf * 20, locX - x, 0);
-		// locs.add(new Vector2f(locX, i));
-		// heights.add(h);
-		// }
-		// }
-		// }
 		
-		counted = true;
 		((TerrainQuad) terrain).adjustHeight(locs, heights);
 		 terrain.updateModelBound();
 	}
