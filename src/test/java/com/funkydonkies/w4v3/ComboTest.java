@@ -16,6 +16,10 @@ public class ComboTest {
 	private static BitmapText text;
 	private static Node node;
 	
+	/**
+	 * Instantiates objects.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		node = mock(Node.class);
@@ -23,6 +27,9 @@ public class ComboTest {
 		combo = new Combo(node, text);
 	}
 
+	/**
+	 * Tests the increasing of the combo.
+	 */
 	@Test
 	public void testIncCombo() {
 		verify(text).setText(("Current combo: 0"));
@@ -32,6 +39,9 @@ public class ComboTest {
 		verify(text).setText(("Current combo: 1"));
 	}
 
+	/**
+	 * Tests the combo reset.
+	 */
 	@Test
 	public void testResetCombo() {
 		assertEquals(combo.getCombo(), 0);
@@ -44,6 +54,9 @@ public class ComboTest {
 
 	}
 
+	/**
+	 * Tests the currect displaying of the combo.
+	 */
 	@Test
 	public void testDisplay() {
 		combo.display();

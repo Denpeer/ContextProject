@@ -1,6 +1,5 @@
 package com.funkydonkies.w4v3.obstacles;
 
-import com.funkydonkies.w4v3.Combo;
 import com.funkydonkies.w4v3.TargetControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
@@ -31,14 +30,13 @@ public class Target extends Obstacle {
 	 * @param y the y coordinate of the box
 	 * @param z the z coordinate of the box
 	 * @param node Node to attach the target to the scene
-	 * @param combo Combo to create target control
 	 */
 	public Target(final float w, final float h, final float d,
-			final float x, final float y, final float z, final Node node, final Combo combo) {
+			final float x, final float y, final float z, final Node node) {
 		super(w, h, d, x, y, z, node);
 		box = new Box(w, h, d);
 		control = new TargetControl(
-				new BoxCollisionShape(new Vector3f((float) w, (float) h, (float) d)), this, combo);
+				new BoxCollisionShape(new Vector3f((float) w, (float) h, (float) d)), this);
 //		mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		geom = new Geometry("target", box);
 //		geom.setMaterial(mat);
@@ -87,5 +85,13 @@ public class Target extends Obstacle {
 	 */
 	public Vector3f getLocation() {
 		return geom.getLocalTranslation();
+	}
+	
+	/**
+	 * Returns the Targetcontrol of the target.
+	 * @return control TargetControl, the controll that is controlling this target
+	 */
+	public TargetControl getControl() {
+		return control;
 	}
 }

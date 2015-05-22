@@ -9,9 +9,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.w4v3.Combo;
 import com.funkydonkies.w4v3.TargetControl;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
@@ -31,7 +29,6 @@ public class TargetTest {
 	private static Material mat;
 	private static Node rootNode;
 	private static PhysicsSpace psySpace;
-	private static Combo combo;
 	
 	/**
 	 * Setup the test class, mock and instantiate objects.
@@ -39,9 +36,8 @@ public class TargetTest {
 	@Before
 	public void setUp() {
 		obF = new ObstacleFactory();
-		combo = mock(Combo.class);
 		rootNode = mock(Node.class);
-		tar = obF.makeTarget(rootNode, combo);
+		tar = obF.makeTarget(rootNode);
 		mat = mock(Material.class);
 
 		psySpace = mock(PhysicsSpace.class); 
@@ -57,18 +53,27 @@ public class TargetTest {
 		verify(psySpace).add(any(TargetControl.class));
 	}
 	
+	/**
+	 * verifies the correct destroying of the target.
+	 */
 	@Test
 	public final void destroyTest() {
 		tar.destroy();
 		verify(rootNode).detachChild(any(Spatial.class));
 	}
 	
+	/**
+	 * Tests the getlocation method.
+	 */
 	@Test
 	public final void testGetLocation() {
 		tar.draw(mat, psySpace);
 		assertEquals(INITIAL_SPAWN_LOCATION, tar.getLocation());
 	}
 	
+	/**
+	 * Tests the respawn method.
+	 */
 	@Test 
 	public final void testRespawn() {
 		tar.draw(mat, psySpace);
