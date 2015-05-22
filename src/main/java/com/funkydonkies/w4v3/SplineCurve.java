@@ -4,22 +4,39 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.Spline;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
-import com.jme3.scene.shape.Box;
+import com.jme3.scene.VertexBuffer.Type;
+import com.jme3.util.BufferUtils;
 
 /**
  * This class represent the spline(curve).
- * 
- * @author SDumasy
- *
  */
 public class SplineCurve extends Spline {
+	private static Vector3f[] splinePoints;
 	
-	private static final double BOXWIDTH = 0.01;
-	private static final double ADDITIONALBOXHEIGHT = 10;
-	private static final float YCURVETRANSLATION = -15;
+	private static Vector3f[] backFrontVertices;
+	private static Vector3f[] frontVertices;
+	private static Vector3f[] backVertices;
+	
+	private static Vector3f[] curvePoints;
+	private static Vector3f[] segmentPoints;
+	private static Vector3f[] basePoints;
+	private static Vector2f[] texCoords;
+	
+	private static int[] totalTriangles;
+	private static int[] overLappingTriangles;
+	private static int[] backFrontTriangles;
+	private static int[] backTriangles;
+	private static int[] frontTriangles;
+	private static int[] boxfrontTriangles;
+	private static int[] upperfrontTriangles;
+	Boolean bool = true;
+	private static Geometry geo;
+	private RigidBodyControl phys;
 	/**
 	 * The constructor of the SplineCurve class.
 	 * @param splineType the type of the SplineCurve, in our case Catmulrom
@@ -31,61 +48,134 @@ public class SplineCurve extends Spline {
 			final Vector3f[] controlPoints, final float curveTension, 
 			final boolean cycle) {
 		super(splineType, controlPoints, curveTension, cycle);
+		
+		curvePoints = controlPoints;
+			
 	}
 
-	/**
-	 * This method draws the curve.
-	 * @param rootNode the rootnode of the program
-	 * @param mat takes a pre-defined jme3 material
-	 * @param physicsSpace takes a pre-defined jme3 physicsSpace
-	 */
-	public void drawCurve(final Node rootNode, final Material mat, 
-			final PhysicsSpace physicsSpace) {
-		final RigidBodyControl phys = new RigidBodyControl(0f);
-		final Node node = new Node("curve");
-		loopThroughSpline(node, physicsSpace, mat);
-		rootNode.attachChild(node);
-		node.addControl(phys);
+	public void drawCurve(final Material mat,
+			final PhysicsSpace physicsSpace, RigidBodyControl rigidBody, final Node node) {
+		phys = rigidBody;
+		splinePoints = getSplinePoints();
+		segmentPoints = new Vector3f[(splinePoints.length - 3) * 2 + 4];
+		basePoints = new Vector3f[splinePoints.length];
+		frontVertices = new Vector3f[splinePoints.length + segmentPoints.length + basePoints.length];
+		backVertices = new Vector3f[frontVertices.length];
+		backFrontVertices = new Vector3f[frontVertices.length + backVertices.length];
+		texCoords = new Vector2f[frontVertices.length];
+		
+		overLappingTriangles = new int[(splinePoints.length - 1) * 6];
+		boxfrontTriangles = new int[segmentPoints.length * 3];
+		upperfrontTriangles = new int[splinePoints.length * 3];
+		frontTriangles = new int[boxfrontTriangles.length + upperfrontTriangles.length];
+		backTriangles = new int[frontTriangles.length];
+		backFrontTriangles = new int[frontTriangles.length + backTriangles.length];
+		totalTriangles = new int[overLappingTriangles.length + backFrontTriangles.length];
+		
+			fillBasePoints();
+			fillTexCoords();
+			segmentPoints[0] = new Vector3f().add( 0, 0, 0);
+			segmentPoints[1] = new Vector3f().add( 1, 0, 0);
+			segmentPoints[segmentPoints.length - 2] = new Vector3f().add(curvePoints[curvePoints.length - 1].getX() - 1, 0, 0);
+			segmentPoints[segmentPoints.length - 1] = new Vector3f().add(curvePoints[curvePoints.length - 1].getX(), 0, 0);
+
+		int j = 0;
+		int q = 0;
+		int v = 0;
+		for(int i = 0; i < splinePoints.length - 1; i++){
+			if(splinePoints[i].getY() < splinePoints[i + 1].getY()){
+				Vector3f vecNew = new Vector3f().add(splinePoints[i + 1]);
+				vecNew.setY(splinePoints[i].getY());
+				segmentPoints[q] = splinePoints[i];
+				segmentPoints[q + 1] = vecNew;		
+			}else{
+				Vector3f vecNew = new Vector3f().add(splinePoints[i]);
+				vecNew.setY(splinePoints[i + 1].getY());
+				segmentPoints[q] = vecNew;
+				segmentPoints[q + 1] = splinePoints[i + 1];
+			}
+			addBoxfrontTriangles(j, i, q, basePoints.length);
+			int indexStartFrontCurvePoints = basePoints.length + segmentPoints.length;
+			int indexStartBackCurvePoints = frontVertices.length + basePoints.length + segmentPoints.length;
+			addUpperfrontTriangles(i, v, q, indexStartFrontCurvePoints, basePoints.length);
+			getOverlappingTriangles(q, i, j, indexStartFrontCurvePoints, indexStartBackCurvePoints);
+			j = j + 6;
+			q = q + 2;
+			v = v + 3;
+		}
+
+		addfrontVerticesToEachOther();
+		addfrontTrianglesToEachOther();
+		
+		getBackTriangles();
+		getBackVertices();
+		putFrontAndBackTogether();
+
+		getTotalTriangles();
+		Mesh mesh = new Mesh();
+		mesh.setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(backFrontVertices));
+		mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoords));
+		mesh.setBuffer(Type.Index,    3, BufferUtils.createIntBuffer(totalTriangles));
+		mesh.updateBound();
+		geo = new Geometry("OurMesh", mesh); 
+		geo.setMaterial(mat);
+		geo.addControl(phys);
 		physicsSpace.add(phys);
+		node.attachChild(geo);
+	
+	}
+	public void addUpperfrontTriangles(int i, int v, int q, int indexStartCurvePoints, int indexStartSegmentPoints){
+		upperfrontTriangles[v] = indexStartSegmentPoints + q; 
+		upperfrontTriangles[v + 1] = indexStartSegmentPoints + 1 + q;
+		if(splinePoints[i].getY() > splinePoints[i + 1].getY()){
+			upperfrontTriangles[v + 2] = indexStartCurvePoints + i;
+		}else{
+			upperfrontTriangles[v + 2] = indexStartCurvePoints + i + 1;
+		}
+		
 	}
 	
-	/**
-	 * This method loops through the whole spine.
-	 * @param node is the curve node
-	 * @param physicsSpace the physic space
-	 * @param mat the material
-	 */
-	public void loopThroughSpline(final Node node, 
-			final PhysicsSpace physicsSpace, final Material mat) { 
-		for (int i = 0; i < getControlPoints().size() - 1; i++) {
-			double t = 0;
-			while (t <= 1) {
-				final Vector3f[] vecs = getTwoVectors(i, t);
-				drawBox(vecs, mat, physicsSpace, node);
-				t = t + BOXWIDTH;
+	public void addBoxfrontTriangles(int j, int i, int q, int basePointLength){
+		boxfrontTriangles[j] = i;
+		boxfrontTriangles[j + 1] = i + 1;
+		boxfrontTriangles[j + 2] = basePointLength + q;
+		boxfrontTriangles[j + 3] = boxfrontTriangles[j + 1];
+		boxfrontTriangles[j + 4] = basePointLength + q + 1;
+		boxfrontTriangles[j + 5] = basePointLength + q;
+	}
+	
+	public void fillBasePoints(){
+		for(int i = 0; i < basePoints.length; i++){
+			basePoints[i] = new Vector3f().add(splinePoints[i].getX(), 0, 0);
+		}	
+	}
+	
+	public void fillTexCoords(){
+		for(int i = 0; i < texCoords.length; i++){
+			texCoords[i] = new Vector2f(1,1);
+		}
+	}
+	
+	public void addfrontVerticesToEachOther(){
+		for(int i = 0; i < frontVertices.length; i++){
+			if(i < basePoints.length){
+				frontVertices[i] = basePoints[i];
+			}else if(i < basePoints.length + segmentPoints.length){
+				frontVertices[i] = segmentPoints[i - basePoints.length];
+			}else{
+				frontVertices[i] = splinePoints[i - basePoints.length - segmentPoints.length];
 			}
 		}
 	}
 	
-	/**
-	 * This method takes care of drawing a box and the collision of it.
-	 * @param vecs the coordinates where the box needs to be drawn
-	 * @param mat the material of the box
-	 * @param physicsSpace the physics of the box
-	 * @param node the node ???
-	 * 
-	 * @return returns a node... what node?
-	 */
-	public Node drawBox(final Vector3f[] vecs, final Material mat,
-			final PhysicsSpace physicsSpace, final Node node) {
-		
-		final Box box = new Box((float) vecs[0].x - vecs[1].x , 
-				(float) (vecs[0].getY() + ADDITIONALBOXHEIGHT), 1f);
-		final Geometry squad = new Geometry("square", box);
-		squad.move(vecs[0].x, YCURVETRANSLATION, 0);
-		squad.setMaterial(mat);
-		node.attachChild(squad);
-		return node;
+	public void addfrontTrianglesToEachOther(){
+		for(int i = 0; i < frontTriangles.length; i++){
+			if(i < boxfrontTriangles.length){
+				frontTriangles[i] = boxfrontTriangles[i];
+			}else {
+				frontTriangles[i] = upperfrontTriangles[i - boxfrontTriangles.length];
+			}
+		}
 	}
 	
 	/**
@@ -94,16 +184,83 @@ public class SplineCurve extends Spline {
 	 * @param t how far until next controlpoint 
 	 * @return an array with 2 vectors
 	 */
-	public Vector3f[] getTwoVectors(final int controlPoint,
-			final double t) {
-		final Vector3f[] vecs = new Vector3f[2];
-		if (controlPoint == 0) {
-			vecs[0] = this.getControlPoints().get(0);
-			vecs[1] = this.getControlPoints().get(1);
-		} else {
-			vecs[0] = interpolate((float) t, controlPoint, null);
-			vecs[1] = interpolate((float) (t + BOXWIDTH), controlPoint, null);
+	public Vector3f[] getSplinePoints() {
+		int q = 0;
+		final Vector3f[] vecs = new Vector3f[(curvePoints.length - 4)* 10];
+		for(int i = 2; i < curvePoints.length - 2; i++){
+			for(double j = 0; j < 0.9; j = j + 0.1){
+				vecs[q] = interpolate((float) j, i, null);
+				q++;
+			}
 		}
 		return vecs;
+	}
+
+	public void incrementPoints(){
+		for(int i = 0; i < curvePoints.length; i++){
+			Vector3f vec = curvePoints[i];
+			curvePoints[i] = vec.setY(curvePoints[i].getY() + 0.01f);
+		}
+	}
+	
+	public void decrementPoints(){
+		for(int i = 0; i < curvePoints.length; i++){
+			Vector3f vec = curvePoints[i];
+			curvePoints[i] = vec.setY(curvePoints[i].getY() - 0.01f);
+		}
+	}
+	
+	public void getBackVertices(){	
+		for(int i = 0; i < frontVertices.length; i++){
+			backVertices[i] = new Vector3f().add(frontVertices[i]).setZ(-0.5f);
+		}
+	}
+	
+	public void getBackTriangles(){
+		
+		for(int i = 0; i < backTriangles.length; i++){
+
+			backTriangles[i] = frontTriangles[i] + frontVertices.length;
+		}
+	}
+	
+	public void putFrontAndBackTogether(){
+		for(int i = 0; i < backFrontTriangles.length; i++){
+			if(i < frontTriangles.length){
+				backFrontTriangles[i] = frontTriangles[i];
+			}else {
+				backFrontTriangles[i] = backTriangles[i - frontTriangles.length];
+			}
+		}
+		
+		for(int i = 0; i < backFrontVertices.length; i++){
+			if(i < frontVertices.length){
+				backFrontVertices[i] = frontVertices[i];
+			}else{
+				backFrontVertices[i] = backVertices[i - frontVertices.length];
+			}
+		}
+	}
+	
+	public void getOverlappingTriangles(int q, int i, int j, int indexStartCurvePoints, int indexBackCurvePoints){
+		overLappingTriangles[j] = indexStartCurvePoints + i;
+		overLappingTriangles[j + 1] = indexStartCurvePoints + i + 1;
+		overLappingTriangles[j + 2] = indexBackCurvePoints + i;
+		overLappingTriangles[j + 3] = indexBackCurvePoints + i;
+		overLappingTriangles[j + 4] = indexStartCurvePoints + i + 1;
+		overLappingTriangles[j + 5] = indexBackCurvePoints + i + 1;
+	}
+	public Geometry getGeometry(){
+		return geo;
+	}
+	
+	public void getTotalTriangles(){
+		for(int i = 0; i < totalTriangles.length; i++){
+			if(i < backFrontTriangles.length){
+				totalTriangles[i] = backFrontTriangles[i];
+			}else {
+				totalTriangles[i] = overLappingTriangles[i - backFrontTriangles.length];
+			}
+		}
 	}
 }

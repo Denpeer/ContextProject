@@ -5,6 +5,7 @@ import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
@@ -23,12 +24,16 @@ public class App extends SimpleApplication {
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
-	
+	private SplineCurveController spController;
+	private SplineCurve sp;
+	private Material mat;
 	private MovingBox clBox;
 	//private PhysicsController ballPhy;
-	
+	boolean bool = true;
 	private float time = 1;		// needs better name
 	private float timeCount = 0;	// needs better name
+	private static RigidBodyControl oldRigi;
+	private static RigidBodyControl rigi;
 
 	/**
 	 * Main method. Instantiates the app and starts its execution.
@@ -36,7 +41,8 @@ public class App extends SimpleApplication {
 	 */
 	public static void main(final String[] args) {
 		final App app = new App();
-
+		oldRigi = new RigidBodyControl(0f);
+		rigi = new RigidBodyControl(0f);
 		app.start();
 	}
 
@@ -50,19 +56,21 @@ public class App extends SimpleApplication {
 		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		//flyCam.setEnabled(false);
-		
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
-
+		
 		final Vector3f[] points = testPoints();
+		sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
+		spController = new SplineCurveController(sp);
+		stateManager.attach(spController);
 
-		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Orange);
-		sp.drawCurve(rootNode, mat, getPhysicsSpace());
+
+		mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, ColorRGBA.Yellow);
+		//sp.drawCurve(mat, getPhysicsSpace(), getRootNode());
 		
 		final ObstacleFactory facto = new ObstacleFactory();
-		
+		//System.out.println("!!!!!!!!!!!!!");
 		final int obstacleWidth = 2;
 		final int obstacleHeight = 4;
 		final int obstacleDepth = 1;
@@ -84,29 +92,42 @@ public class App extends SimpleApplication {
 	 */
 	public Vector3f[] testPoints() {
 		
-		final Vector3f v0 = new Vector3f(0, 6, 0),
-				v1 = new Vector3f(10, 6, 0),
-				v2 = new Vector3f(15, 1, 0),
-				v3 = new Vector3f(20, 3, 0),
-				v4 = new Vector3f(25, 0, 0),
-				v5 = new Vector3f(30, 6, 0),
-				v6 = new Vector3f(35, 2, 0),
-				v7 = new Vector3f(40, 2, 0),
-				v8 = new Vector3f(45, 1, 0),
-				v9 = new Vector3f(50, 5, 0),
-				v10 = new Vector3f(70, 3, 0);
+		final Vector3f v0 = new Vector3f(0, 5, 0),
+				v1 = new Vector3f(10, 5, 0),
+				v2 = new Vector3f(20, 4, 0),
+				v3 = new Vector3f(30, 2, 0),
+				v4 = new Vector3f(40, 4, 0),
+						v5 = new Vector3f(50, 7, 0),
+						v6 = new Vector3f(60, 2, 0),
+						v7 = new Vector3f(70, 5, 0),
+						v8 = new Vector3f(80, 5, 0);
+
 
 		
-		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
+		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8};
 		
 		return points;
 	}
+
 
 	@Override
 	public void simpleUpdate(final float tpf) {
 		clBox.move(tpf);
 		timeCount += tpf;
-
+		getRootNode().detachChildNamed("OurMesh");
+		//sp.incrementPoints();
+		System.out.println(rigi);
+		if(rigi != null){
+			oldRigi = new RigidBodyControl(0f);
+			oldRigi = rigi;
+		}
+			System.out.println(oldRigi);
+		rigi = new RigidBodyControl(0f);
+		
+		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode());
+		sp.getGeometry().removeControl(oldRigi);
+		oldRigi.setEnabled(false);
+		
 		if (timeCount > time) {
 			timeCount = 0;
 		}
