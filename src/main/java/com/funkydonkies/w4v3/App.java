@@ -70,7 +70,7 @@ public class App extends SimpleApplication {
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
 		movBox.draw(mat2, getPhysicsSpace());
-		target.draw(null, getPhysicsSpace());
+		target.draw(mat2, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
 		combo.display();
 	}
