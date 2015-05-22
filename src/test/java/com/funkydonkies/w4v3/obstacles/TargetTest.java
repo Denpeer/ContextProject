@@ -39,7 +39,6 @@ public class TargetTest {
 	@Before
 	public void setUp() {
 		obF = new ObstacleFactory();
-		assetManager = mock(AssetManager.class);
 		combo = mock(Combo.class);
 		rootNode = mock(Node.class);
 		tar = obF.makeTarget(rootNode, combo);

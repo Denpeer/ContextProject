@@ -88,7 +88,7 @@ public abstract class Obstacle {
 	/** Get depth of the obstacle.
 	 * @return current depth of obstacle
 	 */
-	public double getDepth() {
+	public float getDepth() {
 		return depth;
 	}
 
@@ -102,7 +102,7 @@ public abstract class Obstacle {
 	 * This method returns the z coordinate.
 	 * @return the z coordinate
 	 */
-	public double getzCoord() {
+	public float getzCoord() {
 		return zCoord;
 	}
 	/**
@@ -117,7 +117,7 @@ public abstract class Obstacle {
 	 * This method returns the x coordinate.
 	 * @return the x coordinate.
 	 */
-	public double getxCoord() {
+	public float getxCoord() {
 		return xCoord;
 	}
 
