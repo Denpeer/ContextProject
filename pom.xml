@@ -19,12 +19,33 @@
     <pluginManagement>
    		<plugins>
     	
-      	<plugin>
+      		<plugin>
     			<groupId>org.apache.maven.plugins</groupId>
        			<artifactId>maven-site-plugin</artifactId>
     			<version>3.3</version>
    			</plugin>
-
+   			<!-- 
+   			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-install-plugin</artifactId>
+		        <version>2.3.1</version>
+		        <executions>
+		            <execution>
+		              <phase>install</phase>
+		              <goals>
+		                <goal>install-file</goal>
+		              </goals>
+		              <configuration>
+		                <file>lib/opencv2410.jar</file>
+		                <groupId>opencv</groupId>
+		                <artifactId>opencv</artifactId>
+		                <version>2.4.10</version>
+		                <packaging>jar</packaging>
+		              </configuration>
+		            </execution>
+		          </executions>
+			</plugin>		-->
+   			
    		</plugins>
 	  </pluginManagement>
 
@@ -158,38 +179,29 @@
   </reporting>
 	
   <repositories>
- 
     <repository>
       <id>jmonkey</id>
       <name>Jmonkey repository</name>
       <url>http://updates.jmonkeyengine.org/maven/</url>
     </repository>
- <repository>
-      <id>javaopencvbook</id>
-      <url>https://raw.github.com/JavaOpenCVBook/code/maven2/</url>
-    </repository>
   </repositories>
 
   <dependencies>
-
-    <dependency>
-	<groupId>org.bytedeco.javacpp-presets</groupId>
-	<artifactId>opencv</artifactId>
-	<version>2.4.10-0.10</version>
-</dependency>
- <dependency>
-    	<groupId>org.javaopencvbook</groupId>
-    	<artifactId>opencvjar</artifactId>
-    	<version>2.4.7</version>    	     
-    </dependency>
-	
 	<dependency>
-		<groupId>org.javaopencvbook</groupId>
-		<artifactId>opencvjar-runtime</artifactId>
-		<version>2.4.7</version>
-		<classifier>natives-windows-x86</classifier>
+	    <groupId>opencv</groupId>
+	    <artifactId>opencv</artifactId>
+	    <version>2.4.10</version>
+	    <scope>system</scope>
+     	<systemPath>${basedir}/lib/opencv-247.jar</systemPath>
 	</dependency>
-      <dependency>
+	<dependency>
+	    <groupId>opencv</groupId>
+	    <artifactId>opencv</artifactId>
+	    <version>2.4.10</version>
+	    <scope>system</scope>
+     	<systemPath>${basedir}/lib/opencv-2410.jar</systemPath>
+	</dependency>
+   <dependency>
       <groupId>com.jme3</groupId>
       <artifactId>jme3-core</artifactId>
       <version>3.0.10</version>

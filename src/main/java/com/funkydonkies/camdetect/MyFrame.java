@@ -3,6 +3,7 @@ package com.funkydonkies.camdetect;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Field;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -10,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
+
+import org.opencv.core.Core;
 
 import com.funkydonkies.camdetect.VideoCap.CameraNotOnException;
 
@@ -42,14 +45,35 @@ public class MyFrame extends JFrame {
             }
         });
     }
-
-    private VideoCap videoCap = new VideoCap();
+    
+    private VideoCap videoCap;
+    
+    private void loadLib() {
+    	System.setProperty( "java.library.path", "./lib" );
+   	 Field fieldSysPath;
+		try {
+			fieldSysPath = ClassLoader.class.getDeclaredField( "sys_paths" );
+			fieldSysPath.setAccessible( true );
+			fieldSysPath.set( null, null );
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
     
   /**
   * Create the frame.
   * Start the thread.
   */
     public MyFrame() {
+    	loadLib();
+    	videoCap = new VideoCap();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final int xbound = 100, ybound = 100, boundwidth = 650, boundheight = 490;
         setBounds(xbound, ybound, boundwidth, boundheight);

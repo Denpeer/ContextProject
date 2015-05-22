@@ -169,9 +169,10 @@ public class Mat2Image implements Bridge {
                                res.cols(), res.rows(), dat);
         return img;
     }
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
+        
+//    static {
+//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+//    }
     
     /**
      * method comes from implementing the bridge interface.

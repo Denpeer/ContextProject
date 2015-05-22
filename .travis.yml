@@ -1,20 +1,9 @@
 language: java
-sudo: required
 notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout HEAD^2 && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
-  - git clone https://github.com/Itseez/opencv.git
-  - cd opencv
-  - git checkout 2.4.10
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make -j4
-  - sudo make -j4 install
-  - mvn install:install-file -Dfile=/usr/local/share/OpenCV/java/opencv-2410.jar -DgroupId=opencv -DartifactId=opencv -Dversion=2.4.10 -Dpackaging=jar
-  - cd ../..
 env:
   - BUILD_PR_BRANCH=true
   - BUILD_PR_BRANCH=false
@@ -22,6 +11,8 @@ matrix:
   allow_failures:
     - env:
       - BUILD_PR_BRANCH=true
+install:
+  - mvn site
 after_script:
   - echo "== CHECKSTYLE_RESULT ==" && cat "target/checkstyle-result.xml" && echo "== END_CHECKSTYLE_RESULT =="
   - echo "== PMD_RESULT ==" && cat "target/pmd.xml" && echo "== END_PMD_RESULT =="

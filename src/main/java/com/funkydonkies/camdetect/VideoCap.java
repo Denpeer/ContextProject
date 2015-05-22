@@ -12,9 +12,9 @@ import org.opencv.highgui.VideoCapture;
  *
  */
 public class VideoCap {
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
+//    static {
+//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+//    }
 
     private VideoCapture cap;
     private Mat2Image mat2Img = new Mat2Image();
