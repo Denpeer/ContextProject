@@ -31,10 +31,10 @@ public class MovingBox extends Obstacle {
 	 * @param y the y coordinate of the box
 	 * @param z the z coordinate of the box
 	 */
-	public MovingBox(final double width, final double height, final double depth,
-			final double x, final double y, final double z, final Node node) {
+	public MovingBox(final float width, final float height, final float depth,
+			final float x, final float y, final float z, final Node node) {
 		super(width, height, depth, x, y, z, node);
-		box = new Box((float) width, (float) height, (float) depth);
+		box = new Box(width, height, depth);
 		geom = new Geometry("closingBox", box);
 		phys = new RigidBodyControl(0f);
 		moveUp = true;

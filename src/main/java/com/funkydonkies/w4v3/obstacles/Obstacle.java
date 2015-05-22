@@ -10,12 +10,12 @@ import com.jme3.scene.Node;
  *
  */
 public abstract class Obstacle {
-	private double width;
-	private double height;
-	private double depth;
-	private double xCoord;
-	private double yCoord;
-	private double zCoord;
+	private float width;
+	private float height;
+	private float depth;
+	private float xCoord;
+	private float yCoord;
+	private float zCoord;
 	private Node node;
 	
 	/**
@@ -28,8 +28,8 @@ public abstract class Obstacle {
 	 * @param y the y coordinate of the obstacle
 	 * @param z the z coordinate of the obstacle
 	 */
-	public Obstacle(final double w, final double h, final double d, final double x,
-			final double y, final double z, final Node n) {
+	public Obstacle(final float w, final float h, final float d, final float x,
+			final float y, final float z, final Node n) {
 		this.setWidth(w);
 		this.setHeight(h);
 		this.setDepth(d);
@@ -66,7 +66,7 @@ public abstract class Obstacle {
 	 * This method sets the height of the obstacle.
 	 * @param h desired height of obstacle
 	 */
-	public final void setHeight(final double h) {
+	public final void setHeight(final float h) {
 		this.height = h;
 	}
 	
@@ -81,7 +81,7 @@ public abstract class Obstacle {
 	/** This method sets the width of the obstacle.
 	 * @param w desired width of obstacle
 	 */
-	public void setWidth(final double w) {
+	public void setWidth(final float w) {
 		this.width = w;
 	}
 
@@ -95,7 +95,7 @@ public abstract class Obstacle {
 	/** This method sets the depth of the obstacle.
 	 * @param d desired depth of obstacle
 	 */
-	public void setDepth(final double d) {
+	public void setDepth(final float d) {
 		this.depth = d;
 	}
 	/**
@@ -109,7 +109,7 @@ public abstract class Obstacle {
 	 * This method sets the z coordinate.
 	 * @param zCoor the z coordinate
 	 */
-	public void setzCoord(final double zCoor) {
+	public void setzCoord(final float zCoor) {
 		this.zCoord = zCoor;
 	}
 
@@ -125,7 +125,7 @@ public abstract class Obstacle {
 	 * This method sets the xCoordinate.
 	 * @param xCoor the x coordinate 
 	 */
-	public void setxCoord(final double xCoor) {
+	public void setxCoord(final float xCoor) {
 		this.xCoord = xCoor;
 	}
 	/**
@@ -139,7 +139,7 @@ public abstract class Obstacle {
 	 * This method sets the y coordinate.
 	 * @param yCoor the y coordinate
 	 */
-	public void setyCoord(final double yCoor) {
+	public void setyCoord(final float yCoor) {
 		this.yCoord = yCoor;
 	}
 }

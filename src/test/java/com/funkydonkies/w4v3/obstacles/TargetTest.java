@@ -31,7 +31,6 @@ public class TargetTest {
 	private static Material mat;
 	private static Node rootNode;
 	private static PhysicsSpace psySpace;
-	private static AssetManager assetManager;
 	private static Combo combo;
 	
 	/**
@@ -83,44 +82,17 @@ public class TargetTest {
 //		assertNotEquals(tar.getLocation(), startLoc);
 	}
 	
-//	/**
-//	 * Tests if the collision method works accordingly, not colliding.
-//	 */
-//	@Test
-//	public final void notCollidingTest() {
-//		rootNode = new Node();
-//		final Ball bal = new Ball(SHAPE, geom, mat, null);
-//		bal.spawn(rootNode, psySpace, false);
-//		tar.draw(mat, psySpace);
-//		assertEquals(rootNode.getChildren().size(), 2);
-//	}
-	
-//	/**
-//	 * Tests if the collision method works accordingly, colliding.
-//	 */
-//	@Test
-//	public final void collidingTest() {
-//		rootNode = new Node();
-//		final Ball bal = new Ball(SHAPE, geom, mat, null);
-//		tar.draw(mat, psySpace);
-//		bal.spawn(rootNode, psySpace, false);
-//		final Vector3f vec = new Vector3f();
-//		vec.add((float) tar.getxCoord(), (float) tar.getyCoord(), (float) tar.getzCoord());
-//		ball.setLocation(vec);
-//		assertEquals(rootNode.getChildren().size(), 2);
-//	}
-	
 	/**
 	 * Test the getters of obstacle.
 	 */
 	@Test
 	public final void getterTest() {
-		final double testX = 30;
-		final double testY = 0.5;
-		final double testZ = 1;
-		final double testWidth = 1;
-		final double testHeight = 1;
-		final double testDepth = 1;
+		final float testX = 30;
+		final float testY = 0.5f;
+		final float testZ = 1;
+		final float testWidth = 1;
+		final float testHeight = 1;
+		final float testDepth = 1;
 		assertTrue(tar.getxCoord() == testX);
 		assertTrue(tar.getyCoord() == testY);
 		assertTrue(tar.getzCoord() == testZ);

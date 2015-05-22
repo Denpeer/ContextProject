@@ -23,8 +23,8 @@ public class MovingBoxTest {
 	private static Material mat;
 	private static PhysicsSpace psySpace;
 	private static Node rootNode;
-	private static final double SPEED = 0.01;
-	private static final double MOVEDOWN = 1.01;
+	private static final float SPEED = 0.01f;
+	private static final float MOVEDOWN = 1.01f;
 	private static final float TIME_PER_FRAME = 0.01f;
 	private static AssetManager assetManager;
 

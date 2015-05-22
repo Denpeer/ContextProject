@@ -33,10 +33,10 @@ public class Target extends Obstacle {
 	 * @param node Node to attach the target to the scene
 	 * @param combo Combo to create target control
 	 */
-	public Target(final double w, final double h, final double d,
-			final double x, final double y, final double z, final Node node, final Combo combo) {
+	public Target(final float w, final float h, final float d,
+			final float x, final float y, final float z, final Node node, final Combo combo) {
 		super(w, h, d, x, y, z, node);
-		box = new Box((float) w, (float) h, (float) d);
+		box = new Box(w, h, d);
 		control = new TargetControl(
 				new BoxCollisionShape(new Vector3f((float) w, (float) h, (float) d)), this, combo);
 //		mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
