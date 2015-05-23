@@ -48,7 +48,7 @@ public class MyFrame extends JFrame {
     
     private VideoCap videoCap;
     
-    private void loadLib() {
+    public static void loadLib() {
     	System.setProperty( "java.library.path", "./lib" );
    	 Field fieldSysPath;
 		try {
