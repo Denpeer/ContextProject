@@ -124,18 +124,18 @@ public class BallTest {
 		verify(phy).setLinearVelocity(speed);
 	}
 	
-	/**
-	 * Tests the spawn method that uses the default values.
-	 */
-	@Test
-	public final void testSpawnUsingDefaults() {
-		ball.spawn(root, space, true);
-		verify(phy).setPhysicsLocation(DEFAULT_SPAWN_LOCATION);
-		verify(phy).setLinearVelocity(DEFAULT_INITIAL_SPEED);
-		verify(g).addControl(phy);
-		verify(space).add(phy);
-		verify(root).attachChild(g);
-	}
+//	/**
+//	 * Tests the spawn method that uses the default values.
+//	 */
+//	@Test
+//	public final void testSpawnUsingDefaults() {
+//		ball.spawn(root, space, true);
+//		verify(phy).setPhysicsLocation(DEFAULT_SPAWN_LOCATION);
+//		verify(phy).setLinearVelocity(DEFAULT_INITIAL_SPEED);
+//		verify(g).addControl(phy);
+//		verify(space).add(phy);
+//		verify(root).attachChild(g);
+//	}
 	
 	/**
 	 * Tests the ball's spawn method when no physics or physicsSpace were defined.
