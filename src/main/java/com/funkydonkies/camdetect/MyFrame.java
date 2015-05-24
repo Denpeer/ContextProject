@@ -64,7 +64,8 @@ public class MyFrame extends JFrame {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-	System.out.println(Core.NATIVE_LIBRARY_NAME);
+	System.out.println("Lib name: " + Core.NATIVE_LIBRARY_NAME);
+	System.out.println("Path: " + System.getProperty("java.library.path"));
    	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     
