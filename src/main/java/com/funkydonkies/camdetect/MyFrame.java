@@ -1,6 +1,5 @@
 package com.funkydonkies.camdetect;
 
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Field;
@@ -22,11 +21,10 @@ import com.funkydonkies.camdetect.VideoCap.CameraNotOnException;
  * @author Olivier Dikken
  *
  */
-public class MyFrame extends JFrame {
-    /**
-	 * 
-	 */
+public class MyFrame extends JFrame implements Runnable {
+
 	private static final long serialVersionUID = 1L;
+	private static final int SLEEP_TIME = 30;
 	private JPanel contentPane;
 
   /**
@@ -34,16 +32,7 @@ public class MyFrame extends JFrame {
   * @param args -
   */
     public static void main(final String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    final MyFrame frame = new MyFrame();
-                    frame.setVisible(true);
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    	new Thread(new MyFrame()).start();
     }
     
     private VideoCap videoCap;
@@ -89,8 +78,7 @@ public class MyFrame extends JFrame {
         contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-        
-        new MyThread().start();
+        setVisible(true);
     }
     
     /**
@@ -129,15 +117,24 @@ public class MyFrame extends JFrame {
      *
      */
     class MyThread extends Thread {
-    	private final int sleepTime = 30;
+    	
         @Override
         public void run() {
             for (;;) {
                 repaint();
                 try { 
-                	Thread.sleep(sleepTime);
+                	Thread.sleep(SLEEP_TIME);
                 } catch (final InterruptedException e) {    }
             }  
         } 
     }
+    
+	/**
+	 * Runs the thread that paints the current frame.
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	public void run() {
+		new MyThread().start();
+	}
 }
