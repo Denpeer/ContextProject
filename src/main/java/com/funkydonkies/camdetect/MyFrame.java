@@ -37,6 +37,14 @@ public class MyFrame extends JFrame implements Runnable {
     
     private VideoCap videoCap;
     
+    
+    /**
+     * @return VideoCap object that contains the Mat2Image bridge.
+     */
+    public VideoCap getVideoCap() {
+    	return videoCap;
+    }
+    
     /**
      * Loads the native libraries, setting the java.library.path in the process.
      */
