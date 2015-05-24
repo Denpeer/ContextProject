@@ -15,7 +15,7 @@ import com.funkydonkies.w4v3.Bridge;
  * This class performs the image matrix math and is used by VideoCap to get the current image to display in the frame.
  * this includes setting the bg, thresholding into foreground/background, and identifying the interestPoints
  * which are used as controlPoints and can be accessed via the Bridge method getControlPoints() 
- * and getxdist() to know the x interval between elements of the array returned by getControlPoints().
+ * and getXDIST() to know the x interval between elements of the array returned by getControlPoints().
  * also the found interestPoints are draws on the image as visual reference.
  * @author Olivier Dikken
  *
@@ -28,13 +28,13 @@ public class Mat2Image implements Bridge {
     private Mat res = new Mat();
     private Boolean bgSet = false;
     private float[] interestPoints;
-    private final int xdist = 20;
-    private final int medblur = 5;
-    private final int maxcol = 255;
-    private final int threshBlockSize = 71;
-    private final int ignoreSize = 7;
-    private final int circleDiam = 5;
-    private final int numChannels = 3;
+    private static final int XDIST = 20;
+    private static final int MEDBLUR = 5;
+    private static final int MAXCOL = 255;
+    private static final int THRESHBLOCKSIZE = 71;
+    private static final int IGNORESIZE = 7;
+    private static final int CIRCLEDIAM = 5;
+    private static final int NUMCHANNELS = 3;
     
     /** 
      * Empty Constructor.
@@ -80,25 +80,25 @@ public class Mat2Image implements Bridge {
     public Mat threshIt(final Mat imIn, final Mat background) {
     	Core.absdiff(imIn, background, res);
     	Imgproc.cvtColor(res, res, Imgproc.COLOR_BGR2GRAY); //convert to grayscale for processign
-    	Imgproc.medianBlur(res, res, medblur);
-    	Imgproc.adaptiveThreshold(res, res, maxcol, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, threshBlockSize, ignoreSize);
+    	Imgproc.medianBlur(res, res, MEDBLUR);
+    	Imgproc.adaptiveThreshold(res, res, MAXCOL, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, THRESHBLOCKSIZE, IGNORESIZE);
     	return res;
     }
     
     /**
-     * Currently this method finds the highest point for every x belonging to xdist*k with k a natural.
+     * Currently this method finds the highest point for every x belonging to XDIST*k with k a natural.
      * @param im input matrix of image
      */
     public void updateIP(final Mat im) {
-    	//xdist = 20; xrange = 640; total interest points = 640/20=32;
-    	final double tempdiv = im.size().width / xdist;
+    	//XDIST = 20; xrange = 640; total interest points = 640/20=32;
+    	final double tempdiv = im.size().width / XDIST;
     	final int numPoints = (int) Math.floor(tempdiv);
     	interestPoints = new float[numPoints];
     	Arrays.fill(interestPoints, (float) im.size().height);
     	//for every chosen x find the highest pixel value equal to 0
     	for (int i = 0; i < numPoints; i++) {
     		for (int j = 0; j < im.size().height; j++) {
-    			final double val = im.get(j, i * xdist)[0];
+    			final double val = im.get(j, i * XDIST)[0];
     			if (val == 0.0) {
     				interestPoints[i] = j;
     				break;
@@ -117,7 +117,7 @@ public class Mat2Image implements Bridge {
     	final Mat im = new Mat();
     	Imgproc.cvtColor(matMatrix, im, Imgproc.COLOR_GRAY2BGR); //convert back to bgr to draw interest points for visual feedback
     	for (int i = 0; i < iP.length; i++) {
-    		Core.circle(im, new Point(i * xdist, iP[i]), circleDiam, new Scalar(maxcol), 0, 0, 2);
+    		Core.circle(im, new Point(i * XDIST, iP[i]), CIRCLEDIAM, new Scalar(MAXCOL), 0, 0, 2);
     	}
     	return im;
     }
@@ -128,8 +128,8 @@ public class Mat2Image implements Bridge {
      */
     public void prepareSpace(final Mat matMatrix) {
     	final int w = mat.cols(), h = mat.rows();
-        if (dat == null || dat.length != w * h * numChannels) {
-            dat = new byte[w * h * numChannels];
+        if (dat == null || dat.length != w * h * NUMCHANNELS) {
+            dat = new byte[w * h * NUMCHANNELS];
         }
         if (img == null || img.getWidth() != w || img.getHeight() != h
             || img.getType() != BufferedImage.TYPE_3BYTE_BGR) {
@@ -184,9 +184,10 @@ public class Mat2Image implements Bridge {
      * Method comes from implementing the bridge interface.
      * used by classes outside of camdetect package to access horizontal interval between control points.
      * this is used to be able to interpret the interestPoints array returned by the getControlPoints() method.
-     * @return the xdist as int
+     * @return the XDIST as int
      */
 	public int getxdist() {
-		return xdist;
+		return XDIST;
 	}
+
 }

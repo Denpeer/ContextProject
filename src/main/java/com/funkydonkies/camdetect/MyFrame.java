@@ -129,14 +129,16 @@ public class MyFrame extends JFrame {
      *
      */
     class MyThread extends Thread {
-    	private final int sleepTime = 30;
+    	private static final int SLEEPTIME = 30;
         @Override
         public void run() {
             for (;;) {
                 repaint();
                 try { 
-                	Thread.sleep(sleepTime);
-                } catch (final InterruptedException e) {    }
+                	Thread.sleep(SLEEPTIME);
+                } catch (final InterruptedException e) { 
+                	throw new RuntimeException(e);
+                }
             }  
         } 
     }

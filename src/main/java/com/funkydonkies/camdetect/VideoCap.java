@@ -6,7 +6,7 @@ import org.opencv.highgui.VideoCapture;
 
 /**Video Capture class opens the capture source and gets processed frames from the Mat2Image class.
  * Make sure your webcam is configured correctly.
- * If you don't get any video response change the capture source by modifying the inputSourceNumber variable.
+ * If you don't get any video response change the capture source by modifying the INPUTSOURCENUMBER variable.
  * 
  * @author Olivier Dikken
  *
@@ -15,16 +15,16 @@ public class VideoCap {
 
     private VideoCapture cap;
     private Mat2Image mat2Img = new Mat2Image();
-    private final int inputSourceNumber = 1;
+    private static final int INPUTSOURCENUMBER = 1;
     private boolean camOn = false;
 
     /**
      * 
      */
     VideoCap() {
-        cap = new VideoCapture(inputSourceNumber);
+        cap = new VideoCapture(INPUTSOURCENUMBER);
         if (!cap.isOpened()) {
-            System.out.println("Camera Error; Try changing the inputSourceNumber variable in class VideoCap.java or check you webcam settings.");
+            System.out.println("Camera Error; Try changing the INPUTSOURCENUMBER variable in class VideoCap.java or check you webcam settings.");
             camOn = false;
         } else {
             System.out.println("Camera OK");
@@ -37,7 +37,7 @@ public class VideoCap {
      * @author Olivier Dikken
      *
      */
-    class CameraNotOnException extends Exception {
+    static class CameraNotOnException extends Exception {
     	   /**
 		 * 
 		 */
