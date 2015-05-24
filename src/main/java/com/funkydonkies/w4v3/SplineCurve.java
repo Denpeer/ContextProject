@@ -44,13 +44,10 @@ public class SplineCurve extends Spline {
 	 * @param curveTension the tension of the curve, betweeen 0-1
 	 * @param cycle the cycle of the curve
 	 */
-	public SplineCurve(final SplineType splineType, 
-			final Vector3f[] controlPoints, final float curveTension, 
-			final boolean cycle) {
-		super(splineType, controlPoints, curveTension, cycle);
+	public SplineCurve(final SplineType splineType, final float curveTension, final boolean cycle) {
+		super(splineType, SplineCurveController.testPoints(), curveTension, cycle);
 		
-		curvePoints = controlPoints;
-			
+		curvePoints = SplineCurveController.testPoints();
 	}
 
 	public void drawCurve(final Material mat,
@@ -199,14 +196,14 @@ public class SplineCurve extends Spline {
 	public void incrementPoints(){
 		for(int i = 0; i < curvePoints.length; i++){
 			Vector3f vec = curvePoints[i];
-			curvePoints[i] = vec.setY(curvePoints[i].getY() + 0.01f);
+			curvePoints[i] = vec.setY(curvePoints[i].getY() + 1f);
 		}
 	}
 	
 	public void decrementPoints(){
 		for(int i = 0; i < curvePoints.length; i++){
 			Vector3f vec = curvePoints[i];
-			curvePoints[i] = vec.setY(curvePoints[i].getY() - 0.01f);
+			curvePoints[i] = vec.setY(curvePoints[i].getY() - 1f);
 		}
 	}
 	
@@ -263,4 +260,20 @@ public class SplineCurve extends Spline {
 			}
 		}
 	}
+	
+	/**
+	 * Sets the array of Vector3f containing the points the curve uses to create itself.
+	 * @param points desired Vector3f[] containing the points the curve uses to create itself.
+	 */
+	public void setCurvePoints(final Vector3f[] points) {
+		curvePoints = points;
+	}
+	
+	/** Get current Vector3f array containing the points the curve uses to create itself.
+	 * @return Vector3f[] containing the points the curve uses to create itself.
+	 */
+	public Vector3f[] getCurvePoints() {
+		return curvePoints;
+	}
+	
 }

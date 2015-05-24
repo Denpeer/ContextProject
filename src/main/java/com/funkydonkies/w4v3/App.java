@@ -1,5 +1,6 @@
 package com.funkydonkies.w4v3;
 
+import com.funkydonkies.camdetect.MyFrame;
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
@@ -34,6 +35,8 @@ public class App extends SimpleApplication {
 	private float timeCount = 0;	// needs better name
 	private static RigidBodyControl oldRigi;
 	private static RigidBodyControl rigi;
+	
+	private static Bridge bridge;
 
 	/**
 	 * Main method. Instantiates the app and starts its execution.
@@ -43,14 +46,16 @@ public class App extends SimpleApplication {
 		final App app = new App();
 		oldRigi = new RigidBodyControl(0f);
 		rigi = new RigidBodyControl(0f);
+		
+		final MyFrame frame = new MyFrame();
+		bridge = frame.getVideoCap().getMat2Image();
+//		new Thread(frame).start();
+		
 		app.start();
 	}
 
 	@Override
 	public void simpleInitApp() {
-		// inputManager.setCursorVisible( true );
-		/* Set up physics */
-
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
 		//bulletAppState.setDebugEnabled(true);
@@ -59,18 +64,15 @@ public class App extends SimpleApplication {
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
 		
-		final Vector3f[] points = testPoints();
-		sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		spController = new SplineCurveController(sp);
-		stateManager.attach(spController);
+		sp = new SplineCurve(SplineType.CatmullRom, (float) 0.6, true);
 
+		spController = new SplineCurveController(bridge, sp);
+		stateManager.attach(spController);
 
 		mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Yellow);
-		//sp.drawCurve(mat, getPhysicsSpace(), getRootNode());
 		
 		final ObstacleFactory facto = new ObstacleFactory();
-		//System.out.println("!!!!!!!!!!!!!");
 		final int obstacleWidth = 2;
 		final int obstacleHeight = 4;
 		final int obstacleDepth = 1;
@@ -86,42 +88,18 @@ public class App extends SimpleApplication {
 		
 	}
 
-	/** Used to generate testPoints for the curve.
-	 * 
-	 * @return A variable length Vector3f array
-	 */
-	public Vector3f[] testPoints() {
-		
-		final Vector3f v0 = new Vector3f(0, 5, 0),
-				v1 = new Vector3f(10, 5, 0),
-				v2 = new Vector3f(20, 4, 0),
-				v3 = new Vector3f(30, 2, 0),
-				v4 = new Vector3f(40, 4, 0),
-						v5 = new Vector3f(50, 7, 0),
-						v6 = new Vector3f(60, 2, 0),
-						v7 = new Vector3f(70, 5, 0),
-						v8 = new Vector3f(80, 5, 0);
-
-
-		
-		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8};
-		
-		return points;
-	}
-
-
 	@Override
 	public void simpleUpdate(final float tpf) {
 		clBox.move(tpf);
 		timeCount += tpf;
 		getRootNode().detachChildNamed("OurMesh");
-		//sp.incrementPoints();
-		System.out.println(rigi);
+		sp.incrementPoints();
+//		System.out.println(rigi);
 		if(rigi != null){
 			oldRigi = new RigidBodyControl(0f);
 			oldRigi = rigi;
 		}
-			System.out.println(oldRigi);
+//			System.out.println(oldRigi);
 		rigi = new RigidBodyControl(0f);
 		
 		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode());
