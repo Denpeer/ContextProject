@@ -36,6 +36,8 @@ public class Mat2Image implements Bridge {
     private static final int CIRCLEDIAM = 5;
     private static final int NUMCHANNELS = 3;
     
+    private int numPoints = 0;
+    
     /** 
      * Empty Constructor.
      */
@@ -92,7 +94,7 @@ public class Mat2Image implements Bridge {
     public void updateIP(final Mat im) {
     	//XDIST = 20; xrange = 640; total interest points = 640/20=32;
     	final double tempdiv = im.size().width / XDIST;
-    	final int numPoints = (int) Math.floor(tempdiv);
+    	numPoints = (int) Math.floor(tempdiv);
     	interestPoints = new float[numPoints];
     	Arrays.fill(interestPoints, (float) im.size().height);
     	//for every chosen x find the highest pixel value equal to 0
@@ -177,7 +179,7 @@ public class Mat2Image implements Bridge {
      * @return float array containing the control points
      */
 	public float[] getControlPoints() {
-		return interestPoints;
+		return Arrays.copyOf(interestPoints, numPoints);
 	}
 	
 	/**
