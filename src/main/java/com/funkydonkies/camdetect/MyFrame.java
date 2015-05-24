@@ -21,7 +21,7 @@ import com.funkydonkies.camdetect.VideoCap.CameraNotOnException;
  * @author Olivier Dikken
  *
  */
-public class MyFrame extends JFrame {
+public class MyFrame extends JFrame implements Runnable {
     /**
 	 * 
 	 */
@@ -34,7 +34,7 @@ public class MyFrame extends JFrame {
   * @param args -
   */
     public static void main(final String[] args) {
-    	new Thread().start();
+    	new Thread(new MyFrame()).start();
     }
     
     private VideoCap videoCap;
