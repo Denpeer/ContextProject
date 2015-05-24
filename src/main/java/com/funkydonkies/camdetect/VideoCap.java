@@ -1,7 +1,7 @@
 package com.funkydonkies.camdetect;
 
 import java.awt.image.BufferedImage;
-import org.opencv.core.Core;
+
 import org.opencv.highgui.VideoCapture;
 
 /**Video Capture class opens the capture source and gets processed frames from the Mat2Image class.
@@ -12,9 +12,6 @@ import org.opencv.highgui.VideoCapture;
  *
  */
 public class VideoCap {
-//    static {
-//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-//    }
 
     private VideoCapture cap;
     private Mat2Image mat2Img = new Mat2Image();

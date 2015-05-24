@@ -48,24 +48,28 @@ public class MyFrame extends JFrame {
     
     private VideoCap videoCap;
     
+    /**
+     * Loads the native libraries, setting the java.library.path in the process.
+     */
     public static void loadLib() {
-    	System.setProperty( "java.library.path", "./lib" );
+    	final String javaLibPath = "java.library.path";
+    	System.setProperty(javaLibPath, "./lib");
    	 Field fieldSysPath;
 		try {
-			fieldSysPath = ClassLoader.class.getDeclaredField( "sys_paths" );
-			fieldSysPath.setAccessible( true );
-			fieldSysPath.set( null, null );
-		} catch (NoSuchFieldException e) {
+			fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+			fieldSysPath.setAccessible(true);
+			fieldSysPath.set(null, null);
+		} catch (final NoSuchFieldException e) {
 			e.printStackTrace();
-		} catch (SecurityException e) {
+		} catch (final SecurityException e) {
 			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	System.out.println("Lib name: " + Core.NATIVE_LIBRARY_NAME);
-	System.out.println("Path: " + System.getProperty("java.library.path"));
+	System.out.println("Path: " + System.getProperty(javaLibPath));
    	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     

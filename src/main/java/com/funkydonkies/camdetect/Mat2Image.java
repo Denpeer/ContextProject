@@ -21,7 +21,6 @@ import com.funkydonkies.w4v3.Bridge;
  *
  */
 public class Mat2Image implements Bridge {
-	//init variables
     private Mat mat = new Mat();
     private BufferedImage img;
     private byte[] dat;
@@ -37,14 +36,15 @@ public class Mat2Image implements Bridge {
     private final int circleDiam = 5;
     private final int numChannels = 3;
     
-    /**
-     * empty constructor without args for now.
+    /** 
+     * Empty Constructor.
      */
     public Mat2Image() {
+
     }
     
     /**
-     * mat matrix to image; get space of mat matrix -> does image processing and finds interest points.
+     * Mat matrix to image; get space of mat matrix -> does image processing and finds interest points.
      * @param imMatrix matrix of image
      */
     public Mat2Image(final Mat imMatrix) {
@@ -52,7 +52,7 @@ public class Mat2Image implements Bridge {
     }
     
     /**
-     * get the Mat image matrix.
+     * Get the Mat image matrix.
      * @return mat image matrix
      */
     public Mat getMat() {
@@ -60,7 +60,7 @@ public class Mat2Image implements Bridge {
     }
     
     /**
-     * when 'b' is pressed the class MyFrame calls setBG on VideoCap which calls this method.
+     * When 'b' is pressed the class MyFrame calls setBG on VideoCap which calls this method.
      * the current image matrix becomes the mat matrix identifying the background (used by threshIt method).
      */
     public void setBg() {
@@ -70,8 +70,9 @@ public class Mat2Image implements Bridge {
     }
     
     /**
+     * Note:
      * absdiff(img,bg)>img2GRAY>blur>thresh.
-     * res is used instead of mat to keep mat as the 'input matrix'.
+     * <p> Res is used instead of mat to keep mat as the 'input matrix'.</p>
      * @param imIn incomming frame
      * @param background background
      * @return result of img processing
@@ -107,7 +108,7 @@ public class Mat2Image implements Bridge {
     }
     
     /**
-     * draws red dots at the locations of the found interestPoints to be used as visual feedback.
+     * Draws red dots at the locations of the found interestPoints to be used as visual feedback.
      * @param matMatrix the image matrix
      * @param iP array of interestPoints
      * @return the processed image converted to BGR with red circles drawn at the interest point locations
@@ -122,7 +123,7 @@ public class Mat2Image implements Bridge {
     }
     
     /**
-     * make sure the byte and bufferedimage are of right size and 'color' settings.
+     * Make sure the byte and bufferedimage are of right size and 'color' settings.
      * @param matMatrix matrix of the image
      */
     public void prepareSpace(final Mat matMatrix) {
@@ -137,7 +138,7 @@ public class Mat2Image implements Bridge {
     }
     
     /**
-     * sets the matrix properties.
+     * Sets the matrix properties.
      * calls the methods to threshold the matrix (foreground/background).
      * then calls the methods to update the interestPoints and draw them on the image as visual feedback.
      * @param matMatrix the image matrix
@@ -157,7 +158,7 @@ public class Mat2Image implements Bridge {
     }
     
     /**
-     * this method is called by the VideoCap class.
+     * This method is called by the VideoCap class.
      * it calls the image processing method and returns the processed segmented contoured image.
      * @param matMatrix matrix of image
      * @return processed image matrix as image
@@ -170,12 +171,8 @@ public class Mat2Image implements Bridge {
         return img;
     }
         
-//    static {
-//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-//    }
-    
     /**
-     * method comes from implementing the bridge interface.
+     * Method comes from implementing the bridge interface.
      * used by classes outside of camdetect package to access the control points.
      * @return float array containing the control points
      */
@@ -184,7 +181,7 @@ public class Mat2Image implements Bridge {
 	}
 	
 	/**
-     * method comes from implementing the bridge interface.
+     * Method comes from implementing the bridge interface.
      * used by classes outside of camdetect package to access horizontal interval between control points.
      * this is used to be able to interpret the interestPoints array returned by the getControlPoints() method.
      * @return the xdist as int
