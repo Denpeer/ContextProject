@@ -1,6 +1,5 @@
 package com.funkydonkies.camdetect;
 
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Field;
@@ -27,6 +26,7 @@ public class MyFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final int SLEEP_TIME = 30;
 	private JPanel contentPane;
 
   /**
@@ -34,19 +34,18 @@ public class MyFrame extends JFrame {
   * @param args -
   */
     public static void main(final String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    final MyFrame frame = new MyFrame();
-                    frame.setVisible(true);
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    	new Thread().start();
     }
     
     private VideoCap videoCap;
+    
+    
+    /**
+     * @return VideoCap object that contains the Mat2Image bridge.
+     */
+    public VideoCap getVideoCap() {
+    	return videoCap;
+    }
     
     /**
      * Loads the native libraries, setting the java.library.path in the process.
@@ -89,8 +88,7 @@ public class MyFrame extends JFrame {
         contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-        
-        new MyThread().start();
+        setVisible(true);
     }
     
     /**
@@ -129,17 +127,26 @@ public class MyFrame extends JFrame {
      *
      */
     class MyThread extends Thread {
-    	private static final int SLEEPTIME = 30;
+    	
         @Override
         public void run() {
             for (;;) {
                 repaint();
                 try { 
-                	Thread.sleep(SLEEPTIME);
+                	Thread.sleep(SLEEP_TIME);
                 } catch (final InterruptedException e) { 
                 	throw new RuntimeException(e);
                 }
             }  
         } 
     }
+    
+	/**
+	 * Runs the thread that paints the current frame.
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	public void run() {
+		new MyThread().start();
+	}
 }

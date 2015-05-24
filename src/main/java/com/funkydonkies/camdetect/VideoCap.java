@@ -32,6 +32,14 @@ public class VideoCap {
         }
     } 
     
+    /**
+     * Gets mat2Image().
+     * @return Mat2Image object containing current frame, and dataset controlpoints.
+     */
+    public Mat2Image getMat2Image() {
+    	return mat2Img;
+    }
+    
     /**Exception is throw when camera source is not opened when getOneFrame() is called.
      * 
      * @author Olivier Dikken
