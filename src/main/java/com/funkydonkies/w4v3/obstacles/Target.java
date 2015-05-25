@@ -15,7 +15,7 @@ import com.jme3.scene.shape.Box;
  *
  */
 public class Target extends Obstacle {
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(30f, 0.5f, 1f);
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(13f, 3f, 1f);
 	private Geometry geom;
 	private final Box box;
 	private TargetControl control;
@@ -75,6 +75,7 @@ public class Target extends Obstacle {
 //		float x = (float) Math.random() * 50;
 //		float y = (float) Math.random() * 50;
 		final Vector3f respawnlocation = new Vector3f(40f, -2f, 1.5f);
+		control.setPhysicsLocation(respawnlocation);
 		geom.setLocalTranslation(respawnlocation);
 	}
 	
