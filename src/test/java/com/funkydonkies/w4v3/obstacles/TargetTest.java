@@ -22,7 +22,7 @@ import com.jme3.scene.Spatial;
  *
  */
 public class TargetTest {
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(30f, 0.5f, 1f);
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(13f, 3f, 1f);
 
 	private static ObstacleFactory obF;
 	private static Target tar;
