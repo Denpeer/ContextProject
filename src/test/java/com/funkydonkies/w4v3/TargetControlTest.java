@@ -30,7 +30,8 @@ public class TargetControlTest {
 		target = mock(Target.class);
 		combo = mock(Combo.class);
 		event = mock(PhysicsCollisionEvent.class);
-		control = new TargetControl(shape, target, combo);
+		control = new TargetControl(shape, target);
+		control.setCombo(combo);
 		ballSpatial = mock(Spatial.class);
 		targetSpatial = mock(Spatial.class);
 		space = mock(PhysicsSpace.class);

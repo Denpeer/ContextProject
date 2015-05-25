@@ -19,12 +19,10 @@ public class TargetControl extends GhostControl implements PhysicsCollisionListe
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
 	 * @param t Target the target to control
-	 * @param c Combo the combo object of the game
 	 */
-	public TargetControl(final CollisionShape shape, final Target t, final Combo c) {
+	public TargetControl(final CollisionShape shape, final Target t) {
 		super(shape);
 		target = t;
-		combo = c;
 	}
 	
 	/**
@@ -54,9 +52,19 @@ public class TargetControl extends GhostControl implements PhysicsCollisionListe
 				&& BALL_NAME.equals(event.getNodeB().getName())
 				|| BALL_NAME.equals(event.getNodeA().getName()) 
 						&& TARGET_NAME.equals(event.getNodeB().getName())) {
-			combo.incCombo();
+			if (combo != null) {
+				combo.incCombo();
+			}
 			target.respawn();
 		}
+	}
+	
+	/**
+	 * Sets the combo for the controller so that it can update the combo counter.
+	 * @param c Combo 
+	 */
+	public void setCombo(final Combo c) {
+		combo = c;
 	}
 
 }

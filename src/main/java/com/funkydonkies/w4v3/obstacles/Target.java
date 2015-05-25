@@ -1,8 +1,6 @@
 package com.funkydonkies.w4v3.obstacles;
 
-import com.funkydonkies.w4v3.Combo;
 import com.funkydonkies.w4v3.TargetControl;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
@@ -17,31 +15,31 @@ import com.jme3.scene.shape.Box;
  *
  */
 public class Target extends Obstacle {
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(30f, 0.5f, 1f);
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(13f, 3f, 1f);
 	private Geometry geom;
 	private final Box box;
 	private TargetControl control;
-	private Material mat;
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+//	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	
 	/**
 	 * This is the constructor of the Target Class.
 	 * @param w the width of the target	
 	 * @param h the height of the target
 	 * @param d the depth of the target
+	 * @param x the x coordinate of the box
+	 * @param y the y coordinate of the box
+	 * @param z the z coordinate of the box
 	 * @param node Node to attach the target to the scene
-	 * @param assetManager assetmanager to create the material
-	 * @param combo Combo to create target control
 	 */
-	public Target(final double w, final double h, final double d, final Node node, 
-			final AssetManager assetManager, final Combo combo) {
-		super(w, h, d, node);
-		box = new Box((float) w, (float) h, (float) d);
+	public Target(final float w, final float h, final float d,
+			final float x, final float y, final float z, final Node node) {
+		super(w, h, d, x, y, z, node);
+		box = new Box(w, h, d);
 		control = new TargetControl(
-				new BoxCollisionShape(new Vector3f((float) w, (float) h, (float) d)), this, combo);
-		mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+				new BoxCollisionShape(new Vector3f((float) w, (float) h, (float) d)), this);
+//		mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		geom = new Geometry("target", box);
-		geom.setMaterial(mat);
+//		geom.setMaterial(mat);
 		
 	}
 
@@ -52,8 +50,8 @@ public class Target extends Obstacle {
 	 */
 	@Override
 	public void draw(final Material m, final PhysicsSpace phySpace) {
+		geom.setMaterial(m);
 		geom.setLocalTranslation(INITIAL_SPAWN_LOCATION);
-
 		geom.addControl(control);
 		phySpace.add(control);
 		super.getNode().attachChild(geom);
@@ -77,6 +75,24 @@ public class Target extends Obstacle {
 //		float x = (float) Math.random() * 50;
 //		float y = (float) Math.random() * 50;
 		final Vector3f respawnlocation = new Vector3f(40f, -2f, 1.5f);
+		control.setPhysicsLocation(respawnlocation);
 		geom.setLocalTranslation(respawnlocation);
+	}
+	
+	/**
+	 * Returns the targets current location.
+	 * Obstacles getter methods do not return the up to date location after a respawn.
+	 * @return the up to date current location of the target
+	 */
+	public Vector3f getLocation() {
+		return geom.getLocalTranslation();
+	}
+	
+	/**
+	 * Returns the Targetcontrol of the target.
+	 * @return control TargetControl, the controll that is controlling this target
+	 */
+	public TargetControl getControl() {
+		return control;
 	}
 }

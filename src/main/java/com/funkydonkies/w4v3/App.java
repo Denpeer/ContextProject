@@ -25,9 +25,9 @@ public class App extends SimpleApplication {
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
-	
-	private MovingBox clBox;
-	private Target tar;
+	private ObstacleFactory factory;
+	private MovingBox movBox;
+	private Target target;
 	private Combo combo;
 	
 	/**
@@ -44,7 +44,7 @@ public class App extends SimpleApplication {
 	public void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
 		/* Set up physics */
-
+		factory = new ObstacleFactory();
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
 		bulletAppState.setDebugEnabled(true);
@@ -61,30 +61,17 @@ public class App extends SimpleApplication {
 		curveMat.setColor(COLOR, ColorRGBA.Orange);
 		sp.drawCurve(rootNode, curveMat, getPhysicsSpace());
 		
-		final ObstacleFactory facto = new ObstacleFactory();
-		
-		final int obstacleWidth = 2;
-		final int obstacleHeight = 4;
-		final int obstacleDepth = 1;
-		
-		final int targetWidth = 1;
-		final int targetHeight = 1;
-		final int targetDepth = 1;
-		
 		final BitmapText comboText = new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"),
 				false);
 		combo = new Combo(guiNode, comboText);
+		movBox = factory.makeMovingBox(rootNode, assetManager);
+		target = factory.makeTarget(rootNode);
+		target.getControl().setCombo(combo);
 		
-		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
-				obstacleDepth, rootNode, assetManager, combo);
-		
-		tar = (Target) facto.makeObstacle("TARGET", targetWidth, targetHeight, targetDepth, 
-				rootNode, assetManager, combo);
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
-		tar.draw(mat2, getPhysicsSpace());
-		mat2.setColor(COLOR, ColorRGBA.Red);
-		clBox.draw(mat2, getPhysicsSpace());
+		movBox.draw(mat2, getPhysicsSpace());
+		target.draw(mat2, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
 		combo.display();
 	}
@@ -107,7 +94,6 @@ public class App extends SimpleApplication {
 				v9 = new Vector3f(50, 5, 0),
 				v10 = new Vector3f(70, 3, 0);
 
-		
 		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
 		
 		return points;
@@ -115,7 +101,7 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-		clBox.move(tpf);
+		movBox.move(tpf);
 	}
 
 	@Override
