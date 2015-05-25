@@ -45,7 +45,7 @@ public class MovingBox extends Obstacle {
 	public final void draw(final Material mat, final PhysicsSpace psySpace, final Node rootNode) {
 		final float xTrans = 20f;
 		final float zTrans = 0.5f;
-		geom.move(xTrans, 0, zTrans);
+		geom.move(xTrans, 50, zTrans);
 		geom.setMaterial(mat);
 		geom.addControl(phys);
 		psySpace.add(phys);

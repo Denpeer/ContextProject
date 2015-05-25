@@ -5,24 +5,27 @@ import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.font.BitmapFont;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
+import com.jme3.system.AppSettings;
 import com.mycompany.mavenproject1.GameInputState;
 /**
  * Game is run through this class.
  *
  */
 public class App extends SimpleApplication {
-	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
+	private static final Vector3f GRAVITY = new Vector3f(0f, -15.81f, 0f);
 	private static final String COLOR = "Color";
-	private static final Vector3f CAM_LOCATION = new Vector3f(30, 4, 40);
+	private static final Vector3f CAM_LOCATION = new Vector3f(0, 150, 600);
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String SHADED_MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
+	private WaveState waveState;
 	
 	private MovingBox clBox;
 	//private PhysicsController ballPhy;
@@ -43,68 +46,45 @@ public class App extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		// inputManager.setCursorVisible( true );
-		/* Set up physics */
 
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		//bulletAppState.setDebugEnabled(true);
-		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		//flyCam.setEnabled(false);
 		
+//		bulletAppState.setDebugEnabled(true);
+		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
+		bulletAppState.getPhysicsSpace().setAccuracy(1f/80f);
+		//flyCam.setEnabled(false);
+
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
 
-		final Vector3f[] points = testPoints();
-
-		final SplineCurve sp = new SplineCurve(SplineType.CatmullRom, points, (float) 0.6, true);
-		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Orange);
-		sp.drawCurve(rootNode, mat, getPhysicsSpace());
+		waveState = new WaveState();
+		stateManager.attach(waveState);
 		
 		final ObstacleFactory facto = new ObstacleFactory();
 		
-		final int obstacleWidth = 2;
-		final int obstacleHeight = 4;
-		final int obstacleDepth = 1;
+		final int obstacleWidth = 20;
+		final int obstacleHeight = 40;
+		final int obstacleDepth = 10;
 		
 		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
 				obstacleDepth);
 		
-		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
-		mat2.setColor(COLOR, ColorRGBA.Red);
+		final Material mat2 = new Material(assetManager, SHADED_MATERIAL_PATH);
+		mat2.setBoolean("UseMaterialColors", true);    
+	    mat2.setColor("Diffuse", ColorRGBA.Green);  // minimum material color
+	    mat2.setColor("Specular", ColorRGBA.White); // for shininess
+	    mat2.setFloat("Shininess", 64f); // [1,128] for shininess
+		
 		clBox.draw(mat2, getPhysicsSpace(), rootNode);
 		
 		cam.setLocation(CAM_LOCATION);
 		
 	}
 
-	/** Used to generate testPoints for the curve.
-	 * 
-	 * @return A variable length Vector3f array
-	 */
-	public Vector3f[] testPoints() {
-		
-		final Vector3f v0 = new Vector3f(0, 6, 0),
-				v1 = new Vector3f(10, 6, 0),
-				v2 = new Vector3f(15, 1, 0),
-				v3 = new Vector3f(20, 3, 0),
-				v4 = new Vector3f(25, 0, 0),
-				v5 = new Vector3f(30, 6, 0),
-				v6 = new Vector3f(35, 2, 0),
-				v7 = new Vector3f(40, 2, 0),
-				v8 = new Vector3f(45, 1, 0),
-				v9 = new Vector3f(50, 5, 0),
-				v10 = new Vector3f(70, 3, 0);
-
-		
-		final Vector3f[] points = { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };
-		
-		return points;
-	}
-
 	@Override
 	public void simpleUpdate(final float tpf) {
-		clBox.move(tpf);
+//		clBox.move(tpf);
 		timeCount += tpf;
 
 		if (timeCount > time) {
@@ -154,6 +134,14 @@ public class App extends SimpleApplication {
 	 */
 	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
+	}
+	
+	public AppSettings getSettings() {
+		return settings;
+	}
+
+	public BitmapFont getGuiFont() {
+		return guiFont;
 	}
 	
 }
