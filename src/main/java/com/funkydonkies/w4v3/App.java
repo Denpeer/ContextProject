@@ -47,8 +47,8 @@ public class App extends SimpleApplication {
 		oldRigi = new RigidBodyControl(0f);
 		rigi = new RigidBodyControl(0f);
 		
-		final MyFrame frame = new MyFrame();
-		bridge = frame.getVideoCap().getMat2Image();
+		//final MyFrame frame = new MyFrame();
+		//bridge = frame.getVideoCap().getMat2Image();
 //		new Thread(frame).start();
 		
 		app.start();
@@ -93,7 +93,6 @@ public class App extends SimpleApplication {
 		clBox.move(tpf);
 		timeCount += tpf;
 		getRootNode().detachChildNamed("OurMesh");
-		sp.incrementPoints();
 //		System.out.println(rigi);
 		if(rigi != null){
 			oldRigi = new RigidBodyControl(0f);
@@ -101,8 +100,8 @@ public class App extends SimpleApplication {
 		}
 //			System.out.println(oldRigi);
 		rigi = new RigidBodyControl(0f);
-		
-		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode());
+		Vector3f[] pts = new Vector3f[100];
+		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode(), pts);
 		sp.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 		

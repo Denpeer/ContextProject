@@ -1,5 +1,7 @@
 package com.funkydonkies.w4v3;
 
+import java.util.List;
+
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
@@ -37,6 +39,7 @@ public class SplineCurve extends Spline {
 	Boolean bool = true;
 	private static Geometry geo;
 	private RigidBodyControl phys;
+	
 	/**
 	 * The constructor of the SplineCurve class.
 	 * @param splineType the type of the SplineCurve, in our case Catmulrom
@@ -51,9 +54,12 @@ public class SplineCurve extends Spline {
 	}
 
 	public void drawCurve(final Material mat,
-			final PhysicsSpace physicsSpace, RigidBodyControl rigidBody, final Node node) {
+			final PhysicsSpace physicsSpace, RigidBodyControl rigidBody, final Node node, Vector3f[] pts) {
 		phys = rigidBody;
-		splinePoints = getSplinePoints();
+		pts = getSplinePoints();
+		splinePoints = pts;
+		System.out.println(curvePoints[2].getY() + "curve");
+		System.out.println(pts[4].getY() + "spline");
 		segmentPoints = new Vector3f[(splinePoints.length - 3) * 2 + 4];
 		basePoints = new Vector3f[splinePoints.length];
 		frontVertices = new Vector3f[splinePoints.length + segmentPoints.length + basePoints.length];
@@ -183,6 +189,10 @@ public class SplineCurve extends Spline {
 	 */
 	public Vector3f[] getSplinePoints() {
 		int q = 0;
+		this.clearControlPoints();
+		for(int i = 0; i< curvePoints.length; i++){
+			this.addControlPoint(curvePoints[i]);
+		}
 		final Vector3f[] vecs = new Vector3f[(curvePoints.length - 4)* 10];
 		for(int i = 2; i < curvePoints.length - 2; i++){
 			for(double j = 0; j < 0.9; j = j + 0.1){
@@ -190,20 +200,21 @@ public class SplineCurve extends Spline {
 				q++;
 			}
 		}
+		System.out.println(vecs[4].getY()+"dadada");
 		return vecs;
 	}
 
 	public void incrementPoints(){
 		for(int i = 0; i < curvePoints.length; i++){
 			Vector3f vec = curvePoints[i];
-			curvePoints[i] = vec.setY(curvePoints[i].getY() + 1f);
+			curvePoints[i] = vec.setY(curvePoints[i].getY() + 0.1f);
 		}
 	}
 	
 	public void decrementPoints(){
 		for(int i = 0; i < curvePoints.length; i++){
 			Vector3f vec = curvePoints[i];
-			curvePoints[i] = vec.setY(curvePoints[i].getY() - 1f);
+			curvePoints[i] = vec.setY(curvePoints[i].getY() - 0.1f);
 		}
 	}
 	

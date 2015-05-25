@@ -133,15 +133,17 @@ public class SplineCurveController extends AbstractAppState {
 	 * @return A variable length Vector3f array
 	 */
 	public static Vector3f[] testPoints() {
-		
+				
 		final Vector3f[] points = new Vector3f[32];
-		
+				
 		for (int i = 0; i < points.length; i++) {
 			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
 		}
-		
+				
 		return points;
-	}
+		}
+		
+
 	
 	/**
 	 * Toggle the updating of the curve through the camera input.
