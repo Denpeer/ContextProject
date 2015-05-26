@@ -166,6 +166,7 @@ public class Mat2Image implements Bridge {
      * @return processed image matrix as image
      */
         BufferedImage getImage(final Mat matMatrix) {
+        	Core.flip(mat, mat, 1);
             getSpace(mat);
             res.get(0, 0, dat);
             img.getRaster().setDataElements(0, 0, 
