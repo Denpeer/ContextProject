@@ -20,7 +20,7 @@ import com.mycompany.mavenproject1.GameInputState;
 public class App extends SimpleApplication {
 	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
 	private static final String COLOR = "Color";
-	private static final Vector3f CAM_LOCATION = new Vector3f(160, 0, 190);
+	private static final Vector3f CAM_LOCATION = new Vector3f(160, 50, 190);
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
 	private BulletAppState bulletAppState;
