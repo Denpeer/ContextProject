@@ -66,7 +66,7 @@ public class SplineCurveController extends AbstractAppState {
 		
 		if (updateEnabled) {
 			scaleValues(points, 480/*bridge.getImageHeight()*/);
-			final Vector3f[] updatedPoints = createVecArray(points, tpf * 2);
+			final Vector3f[] updatedPoints = createVecArray(points, tpf);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
 		

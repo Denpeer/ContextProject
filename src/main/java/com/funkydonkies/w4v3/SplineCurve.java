@@ -122,6 +122,7 @@ public class SplineCurve extends Spline {
 		geo.setMaterial(mat);
 		geo.addControl(phys);
 		phys.setRestitution(0.5f);
+		phys.setFriction(0.5f);
 		physicsSpace.add(phys);
 		node.attachChild(geo);
 	
