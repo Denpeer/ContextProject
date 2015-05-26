@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -7,7 +7,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.w4v3.PhysicsController;
+import com.funkydonkies.controllers.PhysicsController;
+import com.funkydonkies.w4v3.Ball;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -148,5 +149,8 @@ public class BallTest {
 		verifyNoMoreInteractions(space);
 		verify(root).attachChild(g);
 	}
+	
+	
+	
 	
 }

@@ -1,6 +1,6 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
-import com.funkydonkies.w4v3.PhysicsController;
+import com.funkydonkies.controllers.PhysicsController;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;

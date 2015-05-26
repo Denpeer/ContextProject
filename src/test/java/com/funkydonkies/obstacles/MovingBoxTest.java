@@ -1,10 +1,12 @@
-package com.funkydonkies.w4v3.obstacles;
+package com.funkydonkies.obstacles;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.funkydonkies.obstacles.MovingBox;
+import com.funkydonkies.obstacles.ObstacleFactory;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;

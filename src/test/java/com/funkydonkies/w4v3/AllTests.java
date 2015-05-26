@@ -1,11 +1,11 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.w4v3;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.funkydonkies.w4v3.AppTest;
-import com.funkydonkies.w4v3.SplineCurveTest;
+import com.funkydonkies.controllers.PhysicsControllerTest;
+import com.funkydonkies.gamestates.GameInputStateTest;
 
 /**
  * Run all tests for EclEmma.

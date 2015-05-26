@@ -1,8 +1,9 @@
 package com.funkydonkies.w4v3;
 
-import com.funkydonkies.w4v3.obstacles.MovingBox;
-import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
-import com.funkydonkies.w4v3.obstacles.Target;
+import com.funkydonkies.gamestates.GameInputState;
+import com.funkydonkies.obstacles.MovingBox;
+import com.funkydonkies.obstacles.ObstacleFactory;
+import com.funkydonkies.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -12,7 +13,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.mycompany.mavenproject1.GameInputState;
 /**
  * Game is run through this class.
  *

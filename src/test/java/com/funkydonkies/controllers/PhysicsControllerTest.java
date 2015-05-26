@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.w4v3.PhysicsController;
+import com.funkydonkies.controllers.PhysicsController;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;

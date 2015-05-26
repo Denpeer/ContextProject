@@ -1,6 +1,8 @@
-package com.mycompany.mavenproject1;
+package com.funkydonkies.gamestates;
 
+import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
+import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -21,7 +23,7 @@ public class GameInputState extends AbstractAppState {
 //	private static final String MAPPING_NAME_RIGHT = "Right";
 //	private static final String MAPPING_NAME_ROTATE = "Rotate";
 	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
-	private static final float TIME_PER_BALL_SPAWN = 0.5f;
+	private static final float TIME_PER_BALL_SPAWN = 0.5f; // x sec per ball
 	
 	private float time = TIME_PER_BALL_SPAWN;
 	private float timeCount = 0;

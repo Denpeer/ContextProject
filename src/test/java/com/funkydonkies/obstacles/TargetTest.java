@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3.obstacles;
+package com.funkydonkies.obstacles;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +9,9 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.w4v3.TargetControl;
+import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.obstacles.ObstacleFactory;
+import com.funkydonkies.obstacles.Target;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;

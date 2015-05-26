@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3.obstacles;
+package com.funkydonkies.obstacles;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;

@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3;
+package com.funkydonkies.controllers;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;

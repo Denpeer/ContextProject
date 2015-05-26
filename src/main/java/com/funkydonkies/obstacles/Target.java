@@ -1,6 +1,6 @@
-package com.funkydonkies.w4v3.obstacles;
+package com.funkydonkies.obstacles;
 
-import com.funkydonkies.w4v3.TargetControl;
+import com.funkydonkies.controllers.TargetControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
