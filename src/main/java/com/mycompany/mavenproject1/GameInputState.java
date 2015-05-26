@@ -20,7 +20,8 @@ import com.jme3.input.controls.KeyTrigger;
  */
 public class GameInputState extends AbstractAppState {
 	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
-	private static final String MAPPING_TOGGLE_CONTROLS = "Toggle Controls";
+	private static final String MAPPING_TOGGLE_CAMERA = "Toggle Camera";
+	private static final String MAPPING_TOGGLE_CURVE_UPDATE = "Toggle Curve Update";
 	private static final float TIME_PER_BALL_SPAWN = 0.5f;
 	
 	private float time = TIME_PER_BALL_SPAWN;
@@ -70,13 +71,15 @@ public class GameInputState extends AbstractAppState {
 	/** Custom Keybinding: Map named actions to inputs. */
 	public void initKeys() {
 //		inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
-		inputManager.addMapping(MAPPING_TOGGLE_CONTROLS, new KeyTrigger(KeyInput.KEY_C));
+		inputManager.addMapping(MAPPING_TOGGLE_CAMERA, new KeyTrigger(KeyInput.KEY_C));
+		inputManager.addMapping(MAPPING_TOGGLE_CURVE_UPDATE, new KeyTrigger(KeyInput.KEY_U));
 		
 		//Control for spawning balls
 		inputManager.addMapping(MAPPING_NAME_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
 		
 		// Add the names to the action listener
-		inputManager.addListener(actionListener, MAPPING_TOGGLE_CONTROLS);
+		inputManager.addListener(actionListener, MAPPING_TOGGLE_CAMERA, 
+				MAPPING_TOGGLE_CURVE_UPDATE);
 //		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
 //				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_NAME_SPAWN_BALL);
@@ -85,8 +88,12 @@ public class GameInputState extends AbstractAppState {
 
 	private ActionListener actionListener = new ActionListener() {
 		public void onAction(final String name, final boolean keyPressed, final float tpf) {
-			if (name.equals(MAPPING_TOGGLE_CONTROLS) && !keyPressed) {
-				curveState.toggleControlsEnabled();
+			if (name.equals(MAPPING_TOGGLE_CAMERA) && !keyPressed) {
+				curveState.toggleCameraEnabled();
+				curveState.setUpdateEnabled(curveState.getCameraEnabled());
+			}
+			if (name.equals(MAPPING_TOGGLE_CURVE_UPDATE) && !keyPressed) {
+				curveState.toggleUpdateEnabled();
 			}
 	
 		}

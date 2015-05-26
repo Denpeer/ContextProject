@@ -17,13 +17,18 @@ public class SplineCurveController extends AbstractAppState {
 	private static final String INCREMENTHEIGHTMAPPING = "increment height";
 	private static final String DECREMENTHEIGHTMAPPING = "decrement height";
 	private static final int POINT_DISTANCE = 10;
-	private static final int POINTS_HEIGHT = 20;
+	private static final int POINTS_HEIGHT = 100;
+	private static final int BASE_CHANGE_SPEED = 20; 
+	
+	private static int CHANGE_TRESHOLD = 5; 
 	
 	private Bridge bridge;
 	private App app;
 	private InputManager inputManager;
 	private SplineCurve splineCurve;
-	private boolean controlsEnabled = false;
+	
+	private boolean cameraEnabled = false;
+	private boolean updateEnabled = false;
 	
 	public SplineCurveController(final Bridge b, final SplineCurve sp) {
 		this.splineCurve = sp;
@@ -47,26 +52,27 @@ public class SplineCurveController extends AbstractAppState {
 	
 	@Override
 	public final void update(final float tpf) {
-		float[] points = new float[32];
-		Arrays.fill(points, 480);
-		for (int i = 10; i < 15; i++) {	// TESTING CODE
-			points[i] = 150 + 10 * (i - 9);
+		float[] points;
+		
+		if (cameraEnabled) {
+			points = bridge.getControlPoints();	// ENABLES CAMERA INPUT
+		} else {
+			points = new float[32];
+			Arrays.fill(points, 480);
+			for (int i = 10; i < 15; i++) {	// TESTING CODE
+				points[i] = 150 + 10 * (i - 9);
+			}
 		}
 		
-		if (controlsEnabled /*&& time > 25*/) {
-//			points = bridge.getControlPoints();	ENABLES CAMERA INPUT
-			
+		if (updateEnabled) {
 			scaleValues(points, 480/*bridge.getImageHeight()*/);
-			
-			final Vector3f[] updatedPoints = createVecArray(points);
-			
+			final Vector3f[] updatedPoints = createVecArray(points, tpf);
 			splineCurve.setCurvePoints(updatedPoints);
-			System.out.println("setting points");
 		}
 		
 	}
 	
-	private Vector3f[] createVecArray(final float[] points) {
+	private Vector3f[] createVecArray(final float[] points, final float tpf) {
 		Vector3f[] res = new Vector3f[points.length];
 		boolean filled = false;
 		
@@ -84,10 +90,33 @@ public class SplineCurveController extends AbstractAppState {
 				temp.y = points[i];
 				res[i] = temp;
 			}
-		} else {
+		// use existing
+		} else { 
 			for (int i = 0; i < points.length; i++) {
 				final Vector3f temp = res[i];
-				temp.y = points[i];
+				
+				final float current = temp.y;
+				final float desired = points[i];
+				float height = 0;
+				float changeSpeed = 0;
+				
+				final float delta = Math.abs(current - desired);
+				
+				changeSpeed = delta / POINTS_HEIGHT + 0.5f;
+				
+				if (delta < CHANGE_TRESHOLD) {
+					continue;
+				}
+				
+				if (current <= desired) {
+					height = Math.min(delta, BASE_CHANGE_SPEED);
+				} else {
+					height = Math.max(delta, -BASE_CHANGE_SPEED);
+				}
+				
+				height = height * changeSpeed;
+				
+				temp.y = height * tpf;
 				res[i] = temp;
 			}
 		}
@@ -146,11 +175,36 @@ public class SplineCurveController extends AbstractAppState {
 
 	
 	/**
-	 * Toggle the updating of the curve through the camera input.
+	 * Toggle the updating of the dataset points through the camera input.
 	 */
-	public void toggleControlsEnabled() {
-		controlsEnabled = !controlsEnabled;
+	public void toggleCameraEnabled() {
+		cameraEnabled = !cameraEnabled;
+	}
+
+	
+	/**
+	 * Toggle the updating of the splineCurve with debug or camera input.
+	 */
+	public void toggleUpdateEnabled() {
+		updateEnabled = !updateEnabled;
 	}
 	
+	/**
+	 * Sets the update state, which controls whether the curve is being updated by
+	 * debug/camera input.
+	 * @param enabled desired update state
+	 */
+	public void setUpdateEnabled(final boolean enabled) {
+		updateEnabled = enabled;
+	}
+
+	/** 
+	 * Gets current state of boolean determining whether the points used to draw the curve
+	 * are being updated.
+	 * @return current state of the camera input interpretation
+	 */
+	public boolean getCameraEnabled() {
+		return cameraEnabled;
+	}
 	
 }

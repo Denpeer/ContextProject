@@ -58,8 +58,6 @@ public class SplineCurve extends Spline {
 		phys = rigidBody;
 		pts = getSplinePoints();
 		splinePoints = pts;
-		System.out.println(curvePoints[2].getY() + "curve");
-		System.out.println(pts[4].getY() + "spline");
 		segmentPoints = new Vector3f[(splinePoints.length - 3) * 2 + 4];
 		basePoints = new Vector3f[splinePoints.length];
 		frontVertices = new Vector3f[splinePoints.length + segmentPoints.length + basePoints.length];
@@ -200,7 +198,6 @@ public class SplineCurve extends Spline {
 				q++;
 			}
 		}
-		System.out.println(vecs[4].getY()+"dadada");
 		return vecs;
 	}
 
