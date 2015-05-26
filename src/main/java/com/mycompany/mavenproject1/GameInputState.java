@@ -22,7 +22,7 @@ public class GameInputState extends AbstractAppState {
 	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
 	private static final String MAPPING_TOGGLE_CAMERA = "Toggle Camera";
 	private static final String MAPPING_TOGGLE_CURVE_UPDATE = "Toggle Curve Update";
-	private static final float TIME_PER_BALL_SPAWN = 0.5f;
+	private static final float TIME_PER_BALL_SPAWN = 1f;
 	
 	private float time = TIME_PER_BALL_SPAWN;
 	private float timeCount = 0;
@@ -63,8 +63,14 @@ public class GameInputState extends AbstractAppState {
 	// Note that update is only called while the state is both attached and enabled
 	@Override
 	public final void update(final float tpf) {
+		timeCount += tpf;
 		if (curveState == null) {
 			curveState = stateManager.getState(SplineCurveController.class);
+		}
+		if (timeCount > TIME_PER_BALL_SPAWN) {
+			timeCount = 0;
+			final Ball ball = new Ball(assetManager);
+			ball.spawn(app.getRootNode(), app.getPhysicsSpace(), true);
 		}
 	}
 

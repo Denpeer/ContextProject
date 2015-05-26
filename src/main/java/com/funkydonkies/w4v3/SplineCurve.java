@@ -118,9 +118,10 @@ public class SplineCurve extends Spline {
 		mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoords));
 		mesh.setBuffer(Type.Index,    3, BufferUtils.createIntBuffer(totalTriangles));
 		mesh.updateBound();
-		geo = new Geometry("OurMesh", mesh); 
+		geo = new Geometry("curve", mesh); 
 		geo.setMaterial(mat);
 		geo.addControl(phys);
+		phys.setRestitution(0.5f);
 		physicsSpace.add(phys);
 		node.attachChild(geo);
 	

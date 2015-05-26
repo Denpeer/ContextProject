@@ -151,7 +151,7 @@ public class SplineCurveController extends AbstractAppState {
 		public void onAnalog(final String name, final float value, final float tpf) {
 			if (name.equals(INCREMENTHEIGHTMAPPING)) {
 				splineCurve.incrementPoints();
-			} else if(name.equals(DECREMENTHEIGHTMAPPING)){
+			} else if (name.equals(DECREMENTHEIGHTMAPPING)) {
 				splineCurve.decrementPoints();
 			}
 		}

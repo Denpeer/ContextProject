@@ -20,7 +20,7 @@ import com.mycompany.mavenproject1.GameInputState;
 public class App extends SimpleApplication {
 	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
 	private static final String COLOR = "Color";
-	private static final Vector3f CAM_LOCATION = new Vector3f(30, 4, 40);
+	private static final Vector3f CAM_LOCATION = new Vector3f(160, 0, 190);
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
 	private BulletAppState bulletAppState;
@@ -60,7 +60,7 @@ public class App extends SimpleApplication {
 		stateManager.attach(bulletAppState);
 		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		//flyCam.setEnabled(false);
+		flyCam.setEnabled(false);
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
 		
@@ -92,7 +92,7 @@ public class App extends SimpleApplication {
 	public void simpleUpdate(final float tpf) {
 		clBox.move(tpf);
 		timeCount += tpf;
-		getRootNode().detachChildNamed("OurMesh");
+		getRootNode().detachChildNamed("curve");
 //		System.out.println(rigi);
 		if(rigi != null){
 			oldRigi = new RigidBodyControl(0f);
