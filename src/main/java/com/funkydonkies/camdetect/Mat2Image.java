@@ -42,15 +42,6 @@ public class Mat2Image implements Bridge {
      * Empty Constructor.
      */
     public Mat2Image() {
-
-    }
-    
-    /**
-     * Mat matrix to image; get space of mat matrix -> does image processing and finds interest points.
-     * @param imMatrix matrix of image
-     */
-    public Mat2Image(final Mat imMatrix) {
-        getSpace(imMatrix);
     }
     
     /**
