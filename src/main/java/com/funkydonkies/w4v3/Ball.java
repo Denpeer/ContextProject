@@ -1,6 +1,6 @@
 package com.funkydonkies.w4v3;
 
-import com.funkydonkies.controllers.PhysicsController;
+import com.funkydonkies.controllers.BallController;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -10,6 +10,8 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Sphere;
 
 /**
@@ -37,7 +39,7 @@ public class Ball {
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Blue);
 		geom.setMaterial(mat);
-		phy = new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
+		phy = new BallController(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
 		phy.setRestitution(1);
 	}
 	
@@ -138,6 +140,18 @@ public class Ball {
 	 */
 	public final Geometry getGeometry() {
 		return geom;
+	}
+	
+	public final Spatial resize(float size){
+		return geom.scale(size);
+	}
+	
+	public final void addControl(Control c) {
+		geom.addControl(c);
+	}
+	
+	public final Control getControl() {
+		return phy;
 	}
 
 }

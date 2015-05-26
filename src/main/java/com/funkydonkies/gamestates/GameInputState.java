@@ -1,5 +1,6 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.controllers.SuperSizePowerup;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Ball;
@@ -9,6 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 
@@ -23,6 +25,7 @@ public class GameInputState extends AbstractAppState {
 //	private static final String MAPPING_NAME_RIGHT = "Right";
 //	private static final String MAPPING_NAME_ROTATE = "Rotate";
 	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
+	private static final String ENABLE_POWERUP_SIZE = "supersize";
 	private static final float TIME_PER_BALL_SPAWN = 0.5f; // x sec per ball
 	
 	private float time = TIME_PER_BALL_SPAWN;
@@ -33,7 +36,10 @@ public class GameInputState extends AbstractAppState {
 	private App app;
 	private InputManager inputManager;
 	private AssetManager assetManager;
-
+	private BallState ballState;
+	private AppStateManager stateManager;
+	private SuperSizePowerup sizePowerup;
+	
 	@Override
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
@@ -46,9 +52,10 @@ public class GameInputState extends AbstractAppState {
 		}
 		this.inputManager = this.app.getInputManager();
 		this.assetManager = this.app.getAssetManager();
-		
+		stateManager = sManager;
+		ballState = sManager.getState(BallState.class);
 		initKeys();
-		
+		sizePowerup = sManager.getState(SuperSizePowerup.class);
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
 		
 		// this.app.getRootNode();
@@ -89,7 +96,9 @@ public class GameInputState extends AbstractAppState {
 		// this.app.getRootNode().getChild("blah").scale(tpf); // modify scene
 		// graph...
 		// x.setUserData(...); // call some methods...
-
+		if (ballState == null) {
+			ballState = stateManager.getState(BallState.class);
+		}
 	}
 
 	/** Custom Keybinding: Map named actions to inputs. */
@@ -101,23 +110,27 @@ public class GameInputState extends AbstractAppState {
 		//Control for spawing balls
 		inputManager.addMapping(MAPPING_NAME_SPAWN_BALL, 
 				new KeyTrigger(KeyInput.KEY_SPACE));
+		inputManager.addMapping(ENABLE_POWERUP_SIZE, 
+				new KeyTrigger(KeyInput.KEY_P));
 		
 		// Add the names to the action listener
 //		inputManager.addListener(actionListener, MAPPING_NAME_SPAWN_BALL);
 //		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
 //				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_NAME_SPAWN_BALL);
+		inputManager.addListener(actionListener, ENABLE_POWERUP_SIZE);
 
 	}
 
-//	private ActionListener actionListener = new ActionListener() {
-//		public void onAction(final String name, final boolean keyPressed, final float tpf) {
-//			if (name.equals(MAPPING_NAME_PAUSE) && !keyPressed) {
-//				// pause game
-//			}
-//	
-//		}
-//	};
+	private ActionListener actionListener = new ActionListener() {
+		public void onAction(final String name, final boolean keyPressed, final float tpf) {
+			if (name.equals(ENABLE_POWERUP_SIZE) && !keyPressed) {
+				sizePowerup.toggleEnabled();
+			}
+	
+		}
+	};
+	
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
 //			if (name.equals(MAPPING_NAME_ROTATE)) {
@@ -134,8 +147,7 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_NAME_SPAWN_BALL)) {
 				timeCount += tpf;
 				if (timeCount > time) {
-					final Ball ball = new Ball(assetManager);
-					ball.spawn(app.getRootNode(), app.getPhysicsSpace(), true);
+					ballState.spawnBall();
 					timeCount = 0;
 				}
 			}

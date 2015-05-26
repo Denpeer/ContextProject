@@ -1,6 +1,9 @@
 package com.funkydonkies.w4v3;
 
+import com.funkydonkies.controllers.SuperSizePowerup;
+import com.funkydonkies.gamestates.BallState;
 import com.funkydonkies.gamestates.GameInputState;
+import com.funkydonkies.gamestates.PowerupState;
 import com.funkydonkies.obstacles.MovingBox;
 import com.funkydonkies.obstacles.ObstacleFactory;
 import com.funkydonkies.obstacles.Target;
@@ -13,6 +16,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
+import com.jme3.scene.Node;
 /**
  * Game is run through this class.
  *
@@ -25,10 +29,13 @@ public class App extends SimpleApplication {
 
 	private BulletAppState bulletAppState;
 	private GameInputState gameInputState;
+	private SuperSizePowerup powerupState;
+	private BallState ballState;
 	private ObstacleFactory factory;
 	private MovingBox movBox;
 	private Target target;
 	private Combo combo;
+	private Node ballNode;
 	
 	/**
 	 * Main method. Instantiates the app and starts its execution.
@@ -42,17 +49,23 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
+		ballNode = new Node("balls");
 		// inputManager.setCursorVisible( true );
 		/* Set up physics */
-		factory = new ObstacleFactory();
-		bulletAppState = new BulletAppState();
+		factory 		= new ObstacleFactory();
+		bulletAppState 	= new BulletAppState();
+		powerupState 	= new SuperSizePowerup();
+		gameInputState 	= new GameInputState();
+		ballState 		= new BallState();
+		
+		stateManager.attach(ballState);
+		stateManager.attach(powerupState);
 		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+		stateManager.attach(gameInputState);
+
+//		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		//flyCam.setEnabled(false);
-		
-		gameInputState = new GameInputState();
-		stateManager.attach(gameInputState);
 
 		final Vector3f[] points = testPoints();
 
@@ -74,6 +87,7 @@ public class App extends SimpleApplication {
 		target.draw(mat2, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
 		combo.display();
+		rootNode.attachChild(ballNode);
 	}
 
 	/** Used to generate testPoints for the curve.
@@ -107,6 +121,14 @@ public class App extends SimpleApplication {
 	@Override
 	public void simpleRender(final RenderManager rm) {
 		// TODO: add render code
+	}
+	
+	/**
+	 * Returns the ball node.
+	 * @return Node node to which all balls are attached to.
+	 */
+	public Node getBallNode() {
+		return ballNode;
 	}
 
 	/**
