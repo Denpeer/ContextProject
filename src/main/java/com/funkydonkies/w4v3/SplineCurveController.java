@@ -66,7 +66,7 @@ public class SplineCurveController extends AbstractAppState {
 		
 		if (updateEnabled) {
 			scaleValues(points, 480/*bridge.getImageHeight()*/);
-			final Vector3f[] updatedPoints = createVecArray(points, tpf);
+			final Vector3f[] updatedPoints = createVecArray(points, tpf * 2);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
 		
@@ -97,7 +97,7 @@ public class SplineCurveController extends AbstractAppState {
 				
 				final float current = temp.y;
 				final float desired = points[i];
-				float height = 0;
+				float heightChange = 0;
 				float changeSpeed = 0;
 				
 				final float delta = Math.abs(current - desired);
@@ -109,14 +109,14 @@ public class SplineCurveController extends AbstractAppState {
 				}
 				
 				if (current <= desired) {
-					height = Math.min(delta, BASE_CHANGE_SPEED);
+					heightChange = Math.min(delta, BASE_CHANGE_SPEED);
 				} else {
-					height = Math.max(delta, -BASE_CHANGE_SPEED);
+					heightChange = Math.max(-delta, -BASE_CHANGE_SPEED);
 				}
 				
-				height = height * changeSpeed;
+				heightChange = heightChange * changeSpeed * tpf;
 				
-				temp.y = height * tpf;
+				temp.y = current + heightChange;
 				res[i] = temp;
 			}
 		}
