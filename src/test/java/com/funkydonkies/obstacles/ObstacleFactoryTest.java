@@ -25,16 +25,16 @@ public class ObstacleFactoryTest {
 	private static AssetManager assetManager;
 	private static Node node;
 	
-	private final float obstacleWidth = 2;
-	private final float obstacleHeight = 4;
-	private final float obstacleDepth = 1;
-	private final float obstacleX = 20;
-	private final float obstacleY = 0;
-	private final float obstacleZ = 0.5f;
+	private final float obstacleWidth = ObstacleFactory.obstacleWidth;
+	private final float obstacleHeight = ObstacleFactory.obstacleHeight;
+	private final float obstacleDepth = ObstacleFactory.obstacleDepth;
+	private final float obstacleX = ObstacleFactory.obstacleX;
+	private final float obstacleY = ObstacleFactory.obstacleY;
+	private final float obstacleZ = ObstacleFactory.obstacleZ;
 		
-	private final float targetWidth = 1;
-	private final float targetHeight = 1;
-	private final float targetDepth = 1;
+	private final float targetWidth = ObstacleFactory.targetWidth;
+	private final float targetHeight = ObstacleFactory.targetHeight;
+	private final float targetDepth = ObstacleFactory.targetDepth;
 	private final float targetX = 30;
 	private final float targetY = 0.5f;
 	private final float targetZ = 1;
