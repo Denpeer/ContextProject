@@ -1,4 +1,4 @@
-//package com.funkydonkies.w4v3;
+package com.funkydonkies.w4v3;
 //
 //import static org.junit.Assert.assertEquals;
 //import static org.mockito.Mockito.mock;
@@ -12,6 +12,7 @@
 //import com.jme3.math.Vector3f;
 //import com.jme3.scene.Node;
 //
+//import com.jme3.scene.Geometry;
 ///**
 // * Testing SplineCurve.
 // *
@@ -47,8 +48,6 @@
 //
 //	/**
 //	 * Test getTwoVectors.
-//	 */
-//	@Test
 //	public void getBeginTwoVectorsTest() {
 //		final Vector3f[] veccies = sp.getTwoVectors(0, 0);
 //		assertEquals(vecs[0], veccies[0]);
