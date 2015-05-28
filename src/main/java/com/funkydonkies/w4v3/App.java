@@ -92,15 +92,11 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-//		clBox.move(tpf);
 		timeCount += tpf;
-		getRootNode().detachChildNamed("curve");
-//		System.out.println(rigi);
 		if(rigi != null){
 			oldRigi = new RigidBodyControl(0f);
 			oldRigi = rigi;
 		}
-//			System.out.println(oldRigi);
 		rigi = new RigidBodyControl(0f);
 		Vector3f[] pts = new Vector3f[100];
 		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode(), pts);

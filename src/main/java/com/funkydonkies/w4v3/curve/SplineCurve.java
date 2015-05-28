@@ -29,7 +29,7 @@ public class SplineCurve extends Spline {
 	 */
 	public SplineCurve(final SplineType splineType, final float curveTension, final boolean cycle) {
 		super(splineType, SplineCurveController.testPoints(), curveTension, cycle);
-		
+		geo = new Geometry("curve");
 		curvePoints = SplineCurveController.testPoints();
 	}
 
@@ -39,7 +39,7 @@ public class SplineCurve extends Spline {
 		this.refreshControlPoints();
 		CustomCurveMesh curve = new CustomCurveMesh(getSplinePoints());
 		Mesh mesh = curve.CreateMesh();
-		geo = new Geometry("curve", mesh); 
+		geo.setMesh(mesh);
 		geo.setMaterial(mat);
 		geo.addControl(phys);
 		phys.setRestitution(0.5f);
