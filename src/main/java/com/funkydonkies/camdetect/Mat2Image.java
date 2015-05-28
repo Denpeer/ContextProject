@@ -97,8 +97,7 @@ public class Mat2Image implements Bridge {
     	numPoints = (int) Math.floor(tempdiv);
     	interestPoints = new float[numPoints];
     	Arrays.fill(interestPoints, (float) im.size().height);
-    	//for every chosen x find the highest pixel value equal to 0
-    	for (int i = 0; i < numPoints; i++) {
+    	for (int i = 0; i < numPoints; i++) { //for every chosen x find the highest pixel value equal to 0
     		for (int j = 0; j < im.size().height; j++) {
     			final double val = im.get(j, i * XDIST)[0];
     			if (val == 0.0) {
@@ -166,6 +165,7 @@ public class Mat2Image implements Bridge {
      * @return processed image matrix as image
      */
         BufferedImage getImage(final Mat matMatrix) {
+        	Core.flip(mat, mat, 1);
             getSpace(mat);
             res.get(0, 0, dat);
             img.getRaster().setDataElements(0, 0, 
@@ -190,6 +190,22 @@ public class Mat2Image implements Bridge {
      */
 	public int getxdist() {
 		return XDIST;
+	}
+
+	/**
+	 * Method comes from implementing the bridge interface.
+	 * @return the height of the current image
+	 */
+	public int getImageHeight() {
+		return mat.height();
+	}
+
+	/**
+	 * Method comes from implementing the bridge interface.
+	 * @return the width of the current image
+	 */
+	public int getImageWidth() {
+		return mat.width();
 	}
 
 }

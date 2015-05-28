@@ -18,4 +18,16 @@ public interface Bridge {
 	 * @return int representing the x interval between elements of the array returned by getControlPoints()
 	 */
 	int getxdist();
+	
+	/**
+	 * get the height of the images captured by the webcam.
+	 * @return the largest y coordinate of the current image
+	 */
+	int getImageHeight();
+	
+	/**
+	 * get the width of the images captured by the webcam.
+	 * @return the largest x coordinate of the current image
+	 */
+	int getImageWidth();
 }
