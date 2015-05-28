@@ -1,5 +1,6 @@
 package com.funkydonkies.w4v3.curve;
 
+import com.funkydonkies.controllers.SplineCurveController;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
