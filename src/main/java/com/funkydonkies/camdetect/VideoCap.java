@@ -80,4 +80,18 @@ public class VideoCap {
 	public void setBg() {
 		mat2Img.setBg();
 	}
+	
+	/**
+	 * increment the amount of interest points by 1.
+	 */
+	public void incXD() {
+		mat2Img.setxdist(mat2Img.getxdist() - 1);
+	}
+	
+	/**
+	 * decrement the amount of interest points by 1.
+	 */
+	public void decXD() {
+		mat2Img.setxdist(mat2Img.getxdist() + 1);
+	}
 }
