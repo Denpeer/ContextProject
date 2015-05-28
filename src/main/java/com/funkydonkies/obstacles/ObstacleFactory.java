@@ -17,11 +17,11 @@ public class ObstacleFactory {
 	 * @return a MovingBox object
 	 */
 	public final MovingBox makeMovingBox(final Node node, final AssetManager assetManager) {
-		final float obstacleWidth = 2;
-		final float obstacleHeight = 4;
-		final float obstacleDepth = 1;
-		final float obstacleX = 20;
-		final float obstacleY = 0;
+		final float obstacleWidth = 20;
+		final float obstacleHeight = 40;
+		final float obstacleDepth = 10;
+		final float obstacleX = 150;
+		final float obstacleY = 100;
 		final float obstacleZ = 0.5f;
 		return new MovingBox(obstacleWidth, obstacleHeight, obstacleDepth,
 				obstacleX, obstacleY, obstacleZ, node);
@@ -33,9 +33,9 @@ public class ObstacleFactory {
 	 * @return a target object
 	 */
 	public final Target makeTarget(final Node node) {
-		final float targetWidth = 1;
-		final float targetHeight = 1;
-		final float targetDepth = 1;
+		final float targetWidth = 5;
+		final float targetHeight = 5;
+		final float targetDepth = 5;
 		final float targetX = 30;
 		final float targetY = 0.5f;
 		final float targetZ = 1;

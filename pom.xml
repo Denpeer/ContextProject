@@ -19,12 +19,58 @@
     <pluginManagement>
    		<plugins>
     	
-      	<plugin>
+      		<plugin>
     			<groupId>org.apache.maven.plugins</groupId>
        			<artifactId>maven-site-plugin</artifactId>
     			<version>3.3</version>
    			</plugin>
-
+   			<!--
+   			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-install-plugin</artifactId>
+		        <version>2.3.1</version>
+		        <executions>
+		            <execution>
+		              <phase>install</phase>
+		              <goals>
+		                <goal>install-file</goal>
+		              </goals>
+		              <configuration>
+		                <file>lib/opencv2410.jar</file>
+		                <groupId>opencv</groupId>
+		                <artifactId>opencv</artifactId>
+		                <version>2.4.10</version>
+		                <packaging>jar</packaging>
+		              </configuration>
+		            </execution>
+		          </executions>
+			</plugin>	
+			
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>exec-maven-plugin</artifactId>
+		        <version>1.4.0</version>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>java</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		        <configuration>
+		          <mainClass>com.example.Main</mainClass>
+		          <arguments>
+		            <argument>argument1</argument>
+		          </arguments>
+		          <systemProperties>
+		            <systemProperty>
+		              <key>myproperty</key>
+		              <value>myvalue</value>
+		            </systemProperty>
+		          </systemProperties>
+		        </configuration>
+		    </plugin> -->
+   			
    		</plugins>
 	  </pluginManagement>
 
@@ -158,18 +204,29 @@
   </reporting>
 	
   <repositories>
- 
     <repository>
       <id>jmonkey</id>
       <name>Jmonkey repository</name>
       <url>http://updates.jmonkeyengine.org/maven/</url>
     </repository>
-
   </repositories>
 
   <dependencies>
-
-    <dependency>
+	<!-- <dependency>
+	    <groupId>opencv</groupId>
+	    <artifactId>opencv</artifactId>
+	    <version>2.4.7</version>
+	    <scope>system</scope>
+     	<systemPath>${basedir}/lib/opencv-247.jar</systemPath>
+	</dependency> -->
+	<dependency>
+	    <groupId>opencv</groupId>
+	    <artifactId>opencv</artifactId>
+	    <version>2.4.10</version>
+	    <scope>system</scope>
+     	<systemPath>${basedir}/lib/opencv-2410.jar</systemPath>
+	</dependency>
+   <dependency>
       <groupId>com.jme3</groupId>
       <artifactId>jme3-core</artifactId>
       <version>3.0.10</version>
@@ -238,11 +295,6 @@
   		<groupId>junit</groupId>
   		<artifactId>junit</artifactId>
   		<version>4.12</version>
-    </dependency>
-    <dependency>
-  		<groupId>org.bytedeco</groupId>
-  		<artifactId>javacv</artifactId>
-   		<version>0.11</version>
     </dependency>
     <dependency>
     	<groupId>org.mockito</groupId>
