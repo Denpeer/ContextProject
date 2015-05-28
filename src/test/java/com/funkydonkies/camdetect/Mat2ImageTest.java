@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,11 +29,27 @@ public class Mat2ImageTest {
 	
 	/**
 	 * Preparation.
-	 * @throws Exception
+	 * @throws Exception in case system path not accessible
 	 */
 	@BeforeClass 
 	public static void setUpBeforeClass() throws Exception {
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		final String javaLibPath = "java.library.path";
+    	System.setProperty(javaLibPath, "./lib");
+   	 	Field fieldSysPath;
+		try {
+			fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+			fieldSysPath.setAccessible(true);
+			fieldSysPath.set(null, null);
+		} catch (final NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (final SecurityException e) {
+			e.printStackTrace();
+		} catch (final IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (final IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);	
 	}
 	
 	/**

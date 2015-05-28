@@ -1,19 +1,22 @@
 package com.funkydonkies.camdetect;
 
 import java.awt.AWTException;
+import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+
 import static org.junit.Assert.assertEquals;
+
 import javax.swing.JPanel;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.opencv.core.Core;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -57,16 +60,21 @@ public class MyFrameTest {
 	
 	/**
 	 * Check if the frame is visible.
+	 * @throws HeadlessException in case there is no display
 	 */
 	@Test
-	public void testMyFrame() {
-		final MyFrame test = new MyFrame();
-		assertTrue(test.isVisible());
+	public void testMyFrame() throws HeadlessException {
+		try {
+			final MyFrame test = new MyFrame();
+			assertTrue(test.isVisible());
+		} catch (final HeadlessException e) {
+			
+		}
 	}
 
 	/**
 	 * Confirm that the correct key is set for calling the setTheBg action.
-	 * @throws AWTException
+	 * @throws AWTException catches GUI error
 	 */
 	@Test
 	public void testInitBgSetKey() throws AWTException {
@@ -82,7 +90,7 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testPaintGraphics() {
-		final MyFrame test = new MyFrame();
+		final MyFrame test = Mockito.mock(MyFrame.class);
 		test.repaint();
 	}
 
@@ -91,7 +99,7 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testRun() {
-		final MyFrame test = new MyFrame();
+		final MyFrame test = Mockito.mock(MyFrame.class);
 		test.run();
 	}
 
