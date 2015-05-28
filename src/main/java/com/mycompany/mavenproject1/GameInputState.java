@@ -1,7 +1,7 @@
 package com.mycompany.mavenproject1;
 
 import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.SplineCurveController;
+import com.funkydonkies.w4v3.curve.SplineCurveController;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
