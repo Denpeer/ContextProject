@@ -73,24 +73,26 @@ public class SplineCurveController extends AbstractAppState {
 	 * @return list of control points without large height differences
 	 */
 	private float[] removeLargeHeightDifferences(final float[] cp) {
+		System.out.println("original: " + Arrays.toString(cp));
 		for (int i = 0; i < (cp.length - 1); i++) {
 			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
-				if (cp[i] > cp[i + 1]) {
-					cp[i + 1] = cp[i] - (int) maxHeightDifference;
+				if (cp[i] < cp[i + 1]) {
+					cp[i + 1] = cp[i] + (int) maxHeightDifference;
 				} else {
-					cp[i] = cp[i + 1] - (int) maxHeightDifference;
+					cp[i] = cp[i + 1] + (int) maxHeightDifference;
 				}
 			}
 		}
 		for (int i = (cp.length - 2); i > 0; i--) {
 			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
-				if (cp[i] > cp[i + 1]) {
-					cp[i + 1] = cp[i] - (int) maxHeightDifference;
+				if (cp[i] < cp[i + 1]) {
+					cp[i + 1] = cp[i] + (int) maxHeightDifference;
 				} else {
-					cp[i] = cp[i + 1] - (int) maxHeightDifference;
+					cp[i] = cp[i + 1] + (int) maxHeightDifference;
 				}
 			}
 		}
+		System.out.println(Arrays.toString(cp));
 		return cp;
 	}
 	
