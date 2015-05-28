@@ -2,6 +2,7 @@ package com.funkydonkies.w4v3;
 
 import java.util.Arrays;
 
+import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -10,14 +11,13 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
-import com.mycompany.mavenproject1.BadDynamicTypeException;
 
 
 public class SplineCurveController extends AbstractAppState {
 	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
 	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
-	private static final int POINT_DISTANCE = 10;
-	private static final int POINTS_HEIGHT = 100;
+	public static final int POINT_DISTANCE = 10;
+	public static final int POINTS_HEIGHT = 100;
 	private static final int BASE_CHANGE_SPEED = 20; 
 	private static final int CHANGE_THRESHOLD = 5; 
 	private static final int MAX_SLOPE_ANGLE = 70;
@@ -259,4 +259,11 @@ public class SplineCurveController extends AbstractAppState {
 		return cameraEnabled;
 	}
 	
+	/**
+	 * Returns the amount of control points used by the wave
+	 * @return int the amount of control points
+	 */
+	public static int getAmountOfControlPoints() {
+		return controlPointsCount;
+	}
 }
