@@ -33,23 +33,11 @@ public class Mat2ImageTest {
 	 */
 	@BeforeClass 
 	public static void setUpBeforeClass() throws Exception {
-		final String javaLibPath = "java.library.path";
-    	System.setProperty(javaLibPath, "./lib");
-   	 	Field fieldSysPath;
 		try {
-			fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
-			fieldSysPath.setAccessible(true);
-			fieldSysPath.set(null, null);
-		} catch (final NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (final SecurityException e) {
-			e.printStackTrace();
-		} catch (final IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (final IllegalAccessException e) {
-			e.printStackTrace();
+			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);	
+		} catch (final UnsatisfiedLinkError e) {
+			
 		}
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);	
 	}
 	
 	/**

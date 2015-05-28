@@ -87,9 +87,9 @@ public class MyFrameTest {
 			final MyFrame test = new MyFrame();
 			test.initBgSetKey();
 			testpanel = (JPanel) test.getContentPane();
+			assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
 		} catch (final HeadlessException e) {
 		}
-		assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
 	}
 
 	/**
