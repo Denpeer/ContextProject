@@ -15,7 +15,6 @@ import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Sphere;
 
 /**
- * @author Jonathan
  *
  */
 public class Ball {
@@ -24,7 +23,7 @@ public class Ball {
 	private Geometry geom;
 	private Material mat;
 	private RigidBodyControl phy;
-	private static final float DEFAULT_RADIUS = 0.5f;
+	public static final float DEFAULT_RADIUS = 0.5f;
 	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);
 	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(5, -22, 0);
 	
@@ -142,16 +141,30 @@ public class Ball {
 		return geom;
 	}
 	
-	public final Spatial resize(float size){
-		return geom.scale(size);
+	/**
+	 * Method for resizing the Ball's geometry, uses scaling.
+	 * @param scale float the scale to scale the geeometry with. 
+	 * @return Spatial the spatial on which the scale is called on.
+	 * @see com.jme3.scene.Spatial.scale(float s)
+	 */
+	public final Spatial resize(float scale){
+		return geom.scale(scale);
 	}
 	
+	/**
+	 * Adds a new control to the Ball's geometry.
+	 * @param c Control the control to be added
+	 * @see com.jme3.scene.Spatial.addControl(Control control)
+	 */
 	public final void addControl(Control c) {
 		geom.addControl(c);
 	}
 	
+	/**
+	 * Returns the BallController, or other RigidBodycontrol, used by the ball.
+	 * @return Control the ball's main controller.
+	 */
 	public final Control getControl() {
 		return phy;
 	}
-
 }

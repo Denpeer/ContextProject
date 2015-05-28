@@ -1,6 +1,7 @@
 package com.funkydonkies.w4v3;
 
-import com.funkydonkies.controllers.SuperSizePowerup;
+import powerups.SuperSizePowerup;
+
 import com.funkydonkies.gamestates.BallState;
 import com.funkydonkies.gamestates.GameInputState;
 import com.funkydonkies.gamestates.PowerupState;

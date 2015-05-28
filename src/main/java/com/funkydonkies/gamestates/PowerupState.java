@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.funkydonkies.controllers.SuperSizePowerup;
+import powerups.SuperSizePowerup;
+
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Ball;
