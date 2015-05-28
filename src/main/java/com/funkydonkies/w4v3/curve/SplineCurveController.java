@@ -1,7 +1,9 @@
-package com.funkydonkies.w4v3;
+package com.funkydonkies.w4v3.curve;
 
 import java.util.Arrays;
 
+import com.funkydonkies.w4v3.App;
+import com.funkydonkies.w4v3.Bridge;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;

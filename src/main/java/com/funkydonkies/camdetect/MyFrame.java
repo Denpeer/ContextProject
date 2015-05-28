@@ -69,7 +69,7 @@ public class MyFrame extends JFrame implements Runnable {
 		}
 	System.out.println("Lib name: " + Core.NATIVE_LIBRARY_NAME);
 	System.out.println("Path: " + System.getProperty(javaLibPath));
-   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+//   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     
   /**

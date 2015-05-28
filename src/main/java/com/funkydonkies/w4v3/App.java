@@ -1,6 +1,8 @@
 package com.funkydonkies.w4v3;
 
 import com.funkydonkies.camdetect.MyFrame;
+import com.funkydonkies.w4v3.curve.SplineCurve;
+import com.funkydonkies.w4v3.curve.SplineCurveController;
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
@@ -47,9 +49,9 @@ public class App extends SimpleApplication {
 		oldRigi = new RigidBodyControl(0f);
 		rigi = new RigidBodyControl(0f);
 		
-		final MyFrame frame = new MyFrame();
-		bridge = frame.getVideoCap().getMat2Image();
-		new Thread(frame).start();
+//		final MyFrame frame = new MyFrame();
+//		bridge = frame.getVideoCap().getMat2Image();
+//		new Thread(frame).start();
 		
 		app.start();
 	}

@@ -1,6 +1,4 @@
-package com.funkydonkies.w4v3;
-
-import java.util.List;
+package com.funkydonkies.w4v3.curve;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
