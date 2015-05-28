@@ -40,12 +40,16 @@ public class MyFrameTest {
 
 	/**
 	 * Load the lib and check if the version is as expected.
+	 * @throws UnsatisfiedLinkError in case the library is not found
 	 */
 	@Test
-	public void testLoadLib() {
+	public void testLoadLib() throws UnsatisfiedLinkError {
 		final ByteArrayOutputStream sink = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(sink, true));
-		MyFrame.loadLib();
+		try {
+			MyFrame.loadLib();
+		} catch (final UnsatisfiedLinkError e) {
+		}
 		final String javaLibPath = "java.library.path";
     	System.setProperty(javaLibPath, "./lib");
     	final StringBuilder result = new StringBuilder();
@@ -68,20 +72,23 @@ public class MyFrameTest {
 			final MyFrame test = new MyFrame();
 			assertTrue(test.isVisible());
 		} catch (final HeadlessException e) {
-			
 		}
 	}
 
 	/**
 	 * Confirm that the correct key is set for calling the setTheBg action.
 	 * @throws AWTException catches GUI error
+	 * @throws HeadlessException in case there is no display
 	 */
 	@Test
-	public void testInitBgSetKey() throws AWTException {
-		final MyFrame test = new MyFrame();
-		test.initBgSetKey();
+	public void testInitBgSetKey() throws AWTException, HeadlessException {
 		JPanel testpanel = new JPanel();
-		testpanel = (JPanel) test.getContentPane();
+		try {
+			final MyFrame test = new MyFrame();
+			test.initBgSetKey();
+			testpanel = (JPanel) test.getContentPane();
+		} catch (final HeadlessException e) {
+		}
 		assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
 	}
 
