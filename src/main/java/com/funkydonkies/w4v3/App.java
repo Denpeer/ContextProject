@@ -1,9 +1,12 @@
 package com.funkydonkies.w4v3;
 
 import com.funkydonkies.camdetect.MyFrame;
+import com.funkydonkies.controllers.SplineCurveController;
 import com.funkydonkies.gamestates.GameInputState;
 import com.funkydonkies.obstacles.MovingBox;
 import com.funkydonkies.obstacles.ObstacleFactory;
+import com.funkydonkies.w4v3.curve.CustomCurveMesh;
+import com.funkydonkies.w4v3.curve.SplineCurve;
 import com.funkydonkies.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;

@@ -8,11 +8,10 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.controllers.SplineCurveController;
 import com.funkydonkies.controllers.TargetControl;
-import com.funkydonkies.w4v3.SplineCurveController;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 

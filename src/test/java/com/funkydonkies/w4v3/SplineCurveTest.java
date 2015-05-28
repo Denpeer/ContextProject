@@ -1,4 +1,4 @@
-//package com.funkydonkies.w4v3;
+package com.funkydonkies.w4v3;
 //
 //import static org.junit.Assert.assertEquals;
 //import static org.mockito.Mockito.mock;
@@ -12,7 +12,7 @@
 //import com.jme3.math.Vector3f;
 //import com.jme3.scene.Node;
 //
-import com.jme3.scene.Geometry;
+//import com.jme3.scene.Geometry;
 ///**
 // * Testing SplineCurve.
 // *

@@ -1,8 +1,7 @@
 package com.funkydonkies.obstacles;
 
+import com.funkydonkies.controllers.SplineCurveController;
 import com.funkydonkies.controllers.TargetControl;
-import com.funkydonkies.w4v3.SplineCurve;
-import com.funkydonkies.w4v3.SplineCurveController;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;

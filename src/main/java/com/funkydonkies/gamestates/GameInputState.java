@@ -1,8 +1,8 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.controllers.SplineCurveController;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.SplineCurveController;
 import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
