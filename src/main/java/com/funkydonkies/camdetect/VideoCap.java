@@ -15,7 +15,7 @@ public class VideoCap {
 
     private VideoCapture cap;
     private Mat2Image mat2Img = new Mat2Image();
-    private static final int INPUTSOURCENUMBER = 0;
+    private static final int INPUTSOURCENUMBER = 2;
     private boolean camOn = false;
 
     /**
@@ -79,5 +79,19 @@ public class VideoCap {
      */
 	public void setBg() {
 		mat2Img.setBg();
+	}
+	
+	/**
+	 * increment the amount of interest points by 1.
+	 */
+	public void incXD() {
+		mat2Img.setxdist(mat2Img.getxdist() - 1);
+	}
+	
+	/**
+	 * decrement the amount of interest points by 1.
+	 */
+	public void decXD() {
+		mat2Img.setxdist(mat2Img.getxdist() + 1);
 	}
 }

@@ -28,13 +28,15 @@ public class Mat2Image implements Bridge {
     private Mat res = new Mat();
     private Boolean bgSet = false;
     private float[] interestPoints;
-    private static final int XDIST = 20;
+    private static final int DEFAULT_XDIST = 20;
     private static final int MEDBLUR = 5;
     private static final int MAXCOL = 255;
     private static final int THRESHBLOCKSIZE = 71;
     private static final int IGNORESIZE = 7;
     private static final int CIRCLEDIAM = 5;
     private static final int NUMCHANNELS = 3;
+    
+    private static int  xDist = DEFAULT_XDIST;
     
     private int numPoints = 0;
     
@@ -88,18 +90,18 @@ public class Mat2Image implements Bridge {
     }
     
     /**
-     * Currently this method finds the highest point for every x belonging to XDIST*k with k a natural.
+     * Currently this method finds the highest point for every x belonging to xDist*k with k a natural.
      * @param im input matrix of image
      */
     public void updateIP(final Mat im) {
     	//XDIST = 20; xrange = 640; total interest points = 640/20=32;
-    	final double tempdiv = im.size().width / XDIST;
+    	final double tempdiv = im.size().width / xDist;
     	numPoints = (int) Math.floor(tempdiv);
     	interestPoints = new float[numPoints];
     	Arrays.fill(interestPoints, (float) im.size().height);
     	for (int i = 0; i < numPoints; i++) { //for every chosen x find the highest pixel value equal to 0
     		for (int j = 0; j < im.size().height; j++) {
-    			final double val = im.get(j, i * XDIST)[0];
+    			final double val = im.get(j, i * xDist)[0];
     			if (val == 0.0) {
     				interestPoints[i] = j;
     				break;
@@ -118,7 +120,7 @@ public class Mat2Image implements Bridge {
     	final Mat im = new Mat();
     	Imgproc.cvtColor(matMatrix, im, Imgproc.COLOR_GRAY2BGR); //convert back to bgr to draw interest points for visual feedback
     	for (int i = 0; i < iP.length; i++) {
-    		Core.circle(im, new Point(i * XDIST, iP[i]), CIRCLEDIAM, new Scalar(MAXCOL), 0, 0, 2);
+    		Core.circle(im, new Point(i * xDist, iP[i]), CIRCLEDIAM, new Scalar(MAXCOL), 0, 0, 2);
     	}
     	return im;
     }
@@ -186,10 +188,24 @@ public class Mat2Image implements Bridge {
      * Method comes from implementing the bridge interface.
      * used by classes outside of camdetect package to access horizontal interval between control points.
      * this is used to be able to interpret the interestPoints array returned by the getControlPoints() method.
-     * @return the XDIST as int
+     * @return the xDist as int
      */
 	public int getxdist() {
-		return XDIST;
+		return xDist;
+	}
+	
+	/**
+	 * Modifies the horizontal interval between interest points.
+	 * @param newXDist the new horizontal interval
+	 */
+	public void setxdist(final int newXDist) {
+		final String newDist = "newXDist: ";
+		if (newXDist > 0 && newXDist < mat.width()) {
+			xDist = newXDist;
+			System.out.println(newDist + newXDist);
+		} else {
+			System.out.println(newDist + newXDist + " is and invalid xDist. newXDist must be inbetween: 0 and " + mat.width());
+		}
 	}
 
 	/**

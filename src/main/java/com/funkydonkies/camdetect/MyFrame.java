@@ -53,7 +53,7 @@ public class MyFrame extends JFrame implements Runnable {
     public static void loadLib() {
     	final String javaLibPath = "java.library.path";
     	System.setProperty(javaLibPath, "./lib");
-   	 Field fieldSysPath;
+   	 	Field fieldSysPath;
 		try {
 			fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
 			fieldSysPath.setAccessible(true);
@@ -67,9 +67,9 @@ public class MyFrame extends JFrame implements Runnable {
 		} catch (final IllegalAccessException e) {
 			e.printStackTrace();
 		}
-	System.out.println("Lib name: " + Core.NATIVE_LIBRARY_NAME);
-	System.out.println("Path: " + System.getProperty(javaLibPath));
-   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		System.out.println("Lib name: " + Core.NATIVE_LIBRARY_NAME);
+		System.out.println("Path: " + System.getProperty(javaLibPath));
+	   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     
   /**
@@ -84,6 +84,7 @@ public class MyFrame extends JFrame implements Runnable {
         setBounds(xbound, ybound, boundwidth, boundheight);
         contentPane = new JPanel();
         initBgSetKey();
+        initXDAmountSetKey();
         final int top = 5, left = 5, bottom = 5, right = 5;
         contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
         setContentPane(contentPane);
@@ -107,6 +108,32 @@ public class MyFrame extends JFrame implements Runnable {
         final String callSetTheBg = "callSetTheBg";
         contentPane.getInputMap().put(KeyStroke.getKeyStroke('b'), callSetTheBg);
         contentPane.getActionMap().put(callSetTheBg, setTheBg);
+    }
+    
+    /**
+     * Use '+' and '-' keys to increment / decrement the xdist of m2i.
+     */
+    public void initXDAmountSetKey() {
+    	//create actions
+        Action incXD = new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.incXD();
+			}
+        };
+        Action decXD = new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.decXD();
+			}
+        };
+        //add keypress 'b' sets current frame as background
+        final String callIncXD = "incXD";
+        contentPane.getInputMap().put(KeyStroke.getKeyStroke('+'), callIncXD);
+        contentPane.getActionMap().put(callIncXD, incXD);
+        final String callDecXD = "decXD";
+        contentPane.getInputMap().put(KeyStroke.getKeyStroke('-'), callDecXD);
+        contentPane.getActionMap().put(callDecXD, decXD);
     }
  
     /**
