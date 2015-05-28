@@ -1,6 +1,9 @@
 package com.funkydonkies.w4v3;
 
 import com.funkydonkies.camdetect.MyFrame;
+import com.funkydonkies.w4v3.curve.CustomCurveMesh;
+import com.funkydonkies.w4v3.curve.SplineCurve;
+import com.funkydonkies.w4v3.curve.SplineCurveController;
 import com.funkydonkies.w4v3.obstacles.MovingBox;
 import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
 import com.jme3.app.SimpleApplication;
@@ -50,7 +53,6 @@ public class App extends SimpleApplication {
 		final MyFrame frame = new MyFrame();
 		bridge = frame.getVideoCap().getMat2Image();
 		new Thread(frame).start();
-		
 		app.start();
 	}
 
@@ -60,7 +62,7 @@ public class App extends SimpleApplication {
 		stateManager.attach(bulletAppState);
 		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		flyCam.setEnabled(false);
+		flyCam.setEnabled(true);
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
 		
@@ -90,15 +92,11 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-//		clBox.move(tpf);
 		timeCount += tpf;
-		getRootNode().detachChildNamed("curve");
-//		System.out.println(rigi);
 		if(rigi != null){
 			oldRigi = new RigidBodyControl(0f);
 			oldRigi = rigi;
 		}
-//			System.out.println(oldRigi);
 		rigi = new RigidBodyControl(0f);
 		Vector3f[] pts = new Vector3f[100];
 		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode(), pts);
