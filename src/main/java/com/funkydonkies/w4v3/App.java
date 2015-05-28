@@ -1,6 +1,7 @@
 package com.funkydonkies.w4v3;
 
 import com.funkydonkies.camdetect.MyFrame;
+import com.funkydonkies.w4v3.curve.CustomCurveMesh;
 import com.funkydonkies.w4v3.curve.SplineCurve;
 import com.funkydonkies.w4v3.curve.SplineCurveController;
 import com.funkydonkies.w4v3.obstacles.MovingBox;
@@ -49,10 +50,9 @@ public class App extends SimpleApplication {
 		oldRigi = new RigidBodyControl(0f);
 		rigi = new RigidBodyControl(0f);
 		
-//		final MyFrame frame = new MyFrame();
-//		bridge = frame.getVideoCap().getMat2Image();
-//		new Thread(frame).start();
-		
+		final MyFrame frame = new MyFrame();
+		bridge = frame.getVideoCap().getMat2Image();
+		new Thread(frame).start();
 		app.start();
 	}
 
@@ -62,7 +62,7 @@ public class App extends SimpleApplication {
 		stateManager.attach(bulletAppState);
 		//bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		flyCam.setEnabled(false);
+		flyCam.setEnabled(true);
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
 		
