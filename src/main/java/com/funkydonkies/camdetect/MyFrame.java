@@ -53,7 +53,7 @@ public class MyFrame extends JFrame implements Runnable {
     public static void loadLib() {
     	final String javaLibPath = "java.library.path";
     	System.setProperty(javaLibPath, "./lib");
-   	 	Field fieldSysPath;
+   	Field fieldSysPath;
 		try {
 			fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
 			fieldSysPath.setAccessible(true);
@@ -67,8 +67,6 @@ public class MyFrame extends JFrame implements Runnable {
 		} catch (final IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Lib name: " + Core.NATIVE_LIBRARY_NAME);
-		System.out.println("Path: " + System.getProperty(javaLibPath));
 	   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     

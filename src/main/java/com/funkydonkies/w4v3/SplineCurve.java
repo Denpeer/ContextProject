@@ -1,7 +1,6 @@
-package com.funkydonkies.w4v3;
+ package com.funkydonkies.w4v3;
 
-import java.util.List;
-
+import com.funkydonkies.controllers.SplineCurveController;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
@@ -39,6 +38,7 @@ public class SplineCurve extends Spline {
 	Boolean bool = true;
 	private static Geometry geo;
 	private RigidBodyControl phys;
+	
 	
 	/**
 	 * The constructor of the SplineCurve class.

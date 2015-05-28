@@ -1,18 +1,23 @@
 package com.funkydonkies.w4v3;
 
 import com.funkydonkies.camdetect.MyFrame;
-import com.funkydonkies.w4v3.obstacles.MovingBox;
-import com.funkydonkies.w4v3.obstacles.ObstacleFactory;
+import com.funkydonkies.controllers.SplineCurveController;
+import com.funkydonkies.gamestates.GameInputState;
+import com.funkydonkies.obstacles.MovingBox;
+import com.funkydonkies.obstacles.ObstacleFactory;
+import com.funkydonkies.w4v3.curve.CustomCurveMesh;
+import com.funkydonkies.w4v3.curve.SplineCurve;
+import com.funkydonkies.obstacles.Target;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.mycompany.mavenproject1.GameInputState;
 /**
  * Game is run through this class.
  *
@@ -28,16 +33,16 @@ public class App extends SimpleApplication {
 	private SplineCurveController spController;
 	private SplineCurve sp;
 	private Material mat;
-	private MovingBox clBox;
-	//private PhysicsController ballPhy;
+	private Target target;
+	private MovingBox movBox;
+	private Combo combo;
 	boolean bool = true;
-	private float time = 1;		// needs better name
-	private float timeCount = 0;	// needs better name
 	private static RigidBodyControl oldRigi;
 	private static RigidBodyControl rigi;
+	private ObstacleFactory factory;
 	
 	private static Bridge bridge;
-
+	
 	/**
 	 * Main method. Instantiates the app and starts its execution.
 	 * @param args run arguments
@@ -56,9 +61,10 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
+		factory = new ObstacleFactory();
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		//bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		flyCam.setEnabled(false);
 		gameInputState = new GameInputState();
@@ -69,32 +75,30 @@ public class App extends SimpleApplication {
 		spController = new SplineCurveController(bridge, sp);
 		stateManager.attach(spController);
 
+		final BitmapText comboText = new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"),
+				false);
+		combo = new Combo(guiNode, comboText);
+		movBox = factory.makeMovingBox(rootNode, assetManager);
+		target = factory.makeTarget(rootNode);
+		target.getControl().setCombo(combo);
+		
 		mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Yellow);
 		
-		final ObstacleFactory facto = new ObstacleFactory();
-		final int obstacleWidth = 2;
-		final int obstacleHeight = 4;
-		final int obstacleDepth = 1;
-		
-//		clBox = (MovingBox) facto.makeObstacle("MOVINGBOX", obstacleWidth, obstacleHeight, 
-//				obstacleDepth);
-		
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
-//		clBox.draw(mat2, getPhysicsSpace(), rootNode);
-		
+		movBox.draw(mat2, getPhysicsSpace());
+		target.draw(mat2, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
-		
+		combo.display();
 	}
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-//		clBox.move(tpf);
-		timeCount += tpf;
+		movBox.move(tpf);
 		getRootNode().detachChildNamed("curve");
 //		System.out.println(rigi);
-		if(rigi != null){
+		if (rigi != null) {
 			oldRigi = new RigidBodyControl(0f);
 			oldRigi = rigi;
 		}
@@ -104,42 +108,7 @@ public class App extends SimpleApplication {
 		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode(), pts);
 		sp.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
-		
-		if (timeCount > time) {
-			timeCount = 0;
-		}
-		
-		
-
 	}
-
-//	/**
-//	 * Creates a new ball object and instantiates a physics controller for it.
-//	 * Adds the physics controller to the physics space and the ball to the scene
-//	 */
-//	private void makeBall() {
-//		/* Ball physics control */
-//		ballPhy = new PhysicsController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
-//		ballPhy.setLinearVelocity(BALL_INITIAL_SPEED);
-//
-//		/* Ball spatial */
-//		final Sphere ball = new Sphere(20, 20, BALL_RADIUS);
-//		final Geometry geom = new Geometry("Sphere", ball);
-//		final Material mat = new Material(assetManager,
-//				"Common/MatDefs/Misc/Unshaded.j3md");
-//		mat.setColor("Color", ColorRGBA.Blue);
-//		geom.setMaterial(mat);
-//
-//		/* Ball node */
-//		final Node node = new Node("ball");
-//		node.addControl(ballPhy);
-//		node.attachChild(geom);
-//		/* attach node and add the physics controller to the game */
-//		rootNode.attachChild(node);
-//		getPhysicsSpace().add(ballPhy);
-//		ballPhy.setRestitution(1f);
-//		ballPhy.setPhysicsLocation(BALL_SPAWN_LOCATION);  // Move the ball to its spawn location
-//	}
 
 	@Override
 	public void simpleRender(final RenderManager rm) {
