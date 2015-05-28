@@ -14,13 +14,16 @@ import com.mycompany.mavenproject1.BadDynamicTypeException;
 
 
 public class SplineCurveController extends AbstractAppState {
-	private static final String INCREMENTHEIGHTMAPPING = "increment height";
-	private static final String DECREMENTHEIGHTMAPPING = "decrement height";
+	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
+	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
 	private static final int POINT_DISTANCE = 10;
 	private static final int POINTS_HEIGHT = 100;
 	private static final int BASE_CHANGE_SPEED = 20; 
-	
-	private static int CHANGE_TRESHOLD = 5; 
+	private static final int CHANGE_THRESHOLD = 5; 
+	private static final int MAX_SLOPE_ANGLE = 70;
+
+	private static int controlPointsCount = 32; //set to 32 as default; this is what we currently use to test the program.
+	private static double maxHeightDifference = 100; //default value without specific reason
 	
 	private Bridge bridge;
 	private App app;
@@ -50,22 +53,71 @@ public class SplineCurveController extends AbstractAppState {
 		initKeys();
 	}
 	
+	/**
+	 * calculates the number of control points that the getControlPoints() method should return.
+	 * @param imageWidth the width of the images captured by the camera
+	 * @param xdist the horizontal interval between control points
+	 * @return the number of control points
+	 */
+	private int getNumberOfControlPoints(final int imageWidth, final int xdist) {
+		final double tempdiv = imageWidth / xdist;
+    	return (int) Math.floor(tempdiv);
+	}
+	
+	/**
+	 * Make sure two neighboring control points do not have too large a vertical distance.
+	 * In this case when points are too far apart the lower point is brought up.
+	 * @param cp list of control points
+	 * @return list of control points without large height differences
+	 */
+	private float[] removeLargeHeightDifferences(float[] cp) {
+		for (int i = 0; i < (cp.length - 1); i++) {
+			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
+				if (cp[i] > cp[i + 1]) {
+					cp[i + 1] = (float) (cp[i] - maxHeightDifference);
+				} else {
+					cp[i] = (float) (cp[i + 1] - maxHeightDifference);
+				}
+			}
+		}
+		for (int i = (cp.length - 2); i > 0; i--) {
+			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
+				if (cp[i] > cp[i + 1]) {
+					cp[i + 1] = (float) (cp[i] - maxHeightDifference);
+				} else {
+					cp[i] = (float) (cp[i + 1] - maxHeightDifference);
+				}
+			}
+		}
+		return cp;
+	}
+	
+	/**
+	 * sets the mHD variable by calculating the 'opposite' edge of the triangle using the 'adjacent' edge and the angle
+	 */
+	private void setMaxHeightDiff() {
+		maxHeightDifference = bridge.getxdist() * Math.tan(Math.toRadians(MAX_SLOPE_ANGLE));
+	}
+	
 	@Override
 	public final void update(final float tpf) {
 		float[] points;
 		
 		if (cameraEnabled) {
 			points = bridge.getControlPoints();	// ENABLES CAMERA INPUT
+			setMaxHeightDiff();
+			points = removeLargeHeightDifferences(points);
 		} else {
-			points = new float[32];
-			Arrays.fill(points, 480);
+			controlPointsCount = getNumberOfControlPoints(bridge.getImageWidth(), bridge.getxdist());
+			points = new float[controlPointsCount];
+			Arrays.fill(points, bridge.getImageHeight());
 			for (int i = 10; i < 15; i++) {	// TESTING CODE
 				points[i] = 150 + 10 * (i - 9);
 			}
 		}
 		
 		if (updateEnabled) {
-			scaleValues(points, 480/*bridge.getImageHeight()*/);
+			scaleValues(points, bridge.getImageHeight());
 			final Vector3f[] updatedPoints = createVecArray(points, tpf);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
@@ -104,7 +156,7 @@ public class SplineCurveController extends AbstractAppState {
 				
 				changeSpeed = delta / POINTS_HEIGHT + 0.5f;
 				
-				if (delta < CHANGE_TRESHOLD) {
+				if (delta < CHANGE_THRESHOLD) {
 					continue;
 				}
 				
@@ -126,8 +178,8 @@ public class SplineCurveController extends AbstractAppState {
 
 	/**
 	 * Scales the values given by the camera.
-	 * @param points
-	 * @param screenHeight
+	 * @param points list of control points
+	 * @param screenHeight the 
 	 */
 	private void scaleValues(final float[] points, final int screenHeight) {
 		for (int i = 0; i < points.length; i++) {
@@ -140,18 +192,18 @@ public class SplineCurveController extends AbstractAppState {
 	}
 
 	public void initKeys() {
-		inputManager.addMapping(INCREMENTHEIGHTMAPPING, new KeyTrigger(KeyInput.KEY_R));
-		inputManager.addMapping(DECREMENTHEIGHTMAPPING, new KeyTrigger(KeyInput.KEY_F));
+		inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
+		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
 
-		inputManager.addListener(analogListener, INCREMENTHEIGHTMAPPING);
-		inputManager.addListener(analogListener, DECREMENTHEIGHTMAPPING);
+		inputManager.addListener(analogListener, INCREMENT_HEIGHT_MAPPING);
+		inputManager.addListener(analogListener, DECREMENT_HEIGHT_MAPPING);
 	}
 	
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
-			if (name.equals(INCREMENTHEIGHTMAPPING)) {
+			if (name.equals(INCREMENT_HEIGHT_MAPPING)) {
 				splineCurve.incrementPoints();
-			} else if (name.equals(DECREMENTHEIGHTMAPPING)) {
+			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) {
 				splineCurve.decrementPoints();
 			}
 		}
@@ -163,7 +215,7 @@ public class SplineCurveController extends AbstractAppState {
 	 */
 	public static Vector3f[] testPoints() {
 				
-		final Vector3f[] points = new Vector3f[32];
+		final Vector3f[] points = new Vector3f[controlPointsCount];
 				
 		for (int i = 0; i < points.length; i++) {
 			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
