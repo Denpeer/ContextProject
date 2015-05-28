@@ -21,14 +21,15 @@ public class SplineCurveController extends AbstractAppState {
 	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
 	public static final int POINT_DISTANCE = 10;
 	public static final int POINTS_HEIGHT = 100;
-	private static final int BASE_CHANGE_SPEED = 20; 
+	private static final int BASE_CHANGE_SPEED = 30; 
 	private static final int CHANGE_THRESHOLD = 5; 
-	private static final double MAX_SLOPE_ANGLE = 70.0;
+	private static final float MAX_SLOPE_ANGLE = 70f;
 	private static final int DEFAULT_CONTROL_POINTS_COUNT = 32;
-	private static final double DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
+	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
+	private static final float SPEED_MULTIPLIER = 1.5f;
 	
 	private static int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT; //set to 32 as default; this is what we currently use to test the program.
-	private double maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; //default value without specific reason
+	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; //default value without specific reason
 	
 	private Bridge bridge;
 	private App app;
@@ -65,7 +66,7 @@ public class SplineCurveController extends AbstractAppState {
 	 * @return the number of control points
 	 */
 	private int getNumberOfControlPoints(final int imageWidth, final int xdist) {
-		final double tempdiv = imageWidth / xdist;
+		final float tempdiv = imageWidth / xdist;
     	return (int) Math.floor(tempdiv);
 	}
 	
@@ -101,7 +102,7 @@ public class SplineCurveController extends AbstractAppState {
 	 * sets the mHD variable by calculating the 'opposite' edge of the triangle using the 'adjacent' edge and the angle.
 	 */
 	private void setMaxHeightDiff() {
-		maxHeightDifference = bridge.getxdist() * Math.tan(Math.toRadians(MAX_SLOPE_ANGLE));
+		maxHeightDifference = (float) (bridge.getxdist() * Math.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
 	}
 	
 	@Override
@@ -123,7 +124,7 @@ public class SplineCurveController extends AbstractAppState {
 		
 		if (updateEnabled) {
 			scaleValues(points, bridge.getImageHeight());
-			final Vector3f[] updatedPoints = createVecArray(points, tpf);
+			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
 		
