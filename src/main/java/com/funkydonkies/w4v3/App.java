@@ -50,9 +50,9 @@ public class App extends SimpleApplication {
 		oldRigi = new RigidBodyControl(0f);
 		rigi = new RigidBodyControl(0f);
 //		
-//		final MyFrame frame = new MyFrame();
-//		bridge = frame.getVideoCap().getMat2Image();
-//		new Thread(frame).start();
+		final MyFrame frame = new MyFrame();
+		bridge = frame.getVideoCap().getMat2Image();
+		new Thread(frame).start();
 		
 		app.start();
 	}
