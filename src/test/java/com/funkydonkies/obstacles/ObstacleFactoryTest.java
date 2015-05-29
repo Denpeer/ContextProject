@@ -25,16 +25,16 @@ public class ObstacleFactoryTest {
 	private static AssetManager assetManager;
 	private static Node node;
 	
-	private final float obstacleWidth = ObstacleFactory.obstacleWidth;
-	private final float obstacleHeight = ObstacleFactory.obstacleHeight;
-	private final float obstacleDepth = ObstacleFactory.obstacleDepth;
-	private final float obstacleX = ObstacleFactory.obstacleX;
-	private final float obstacleY = ObstacleFactory.obstacleY;
-	private final float obstacleZ = ObstacleFactory.obstacleZ;
+	private final float obstacleWidth = ObstacleFactory.OBSTACLE_WIDTH;
+	private final float obstacleHeight = ObstacleFactory.OBSTACLE_HEIGHT;
+	private final float obstacleDepth = ObstacleFactory.OBSTACLE_DEPTH;
+	private final float obstacleX = ObstacleFactory.OBSTACLE_X;
+	private final float obstacleY = ObstacleFactory.OBSTACLE_Y;
+	private final float obstacleZ = ObstacleFactory.OBSTACLE_Z;
 		
-	private final float targetWidth = ObstacleFactory.targetWidth;
-	private final float targetHeight = ObstacleFactory.targetHeight;
-	private final float targetDepth = ObstacleFactory.targetDepth;
+	private final float targetWidth = ObstacleFactory.TARGET_WIDTH;
+	private final float targetHeight = ObstacleFactory.TARGET_HEIGHT;
+	private final float targetDepth = ObstacleFactory.TARGET_DEPTH;
 	private final float targetX = 30;
 	private final float targetY = 0.5f;
 	private final float targetZ = 1;
@@ -68,7 +68,7 @@ public class ObstacleFactoryTest {
 	 * Tests the creating of target.
 	 */
 	@Test
-	public final void testMakeTarget(){
+	public final void testMakeTarget() {
 		final Target target = obF.makeTarget(node);
 		assertNotNull(target);
 		assertTrue(targetDepth == target.getDepth());

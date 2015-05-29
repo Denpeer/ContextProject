@@ -27,7 +27,7 @@ public class GameInputState extends AbstractAppState {
 	private static final String MAPPING_ENABLE_CAMERA_DETECTION = "Start Camera";
 	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
 	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
-
+	
 	private static final float TIME_PER_BALL_SPAWN = 1f;
 	
 	private float time = TIME_PER_BALL_SPAWN;
@@ -154,4 +154,8 @@ public class GameInputState extends AbstractAppState {
 			}
 		}
 	};
+	
+	public ActionListener getActionListener() {
+		return actionListener;
+	}
 }
