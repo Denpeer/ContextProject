@@ -5,8 +5,7 @@ notifications:
     - http://octopull.rmhartog.me/api/travis/webhook
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout HEAD^2 && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
-  - sudo apt-get update -qq
-  - sudo apt-get install libtiff5
+  - sudo apt-get install -y libtiff5
 env:
   - BUILD_PR_BRANCH=true
   - BUILD_PR_BRANCH=false
