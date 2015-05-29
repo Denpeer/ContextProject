@@ -13,7 +13,7 @@ import com.jme3.app.state.AppStateManager;
 public class CameraState extends AbstractAppState {
 	private Bridge bridge;
 	private MyFrame cameraFrame;
-	private static boolean cameraOpened = false;
+	private boolean cameraOpened = false;
 	
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
@@ -63,7 +63,7 @@ public class CameraState extends AbstractAppState {
 	 * Returns whether the camera frame is opened or not.
 	 * @return boolean cameraOpened
 	 */
-	public static boolean cameraOpened() {
+	public boolean cameraOpened() {
 		return cameraOpened;
 	}
 }

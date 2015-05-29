@@ -39,7 +39,7 @@ public class Mat2Image implements Bridge {
 	private static final int CIRCLEDIAM = 5;
 	private static final int NUMCHANNELS = 3;
 
-	private static int xDist = DEFAULT_XDIST;
+    private int  xDist = DEFAULT_XDIST;
 
 	private int numPoints = 0;
 
