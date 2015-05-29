@@ -17,6 +17,8 @@ import com.jme3.scene.Node;
 public class SplineCurve extends Spline {
 	
 	private static final float TENSION = 0.6f;
+	private static final float RESTITUTION = 0.5f;
+	private static final float FRICTION = 0.5f;
 	private static Vector3f[] curvePoints;
 	private static Geometry geo;
 	private RigidBodyControl phys;
@@ -48,8 +50,8 @@ public class SplineCurve extends Spline {
 		geo.setMesh(mesh);
 		geo.setMaterial(mat);
 		geo.addControl(phys);
-		phys.setRestitution(0.5f);
-		phys.setFriction(0.5f);
+		phys.setRestitution(RESTITUTION);
+		phys.setFriction(FRICTION);
 		physicsSpace.add(phys);
 		node.attachChild(geo);
 	
@@ -61,8 +63,10 @@ public class SplineCurve extends Spline {
 	 */
 	public Vector3f[] getSplinePoints() {
 		int q = 0;
-
+		
 		final Vector3f[] vecs = new Vector3f[(curvePoints.length - 4)* 10];
+		
+		
 		for (int i = 2; i < curvePoints.length - 2; i++) {
 			for (double j = 0; j < 0.9; j = j + 0.1) {
 				vecs[q] = interpolate((float) j, i, null);
