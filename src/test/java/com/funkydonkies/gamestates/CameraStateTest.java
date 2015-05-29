@@ -36,7 +36,7 @@ public class CameraStateTest {
 	public void setEnabledTest() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice[] gs = ge.getScreenDevices();
-		if (gs != null) {
+		if (gs.length != 0) {
 			cameraState.initialize(sManager, app);
 			assertFalse(cameraState.cameraOpened());
 			assertFalse(cameraState.isEnabled());
