@@ -28,7 +28,8 @@ public class CameraState extends AbstractAppState {
 	 */
 	@Override
 	public void setEnabled(final boolean enabled) {
-		if (isEnabled()) {
+		super.setEnabled(enabled);
+		if (!enabled) {
 			cameraFrame.dispose();
 			cameraOpened = false;
 		} else {
@@ -37,7 +38,6 @@ public class CameraState extends AbstractAppState {
 			new Thread(cameraFrame).start();
 			cameraOpened = true;
 		}
-		super.setEnabled(enabled);
 	}
 	
 	/**
