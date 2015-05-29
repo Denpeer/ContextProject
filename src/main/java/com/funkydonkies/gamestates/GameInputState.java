@@ -41,7 +41,7 @@ public class GameInputState extends AbstractAppState {
 	private AppStateManager stateManager;
 	
 	private SplineCurveController curveState;
-	
+	private CameraState cameraState;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -58,7 +58,7 @@ public class GameInputState extends AbstractAppState {
 		this.stateManager = sManager;
 		
 		initKeys();
-		
+		cameraState = stateManager.getState(CameraState.class);
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
 		
 		// init stuff that is independent of whether state is PAUSED or RUNNING
@@ -108,7 +108,7 @@ public class GameInputState extends AbstractAppState {
 		public void onAction(final String name, final boolean keyPressed, final float tpf) {
 			if (name.equals(MAPPING_TOGGLE_CAMERA) && !keyPressed) {
 				//C KEY
-				if (CameraState.cameraOpened()) {
+				if (cameraState.cameraOpened()) {
 					curveState.toggleCameraEnabled();
 					curveState.setUpdateEnabled(curveState.getCameraEnabled());
 				} else {

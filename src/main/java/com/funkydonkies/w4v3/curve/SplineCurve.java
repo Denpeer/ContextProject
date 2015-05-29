@@ -19,7 +19,11 @@ public class SplineCurve extends Spline {
 	private static final float TENSION = 0.6f;
 	private static final float RESTITUTION = 0.5f;
 	private static final float FRICTION = 0.5f;
-	private static Vector3f[] curvePoints;
+	private static final float OFFSET = 0.1f;
+	private static final int NO_OF_UNUSED_POINTS = 4;
+	private static final float SEGMENTPOINTS_PER_CONTROLPOINT = 0.9f;
+	private static final int TOTAL_POINTS_PER_CONTROLPOINT = 10;
+	private Vector3f[] curvePoints;
 	private static Geometry geo;
 	private RigidBodyControl phys;
 	
@@ -54,7 +58,6 @@ public class SplineCurve extends Spline {
 		phys.setFriction(FRICTION);
 		physicsSpace.add(phys);
 		node.attachChild(geo);
-	
 	}
 	
 	/**
@@ -64,11 +67,11 @@ public class SplineCurve extends Spline {
 	public Vector3f[] getSplinePoints() {
 		int q = 0;
 		
-		final Vector3f[] vecs = new Vector3f[(curvePoints.length - 4)* 10];
-		
+		final Vector3f[] vecs = new Vector3f[(curvePoints.length - NO_OF_UNUSED_POINTS) 
+		                                     * TOTAL_POINTS_PER_CONTROLPOINT];
 		
 		for (int i = 2; i < curvePoints.length - 2; i++) {
-			for (double j = 0; j < 0.9; j = j + 0.1) {
+			for (double j = 0; j < SEGMENTPOINTS_PER_CONTROLPOINT; j = j + OFFSET) {
 				vecs[q] = interpolate((float) j, i, null);
 				q++;
 			}
@@ -90,7 +93,7 @@ public class SplineCurve extends Spline {
 	public void incrementPoints() {
 		for (int i = 0; i < curvePoints.length; i++) {
 			final Vector3f vec = curvePoints[i];
-			curvePoints[i] = vec.setY(curvePoints[i].getY() + 0.1f);
+			curvePoints[i] = vec.setY(curvePoints[i].getY() + OFFSET);
 		}
 	}
 	
@@ -100,7 +103,7 @@ public class SplineCurve extends Spline {
 	public void decrementPoints() {
 		for (int i = 0; i < curvePoints.length; i++) {
 			final Vector3f vec = curvePoints[i];
-			curvePoints[i] = vec.setY(curvePoints[i].getY() - 0.1f);
+			curvePoints[i] = vec.setY(curvePoints[i].getY() - OFFSET);
 		}
 	}
 	
