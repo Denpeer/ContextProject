@@ -153,10 +153,9 @@ public class Mat2Image implements Bridge {
     /**
      * This method is called by the VideoCap class.
      * it calls the image processing method and returns the processed segmented contoured image.
-     * @param matMatrix matrix of image
      * @return processed image matrix as image
      */
-        BufferedImage getImage(final Mat matMatrix) {
+        BufferedImage getImage() {
             getSpace(mat);
             res.get(0, 0, dat);
             img.getRaster().setDataElements(0, 0, 
