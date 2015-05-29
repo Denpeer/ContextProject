@@ -1,6 +1,8 @@
 package com.funkydonkies.camdetect;
 
 import java.awt.AWTException;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
@@ -21,12 +23,13 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Test the MyFrame class.
+ * 
  * @author Olivier Dikken
  *
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MyFrameTest {
-	
+
 	/**
 	 * Get videocap objects and compare.
 	 */
@@ -40,7 +43,9 @@ public class MyFrameTest {
 
 	/**
 	 * Load the lib and check if the version is as expected.
-	 * @throws UnsatisfiedLinkError in case the library is not found
+	 * 
+	 * @throws UnsatisfiedLinkError
+	 *             in case the library is not found
 	 */
 	@Test
 	public void testLoadLib() throws UnsatisfiedLinkError {
@@ -51,44 +56,60 @@ public class MyFrameTest {
 		} catch (final UnsatisfiedLinkError e) {
 		}
 		final String javaLibPath = "java.library.path";
-    	System.setProperty(javaLibPath, "./lib");
-    	final StringBuilder result = new StringBuilder();
-    	result.append("Lib name: " + Core.NATIVE_LIBRARY_NAME);
-    	final String lineseparator = "line.separator";
-    	result.append(System.getProperty(lineseparator));
-    	result.append("Path: " + System.getProperty(javaLibPath));
-    	result.append(System.getProperty(lineseparator));
+		System.setProperty(javaLibPath, "./lib");
+		final StringBuilder result = new StringBuilder();
+		result.append("Lib name: " + Core.NATIVE_LIBRARY_NAME);
+		final String lineseparator = "line.separator";
+		result.append(System.getProperty(lineseparator));
+		result.append("Path: " + System.getProperty(javaLibPath));
+		result.append(System.getProperty(lineseparator));
 		assertEquals(new String(sink.toByteArray()), result.toString());
 		System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
 	}
-	
+
 	/**
 	 * Check if the frame is visible.
-	 * @throws HeadlessException in case there is no display
+	 * 
+	 * @throws HeadlessException
+	 *             in case there is no display
 	 */
 	@Test
 	public void testMyFrame() throws HeadlessException {
-		try {
-			final MyFrame test = new MyFrame();
-			assertTrue(test.isVisible());
-		} catch (final HeadlessException e) {
+		final GraphicsEnvironment ge = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		final GraphicsDevice[] gs = ge.getScreenDevices();
+		if (gs.length != 0) {
+			try {
+				final MyFrame test = new MyFrame();
+				assertTrue(test.isVisible());
+			} catch (final HeadlessException e) {
+			}
 		}
 	}
 
 	/**
 	 * Confirm that the correct key is set for calling the setTheBg action.
-	 * @throws AWTException catches GUI error
-	 * @throws HeadlessException in case there is no display
+	 * 
+	 * @throws AWTException
+	 *             catches GUI error
+	 * @throws HeadlessException
+	 *             in case there is no display
 	 */
 	@Test
 	public void testInitBgSetKey() throws AWTException, HeadlessException {
-		JPanel testpanel = new JPanel();
-		try {
-			final MyFrame test = new MyFrame();
-			test.initBgSetKey();
-			testpanel = (JPanel) test.getContentPane();
-			assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
-		} catch (final HeadlessException e) {
+		final GraphicsEnvironment ge = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		final GraphicsDevice[] gs = ge.getScreenDevices();
+		if (gs.length != 0) {
+			JPanel testpanel = new JPanel();
+			try {
+				final MyFrame test = new MyFrame();
+				test.initBgSetKey();
+				testpanel = (JPanel) test.getContentPane();
+				assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(),
+						'b');
+			} catch (final HeadlessException e) {
+			}
 		}
 	}
 
@@ -97,8 +118,13 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testPaintGraphics() {
-		final MyFrame test = Mockito.mock(MyFrame.class);
-		test.repaint();
+		final GraphicsEnvironment ge = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		final GraphicsDevice[] gs = ge.getScreenDevices();
+		if (gs.length != 0) {
+			final MyFrame test = new MyFrame();
+			test.repaint();
+		}
 	}
 
 	/**
@@ -106,8 +132,13 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testRun() {
-		final MyFrame test = Mockito.mock(MyFrame.class);
-		test.run();
+		final GraphicsEnvironment ge = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		final GraphicsDevice[] gs = ge.getScreenDevices();
+		if (gs.length != 0) {
+			final MyFrame test = new MyFrame();
+			test.run();
+		}
 	}
 
 }
