@@ -1,6 +1,6 @@
 package com.funkydonkies.obstacles;
 
-import com.funkydonkies.controllers.SplineCurveController;
+import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.controllers.TargetControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
@@ -15,7 +15,7 @@ import com.jme3.scene.shape.Box;
  */
 public class Target extends Obstacle {
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 10f, 1f);
-	private static final float Y_PADDING = SplineCurveController.POINTS_HEIGHT * 0.2f;
+	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	private Geometry geom;
 	private final Box box;
 	private TargetControl control;
@@ -73,10 +73,10 @@ public class Target extends Obstacle {
 	 * TODO make the spawn location random and make sure its reachable
 	 */
 	public void respawn() {
-		final float x = (float) Math.random() * (SplineCurveController.POINT_DISTANCE 
-				* SplineCurveController.getAmountOfControlPoints());
+		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
+				* CurveState.getAmountOfControlPoints());
 		
-		final float y = (float) Math.random() * SplineCurveController.POINTS_HEIGHT + Y_PADDING;
+		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		control.setPhysicsLocation(respawnlocation);
 		geom.setLocalTranslation(respawnlocation);

@@ -1,6 +1,6 @@
 package com.funkydonkies.gamestates;
 
-import com.funkydonkies.controllers.SplineCurveController;
+import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.obstacles.MovingBox;
 import com.funkydonkies.obstacles.ObstacleFactory;
@@ -35,7 +35,7 @@ public class PlayState extends AbstractAppState {
 
 	private static BulletAppState bulletAppState = new BulletAppState();
 	private GameInputState gameInputState;
-	private SplineCurveController spController;
+	private CurveState spController;
 	private CameraState cameraState;
 	
 	/**
@@ -74,7 +74,7 @@ public class PlayState extends AbstractAppState {
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
 		
-		spController = new SplineCurveController();
+		spController = new CurveState();
 		stateManager.attach(spController);
 
 		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
