@@ -1,15 +1,13 @@
 package com.funkydonkies.camdetect;
 
-import java.awt.AWTException;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-
-import static org.junit.Assert.assertEquals;
 
 import javax.swing.JPanel;
 
@@ -18,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.opencv.core.Core;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test the MyFrame class.
@@ -74,17 +70,12 @@ public class MyFrameTest {
 	 *             in case there is no display
 	 */
 	@Test
-	public void testMyFrame() throws HeadlessException {
-		final GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		final GraphicsDevice[] gs = ge.getScreenDevices();
-		if (gs.length != 0) {
-			try {
-				final MyFrame test = new MyFrame();
-				assertTrue(test.isVisible());
-			} catch (final HeadlessException e) {
-			}
-		}
+	public void testMyFrame() {
+		try {
+			final MyFrame test = new MyFrame();
+			assertTrue(test.isVisible());
+		} catch (final HeadlessException e) {
+		} 
 	}
 
 	/**
@@ -96,20 +87,14 @@ public class MyFrameTest {
 	 *             in case there is no display
 	 */
 	@Test
-	public void testInitBgSetKey() throws AWTException, HeadlessException {
-		final GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		final GraphicsDevice[] gs = ge.getScreenDevices();
-		if (gs.length != 0) {
+	public void testInitBgSetKey() {
+		try {
 			JPanel testpanel = new JPanel();
-			try {
-				final MyFrame test = new MyFrame();
-				test.initBgSetKey();
-				testpanel = (JPanel) test.getContentPane();
-				assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(),
-						'b');
-			} catch (final HeadlessException e) {
-			}
+			final MyFrame test = new MyFrame();
+			test.initBgSetKey();
+			testpanel = (JPanel) test.getContentPane();
+			assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
+		} catch (final HeadlessException e) {
 		}
 	}
 
@@ -118,12 +103,10 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testPaintGraphics() {
-		final GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		final GraphicsDevice[] gs = ge.getScreenDevices();
-		if (gs.length != 0) {
+		try {
 			final MyFrame test = new MyFrame();
 			test.repaint();
+		} catch (final HeadlessException e) {
 		}
 	}
 
@@ -132,13 +115,11 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testRun() {
-		final GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		final GraphicsDevice[] gs = ge.getScreenDevices();
-		if (gs.length != 0) {
+		try {
 			final MyFrame test = new MyFrame();
 			test.run();
-		}
+		} catch (final HeadlessException e) {
+		} 
 	}
 
 }
