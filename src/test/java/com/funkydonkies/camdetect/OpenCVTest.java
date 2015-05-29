@@ -13,6 +13,6 @@ public class OpenCVTest {
 	 */
 	@Test
 	public void test() {
-//		MyFrame.loadLib();
+		MyFrame.loadLib();
 	}
 }
