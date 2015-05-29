@@ -51,23 +51,23 @@ public class MyFrame extends JFrame implements Runnable {
      * Loads the native libraries, setting the java.library.path in the process.
      */
     public static void loadLib() {
-//    	final String javaLibPath = "java.library.path";
-//    	System.setProperty(javaLibPath, "./lib-macs");
-//   	Field fieldSysPath;
-//		try {
-//			fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
-//			fieldSysPath.setAccessible(true);
-//			fieldSysPath.set(null, null);
-//		} catch (final NoSuchFieldException e) {
-//			e.printStackTrace();
-//		} catch (final SecurityException e) {
-//			e.printStackTrace();
-//		} catch (final IllegalArgumentException e) {
-//			e.printStackTrace();
-//		} catch (final IllegalAccessException e) {
-//			e.printStackTrace();
-//		}
-//	   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    	final String javaLibPath = "java.library.path";
+    	System.setProperty(javaLibPath, "./lib");
+   	Field fieldSysPath;
+		try {
+			fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+			fieldSysPath.setAccessible(true);
+			fieldSysPath.set(null, null);
+		} catch (final NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (final SecurityException e) {
+			e.printStackTrace();
+		} catch (final IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (final IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	   	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
     
   /**
