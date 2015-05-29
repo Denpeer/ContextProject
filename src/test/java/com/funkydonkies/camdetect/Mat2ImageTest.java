@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opencv.core.Core;
@@ -24,8 +26,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-
-import java.awt.image.DataBufferByte;
 
 /**
  * Testing Mat2Image.
@@ -42,7 +42,8 @@ public class Mat2ImageTest {
 	private static BufferedImage imageThreshed = null;
 	private static final int NUMBER_OF_CHANNELS = 3;
 	private static final String CONTROL_POINTS_TEXT_FILE_PATH = "TestRessources/testInterestPointsArray.txt";
-
+	private boolean runTest = false;
+	
 	/**
 	 * Converts java BufferedImage type to opencv Mat type.
 	 * 
@@ -108,7 +109,6 @@ public class Mat2ImageTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		try {
-			MyFrame.loadLib();
 			imageBG = ImageIO.read(new File("TestRessources/testBG.jpg"));
 			imageFG = ImageIO.read(new File("TestRessources/testFG.jpg"));
 			imageProcessed = ImageIO.read(new File(
@@ -121,13 +121,31 @@ public class Mat2ImageTest {
 		} catch (final IOException e) {
 		}
 	}
+	
+	/**
+	 * Preparation.
+	 * 
+	 * @throws Exception
+	 *             in case system path not accessible
+	 */
+	@Before
+	public void setUp() throws Exception {
+		runTest = true;
+		try {
+			MyFrame.loadLib();
+		} catch (final UnsatisfiedLinkError e) {
+			runTest = false;
+		}
+	}
 
 	/**
 	 * Constructor test.
 	 */
 	@Test
 	public void testMat2Image() {
-		new Mat2Image();
+		if (runTest) {
+			new Mat2Image();
+		}
 	}
 
 	/**
@@ -135,11 +153,13 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testGetMat() {
-		final Mat2Image m2i = new Mat2Image();
-		assertTrue(m2i.getMat() instanceof Mat);
-		final Mat testMat = m2i.getMat();
-		im2Mat(imageBG).copyTo(testMat);
-		assertTrue(matEq(testMat, im2Mat(imageBG)));
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			assertTrue(m2i.getMat() instanceof Mat);
+			final Mat testMat = m2i.getMat();
+			im2Mat(imageBG).copyTo(testMat);
+			assertTrue(matEq(testMat, im2Mat(imageBG)));
+		}
 	}
 
 	/**
@@ -149,21 +169,23 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testSetBg() throws IOException {
-		final ByteArrayOutputStream sink = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(sink, true));
-		final StringBuilder result = new StringBuilder();
-		result.append("Background has been set");
-		final String lineseparator = "line.separator";
-		result.append(System.getProperty(lineseparator));
-		final Mat2Image m2i = new Mat2Image();
-		im2Mat(imageBG).copyTo(m2i.getMat());
-		m2i.setBg();
-		assertEquals(new String(sink.toByteArray()), result.toString());
-		System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-
-		im2Mat(imageFG).copyTo(m2i.getMat());
-		final BufferedImage ret = m2i.getImage();
-		assertTrue(matEq(im2Mat(ret), im2Mat(imageProcessed)));
+		if (runTest) {
+			final ByteArrayOutputStream sink = new ByteArrayOutputStream();
+			System.setOut(new PrintStream(sink, true));
+			final StringBuilder result = new StringBuilder();
+			result.append("Background has been set");
+			final String lineseparator = "line.separator";
+			result.append(System.getProperty(lineseparator));
+			final Mat2Image m2i = new Mat2Image();
+			im2Mat(imageBG).copyTo(m2i.getMat());
+			m2i.setBg();
+			assertEquals(new String(sink.toByteArray()), result.toString());
+			System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+			
+			im2Mat(imageFG).copyTo(m2i.getMat());
+			final BufferedImage ret = m2i.getImage();
+			assertTrue(matEq(im2Mat(ret), im2Mat(imageProcessed)));
+		}
 	}
 
 	/**
@@ -173,11 +195,13 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testThreshIt() throws IOException {
-		final Mat2Image m2i = new Mat2Image();
-		im2Mat(imageFG).copyTo(m2i.getMat());
-		final Mat res = m2i.threshIt(m2i.getMat(), im2Mat(imageBG));
-		Imgproc.cvtColor(res, res, Imgproc.COLOR_GRAY2BGR);
-		assertTrue(matEq(res, im2Mat(imageThreshed)));
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			im2Mat(imageFG).copyTo(m2i.getMat());
+			final Mat res = m2i.threshIt(m2i.getMat(), im2Mat(imageBG));
+			Imgproc.cvtColor(res, res, Imgproc.COLOR_GRAY2BGR);
+			assertTrue(matEq(res, im2Mat(imageThreshed)));
+		}
 	}
 
 	/**
@@ -187,19 +211,21 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testUpdateIP() throws IOException {
-		final Mat2Image m2i = new Mat2Image();
-		m2i.updateIP(im2Mat(imageProcessed2));
-		final float[] ip = m2i.getControlPoints();
-		im2Mat(imageProcessed2).copyTo(m2i.getMat());
-		final double tempdiv = m2i.getMat().size().width / m2i.getxdist();
-		final int numPoints = (int) Math.floor(tempdiv);
-		assertEquals(ip.length, numPoints);
-
-		final BufferedReader br = new BufferedReader(new FileReader(
-				CONTROL_POINTS_TEXT_FILE_PATH));
-		final String testPoints = br.readLine();
-		assertEquals(testPoints, Arrays.toString(ip));
-		br.close();
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			m2i.updateIP(im2Mat(imageProcessed2));
+			final float[] ip = m2i.getControlPoints();
+			im2Mat(imageProcessed2).copyTo(m2i.getMat());
+			final double tempdiv = m2i.getMat().size().width / m2i.getxdist();
+			final int numPoints = (int) Math.floor(tempdiv);
+			assertEquals(ip.length, numPoints);
+			
+			final BufferedReader br = new BufferedReader(new FileReader(
+					CONTROL_POINTS_TEXT_FILE_PATH));
+			final String testPoints = br.readLine();
+			assertEquals(testPoints, Arrays.toString(ip));
+			br.close();
+		}
 	}
 
 	/**
@@ -208,23 +234,25 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testDrawInterestPoints() {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		im2Mat(imageFG).copyTo(matty);
-		m2i.updateIP(matty);
-		final float[] ip = m2i.getControlPoints();
-		final int xd = m2i.getxdist();
-		final int cd = 5;
-		final int mc = 255;
-		final Mat im = matty.clone();
-		for (int i = 0; i < ip.length; i++) {
-			Core.circle(im, new Point(i * xd, ip[i]), cd, new Scalar(mc), 0, 0,
-					2);
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageFG).copyTo(matty);
+			m2i.updateIP(matty);
+			final float[] ip = m2i.getControlPoints();
+			final int xd = m2i.getxdist();
+			final int cd = 5;
+			final int mc = 255;
+			final Mat im = matty.clone();
+			for (int i = 0; i < ip.length; i++) {
+				Core.circle(im, new Point(i * xd, ip[i]), cd, new Scalar(mc), 0, 0,
+						2);
+			}
+			Imgproc.cvtColor(matty, matty, Imgproc.COLOR_BGR2GRAY);
+			Core.subtract(im, m2i.drawInterestPoints(matty, ip), im);
+			final int elemnum = 3;
+			assertEquals(Core.sumElems(im).val[elemnum], 0, 1);
 		}
-		Imgproc.cvtColor(matty, matty, Imgproc.COLOR_BGR2GRAY);
-		Core.subtract(im, m2i.drawInterestPoints(matty, ip), im);
-		final int elemnum = 3;
-		assertEquals(Core.sumElems(im).val[elemnum], 0, 1);
 	}
 
 	/**
@@ -232,11 +260,13 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testPrepareSpace() {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		im2Mat(imageFG).copyTo(matty);
-		m2i.updateIP(matty);
-		m2i.prepareSpace(matty);
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageFG).copyTo(matty);
+			m2i.updateIP(matty);
+			m2i.prepareSpace(matty);
+		}
 	}
 
 	/**
@@ -244,10 +274,12 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testGetSpace() {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		im2Mat(imageFG).copyTo(matty);
-		m2i.getSpace(im2Mat(imageFG));
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageFG).copyTo(matty);
+			m2i.getSpace(im2Mat(imageFG));
+		}
 	}
 
 	/**
@@ -255,12 +287,14 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testGetImage() {
-		final Mat2Image m2i = new Mat2Image();
-		im2Mat(imageBG).copyTo(m2i.getMat());
-		m2i.setBg();
-		im2Mat(imageFG).copyTo(m2i.getMat());
-		final BufferedImage ret = m2i.getImage();
-		assertTrue(matEq(im2Mat(ret), im2Mat(imageProcessed)));
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			im2Mat(imageBG).copyTo(m2i.getMat());
+			m2i.setBg();
+			im2Mat(imageFG).copyTo(m2i.getMat());
+			final BufferedImage ret = m2i.getImage();
+			assertTrue(matEq(im2Mat(ret), im2Mat(imageProcessed)));
+		}
 	}
 
 	/**
@@ -270,16 +304,18 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testGetControlPoints() throws IOException {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		im2Mat(imageProcessed2).copyTo(matty);
-		m2i.updateIP(matty);
-		final float[] ip = m2i.getControlPoints();
-		final BufferedReader br = new BufferedReader(new FileReader(
-				CONTROL_POINTS_TEXT_FILE_PATH));
-		final String testPoints = br.readLine();
-		assertEquals(testPoints, Arrays.toString(ip));
-		br.close();
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageProcessed2).copyTo(matty);
+			m2i.updateIP(matty);
+			final float[] ip = m2i.getControlPoints();
+			final BufferedReader br = new BufferedReader(new FileReader(
+					CONTROL_POINTS_TEXT_FILE_PATH));
+			final String testPoints = br.readLine();
+			assertEquals(testPoints, Arrays.toString(ip));
+			br.close();
+		}
 	}
 
 	/**
@@ -287,13 +323,14 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testGetxdist() {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		m2i.updateIP(matty);
-		final int xd = m2i.getxdist();
-		final int length = m2i.getControlPoints().length;
-		final int expected = matty.width() / xd;
-		assertEquals(expected, length);
-
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			m2i.updateIP(matty);
+			final int xd = m2i.getxdist();
+			final int length = m2i.getControlPoints().length;
+			final int expected = matty.width() / xd;
+			assertEquals(expected, length);
+		}
 	}
 }
