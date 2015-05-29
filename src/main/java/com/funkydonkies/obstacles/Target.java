@@ -11,10 +11,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
 /**
- * The target class.
+ * Represents the Target, is responsible for drawing and respawning the target.
  */
 public class Target extends Obstacle {
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 10f, 1f);
+	private static final float Y_PADDING = SplineCurveController.POINTS_HEIGHT * 0.2f;
 	private Geometry geom;
 	private final Box box;
 	private TargetControl control;
@@ -63,7 +64,7 @@ public class Target extends Obstacle {
 	 */
 	public void destroy() {
 //		control.delete();
-//		geom.removeControl(control);
+		geom.removeControl(control);
 		super.getNode().detachChild(geom);
 	}
 	
@@ -75,8 +76,7 @@ public class Target extends Obstacle {
 		final float x = (float) Math.random() * (SplineCurveController.POINT_DISTANCE 
 				* SplineCurveController.getAmountOfControlPoints());
 		
-		final float y = (float) Math.random() * SplineCurveController.POINTS_HEIGHT + 20;
-//		final Vector3f respawnlocation = new Vector3f(40f, -2f, 1.5f);
+		final float y = (float) Math.random() * SplineCurveController.POINTS_HEIGHT + Y_PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		control.setPhysicsLocation(respawnlocation);
 		geom.setLocalTranslation(respawnlocation);

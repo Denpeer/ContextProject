@@ -2,78 +2,94 @@ package com.funkydonkies.controllers;
 
 import java.util.Arrays;
 
+import com.funkydonkies.camdetect.Mat2Image;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.gamestates.CameraState;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Bridge;
 import com.funkydonkies.w4v3.curve.SplineCurve;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 
-
+/**
+ *	Controls the creation and refreshing of the curve.
+ */
 public class SplineCurveController extends AbstractAppState {
-	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
-	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
 	public static final int POINT_DISTANCE = 10;
 	public static final int POINTS_HEIGHT = 100;
-	private static final int BASE_CHANGE_SPEED = 30; 
-	private static final int CHANGE_THRESHOLD = 5; 
+	private static final int BASE_CHANGE_SPEED = 30;
+	private static final int CHANGE_THRESHOLD = 5;
 	private static final float MAX_SLOPE_ANGLE = 70f;
 	private static final int DEFAULT_CONTROL_POINTS_COUNT = 32;
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
 	private static final float SPEED_MULTIPLIER = 1.5f;
-	
-	private static int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT; //set to 32 as default; this is what we currently use to test the program.
-	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; //default value without specific reason
-	
+	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String COLOR = "Color";
+	private static final float DEFAULT_IMAGE_HEIGHT = 480;
+
+	// set to 32 as default this is what we currently use to test the program.
+	private static int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
+	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; // default value without
+																		// specific reason
+
 	private Bridge bridge;
 	private App app;
-	private InputManager inputManager;
 	private SplineCurve splineCurve;
-	
+
 	private boolean cameraEnabled = false;
 	private boolean updateEnabled = false;
-	
-	public SplineCurveController(final Bridge b, final SplineCurve sp) {
-		this.splineCurve = sp;
-		this.bridge = b;
-	}
-	
+
+	private static RigidBodyControl oldRigi;
+	private static RigidBodyControl rigi;
+
+	private Material curveMaterial;
+
+	private AppStateManager stateManager;
+
 	@Override
-	public final void initialize(final AppStateManager sManager,
-			final Application appl) {
+	public final void initialize(final AppStateManager sManager, final Application appl) {
 		super.initialize(sManager, appl);
-	
+		stateManager = sManager;
 		if (appl instanceof App) {
 			this.app = (App) appl;
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		this.inputManager = this.app.getInputManager();
-		
-		initKeys();
+
+		bridge = sManager.getState(CameraState.class).getBridge();
+		curveMaterial = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		curveMaterial.setColor(COLOR, ColorRGBA.randomColor());
+		oldRigi = new RigidBodyControl(0f);
+		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
 	}
-	
+
 	/**
 	 * calculates the number of control points that the getControlPoints() method should return.
-	 * @param imageWidth the width of the images captured by the camera
-	 * @param xdist the horizontal interval between control points
+	 * 
+	 * @param imageWidth
+	 *            the width of the images captured by the camera
+	 * @param xdist
+	 *            the horizontal interval between control points
 	 * @return the number of control points
 	 */
 	private int getNumberOfControlPoints(final int imageWidth, final int xdist) {
 		final float tempdiv = imageWidth / xdist;
-    	return (int) Math.floor(tempdiv);
+		return (int) Math.floor(tempdiv);
 	}
-	
+
 	/**
-	 * Make sure two neighboring control points do not have too large a vertical distance.
-	 * In this case when points are too far apart the lower point is brought up.
-	 * @param cp list of control points
+	 * Make sure two neighboring control points do not have too large a vertical distance. In this
+	 * case when points are too far apart the lower point is brought up.
+	 * 
+	 * @param cp
+	 *            list of control points
 	 * @return list of control points without large height differences
 	 */
 	private float[] removeLargeHeightDifferences(final float[] cp) {
@@ -97,50 +113,68 @@ public class SplineCurveController extends AbstractAppState {
 		}
 		return cp;
 	}
-	
+
 	/**
-	 * sets the mHD variable by calculating the 'opposite' edge of the triangle using the 'adjacent' edge and the angle.
+	 * sets the mHD variable by calculating the 'opposite' edge of the triangle using the 'adjacent'
+	 * edge and the angle.
 	 */
 	private void setMaxHeightDiff() {
-		maxHeightDifference = (float) (bridge.getxdist() * Math.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
+		maxHeightDifference = (float) (bridge.getxdist() * Math
+				.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
 	}
-	
+
 	@Override
 	public final void update(final float tpf) {
 		float[] points;
-		
-		if (cameraEnabled) {
-			points = bridge.getControlPoints();	// ENABLES CAMERA INPUT
+		if (bridge == null) {
+			bridge = stateManager.getState(CameraState.class).getBridge();
+		}
+
+		if (cameraEnabled && Mat2Image.isBgSet()) {
+			controlPointsCount = getNumberOfControlPoints(bridge.getImageWidth(), bridge.getxdist());
+			points = bridge.getControlPoints();
 			setMaxHeightDiff();
 			points = removeLargeHeightDifferences(points);
 		} else {
-			controlPointsCount = getNumberOfControlPoints(bridge.getImageWidth(), bridge.getxdist());
 			points = new float[controlPointsCount];
-			Arrays.fill(points, bridge.getImageHeight());
-			for (int i = 10; i < 15; i++) {	// TESTING CODE
+			Arrays.fill(points, DEFAULT_IMAGE_HEIGHT);
+			for (int i = 10; i < 15; i++) { // TESTING CODE
 				points[i] = 150 + 10 * (i - 9);
 			}
 		}
-		
+
 		if (updateEnabled) {
-			scaleValues(points, bridge.getImageHeight());
+			if (Mat2Image.isBgSet()) {
+				scaleValues(points, bridge.getImageHeight());
+			} else {
+				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
+			}
 			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
-		
+
+		app.getRootNode().detachChildNamed("curve");
+		if (rigi != null) {
+			oldRigi = new RigidBodyControl(0f);
+			oldRigi = rigi;
+		}
+		rigi = new RigidBodyControl(0f);
+		splineCurve.drawCurve(curveMaterial, PlayState.getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.getGeometry().removeControl(oldRigi);
+		oldRigi.setEnabled(false);
 	}
-	
+
 	private Vector3f[] createVecArray(final float[] points, final float tpf) {
 		Vector3f[] res = new Vector3f[points.length];
 		boolean filled = false;
-		
+
 		/* Check whether splineCurve has this size array */
 		final Vector3f[] tmp = splineCurve.getCurvePoints();
 		if (tmp.length == points.length) {
 			res = tmp;
 			filled = true;
 		}
-		
+
 		// create from scratch
 		if (!filled) {
 			for (int i = 0; i < points.length; i++) {
@@ -148,44 +182,47 @@ public class SplineCurveController extends AbstractAppState {
 				temp.y = points[i];
 				res[i] = temp;
 			}
-		// use existing
-		} else { 
+			// use existing
+		} else {
 			for (int i = 0; i < points.length; i++) {
 				final Vector3f temp = res[i];
-				
+
 				final float current = temp.y;
 				final float desired = points[i];
 				float heightChange = 0;
 				float changeSpeed = 0;
-				
+
 				final float delta = Math.abs(current - desired);
-				
+
 				changeSpeed = delta / POINTS_HEIGHT + 0.5f;
-				
+
 				if (delta < CHANGE_THRESHOLD) {
 					continue;
 				}
-				
+
 				if (current <= desired) {
 					heightChange = Math.min(delta, BASE_CHANGE_SPEED);
 				} else {
 					heightChange = Math.max(-delta, -BASE_CHANGE_SPEED);
 				}
-				
+
 				heightChange = heightChange * changeSpeed * tpf;
-				
+
 				temp.y = current + heightChange;
 				res[i] = temp;
 			}
 		}
-		
+
 		return res;
 	}
 
 	/**
 	 * Scales the values given by the camera.
-	 * @param points list of control points
-	 * @param screenHeight the 
+	 * 
+	 * @param points
+	 *            list of control points
+	 * @param screenHeight
+	 *            the
 	 */
 	private void scaleValues(final float[] points, final int screenHeight) {
 		for (int i = 0; i < points.length; i++) {
@@ -197,41 +234,22 @@ public class SplineCurveController extends AbstractAppState {
 		}
 	}
 
-	public void initKeys() {
-		inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
-		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
-
-		inputManager.addListener(analogListener, INCREMENT_HEIGHT_MAPPING);
-		inputManager.addListener(analogListener, DECREMENT_HEIGHT_MAPPING);
-	}
-	
-	private AnalogListener analogListener = new AnalogListener() {
-		public void onAnalog(final String name, final float value, final float tpf) {
-			if (name.equals(INCREMENT_HEIGHT_MAPPING)) {
-				splineCurve.incrementPoints();
-			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) {
-				splineCurve.decrementPoints();
-			}
-		}
-	};
-	
-	/** Used to generate testPoints for the curve.
+	/**
+	 * Used to generate testPoints for the curve.
 	 * 
 	 * @return A variable length Vector3f array
 	 */
 	public static Vector3f[] testPoints() {
-				
+
 		final Vector3f[] points = new Vector3f[controlPointsCount];
-				
+
 		for (int i = 0; i < points.length; i++) {
 			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
 		}
-				
-		return points;
-		}
-		
 
-	
+		return points;
+	}
+
 	/**
 	 * Toggle the updating of the dataset points through the camera input.
 	 */
@@ -239,37 +257,49 @@ public class SplineCurveController extends AbstractAppState {
 		cameraEnabled = !cameraEnabled;
 	}
 
-	
 	/**
 	 * Toggle the updating of the splineCurve with debug or camera input.
 	 */
 	public void toggleUpdateEnabled() {
 		updateEnabled = !updateEnabled;
 	}
-	
+
 	/**
-	 * Sets the update state, which controls whether the curve is being updated by
-	 * debug/camera input.
-	 * @param enabled desired update state
+	 * Sets the update state, which controls whether the curve is being updated by debug/camera
+	 * input.
+	 * 
+	 * @param enabled
+	 *            desired update state
 	 */
 	public void setUpdateEnabled(final boolean enabled) {
 		updateEnabled = enabled;
 	}
 
-	/** 
-	 * Gets current state of boolean determining whether the points used to draw the curve
-	 * are being updated.
+	/**
+	 * Gets current state of boolean determining whether the points used to draw the curve are being
+	 * updated.
+	 * 
 	 * @return current state of the camera input interpretation
 	 */
 	public boolean getCameraEnabled() {
 		return cameraEnabled;
 	}
-	
+
 	/**
-	 * Returns the amount of control points used by the wave
+	 * Returns the amount of control points used by the wave.
+	 * 
 	 * @return int the amount of control points
 	 */
 	public static int getAmountOfControlPoints() {
 		return controlPointsCount;
+	}
+
+	/**
+	 * Returns the splinecurve that the controller controlls.
+	 * 
+	 * @return splineCurve SplineCurve
+	 */
+	public SplineCurve getSplineCurve() {
+		return splineCurve;
 	}
 }
