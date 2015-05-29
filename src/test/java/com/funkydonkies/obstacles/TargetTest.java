@@ -9,8 +9,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.PhysicsController;
-import com.funkydonkies.controllers.SplineCurveController;
+import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.controllers.TargetControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
@@ -67,11 +66,11 @@ public class TargetTest {
 	@Test
 	public final void testGetLocation() {
 		tar.draw(mat, psySpace);
-		assertTrue(tar.getLocation().x <= SplineCurveController.POINT_DISTANCE
-				* SplineCurveController.getAmountOfControlPoints());
+		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
+				* CurveState.getAmountOfControlPoints());
 		assertTrue(tar.getLocation().x >= 0);
 
-		assertTrue(tar.getLocation().y <= SplineCurveController.POINTS_HEIGHT + 20);
+		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);
 		assertTrue(tar.getLocation().y >= 0);
 
 		assertTrue(tar.getLocation().z == 1.5f);
@@ -84,11 +83,11 @@ public class TargetTest {
 	public final void testRespawn() {
 		tar.draw(mat, psySpace);
 		tar.respawn();
-		assertTrue(tar.getLocation().x <= SplineCurveController.POINT_DISTANCE
-				* SplineCurveController.getAmountOfControlPoints());
+		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
+				* CurveState.getAmountOfControlPoints());
 		assertTrue(tar.getLocation().x >= 0);
 
-		assertTrue(tar.getLocation().y <= SplineCurveController.POINTS_HEIGHT + 20);
+		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);
 		assertTrue(tar.getLocation().y >= 0);
 
 		assertTrue(tar.getLocation().z == 1.5f);

@@ -6,13 +6,11 @@ import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.SplineCurveController;
+import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.jme3.app.SimpleApplication;
@@ -38,7 +36,7 @@ public class GameInputStateTest {
 	private FlyByCamera camera;
 	private InputManager inputManagerMock;
 	private AssetManager assetManagetMock;
-	private SplineCurveController splineController;
+	private CurveState splineController;
 	private CameraState cameraState;
 	
 	/**
@@ -57,13 +55,13 @@ public class GameInputStateTest {
 		camera = mock(FlyByCamera.class);
 		inputManagerMock = mock(InputManager.class);
 		assetManagetMock = mock(AssetManager.class);
-		splineController = mock(SplineCurveController.class);
+		splineController = mock(CurveState.class);
 		cameraState = mock(CameraState.class);
 		
 		stub(app.getFlyByCamera()).toReturn(camera);
 		when(app.getInputManager()).thenReturn(inputManagerMock);
 		when(app.getAssetManager()).thenReturn(assetManagetMock);
-		when(stateManager.getState(SplineCurveController.class)).thenReturn(
+		when(stateManager.getState(CurveState.class)).thenReturn(
 				splineController);
 		stub(stateManager.getState(CameraState.class)).toReturn(cameraState);
 	}
@@ -90,7 +88,7 @@ public class GameInputStateTest {
 		gameInputState.initialize(stateManager, app);
 		gameInputState.update(0.01f);
 		gameInputState.update(0.01f);
-		verify(stateManager, times(1)).getState(SplineCurveController.class);
+		verify(stateManager, times(1)).getState(CurveState.class);
 	}
 
 	/**

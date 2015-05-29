@@ -1,6 +1,6 @@
 package com.funkydonkies.w4v3.curve;
 
-import com.funkydonkies.controllers.SplineCurveController;
+import com.funkydonkies.controllers.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
@@ -34,9 +34,9 @@ public class SplineCurve extends Spline {
 	 * @param cycle the cycle of the curve
 	 */
 	public SplineCurve(final SplineType splineType, final boolean cycle) {
-		super(splineType, SplineCurveController.testPoints(), TENSION, cycle);
+		super(splineType, CurveState.testPoints(), TENSION, cycle);
 		geo = new Geometry("curve");
-		curvePoints = SplineCurveController.testPoints();
+		curvePoints = CurveState.testPoints();
 	}
 	
 	/**

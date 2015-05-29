@@ -1,6 +1,6 @@
 package com.funkydonkies.gamestates;
 
-import com.funkydonkies.controllers.SplineCurveController;
+import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Ball;
@@ -40,7 +40,7 @@ public class GameInputState extends AbstractAppState {
 	private AssetManager assetManager;
 	private AppStateManager stateManager;
 	
-	private SplineCurveController curveState;
+	private CurveState curveState;
 	private CameraState cameraState;
 
 	@Override
@@ -71,7 +71,7 @@ public class GameInputState extends AbstractAppState {
 	public final void update(final float tpf) {
 		timeCount += tpf;
 		if (curveState == null) {
-			curveState = stateManager.getState(SplineCurveController.class);
+			curveState = stateManager.getState(CurveState.class);
 		}
 		if (timeCount > TIME_PER_BALL_SPAWN) {
 			timeCount = 0;
