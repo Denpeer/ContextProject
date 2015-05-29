@@ -9,15 +9,15 @@ import com.jme3.scene.Node;
  *
  */
 public class ObstacleFactory {
-	public static final float obstacleWidth = 20;
-	public static final float obstacleHeight = 40;
-	public static final float obstacleDepth = 10;
-	public static final float obstacleX = 150;
-	public static final float obstacleY = 100;
-	public static final float obstacleZ = 0.5f;
-	public static final float targetWidth = 5;
-	public static final float targetHeight = 5;
-	public static final float targetDepth = 5;
+	public static final float OBSTACLE_WIDTH = 20;
+	public static final float OBSTACLE_HEIGHT = 40;
+	public static final float OBSTACLE_DEPTH = 10;
+	public static final float OBSTACLE_X = 150;
+	public static final float OBSTACLE_Y = 100;
+	public static final float OBSTACLE_Z = 0.5f;
+	public static final float TARGET_WIDTH = 5;
+	public static final float TARGET_HEIGHT = 5;
+	public static final float TARGET_DEPTH = 5;
 	
 	/**
 	 * This method creates a moving box obstacle with the specified parameters.
@@ -26,8 +26,8 @@ public class ObstacleFactory {
 	 * @return a MovingBox object
 	 */
 	public final MovingBox makeMovingBox(final Node node, final AssetManager assetManager) {
-		return new MovingBox(obstacleWidth, obstacleHeight, obstacleDepth,
-				obstacleX, obstacleY, obstacleZ, node);
+		return new MovingBox(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, OBSTACLE_DEPTH,
+				OBSTACLE_X, OBSTACLE_Y, OBSTACLE_Z, node);
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class ObstacleFactory {
 		final float targetX = 30;
 		final float targetY = 0.5f;
 		final float targetZ = 1;
-		return new Target(targetWidth, targetHeight, targetDepth,
+		return new Target(TARGET_WIDTH, TARGET_HEIGHT, TARGET_DEPTH,
 				targetX, targetY, targetZ, node);
 	}
 }

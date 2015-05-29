@@ -1,5 +1,6 @@
 package com.funkydonkies.w4v3;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -125,18 +126,18 @@ public class BallTest {
 		verify(phy).setLinearVelocity(speed);
 	}
 	
-//	/**
-//	 * Tests the spawn method that uses the default values.
-//	 */
-//	@Test
-//	public final void testSpawnUsingDefaults() {
-//		ball.spawn(root, space, true);
-//		verify(phy).setPhysicsLocation(DEFAULT_SPAWN_LOCATION);
-//		verify(phy).setLinearVelocity(DEFAULT_INITIAL_SPEED);
-//		verify(g).addControl(phy);
-//		verify(space).add(phy);
-//		verify(root).attachChild(g);
-//	}
+	/**
+	 * Tests the spawn method that uses the default values.
+	 */
+	@Test
+	public final void testSpawnUsingDefaults() {
+		ball.spawn(root, space, true);
+		verify(phy).setPhysicsLocation(Ball.DEFAULT_SPAWN_LOCATION);
+		verify(phy).setLinearVelocity(Ball.DEFAULT_INITIAL_SPEED);
+		verify(g).addControl(phy);
+		verify(space).add(phy);
+		verify(root).attachChild(g);
+	}
 	
 	/**
 	 * Tests the ball's spawn method when no physics or physicsSpace were defined.
@@ -148,6 +149,14 @@ public class BallTest {
 		verifyNoMoreInteractions(phy);
 		verifyNoMoreInteractions(space);
 		verify(root).attachChild(g);
+	}
+	
+	/**
+	 * Tests whether ball returns the same geom as was passed in the constructor.
+	 */
+	@Test
+	public final void testGetGeometry() {
+		assertTrue(ball.getGeometry() == g);
 	}
 	
 	

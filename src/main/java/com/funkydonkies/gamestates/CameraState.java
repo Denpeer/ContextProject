@@ -18,6 +18,7 @@ public class CameraState extends AbstractAppState {
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
+		super.setEnabled(false);
 	}
 	
 	/**
@@ -28,7 +29,7 @@ public class CameraState extends AbstractAppState {
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
-		if (isEnabled()) {
+		if (!enabled) {
 			cameraFrame.dispose();
 			cameraOpened = false;
 		} else {
