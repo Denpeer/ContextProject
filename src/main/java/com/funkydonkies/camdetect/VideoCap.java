@@ -68,7 +68,7 @@ public class VideoCap {
     BufferedImage getOneFrame() throws CameraNotOnException {
     	if (camOn) {
     		cap.read(mat2Img.getMat());
-    		return mat2Img.getImage(mat2Img.getMat());
+    		return mat2Img.getImage();
     	}
     	throw new CameraNotOnException("Camera input not found.");
     }
