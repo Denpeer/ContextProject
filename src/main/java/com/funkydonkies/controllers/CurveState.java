@@ -21,7 +21,7 @@ import com.jme3.math.Vector3f;
 /**
  *	Controls the creation and refreshing of the curve.
  */
-public class SplineCurveController extends AbstractAppState {
+public class CurveState extends AbstractAppState {
 	public static final int POINT_DISTANCE = 10;
 	public static final int POINTS_HEIGHT = 100;
 	private static final int BASE_CHANGE_SPEED = 30;
@@ -36,8 +36,7 @@ public class SplineCurveController extends AbstractAppState {
 
 	// set to 32 as default this is what we currently use to test the program.
 	private static int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
-	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; // default value without
-																		// specific reason
+	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; 
 
 	private Bridge bridge;
 	private App app;
@@ -138,8 +137,11 @@ public class SplineCurveController extends AbstractAppState {
 		} else {
 			points = new float[controlPointsCount];
 			Arrays.fill(points, DEFAULT_IMAGE_HEIGHT);
-			for (int i = 10; i < 15; i++) { // TESTING CODE
-				points[i] = 150 + 10 * (i - 9);
+			final int bottomX = 10;
+			final int topX = 15;
+			for (int i = bottomX; i < topX; i++) { // TESTING CODE
+				final int scale = 10;
+				points[i] = i * scale;
 			}
 		}
 
@@ -164,11 +166,18 @@ public class SplineCurveController extends AbstractAppState {
 		oldRigi.setEnabled(false);
 	}
 
+	/**
+	 * Method generates Vector3f[] represenation of controlpoints, using the POINT_DISTANCE to
+	 * define the distance between points on the x-axis.
+	 * @param points controlpoints array received from camera, already processed and flipped by 
+	 * scaleValues() method
+	 * @param tpf time per frame received from update
+	 * @return Vector3f[] representation of controlpoints
+	 */
 	private Vector3f[] createVecArray(final float[] points, final float tpf) {
 		Vector3f[] res = new Vector3f[points.length];
 		boolean filled = false;
 
-		/* Check whether splineCurve has this size array */
 		final Vector3f[] tmp = splineCurve.getCurvePoints();
 		if (tmp.length == points.length) {
 			res = tmp;
@@ -182,8 +191,7 @@ public class SplineCurveController extends AbstractAppState {
 				temp.y = points[i];
 				res[i] = temp;
 			}
-			// use existing
-		} else {
+		} else { // use existing
 			for (int i = 0; i < points.length; i++) {
 				final Vector3f temp = res[i];
 
@@ -191,15 +199,14 @@ public class SplineCurveController extends AbstractAppState {
 				final float desired = points[i];
 				float heightChange = 0;
 				float changeSpeed = 0;
-
+				final float offset = 0.5f;
 				final float delta = Math.abs(current - desired);
 
-				changeSpeed = delta / POINTS_HEIGHT + 0.5f;
+				changeSpeed = delta / POINTS_HEIGHT + offset; // offset by 0.5 so range (0.5, 1.5)
 
 				if (delta < CHANGE_THRESHOLD) {
 					continue;
 				}
-
 				if (current <= desired) {
 					heightChange = Math.min(delta, BASE_CHANGE_SPEED);
 				} else {
@@ -207,7 +214,6 @@ public class SplineCurveController extends AbstractAppState {
 				}
 
 				heightChange = heightChange * changeSpeed * tpf;
-
 				temp.y = current + heightChange;
 				res[i] = temp;
 			}
