@@ -12,8 +12,6 @@ import com.jme3.scene.shape.Box;
 
 /**
  * The target class.
- * @author SDumasy
- *
  */
 public class Target extends Obstacle {
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 10f, 1f);
@@ -74,8 +72,8 @@ public class Target extends Obstacle {
 	 * TODO make the spawn location random and make sure its reachable
 	 */
 	public void respawn() {
-		final float x = (float) Math.random() * (SplineCurveController.POINT_DISTANCE * 
-				SplineCurveController.getAmountOfControlPoints());
+		final float x = (float) Math.random() * (SplineCurveController.POINT_DISTANCE 
+				* SplineCurveController.getAmountOfControlPoints());
 		
 		final float y = (float) Math.random() * SplineCurveController.POINTS_HEIGHT + 20;
 //		final Vector3f respawnlocation = new Vector3f(40f, -2f, 1.5f);

@@ -16,6 +16,7 @@ import com.jme3.scene.Node;
  */
 public class SplineCurve extends Spline {
 	
+	private static final float TENSION = 0.6f;
 	private static Vector3f[] curvePoints;
 	Boolean bool = true;
 	private static Geometry geo;
@@ -28,14 +29,14 @@ public class SplineCurve extends Spline {
 	 * @param curveTension the tension of the curve, betweeen 0-1
 	 * @param cycle the cycle of the curve
 	 */
-	public SplineCurve(final SplineType splineType, final float curveTension, final boolean cycle) {
-		super(splineType, SplineCurveController.testPoints(), curveTension, cycle);
+	public SplineCurve(final SplineType splineType, final boolean cycle) {
+		super(splineType, SplineCurveController.testPoints(), TENSION, cycle);
 		geo = new Geometry("curve");
 		curvePoints = SplineCurveController.testPoints();
 	}
 
 	public void drawCurve(final Material mat,
-			final PhysicsSpace physicsSpace, RigidBodyControl rigidBody, final Node node, Vector3f[] pts) {
+			final PhysicsSpace physicsSpace, RigidBodyControl rigidBody, final Node node) {
 		phys = rigidBody;
 		this.refreshControlPoints();
 		CustomCurveMesh curve = new CustomCurveMesh(getSplinePoints());

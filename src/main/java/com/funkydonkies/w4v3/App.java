@@ -5,9 +5,8 @@ import com.funkydonkies.controllers.SplineCurveController;
 import com.funkydonkies.gamestates.GameInputState;
 import com.funkydonkies.obstacles.MovingBox;
 import com.funkydonkies.obstacles.ObstacleFactory;
-import com.funkydonkies.w4v3.curve.CustomCurveMesh;
-import com.funkydonkies.w4v3.curve.SplineCurve;
 import com.funkydonkies.obstacles.Target;
+import com.funkydonkies.w4v3.curve.SplineCurve;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -36,7 +35,6 @@ public class App extends SimpleApplication {
 	private Target target;
 	private MovingBox movBox;
 	private Combo combo;
-	boolean bool = true;
 	private static RigidBodyControl oldRigi;
 	private static RigidBodyControl rigi;
 	private ObstacleFactory factory;
@@ -70,7 +68,7 @@ public class App extends SimpleApplication {
 		gameInputState = new GameInputState();
 		stateManager.attach(gameInputState);
 		
-		sp = new SplineCurve(SplineType.CatmullRom, (float) 0.6, true);
+		sp = new SplineCurve(SplineType.CatmullRom, true);
 
 		spController = new SplineCurveController(bridge, sp);
 		stateManager.attach(spController);
@@ -78,7 +76,7 @@ public class App extends SimpleApplication {
 		final BitmapText comboText = new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"),
 				false);
 		combo = new Combo(guiNode, comboText);
-		movBox = factory.makeMovingBox(rootNode, assetManager);
+//		movBox = factory.makeMovingBox(rootNode, assetManager);
 		target = factory.makeTarget(rootNode);
 		target.getControl().setCombo(combo);
 		
@@ -87,7 +85,7 @@ public class App extends SimpleApplication {
 		
 		final Material mat2 = new Material(assetManager, UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
-		movBox.draw(mat2, getPhysicsSpace());
+//		movBox.draw(mat2, getPhysicsSpace());
 		target.draw(mat2, getPhysicsSpace());
 		cam.setLocation(CAM_LOCATION);
 		combo.display();
@@ -95,7 +93,7 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-		movBox.move(tpf);
+//		movBox.move(tpf);
 		getRootNode().detachChildNamed("curve");
 //		System.out.println(rigi);
 		if (rigi != null) {
@@ -104,8 +102,7 @@ public class App extends SimpleApplication {
 		}
 //			System.out.println(oldRigi);
 		rigi = new RigidBodyControl(0f);
-		Vector3f[] pts = new Vector3f[100];
-		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode(), pts);
+		sp.drawCurve(mat, getPhysicsSpace(), rigi, getRootNode());
 		sp.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 	}
