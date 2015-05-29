@@ -108,7 +108,7 @@ public class Mat2ImageTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		try {
-			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+			MyFrame.loadLib();
 			imageBG = ImageIO.read(new File("TestRessources/testBG.jpg"));
 			imageFG = ImageIO.read(new File("TestRessources/testFG.jpg"));
 			imageProcessed = ImageIO.read(new File(
