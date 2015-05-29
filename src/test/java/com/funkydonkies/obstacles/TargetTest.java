@@ -1,5 +1,6 @@
 package com.funkydonkies.obstacles;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.controllers.PhysicsController;
 import com.funkydonkies.controllers.SplineCurveController;
 import com.funkydonkies.controllers.TargetControl;
 import com.jme3.bullet.PhysicsSpace;
@@ -27,7 +29,6 @@ public class TargetTest {
 	private static Material mat;
 	private static Node rootNode;
 	private static PhysicsSpace psySpace;
-
 	/**
 	 * Setup the test class, mock and instantiate objects.
 	 */
@@ -110,5 +111,6 @@ public class TargetTest {
 		assertTrue(tar.getWidth() == testWidth);
 		assertTrue(tar.getHeight() == testHeight);
 		assertTrue(tar.getDepth() == testDepth);
+		assertNotNull(tar.getControl());
 	}
 }
