@@ -25,6 +25,7 @@ public class CameraState extends AbstractAppState {
 	 * Opens the camera frame when it is called with true, 
 	 * disposes the frame when it is called with false.
 	 * @see com.jme3.app.state.AbstractAppState#setEnabled(boolean)
+	 * @param enabled Desired state of cameraState
 	 */
 	@Override
 	public void setEnabled(final boolean enabled) {

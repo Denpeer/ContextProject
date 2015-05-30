@@ -93,9 +93,6 @@ public class PlayState extends AbstractAppState {
 		return bulletAppState.getPhysicsSpace();
 	}
 	
-	@Override
-	public void update(final float tpf) {
-		super.update(tpf);
-//		movBox.move(tpf);
-	}
+	
+	
 }
