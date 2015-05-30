@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.funkydonkies.gamestates.CameraState;
+import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.curve.SplineCurve;
@@ -94,7 +95,7 @@ public class CurveStateTest {
 		
 		spyCurveState.update(0.01f);
 		
-		verify(spyCurveState).makeRigidBodyControl();
+//		verify(spyCurveState).makeRigidBodyControl();
 //		verify(geom).removeControl(rb);
 //		verify(any(RigidBodyControl.class)).setEnabled(false);
 	}

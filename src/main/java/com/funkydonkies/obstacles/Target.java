@@ -1,7 +1,7 @@
 package com.funkydonkies.obstacles;
 
-import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
@@ -74,7 +74,7 @@ public class Target extends Obstacle {
 	 */
 	public void respawn() {
 		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
-				* CurveState.getAmountOfControlPoints());
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
 		
 		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);

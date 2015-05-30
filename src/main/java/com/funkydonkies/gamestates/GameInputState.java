@@ -1,6 +1,5 @@
 package com.funkydonkies.gamestates;
 
-import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Ball;
@@ -21,7 +20,7 @@ import com.jme3.input.controls.KeyTrigger;
  *
  */
 public class GameInputState extends AbstractAppState {
-	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
+	private static final String MAPPING_SPAWN_BALL = "Spawn Ball";
 	private static final String MAPPING_TOGGLE_CAMERA = "Toggle Camera";
 	private static final String MAPPING_TOGGLE_CURVE_UPDATE = "Toggle Curve Update";
 	private static final String MAPPING_ENABLE_CAMERA_DETECTION = "Start Camera";
@@ -87,7 +86,7 @@ public class GameInputState extends AbstractAppState {
 		inputManager.addMapping(MAPPING_TOGGLE_CURVE_UPDATE, new KeyTrigger(KeyInput.KEY_U));
 		
 		//Control for spawning balls
-		inputManager.addMapping(MAPPING_NAME_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
+		inputManager.addMapping(MAPPING_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_S));
 		
 		inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
@@ -100,15 +99,14 @@ public class GameInputState extends AbstractAppState {
 				MAPPING_TOGGLE_CURVE_UPDATE, MAPPING_ENABLE_CAMERA_DETECTION);
 //		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
 //				MAPPING_NAME_ROTATE);
-		inputManager.addListener(analogListener, MAPPING_NAME_SPAWN_BALL);
+		inputManager.addListener(analogListener, MAPPING_SPAWN_BALL);
 
 	}
 
 	private ActionListener actionListener = new ActionListener() {
 		public void onAction(final String name, final boolean keyPressed, final float tpf) {
 			if (name.equals(MAPPING_TOGGLE_CAMERA) && !keyPressed) {
-				//C KEY
-				if (cameraState.cameraOpened()) {
+				if (cameraState.cameraOpened()) { // C KEY
 					curveState.toggleCameraEnabled();
 					curveState.setUpdateEnabled(curveState.getCameraEnabled());
 				} else {
@@ -116,30 +114,17 @@ public class GameInputState extends AbstractAppState {
 				}
 			}
 			if (name.equals(MAPPING_TOGGLE_CURVE_UPDATE) && !keyPressed) {
-				//U KEY
-				curveState.toggleUpdateEnabled();
+				curveState.toggleUpdateEnabled(); // U KEY
 			}
 			if (name.equals(MAPPING_ENABLE_CAMERA_DETECTION) && !keyPressed) {
-				//S KEY
-				stateManager.getState(CameraState.class).toggleEnabled();
+				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
 		}
 	};
 	
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
-//			if (name.equals(MAPPING_NAME_ROTATE)) {
-//				player.rotate(0, value * speed, 0);
-//			}
-//			if (name.equals(MAPPING_NAME_RIGHT)) {
-////				Vector3f v = player.getLocalTranslation();
-////				player.setLocalTranslation(v.x + value * speed, v.y, v.z);
-//			}
-//			if (name.equals(MAPPING_NAME_LEFT)) {
-////				Vector3f v = player.getLocalTranslation();
-////				player.setLocalTranslation(v.x - value * speed, v.y, v.z);
-//			}
-			if (name.equals(MAPPING_NAME_SPAWN_BALL)) {
+			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
 				timeCount += tpf;
 				if (timeCount > time) {
 					final Ball ball = new Ball(assetManager);
@@ -147,14 +132,17 @@ public class GameInputState extends AbstractAppState {
 					timeCount = 0;
 				}
 			}
-			if (name.equals(INCREMENT_HEIGHT_MAPPING)) {
+			if (name.equals(INCREMENT_HEIGHT_MAPPING)) { // R KEY
 				curveState.getSplineCurve().incrementPoints();
-			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) {
+			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) { // F KEY
 				curveState.getSplineCurve().decrementPoints();
 			}
 		}
 	};
 	
+	/** Returns ActionListener that implements actions mapped to keypresses.
+	 * @return ActionListener that implements actions mapped to keypresses
+	 */
 	public ActionListener getActionListener() {
 		return actionListener;
 	}

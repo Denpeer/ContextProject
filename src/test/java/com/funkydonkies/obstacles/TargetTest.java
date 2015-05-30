@@ -9,8 +9,8 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Node;
@@ -67,7 +67,7 @@ public class TargetTest {
 	public final void testGetLocation() {
 		tar.draw(mat, psySpace);
 		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
-				* CurveState.getAmountOfControlPoints());
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
 		assertTrue(tar.getLocation().x >= 0);
 
 		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);
@@ -84,7 +84,7 @@ public class TargetTest {
 		tar.draw(mat, psySpace);
 		tar.respawn();
 		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
-				* CurveState.getAmountOfControlPoints());
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
 		assertTrue(tar.getLocation().x >= 0);
 
 		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);

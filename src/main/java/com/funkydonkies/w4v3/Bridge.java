@@ -8,11 +8,18 @@ package com.funkydonkies.w4v3;
  */
 public interface Bridge {
 	
+	/** Gets current state of background. 
+	 * 
+	 * @return current state of background
+	 */
+	boolean isBgSet();
+	
 	/** Gets dataset control points.
 	 * 
 	 * @return dataset containing the points on the curve
 	 */
 	float[] getControlPoints();
+	
 	/**
 	 * gets dataset control points horizontal interval.
 	 * @return int representing the x interval between elements of the array returned by getControlPoints()
