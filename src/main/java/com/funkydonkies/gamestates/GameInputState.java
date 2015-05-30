@@ -75,7 +75,7 @@ public class GameInputState extends AbstractAppState {
 		if (timeCount > TIME_PER_BALL_SPAWN) {
 			timeCount = 0;
 			final Ball ball = new Ball(assetManager);
-			ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
+			ball.spawn(app.getRootNode(), stateManager.getState(PlayState.class).getPhysicsSpace(), true);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class GameInputState extends AbstractAppState {
 				timeCount += tpf;
 				if (timeCount > time) {
 					final Ball ball = new Ball(assetManager);
-					ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
+					ball.spawn(app.getRootNode(), stateManager.getState(PlayState.class).getPhysicsSpace(), true);
 					timeCount = 0;
 				}
 			}

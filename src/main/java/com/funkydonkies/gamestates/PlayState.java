@@ -88,7 +88,7 @@ public class PlayState extends AbstractAppState {
 	 * Returns the physicsSpace of the application, taken from bulletAppState.
 	 * @return PhysicsSpace
 	 */
-	public static PhysicsSpace getPhysicsSpace() {
+	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
 	

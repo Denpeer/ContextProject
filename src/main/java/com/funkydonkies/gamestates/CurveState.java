@@ -60,10 +60,26 @@ public class CurveState extends AbstractAppState {
 		}
 
 		bridge = sManager.getState(CameraState.class).getBridge();
-		curveMaterial = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMaterial.setColor(COLOR, ColorRGBA.randomColor());
+		curveMaterial = initializeMaterial();
 		oldRigi = new RigidBodyControl(0f);
-		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
+		splineCurve = initializeSplineCurve();
+	}
+	
+	/**
+	 * Returns a new SplineCurve.
+	 * @return SplineCurve.
+	 */
+	public SplineCurve initializeSplineCurve() {
+		return new SplineCurve(SplineType.CatmullRom, true);
+	}
+	/**
+	 * Initializes the curve's material, called from the initialize method.
+	 * @return curveMaterial Material, the material to be used for the curve.
+	 */
+	public Material initializeMaterial() {
+		final Material curveMat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		curveMat.setColor(COLOR, ColorRGBA.randomColor());	
+		return curveMat;
 	}
 
 	/**
@@ -157,9 +173,17 @@ public class CurveState extends AbstractAppState {
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
-		splineCurve.drawCurve(curveMaterial, PlayState.getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class).getPhysicsSpace(), rigi, app.getRootNode());
 		splineCurve.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
+	}
+	
+	/**
+	 * Returns a new RigidBodyControl with mass 0.
+	 * @return new RigidBodyControl
+	 */
+	public RigidBodyControl makeRigidBodyControl() {
+		return new RigidBodyControl(0f);
 	}
 
 	/**
