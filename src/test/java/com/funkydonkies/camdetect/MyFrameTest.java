@@ -3,6 +3,7 @@ package com.funkydonkies.camdetect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.AWTException;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
@@ -11,6 +12,7 @@ import java.io.PrintStream;
 
 import javax.swing.JPanel;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -25,6 +27,21 @@ import org.opencv.core.Core;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MyFrameTest {
+	
+	private boolean runTest = false;
+	
+	/**
+	 * Initialize vars, make sure opencv is not run on travis
+	 */
+	@Before
+	public void setUp() {
+		runTest = true;
+		try {
+			MyFrame.loadLib();
+		} catch (final UnsatisfiedLinkError e) {
+			runTest = false;
+		}
+	}
 
 	/**
 	 * Get videocap objects and compare.
@@ -71,11 +88,10 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testMyFrame() {
-		try {
+		if (runTest) {
 			final MyFrame test = new MyFrame();
 			assertTrue(test.isVisible());
-		} catch (final HeadlessException e) {
-		} 
+		}
 	}
 
 	/**
@@ -88,13 +104,12 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testInitBgSetKey() {
-		try {
+		if (runTest) {
 			JPanel testpanel = new JPanel();
 			final MyFrame test = new MyFrame();
 			test.initBgSetKey();
 			testpanel = (JPanel) test.getContentPane();
 			assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
-		} catch (final HeadlessException e) {
 		}
 	}
 
@@ -103,10 +118,9 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testPaintGraphics() {
-		try {
+		if (runTest) {
 			final MyFrame test = new MyFrame();
 			test.repaint();
-		} catch (final HeadlessException e) {
 		}
 	}
 
@@ -115,11 +129,10 @@ public class MyFrameTest {
 	 */
 	@Test
 	public void testRun() {
-		try {
+		if (runTest) {
 			final MyFrame test = new MyFrame();
 			test.run();
-		} catch (final HeadlessException e) {
-		} 
+		}
 	}
 
 }
