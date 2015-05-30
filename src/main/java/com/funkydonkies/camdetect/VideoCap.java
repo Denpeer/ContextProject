@@ -17,7 +17,7 @@ public class VideoCap {
 
 	private VideoCapture cap;
 	private Mat2Image mat2Img = new Mat2Image();
-	private static final int INPUTSOURCENUMBER = 1;
+	private static final int INPUTSOURCENUMBER = 0;
 	private boolean camOn = false;
 
 	/**
