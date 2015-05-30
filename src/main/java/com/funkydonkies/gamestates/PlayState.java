@@ -1,6 +1,5 @@
 package com.funkydonkies.gamestates;
 
-import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.obstacles.MovingBox;
 import com.funkydonkies.obstacles.ObstacleFactory;

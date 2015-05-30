@@ -9,8 +9,8 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Node;

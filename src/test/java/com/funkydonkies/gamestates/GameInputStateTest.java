@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.CurveState;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.jme3.app.SimpleApplication;

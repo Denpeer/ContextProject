@@ -1,11 +1,9 @@
-package com.funkydonkies.controllers;
+package com.funkydonkies.gamestates;
 
 import java.util.Arrays;
 
 import com.funkydonkies.camdetect.Mat2Image;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.gamestates.CameraState;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Bridge;
 import com.funkydonkies.w4v3.curve.SplineCurve;
