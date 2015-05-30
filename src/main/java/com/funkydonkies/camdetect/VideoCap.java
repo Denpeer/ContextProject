@@ -82,6 +82,7 @@ public class VideoCap {
 		throw new CameraNotOnException("Camera input not found.");
 	}
 
+
 	/**
 	 * when key 'b' press set the bg. calls setBg of the Mat2Image object
 	 */
