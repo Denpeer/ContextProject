@@ -22,8 +22,8 @@ public class CustomCurveMesh {
 	 */
 	public CustomCurveMesh(final Vector3f[] sPoints) {
 		splinePoints = sPoints;
-		final int mulLength = 5, offset = 2, triangleIndicesDegree = 15;
-		final int meshStructurePointsSize = splinePoints.length * mulLength - offset;
+		final int mulLength = 5, offset = 2, triangleIndicesDegree = 15; // TODO rename
+		final int meshStructurePointsSize = (splinePoints.length * mulLength) - offset;
 		meshStructurePoints = new Vector3f[meshStructurePointsSize];
 		meshStructureTrianglesIndices = new int[(splinePoints.length - 1) * triangleIndicesDegree];
 		texCoords = new Vector2f[splinePoints.length];
@@ -41,9 +41,11 @@ public class CustomCurveMesh {
 		}	
 		final Mesh mesh = new Mesh();
 		final int indexBuffer = 3;
-		mesh.setBuffer(Type.Position, indexBuffer, BufferUtils.createFloatBuffer(meshStructurePoints));
+		mesh.setBuffer(Type.Position, indexBuffer, 
+				BufferUtils.createFloatBuffer(meshStructurePoints));
 		mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoords));
-		mesh.setBuffer(Type.Index,    indexBuffer, BufferUtils.createIntBuffer(meshStructureTrianglesIndices));
+		mesh.setBuffer(Type.Index, indexBuffer, 
+				BufferUtils.createIntBuffer(meshStructureTrianglesIndices));
 		mesh.updateBound();
 		return mesh;
 	}
@@ -53,12 +55,14 @@ public class CustomCurveMesh {
 	 * @param i the index of the splinepoint
 	 */
 	public void setMeshPoints(final int i) {
+		// TODO add comments
 		meshStructurePoints[i] = new Vector3f().add(splinePoints[i].getX(), 0, 0);
 		meshStructurePoints[splinePoints.length + i] = splinePoints[i];
-		meshStructurePoints[splinePoints.length * 2 + i] = new Vector3f().add(splinePoints[i]).setZ(-1);
+		meshStructurePoints[(splinePoints.length * 2) + i] = new Vector3f().
+				add(splinePoints[i]).setZ(-1);
 		
-		if (i != splinePoints.length - 1) {
-			getSegmentPoint(i);
+		if (i != (splinePoints.length - 1)) {
+			getSegmentPoint(i); //TODO comment what this does
 		}
 	}
 	
@@ -67,18 +71,18 @@ public class CustomCurveMesh {
 	 * @param i the index of the splinepoint
 	 */
 	public void getSegmentPoint(final int i) {
-		final int mulLength = 3, offset = 2; 
-		 
+		final int mulLength = 3, offset = 2; // TODO rename
+		// TODO add comments
 		if (splinePoints[i].getY() < splinePoints[i + 1].getY()) {
 			final Vector3f vecNew = new Vector3f().add(splinePoints[i + 1]);
 			vecNew.setY(splinePoints[i].getY());
-			meshStructurePoints[splinePoints.length * mulLength + offset * i] = splinePoints[i];
-			meshStructurePoints[splinePoints.length * mulLength + offset * i + 1] = vecNew;		
+			meshStructurePoints[(splinePoints.length * mulLength) + (offset * i)] = splinePoints[i];
+			meshStructurePoints[(splinePoints.length * mulLength) + (offset * i) + 1] = vecNew;		
 		} else {
 			final Vector3f vecNew = new Vector3f().add(splinePoints[i]);
 			vecNew.setY(splinePoints[i + 1].getY());
-			meshStructurePoints[splinePoints.length * mulLength + offset * i] = vecNew;
-			meshStructurePoints[splinePoints.length * mulLength + offset * i + 1] 
+			meshStructurePoints[(splinePoints.length * mulLength) + (offset * i)] = vecNew;
+			meshStructurePoints[(splinePoints.length * mulLength) + (offset * i) + 1] 
 					= splinePoints[i + 1];
 		}
 	}
@@ -88,7 +92,7 @@ public class CustomCurveMesh {
 	 * @param i the index of the splinepoint
 	 */
 	public void setTriangleIndices(final int i) {
-		if (i < splinePoints.length - 1) {
+		if (i < (splinePoints.length - 1)) { // TODO add comment explaining range
 			addBoxTriangles(i);
 			addUpperTriangles(i);
 			addOverlappingTriangles(i);
@@ -101,16 +105,17 @@ public class CustomCurveMesh {
 	 * @param i the index of the splinepoint
 	 */
 	public void addBoxTriangles(final int i) {
-		final int mulOffset = 6, range = 5, mulLength = 3, offset = 2;
+		final int mulOffset = 6, range = 5, mulLength = 3, offset = 2; // TODO rename
+		// TODO add comments
 		meshStructureTrianglesIndices[i * mulOffset] = i;
-		meshStructureTrianglesIndices[i * mulOffset + 1] = i + 1;
-		meshStructureTrianglesIndices[i * mulOffset + range - 2] = i + 1;
-		meshStructureTrianglesIndices[i * mulOffset + 2] 
-				= splinePoints.length * mulLength + offset * i;
-		meshStructureTrianglesIndices[i * mulOffset + range] 
-				= splinePoints.length * mulLength + offset * i;
-		meshStructureTrianglesIndices[i * mulOffset + range - 1]
-				= splinePoints.length * mulLength + offset * i + 1;
+		meshStructureTrianglesIndices[(i * mulOffset) + 1] = i + 1;
+		meshStructureTrianglesIndices[(i * mulOffset) + range - 2] = i + 1;
+		meshStructureTrianglesIndices[(i * mulOffset) + 2] 
+				= (splinePoints.length * mulLength) + (offset * i);
+		meshStructureTrianglesIndices[(i * mulOffset) + range] 
+				= (splinePoints.length * mulLength) + (offset * i);
+		meshStructureTrianglesIndices[(i * mulOffset) + range - 1]
+				= (splinePoints.length * mulLength) + (offset * i) + 1;
 	}
 	
 	/**
@@ -118,17 +123,18 @@ public class CustomCurveMesh {
 	 * @param i the index of the splinepoint
 	 */
 	public void addUpperTriangles(final int i) {
-		final int mulOffset = 6, mulLength = 3, offset = 2;
-		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i]
-				= splinePoints.length * mulLength + offset * i; 
-		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i + 1]
-				= splinePoints.length * mulLength + offset * i + 1;
+		final int mulOffset = 6, mulLength = 3, offset = 2; // TODO rename
+		// TODO add comments
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset) + (mulLength * i)]
+				= (splinePoints.length * mulLength) + (offset * i); 
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset) + (mulLength * i) + 1]
+				= (splinePoints.length * mulLength) + (offset * i) + 1;
 		if (splinePoints[i].getY() > splinePoints[i + 1].getY()) {
-			meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i + 2]
-					= splinePoints.length + i;
+			meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset)
+			                              + (mulLength * i) + 2]	= splinePoints.length + i;
 		} else {
-			meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i + 2]
-					= splinePoints.length + i + 1;
+			meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset)
+			                              + (mulLength * i) + 2]	= splinePoints.length + i + 1;
 		}
 		
 	}
@@ -137,18 +143,19 @@ public class CustomCurveMesh {
 	 * @param i the index of the splinepoint
 	 */
 	public void addOverlappingTriangles(final int i) {
-		final int mulOffset = 9, range = 5, mulLength = 6;
-		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i]
-				= splinePoints.length + i;
-		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i + 1]
-				= splinePoints.length + i + 1;
-		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i + 2]
-				= splinePoints.length * 2 + i;
-		meshStructureTrianglesIndices[(splinePoints.length - 1) 
-		        * mulOffset + mulLength * i + range - 2] = splinePoints.length + i + 1;
-		meshStructureTrianglesIndices[(splinePoints.length - 1) 
-		        * mulOffset + mulLength * i + range - 1] = splinePoints.length * 2 + i + 1;
-		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset + mulLength * i + range]
-				= splinePoints.length * 2 + i;
+		final int mulOffset = 9, range = 5, mulLength = 6; // TODO rename
+		// TODO add comments
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset) 
+		                              + (mulLength * i)] = splinePoints.length + i;
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset) 
+		                              + (mulLength * i) + 1] = splinePoints.length + i + 1;
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset)
+		                              + (mulLength * i) + 2] = (splinePoints.length * 2) + i;
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset) 
+		        + (mulLength * i) + range - 2] = splinePoints.length + i + 1;
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset) 
+		        + (mulLength * i) + range - 1] = (splinePoints.length * 2) + i + 1;
+		meshStructureTrianglesIndices[((splinePoints.length - 1) * mulOffset)
+		                              + (mulLength * i) + range] = (splinePoints.length * 2) + i;
 	}
 }
