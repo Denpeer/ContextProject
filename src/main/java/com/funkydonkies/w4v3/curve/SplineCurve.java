@@ -1,6 +1,6 @@
 package com.funkydonkies.w4v3.curve;
 
-import com.funkydonkies.controllers.CurveState;
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
@@ -25,7 +25,7 @@ public class SplineCurve extends Spline {
 	private static final int TOTAL_POINTS_PER_CONTROLPOINT = 10;
 	private static final float SCALE_POINTS = 0.1f;
 	private Vector3f[] curvePoints;
-	private static Geometry geo;
+	private Geometry geo;
 	private RigidBodyControl phys;
 	
 	/**

@@ -1,11 +1,8 @@
-package com.funkydonkies.controllers;
+package com.funkydonkies.gamestates;
 
 import java.util.Arrays;
 
-import com.funkydonkies.camdetect.Mat2Image;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.gamestates.CameraState;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Bridge;
 import com.funkydonkies.w4v3.curve.SplineCurve;
@@ -24,10 +21,10 @@ import com.jme3.math.Vector3f;
 public class CurveState extends AbstractAppState {
 	public static final int POINT_DISTANCE = 10;
 	public static final int POINTS_HEIGHT = 100;
+	public static final int DEFAULT_CONTROL_POINTS_COUNT = 32;
 	private static final int BASE_CHANGE_SPEED = 30;
 	private static final int CHANGE_THRESHOLD = 5;
 	private static final float MAX_SLOPE_ANGLE = 70f;
-	private static final int DEFAULT_CONTROL_POINTS_COUNT = 32;
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
 	private static final float SPEED_MULTIPLIER = 1.5f;
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
@@ -35,7 +32,7 @@ public class CurveState extends AbstractAppState {
 	private static final float DEFAULT_IMAGE_HEIGHT = 480;
 
 	// set to 32 as default this is what we currently use to test the program.
-	private static int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
+	private int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
 	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; 
 
 	private Bridge bridge;
@@ -45,8 +42,8 @@ public class CurveState extends AbstractAppState {
 	private boolean cameraEnabled = false;
 	private boolean updateEnabled = false;
 
-	private static RigidBodyControl oldRigi;
-	private static RigidBodyControl rigi;
+	private RigidBodyControl oldRigi;
+	private RigidBodyControl rigi;
 
 	private Material curveMaterial;
 
@@ -78,7 +75,7 @@ public class CurveState extends AbstractAppState {
 	 *            the horizontal interval between control points
 	 * @return the number of control points
 	 */
-	private int getNumberOfControlPoints(final int imageWidth, final int xdist) {
+	private int getNumberOfControlPoints(final float imageWidth, final float xdist) {
 		final float tempdiv = imageWidth / xdist;
 		return (int) Math.floor(tempdiv);
 	}
@@ -129,7 +126,7 @@ public class CurveState extends AbstractAppState {
 			bridge = stateManager.getState(CameraState.class).getBridge();
 		}
 
-		if (cameraEnabled && Mat2Image.isBgSet()) {
+		if (cameraEnabled && bridge.isBgSet()) {
 			controlPointsCount = getNumberOfControlPoints(bridge.getImageWidth(), bridge.getxdist());
 			points = bridge.getControlPoints();
 			setMaxHeightDiff();
@@ -146,7 +143,7 @@ public class CurveState extends AbstractAppState {
 		}
 
 		if (updateEnabled) {
-			if (Mat2Image.isBgSet()) {
+			if (bridge != null && bridge.isBgSet()) {
 				scaleValues(points, bridge.getImageHeight());
 			} else {
 				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
@@ -157,7 +154,6 @@ public class CurveState extends AbstractAppState {
 
 		app.getRootNode().detachChildNamed("curve");
 		if (rigi != null) {
-			oldRigi = new RigidBodyControl(0f);
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
@@ -247,7 +243,7 @@ public class CurveState extends AbstractAppState {
 	 */
 	public static Vector3f[] testPoints() {
 
-		final Vector3f[] points = new Vector3f[controlPointsCount];
+		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
 			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
@@ -296,7 +292,7 @@ public class CurveState extends AbstractAppState {
 	 * 
 	 * @return int the amount of control points
 	 */
-	public static int getAmountOfControlPoints() {
+	public int getAmountOfControlPoints() {
 		return controlPointsCount;
 	}
 
