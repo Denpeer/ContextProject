@@ -25,7 +25,7 @@ public class SplineCurve extends Spline {
 	private static final int TOTAL_POINTS_PER_CONTROLPOINT = 10;
 	private static final float SCALE_POINTS = 0.1f;
 	private Vector3f[] curvePoints;
-	private static Geometry geo;
+	private Geometry geo;
 	private RigidBodyControl phys;
 	
 	/**

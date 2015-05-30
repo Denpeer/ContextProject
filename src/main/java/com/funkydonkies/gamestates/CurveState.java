@@ -32,7 +32,7 @@ public class CurveState extends AbstractAppState {
 	private static final float DEFAULT_IMAGE_HEIGHT = 480;
 
 	// set to 32 as default this is what we currently use to test the program.
-	private static int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
+	private int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
 	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; 
 
 	private Bridge bridge;
@@ -143,7 +143,7 @@ public class CurveState extends AbstractAppState {
 		}
 
 		if (updateEnabled) {
-			if (bridge.isBgSet()) {
+			if (bridge != null && bridge.isBgSet()) {
 				scaleValues(points, bridge.getImageHeight());
 			} else {
 				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
@@ -154,7 +154,6 @@ public class CurveState extends AbstractAppState {
 
 		app.getRootNode().detachChildNamed("curve");
 		if (rigi != null) {
-			oldRigi = new RigidBodyControl(0f);
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
@@ -244,7 +243,7 @@ public class CurveState extends AbstractAppState {
 	 */
 	public static Vector3f[] testPoints() {
 
-		final Vector3f[] points = new Vector3f[controlPointsCount];
+		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
 			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));

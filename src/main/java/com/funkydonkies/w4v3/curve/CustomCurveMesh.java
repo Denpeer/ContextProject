@@ -14,8 +14,8 @@ import com.jme3.util.BufferUtils;
 public class CustomCurveMesh {
 	private Vector3f[] meshStructurePoints;
 	private int[] meshStructureTrianglesIndices;
-	private final Vector3f[] splinePoints;
-	private static Vector2f[] texCoords;
+	private Vector3f[] splinePoints;
+	private Vector2f[] texCoords;
 	/**
 	 * This class take care of the mesh for the spline.
 	 * @param sPoints the spline points on the surface of the spline
