@@ -67,7 +67,7 @@ public class TargetTest {
 	public final void testGetLocation() {
 		tar.draw(mat, psySpace);
 		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
-				* CurveState.getAmountOfControlPoints());
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
 		assertTrue(tar.getLocation().x >= 0);
 
 		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);
@@ -84,7 +84,7 @@ public class TargetTest {
 		tar.draw(mat, psySpace);
 		tar.respawn();
 		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
-				* CurveState.getAmountOfControlPoints());
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
 		assertTrue(tar.getLocation().x >= 0);
 
 		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);

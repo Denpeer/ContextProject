@@ -29,7 +29,7 @@ public class Mat2Image implements Bridge {
 	private byte[] dat;
 	private Mat bg = new Mat();
 	private Mat res = new Mat();
-    private static Boolean bgSet = false;
+    private Boolean bgSet = false;
 	private float[] interestPoints;
 	private static final int DEFAULT_XDIST = 20;
 	private static final int MEDBLUR = 5;
@@ -271,9 +271,9 @@ public class Mat2Image implements Bridge {
 	
 	/**
 	 * Returns whether the background had been set or not.
-	 * @return boolean bgSet
+	 * @return boolean state of background setting
 	 */
-	public static boolean isBgSet() {
+	public boolean isBgSet() {
 		return bgSet;
 	}
 

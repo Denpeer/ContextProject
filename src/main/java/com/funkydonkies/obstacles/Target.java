@@ -74,7 +74,7 @@ public class Target extends Obstacle {
 	 */
 	public void respawn() {
 		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
-				* CurveState.getAmountOfControlPoints());
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
 		
 		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
