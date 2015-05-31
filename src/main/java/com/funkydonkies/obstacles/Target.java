@@ -80,6 +80,7 @@ public class Target extends Obstacle {
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		control.setPhysicsLocation(respawnlocation);
 		geom.setLocalTranslation(respawnlocation);
+		System.out.println("Target location: X: " + x + " Y: " + y);
 	}
 	
 	/**

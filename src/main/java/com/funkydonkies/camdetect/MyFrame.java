@@ -1,14 +1,26 @@
 package com.funkydonkies.camdetect;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import org.opencv.core.Core;
@@ -22,11 +34,14 @@ import com.funkydonkies.camdetect.VideoCap.CameraNotOnException;
  * @author Olivier Dikken
  *
  */
-public class MyFrame extends JFrame implements Runnable {
+public class MyFrame extends JFrame implements Runnable, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final int SLEEP_TIME = 30;
 	private JPanel contentPane;
+	private boolean triedCameras = false;
+	private ArrayList<Integer> cameras;
+	private ArrayList<JButton> buttons;
 
 	/**
 	 * Launch the application by starting a new thread.
@@ -89,7 +104,7 @@ public class MyFrame extends JFrame implements Runnable {
 	 */
 	public MyFrame() {
 		loadLib();
-		videoCap = new VideoCap();
+		initVideoCap();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final int xbound = 100, ybound = 100, boundwidth = 650, boundheight = 490;
 		setBounds(xbound, ybound, boundwidth, boundheight);
@@ -99,10 +114,14 @@ public class MyFrame extends JFrame implements Runnable {
 		final int top = 5, left = 5, bottom = 5, right = 5;
 		contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new GridLayout(5, 1));
 		setVisible(true);
 	}
 
+	public void initVideoCap() {
+		videoCap = new VideoCap();
+	}
+	
 	/**
 	 * press 'b' to set background to current frame.
 	 */
@@ -112,14 +131,28 @@ public class MyFrame extends JFrame implements Runnable {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent e) {
-				videoCap.setBg();
+				System.out.println("action: " + e.getActionCommand());
+				if (e.getActionCommand().equals("b")){
+					System.out.println("setbg called");
+					videoCap.setBg();
+				}
+				if(e.getActionCommand().equals("n")){
+					System.out.println("n called");
+					initVideoCap();
+					
+				}
 			}
 		};
 		// add keypress 'b' sets current frame as background
 		final String callSetTheBg = "callSetTheBg";
 		contentPane.getInputMap()
 				.put(KeyStroke.getKeyStroke('b'), callSetTheBg);
+		contentPane.getInputMap()
+				.put(KeyStroke.getKeyStroke('n'), "start video");
 		contentPane.getActionMap().put(callSetTheBg, setTheBg);
+		contentPane.getActionMap().put("start video", setTheBg);
+		
+		
 	}
 
 	/**
@@ -158,10 +191,42 @@ public class MyFrame extends JFrame implements Runnable {
 	 */
 	public void paint(final Graphics g) {
 		try {
-			g.drawImage(videoCap.getOneFrame(), 0, 0, this);
+			if (videoCap != null) {
+				contentPane.removeAll();
+				g.drawImage(videoCap.getOneFrame(), 0, 0, this);
+			} else {
+			}
 		} catch (final CameraNotOnException e) {
-			e.printStackTrace();
+			contentPane.removeAll();
+			JLabel label = new JLabel();
+			label.setText("Please Select an Input Source \n");
+			contentPane.add(label);
+			if (!triedCameras) {
+				cameras = videoCap.tryCameras();
+				for (Integer camera : cameras) {
+					buttons.add(makeButton("Input number: " + camera));
+				}
+				triedCameras = true;
+			}
+			for (JButton jButton : buttons) {
+				contentPane.add(jButton);
+			}
+			setContentPane(contentPane);
+			
 		}
+	}
+	
+	/**
+	 * Creates a new button for selecting an input source.
+	 * @param name String to be displayed on the button.
+	 * @return
+	 */
+	private JButton makeButton(String name) {
+		final JButton button = new JButton(name);
+		button.setActionCommand(name.substring(name.length() - 1));
+		button.addActionListener(this);
+		button.setEnabled(true);
+		return button;
 	}
 
 	/**
@@ -174,6 +239,14 @@ public class MyFrame extends JFrame implements Runnable {
 
 		@Override
 		public void run() {
+			buttons = new ArrayList<>();
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e1) {
+				e1.printStackTrace();
+			} catch (UnsupportedLookAndFeelException e1) {
+				e1.printStackTrace();
+			}
 			for (;;) {
 				repaint();
 				try {
@@ -183,5 +256,10 @@ public class MyFrame extends JFrame implements Runnable {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		videoCap.openCamera(Integer.parseInt(e.getActionCommand()));
 	}
 }

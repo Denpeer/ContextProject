@@ -35,9 +35,21 @@ public class CameraState extends AbstractAppState {
 			cameraOpened = false;
 		} else {
 			cameraFrame = new MyFrame();
-			bridge = cameraFrame.getVideoCap().getMat2Image();
-			new Thread(cameraFrame).start();
-			cameraOpened = true;
+		}
+	}
+	
+	public void openCamera() {
+		new Thread(cameraFrame).start();
+		bridge = cameraFrame.getVideoCap().getMat2Image();
+		cameraOpened = true;
+	}
+	
+	@Override
+	public void update(float tpf) {
+		super.update(tpf);
+		if (cameraFrame.getVideoCap() != null && !cameraOpened) {
+			System.out.println("CameraState: openedCamera");
+			openCamera();
 		}
 	}
 	

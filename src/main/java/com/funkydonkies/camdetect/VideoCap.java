@@ -1,14 +1,15 @@
 package com.funkydonkies.camdetect;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.opencv.highgui.VideoCapture;
 
 /**
- * Video Capture class opens the capture source and gets processed frames from
- * the Mat2Image class. Make sure your webcam is configured correctly. If you
- * don't get any video response change the capture source by modifying the
- * INPUTSOURCENUMBER variable.
+ * Video Capture class opens the capture source and gets processed frames from the Mat2Image class.
+ * Make sure your webcam is configured correctly. If you don't get any video response change the
+ * capture source by modifying the INPUTSOURCENUMBER variable.
  * 
  * @author Olivier Dikken
  *
@@ -17,18 +18,27 @@ public class VideoCap {
 
 	private VideoCapture cap;
 	private Mat2Image mat2Img = new Mat2Image();
-	private static final int INPUTSOURCENUMBER = 0;
 	private boolean camOn = false;
+	private ArrayList<Integer> cameras;
+	private HashMap<Integer, HashMap<String, Integer>> resolutions = 
+			new HashMap<Integer, HashMap<String, Integer>>();
 
 	/**
-	 * Create capture object which reads from the input source defined by
-	 * INPUTSOURCENUMBER (genrally {0;1;2;3}).
+	 * Create capture object which reads from the input source defined by INPUTSOURCENUMBER
+	 * (genrally {0;1;2;3}).
 	 */
 	VideoCap() {
-		cap = new VideoCapture(INPUTSOURCENUMBER);
+		cap = new VideoCapture();
+	}
+
+	/**
+	 * Opens camera indicated by input.
+	 * @param input int Source number of the camera to open.
+	 */
+	public void openCamera(int input) {
+		cap.open(input);
 		if (!cap.isOpened()) {
-			System.out
-					.println("Camera Error; Try changing the INPUTSOURCENUMBER variable in class VideoCap.java or check you webcam settings.");
+			System.err.println("Camera Error. Could not open camera.");
 			camOn = false;
 		} else {
 			System.out.println("Camera OK");
@@ -37,19 +47,31 @@ public class VideoCap {
 	}
 
 	/**
-	 * Gets the Mat2Image object. The m2i class is responsible for the image
-	 * processing.
+	 * @return
+	 */
+	public ArrayList<Integer> tryCameras() {
+		ArrayList<Integer> cameras = new ArrayList<Integer>();
+		for (int i = 0; i < 4; i++) {
+			cap.open(i);
+			if (cap.isOpened()) {
+				cameras.add(i);
+			}
+			cap.release();
+		}
+		return cameras;
+	}
+
+	/**
+	 * Gets the Mat2Image object. The m2i class is responsible for the image processing.
 	 * 
-	 * @return Mat2Image object containing current frame and dataset
-	 *         controlpoints.
+	 * @return Mat2Image object containing current frame and dataset controlpoints.
 	 */
 	public Mat2Image getMat2Image() {
 		return mat2Img;
 	}
 
 	/**
-	 * Exception is throw when camera source is not opened when getOneFrame() is
-	 * called.
+	 * Exception is throw when camera source is not opened when getOneFrame() is called.
 	 * 
 	 * @author Olivier Dikken
 	 *
@@ -67,8 +89,7 @@ public class VideoCap {
 	}
 
 	/**
-	 * gets the next frame to be displayed. The frame is processed by. m2i
-	 * before being returned.
+	 * gets the next frame to be displayed. The frame is processed by. m2i before being returned.
 	 * 
 	 * @return next frame to be displayed as buffered image
 	 * @throws CameraNotOnException
@@ -81,7 +102,6 @@ public class VideoCap {
 		}
 		throw new CameraNotOnException("Camera input not found.");
 	}
-
 
 	/**
 	 * when key 'b' press set the bg. calls setBg of the Mat2Image object
