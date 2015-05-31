@@ -1,5 +1,7 @@
 package com.funkydonkies.controllers;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -26,6 +28,7 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.Spline.SplineType;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 
@@ -41,7 +44,7 @@ public class CurveStateTest {
 	private RigidBodyControl control;
 	private PlayState playState;
 	private CurveState spyCurveState;
-	private SplineCurve spySplinaCurve;
+	private SplineCurve spySplineCurve;
 	private Geometry geom;
 	private Bridge bridge;
 	
@@ -54,7 +57,7 @@ public class CurveStateTest {
 		app = mock(App.class);
 		camState = mock(CameraState.class);
 		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
-		spySplinaCurve = spy(splineCurve);
+		spySplineCurve = spy(splineCurve);
 		material = mock(Material.class);
 		node = mock(Node.class);
 		physicsSpace = mock(PhysicsSpace.class);
@@ -67,12 +70,12 @@ public class CurveStateTest {
 		when(camState.getBridge()).thenReturn(bridge);
 		when(bridge.isBgSet()).thenReturn(true);
 		when(app.getRootNode()).thenReturn(node);
-		when(spyCurveState.initializeSplineCurve()).thenReturn(spySplinaCurve);
+		when(spyCurveState.initializeSplineCurve()).thenReturn(spySplineCurve);
 		when(spyCurveState.makeRigidBodyControl()).thenReturn(control);
-		when(spySplinaCurve.getGeometry()).thenReturn(geom);
+		when(spySplineCurve.getGeometry()).thenReturn(geom);
 		when(bridge.getControlPoints()).thenReturn(getTestPoints());
 		doReturn(material).when(spyCurveState).initializeMaterial();
-		doNothing().when(spySplinaCurve).drawCurve(
+		doNothing().when(spySplineCurve).drawCurve(
 				material, physicsSpace, control, node);
 	}
 
@@ -104,19 +107,55 @@ public class CurveStateTest {
 	public void updateTest() {
 		spyCurveState.initialize(sManager, app);
 		spyCurveState.update(0.01f);
-		spyCurveState.setUpdateEnabled(true);
-		spyCurveState.toggleCameraEnabled();
 		verify(node).detachChildNamed("curve");
-		verify(spySplinaCurve).drawCurve(material, physicsSpace, control, node);
+		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
 		verify(spyCurveState, never()).makeRigidBodyControl();
 		spyCurveState.update(0.01f);
 		
-//		verify(spyCurveState).makeRigidBodyControl();
-//		verify(geom).removeControl(rb);
-//		verify(any(RigidBodyControl.class)).setEnabled(false);
 	}
+	
+	
+	@Test
+	public void updateCameraEnabledTest() {
+		spyCurveState.initialize(sManager, app);
+		assertFalse(spyCurveState.getCameraEnabled());
+		spyCurveState.toggleCameraEnabled();
+		assertTrue(spyCurveState.getCameraEnabled());
+		spyCurveState.update(0.01f);
+		verify(node).detachChildNamed("curve");
+		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(geom).removeControl(any(RigidBodyControl.class));
+
+		verify(geom, never()).removeControl(control);
+		verify(spyCurveState, never()).makeRigidBodyControl();
+		
+		/* TODO checking for getNoOfControlPOints , setMaxHeightdiff but they're private...
+		 *  make them public of check for their effects? */
+	}
+	
+	@Test
+	public void updateUpdateEnabledTest() {
+		spyCurveState.initialize(sManager, app);
+		spyCurveState.setUpdateEnabled(true);
+		spyCurveState.update(0.01f);
+		verify(node).detachChildNamed("curve");
+		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(geom).removeControl(any(RigidBodyControl.class));
+
+		verify(geom, never()).removeControl(control);
+		verify(spyCurveState, never()).makeRigidBodyControl();
+		spyCurveState.update(0.01f);
+		spyCurveState.update(0.1f);
+
+		Vector3f[] points = splineCurve.getCurvePoints();
+		for (Vector3f point : points) {
+			System.out.println(point);
+		}
+		/* TODO check scaleValues and the curvepoints, but they're NaN?? */
+	}
+
 	
 }
