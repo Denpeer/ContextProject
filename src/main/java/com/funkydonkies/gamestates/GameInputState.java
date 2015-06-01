@@ -72,11 +72,6 @@ public class GameInputState extends AbstractAppState {
 		if (curveState == null) {
 			curveState = stateManager.getState(CurveState.class);
 		}
-		if (timeCount > TIME_PER_BALL_SPAWN) {
-			timeCount = 0;
-			final Ball ball = new Ball(assetManager);
-			ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
-		}
 	}
 
 	/** Custom Keybinding: Map named actions to inputs. */
@@ -127,8 +122,9 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
 				timeCount += tpf;
 				if (timeCount > time) {
-					final Ball ball = new Ball(assetManager);
-					ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
+					stateManager.getState(SpawnState.class).spawnBall(
+							SpawnState.BALL_DEFAULT_SPAWN_LOCATION, 
+							SpawnState.BALL_DEFAULT_INITIAL_SPEED);
 					timeCount = 0;
 				}
 			}

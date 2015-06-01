@@ -36,6 +36,7 @@ public class PlayState extends AbstractAppState {
 	private GameInputState gameInputState;
 	private CurveState spController;
 	private CameraState cameraState;
+	private SpawnState spawnState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -63,7 +64,7 @@ public class PlayState extends AbstractAppState {
 		target.getControl().setCombo(combo);
 		
 		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+//		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 		app.getFlyByCamera().setEnabled(false);
 
@@ -75,6 +76,9 @@ public class PlayState extends AbstractAppState {
 		
 		spController = new CurveState();
 		stateManager.attach(spController);
+		
+		spawnState = new SpawnState();
+		stateManager.attach(spawnState);
 
 		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
