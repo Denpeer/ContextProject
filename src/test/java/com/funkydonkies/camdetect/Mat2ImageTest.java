@@ -117,7 +117,6 @@ public class Mat2ImageTest {
 					"TestRessources/testResult2.png"));
 			imageThreshed = ImageIO
 					.read(new File("TestRessources/threshed.png"));
-		} catch (final UnsatisfiedLinkError e) {
 		} catch (final IOException e) {
 		}
 	}
@@ -274,12 +273,12 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testGetSpace() {
-//		if (runTest) {
-//			final Mat2Image m2i = new Mat2Image();
-//			final Mat matty = m2i.getMat();
-//			im2Mat(imageFG).copyTo(matty);
-//			m2i.getSpace(im2Mat(imageFG));
-//		}
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageFG).copyTo(matty);
+			m2i.getSpace(im2Mat(imageFG));
+		}
 	}
 
 	/**
