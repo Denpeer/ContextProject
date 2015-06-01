@@ -103,4 +103,11 @@ public class VideoCap {
 	public void decXD() {
 		mat2Img.setxdist(mat2Img.getxdist() + 1);
 	}
+
+	/**
+	 * Releases memory allocated for camera.
+	 */
+	public void releaseCap() {
+		cap.release();
+	}
 }

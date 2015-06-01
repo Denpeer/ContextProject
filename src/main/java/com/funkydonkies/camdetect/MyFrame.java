@@ -27,29 +27,33 @@ public class MyFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private static final int SLEEP_TIME = 30;
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application by starting a new thread.
-	 * 
-	 * @param args
-	 *            -
-	 */
-	public static void main(final String[] args) {
-		new Thread(new MyFrame()).start();
-	}
+	private boolean runThread = true;
 
 	// the video capture object handles camera input
 	private VideoCap videoCap;
-
+	
 	/**
 	 * Runs the thread that paints the frames.
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
-		new MyThread().start();
+		while (runThread) {
+			repaint();
+			try {
+				Thread.sleep(SLEEP_TIME);
+			} catch (final InterruptedException e) {
+			}
+		}
 	}
 
+	@Override
+	public void dispose() {
+		super.dispose();
+		kill();
+		videoCap.releaseCap();
+	}
+	
 	/**
 	 * Accessor method to get this video capture object.
 	 * 
@@ -90,7 +94,7 @@ public class MyFrame extends JFrame implements Runnable {
 	public MyFrame() {
 		loadLib();
 		videoCap = new VideoCap();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		final int xbound = 100, ybound = 100, boundwidth = 650, boundheight = 490;
 		setBounds(xbound, ybound, boundwidth, boundheight);
 		contentPane = new JPanel();
@@ -163,25 +167,11 @@ public class MyFrame extends JFrame implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
-	 * Thread that updates the frame.
-	 * 
-	 * @author Olivier Dikken
-	 *
+	 * Shuts the running thread down.
 	 */
-	class MyThread extends Thread {
-
-		@Override
-		public void run() {
-			for (;;) {
-				repaint();
-				try {
-					Thread.sleep(SLEEP_TIME);
-				} catch (final InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
+	public void kill() {
+		runThread = false;
 	}
 }
