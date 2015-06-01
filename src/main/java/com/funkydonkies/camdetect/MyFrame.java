@@ -43,6 +43,7 @@ public class MyFrame extends JFrame implements Runnable {
 			try {
 				Thread.sleep(SLEEP_TIME);
 			} catch (final InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
