@@ -122,14 +122,14 @@ public class SplineCurve extends Spline {
 	 * @param points desired Vector3f[] containing the points the curve uses to create itself.
 	 */
 	public void setCurvePoints(final Vector3f[] points) {
-		curvePoints = points.clone();
+		curvePoints = points;
 	}
 	
 	/** Get current Vector3f array containing the points the curve uses to create itself.
 	 * @return Vector3f[] containing the points the curve uses to create itself.
 	 */
 	public Vector3f[] getCurvePoints() {
-		return curvePoints.clone();
+		return curvePoints;
 	}
 	
 }
