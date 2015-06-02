@@ -2,10 +2,10 @@ package com.funkydonkies.gamestates;
 
 import java.util.Arrays;
 
+import com.funkydonkies.core.App;
+import com.funkydonkies.curve.SplineCurve;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.Bridge;
-import com.funkydonkies.w4v3.curve.SplineCurve;
+import com.funkydonkies.interfaces.Bridge;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;

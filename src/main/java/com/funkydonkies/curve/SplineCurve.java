@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3.curve;
+package com.funkydonkies.curve;
 
 import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;

@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3;
+package com.funkydonkies.core;
 
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.SimpleApplication;

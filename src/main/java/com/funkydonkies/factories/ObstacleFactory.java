@@ -1,5 +1,7 @@
-package com.funkydonkies.obstacles;
+package com.funkydonkies.factories;
 
+import com.funkydonkies.geometrys.Target;
+import com.funkydonkies.geometrys.obstacles.KillerWhale;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
@@ -25,8 +27,8 @@ public class ObstacleFactory {
 	 * @param assetManager AssetManager for crating obstacles
 	 * @return a MovingBox object
 	 */
-	public final MovingBox makeMovingBox(final Node node, final AssetManager assetManager) {
-		return new MovingBox(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, OBSTACLE_DEPTH,
+	public final KillerWhale makeMovingBox(final Node node, final AssetManager assetManager) {
+		return new KillerWhale(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, OBSTACLE_DEPTH,
 				OBSTACLE_X, OBSTACLE_Y, OBSTACLE_Z, node);
 	}
 	

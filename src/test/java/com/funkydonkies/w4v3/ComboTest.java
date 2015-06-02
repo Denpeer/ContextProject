@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.gamestates.Combo;
 import com.jme3.font.BitmapText;
 import com.jme3.scene.Node;
 

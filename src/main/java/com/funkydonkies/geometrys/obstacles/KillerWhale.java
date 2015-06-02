@@ -1,5 +1,6 @@
-package com.funkydonkies.obstacles;
+package com.funkydonkies.geometrys.obstacles;
 
+import com.funkydonkies.geometrys.Obstacle;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
@@ -13,7 +14,7 @@ import com.jme3.scene.shape.Box;
  * @author SDumasy
  *
  */
-public class MovingBox extends Obstacle {
+public class KillerWhale extends Obstacle {
 	
 	private Geometry geom;
 	private Box box;
@@ -31,7 +32,7 @@ public class MovingBox extends Obstacle {
 	 * @param y the y coordinate of the box
 	 * @param z the z coordinate of the box
 	 */
-	public MovingBox(final float width, final float height, final float depth,
+	public KillerWhale(final float width, final float height, final float depth,
 			final float x, final float y, final float z, final Node node) {
 		super(width, height, depth, x, y, z, node);
 		box = new Box(width, height, depth);

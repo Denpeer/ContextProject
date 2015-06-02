@@ -1,4 +1,4 @@
-package com.funkydonkies.obstacles;
+package com.funkydonkies.geometrys;
 
 import com.funkydonkies.controllers.TargetControl;
 import com.funkydonkies.gamestates.CurveState;

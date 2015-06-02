@@ -1,4 +1,4 @@
-package com.funkydonkies.obstacles;
+package com.funkydonkies.geometrys;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;

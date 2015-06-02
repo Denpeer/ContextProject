@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3.curve;
+package com.funkydonkies.curve;
 
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;

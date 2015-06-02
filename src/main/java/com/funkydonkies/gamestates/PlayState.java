@@ -1,11 +1,10 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.obstacles.MovingBox;
-import com.funkydonkies.obstacles.ObstacleFactory;
-import com.funkydonkies.obstacles.Target;
-import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.Combo;
+import com.funkydonkies.factories.ObstacleFactory;
+import com.funkydonkies.geometrys.Target;
+import com.funkydonkies.geometrys.obstacles.KillerWhale;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -28,7 +27,7 @@ public class PlayState extends AbstractAppState {
 
 	private App app;
 	private Target target;
-	private MovingBox movBox;
+	private KillerWhale movBox;
 	private Combo combo;
 	private ObstacleFactory factory;
 

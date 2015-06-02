@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.controllers.TargetControl;
-import com.funkydonkies.obstacles.Target;
-import com.funkydonkies.w4v3.Combo;
+import com.funkydonkies.gamestates.Combo;
+import com.funkydonkies.geometrys.Target;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.CollisionShape;

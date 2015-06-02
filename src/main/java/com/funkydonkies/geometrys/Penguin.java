@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3;
+package com.funkydonkies.geometrys;
 
 import com.funkydonkies.controllers.PhysicsController;
 import com.jme3.asset.AssetManager;
@@ -16,7 +16,7 @@ import com.jme3.scene.shape.Sphere;
  * @author Jonathan
  *
  */
-public class Ball {
+public class Penguin {
 	private static final int SAMPLES = 20;
 	private Sphere sphere;
 	private Geometry geom;
@@ -30,7 +30,7 @@ public class Ball {
 	 * Constructor for Ball, initializes its attributes itself with default settings.
 	 * @param assetManager assetmanager to be used in the material creation
 	 */
-	public Ball(final AssetManager assetManager) {
+	public Penguin(final AssetManager assetManager) {
 		sphere = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
 		geom = new Geometry("ball", sphere);
 		mat = new Material(assetManager,
@@ -49,7 +49,7 @@ public class Ball {
 	 * @param material Material, the ball´s material
 	 * @param physics RigidBodyControl, the controller for the ball´s physics
 	 */
-	public Ball(final Sphere shape, final Geometry geometry, final Material material
+	public Penguin(final Sphere shape, final Geometry geometry, final Material material
 			, final RigidBodyControl physics) {
 		sphere = shape;
 		this.geom = geometry;
