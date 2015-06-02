@@ -21,7 +21,7 @@ public class CustomCurveMesh {
 	 * @param sPoints the spline points on the surface of the spline
 	 */
 	public CustomCurveMesh(final Vector3f[] sPoints) {
-		splinePoints = sPoints;
+		splinePoints = sPoints.clone();
 		final int mulLength = 5, offset = 2, triangleIndicesDegree = 15; // TODO rename
 		final int meshStructurePointsSize = splinePoints.length * mulLength - offset;
 		meshStructurePoints = new Vector3f[meshStructurePointsSize];
