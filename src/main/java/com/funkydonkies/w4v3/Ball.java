@@ -1,14 +1,9 @@
 package com.funkydonkies.w4v3;
 
 import com.funkydonkies.controllers.PhysicsController;
-import com.jme3.asset.AssetManager;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 
 /**
@@ -29,9 +24,13 @@ public class Ball extends Geometry {
 	 */
 	public Ball(final String name) {
 		super(name, sphere);
-		phy = new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
+		phy = initControl();
 		phy.setRestitution(1);
 		addControl(phy);
+	}
+	
+	public PhysicsController initControl() {
+		return new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
 	}
 	
 	/**
