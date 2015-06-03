@@ -5,7 +5,6 @@ import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -35,7 +34,6 @@ public class GameInputState extends AbstractAppState {
 	
 	private App app;
 	private InputManager inputManager;
-	private AssetManager assetManager;
 	private AppStateManager stateManager;
 	
 	private CurveState curveState;
@@ -52,7 +50,6 @@ public class GameInputState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.inputManager = this.app.getInputManager();
-		this.assetManager = this.app.getAssetManager();
 		this.stateManager = sManager;
 		
 		initKeys();

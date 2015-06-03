@@ -105,14 +105,14 @@ public class SplineCurve extends Spline {
 	}
 	
 	/**
-	 * This methods increments and decrements curvepoints
+	 * This methods increments and decrements curvepoints.
 	 */
 	public void incDecPoints() {
-		for (int i = 0; i < curvePoints.length; i = i + 3) {
+		for (int i = 0; i < curvePoints.length; i = i + 2) {
 			final Vector3f vec = curvePoints[i];
-			if(i % 2 == 0){
+			if (i % 2 == 0) {
 				curvePoints[i] = vec.setY(curvePoints[i].getY() - OFFSET * SCALE_POINTS);
-			}else{
+			} else {
 				curvePoints[i] = vec.setY(curvePoints[i].getY() + OFFSET * SCALE_POINTS);
 			}
 			

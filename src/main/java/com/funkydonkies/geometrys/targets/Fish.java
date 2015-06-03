@@ -9,13 +9,25 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 
-public class Fish extends Geometry{
+/**
+ * This class represents the fish target.
+ */
+public class Fish extends Geometry {
 	
-	public Fish(String name, Mesh mesh, Node rootNode, Material mat, PhysicsSpace phy, Vector3f dim){
+	/**
+	 * The constructor of the class.
+	 * @param name the name of the fish
+	 * @param mesh the mesh of the fish
+	 * @param mat the material of the fish
+	 * @param rootNode the rootNode of the fish
+	 * @param phy the physics space
+	 * @param dim the dimension of the fish target
+	 */
+	public Fish(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace phy, final Vector3f dim) {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);
-		TargetControl tarCont= new TargetControl(
+		final TargetControl tarCont = new TargetControl(
 				new BoxCollisionShape(dim));
 		
 		this.addControl(tarCont);

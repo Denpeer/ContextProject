@@ -14,25 +14,28 @@ import com.jme3.math.Vector3f;
  * Physics controller class extending from RigidBodyControl specified to 
  * restrict the balls from moving over the z-axis.
  */
-public class StandardPenguinController extends RigidBodyControl implements
+public class StandardPenguinControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	public static Vector3f initialSpawn;
-	public static Vector3f initialSpeed;
+	private static Vector3f initialSpawn;
+	private static Vector3f initialSpeed;
 	
 	/**
 	 * Constructor for ball physics controller.
 	 * @param sphereCollisionShape Collision shape used by the physics
 	 * @param f mass of the sphere
 	 */
-	public StandardPenguinController(final SphereCollisionShape sphereCollisionShape, 
+	public StandardPenguinControl(final SphereCollisionShape sphereCollisionShape, 
 			final float f) {
 		super(sphereCollisionShape, f);
 	}
-	
-	public void init(){
-		initialSpawn = new Vector3f(-20, CustomCurveMesh.getLaunchPadHeight() + 5, 0);
+	/**
+	 * The initialize method for the control.
+	 */
+	public void init() {
+		final int yOffSet = 5, xOffSet = -20;
+		initialSpawn = new Vector3f(-xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		initialSpeed = new Vector3f(DifficultyState.getBallSpeed(), 0, 0);
 		setLocation(initialSpawn);
 		setSpeed(initialSpeed);

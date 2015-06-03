@@ -11,6 +11,11 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
+/**
+ * This is the factory for obstacles.
+ * @author SDumasy
+ *
+ */
 public class ObstacleFactory {
 	
 	private AssetManager assetManager;
@@ -21,44 +26,63 @@ public class ObstacleFactory {
 	private Material polarBearMaterial;
 	private Material seaLionMaterial;
 	
-	public ObstacleFactory(AssetManager assetM, Node rootN, PhysicsSpace phy) {
+	/**
+	 * The constructor for the obstacleFactory.
+	 * @param assetM the AssetManager of the application
+	 * @param rootN the main rootNode
+	 * @param phy the main physicsLocation
+	 */
+	public ObstacleFactory(final AssetManager assetM, final Node rootN, final PhysicsSpace phy) {
 		this.rootNode = rootN;
 		this.assetManager = assetM;	
 		this.physicSpace = phy;
 		makeMaterials();
 	}
 	
-	public KillerWhale makeKillerWhale(){
-		Mesh mesh = new Box(10,10,10);
-		KillerWhale kWhale = new KillerWhale("fishie", mesh, rootNode, killerWhaleMaterial, physicSpace);
+	/**
+	 * The createMethod for the killerWhale.
+	 * @return a killerWhale Object
+	 */
+	public KillerWhale makeKillerWhale() {
+		final Mesh mesh = new Box(1, 1, 1);
+		final KillerWhale kWhale = new KillerWhale("fishie", mesh, rootNode, killerWhaleMaterial, physicSpace);
 		return kWhale;
 	}
 	
-	public PolarBear makePolarBear(){
-		Mesh mesh = new Box(10,10,10);
-		PolarBear pBear = new PolarBear("polarBear", mesh, rootNode, polarBearMaterial, physicSpace);
+	/**
+	 * The createMethod for the polar bear.
+	 * @return a killerWhale Object
+	 */
+	public PolarBear makePolarBear() {
+		final Mesh mesh = new Box(1, 1, 1);
+		final PolarBear pBear = new PolarBear("polarBear", mesh, rootNode, polarBearMaterial, physicSpace);
 		return pBear;
 	}
-	
-	public SeaLion makeSeaLion(){
-		Mesh mesh = new Box(10,10,10);
-		SeaLion sLion = new SeaLion("seaLion", mesh, rootNode, seaLionMaterial, physicSpace);
+	/**
+	 * The createMethod for the seaLion.
+	 * @return a killerWhale Object
+	 */
+	public SeaLion makeSeaLion() {
+		final Mesh mesh = new Box(1, 1, 1);
+		final SeaLion sLion = new SeaLion("seaLion", mesh, rootNode, seaLionMaterial, physicSpace);
 		return sLion;
 	}
 	
 	
-	
-	public void makeMaterials(){
+	/**
+	 * This method makes all the required materials.
+	 */
+	public void makeMaterials() {
+		final String color = "Color";
+		final String path = "Common/MatDefs/Misc/Unshaded.j3md";
 		killerWhaleMaterial = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		killerWhaleMaterial.setColor("Color", ColorRGBA.Blue);
+				path);
+		killerWhaleMaterial.setColor(color, ColorRGBA.Blue);
 		
-		polarBearMaterial = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		polarBearMaterial.setColor("Color", ColorRGBA.Orange);
+		polarBearMaterial = new Material(assetManager, path);
+		polarBearMaterial.setColor(color, ColorRGBA.Orange);
 		
-		seaLionMaterial = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		seaLionMaterial.setColor("Color", ColorRGBA.Cyan);
+		seaLionMaterial = new Material(assetManager, path);
+		seaLionMaterial.setColor(color, ColorRGBA.Cyan);
 	}
 }

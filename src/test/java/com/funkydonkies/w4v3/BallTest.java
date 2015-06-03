@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.StandardPenguinController;
+import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.geometrys.Penguin;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
@@ -30,7 +30,7 @@ public class BallTest {
 	
 	private Penguin ball;
 	private Material mat;
-	private StandardPenguinController phy;
+	private StandardPenguinControl phy;
 	private Geometry g;
 	private Vector3f speed;
 	private Vector3f loc;
@@ -44,7 +44,7 @@ public class BallTest {
 	 */
 	@Before
 	public final void setUp() {
-		phy = mock(StandardPenguinController.class);
+		phy = mock(StandardPenguinControl.class);
 		mat = mock(Material.class);
 //		ball = new Ball(0.5f, assetManager);
 		shape = SHAPE;

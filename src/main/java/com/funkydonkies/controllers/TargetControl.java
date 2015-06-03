@@ -20,13 +20,15 @@ public class TargetControl extends GhostControl implements PhysicsCollisionListe
 	/**
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
-	 * @param fish Target the target to control
 	 */
 	public TargetControl(final CollisionShape shape) {
 		super(shape);
 	}
 	
-	public void init(){
+	/**
+	 * An initialize method for the controller.
+	 */
+	public void init() {
 		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
 	}

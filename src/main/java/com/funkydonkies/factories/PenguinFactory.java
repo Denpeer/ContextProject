@@ -7,12 +7,16 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 
+/**
+ * This class represent the factory for penguins.
+ * @author SDumasy
+ *
+ */
 public class PenguinFactory {
 	private static final int SAMPLES = 20;
 	private static final float DEFAULT_RADIUS = 4f;
@@ -22,47 +26,66 @@ public class PenguinFactory {
 	private PhysicsSpace physicSpace;
 	
 	private Material fatPenguinMaterial;
-	private Material ShinyPenguinMaterial;
-	private Material StandardPenguinMaterial;
+	private Material shinyPenguinMaterial;
+	private Material standardPenguinMaterial;
 	
-	public PenguinFactory(AssetManager assetM, Node rootN, PhysicsSpace phy) {
+	/**
+	 * The constructor of the penguin factory.
+	 * @param assetM the main AssetManager
+	 * @param rootN the main rootNode
+	 * @param phy the main physic location
+	 */
+	public PenguinFactory(final AssetManager assetM, final Node rootN, final PhysicsSpace phy) {
 		this.rootNode = rootN;
 		this.assetManager = assetM;	
 		this.physicSpace = phy;
 		makeMaterials();
 	}
 	
-	public FatPenguin makeFatPenguin(){
-		Mesh mesh = new Box(10,10,10);
-		FatPenguin fatPeng = new FatPenguin("fatOne", mesh, rootNode, fatPenguinMaterial, physicSpace);
+	/**
+	 * The create method to make fat penguins.
+	 * @return a fatpenguin object
+	 */
+	public FatPenguin makeFatPenguin() {
+		final Mesh mesh = new Box(10, 10, 10);
+		final FatPenguin fatPeng = new FatPenguin("fatOne", mesh, rootNode, fatPenguinMaterial, physicSpace);
 		return fatPeng;
 	}
 	
-	public ShinyPenguin makeShinyPenguin(){
-		Mesh mesh = new Box(10,10,10);
-		ShinyPenguin shinyPeng = new ShinyPenguin("ShinyPenguinie", mesh, rootNode, ShinyPenguinMaterial, physicSpace);
+	/**
+	 * The create method to make shiny penguins.
+	 * @return a shinypenguin object
+	 */
+	public ShinyPenguin makeShinyPenguin() {
+		final Mesh mesh = new Box(10, 10, 10);
+		final ShinyPenguin shinyPeng = new ShinyPenguin("ShinyPenguinie", mesh, rootNode, shinyPenguinMaterial, physicSpace);
 		return shinyPeng;
 	}
 	
-	public StandardPenguin makeStandardPenguin(){
-		Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		StandardPenguin StandardPenguin = new StandardPenguin("standardPenguin", mesh, rootNode, StandardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
-		return StandardPenguin;
+	/**
+	 * The create method to make standard penguins.
+	 * @return a standard penguin object
+	 */
+	public StandardPenguin makeStandardPenguin() {
+		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
+		final StandardPenguin standardPenguin = new StandardPenguin("standardPenguin", mesh, rootNode, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
+		return standardPenguin;
 	}
 	
 	
-	
-	public void makeMaterials(){
-		fatPenguinMaterial = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		fatPenguinMaterial.setColor("Color", ColorRGBA.Blue);
+	/**
+	 * This method makes all the required materials.
+	 */
+	public void makeMaterials() {
+		final String path = "Common/MatDefs/Misc/Unshaded.j3md";
+		final String color = "Color";
+		fatPenguinMaterial = new Material(assetManager, path);
+		fatPenguinMaterial.setColor(color, ColorRGBA.Blue);
 		
-		ShinyPenguinMaterial = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		ShinyPenguinMaterial.setColor("Color", ColorRGBA.Orange);
+		shinyPenguinMaterial = new Material(assetManager, path);
+		shinyPenguinMaterial.setColor(color, ColorRGBA.Orange);
 		
-		StandardPenguinMaterial = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		StandardPenguinMaterial.setColor("Color", ColorRGBA.Cyan);
+		standardPenguinMaterial = new Material(assetManager, path);
+		standardPenguinMaterial.setColor(color, ColorRGBA.Cyan);
 	}
 }

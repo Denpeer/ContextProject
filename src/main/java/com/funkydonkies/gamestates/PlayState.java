@@ -15,8 +15,6 @@ import com.jme3.math.Vector3f;
  */
 public class PlayState extends AbstractAppState {
 	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
-	private static final String COLOR = "Color";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final Vector3f CAM_LOCATION = new Vector3f(160, 70, 190);
 
 	private App app;
@@ -60,7 +58,7 @@ public class PlayState extends AbstractAppState {
 	/**
 	 * This method initializes the states.
 	 */
-	public void initStates(){
+	public void initStates() {
 		cameraState = new CameraState();
 		stateManage.attach(cameraState);
 		
@@ -82,9 +80,9 @@ public class PlayState extends AbstractAppState {
 	}
 	
 	/**
-	 * This method handles bulletAppState
+	 * This method handles bulletAppState.
 	 */
-	public void handleBulletAppState(){
+	public void handleBulletAppState() {
 		bulletAppState = new BulletAppState();
 		stateManage.attach(bulletAppState);
 		bulletAppState.setDebugEnabled(false);

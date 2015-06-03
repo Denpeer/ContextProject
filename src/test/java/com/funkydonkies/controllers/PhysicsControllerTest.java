@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.StandardPenguinController;
+import com.funkydonkies.controllers.StandardPenguinControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -37,7 +37,7 @@ public class PhysicsControllerTest {
 	//Normal speed, this is the speed after the x value was modified by prePhysicsTick
 	private static final Vector3f SPEED_NORMAL = new Vector3f(2f, 1f, 1f); 
 
-	private static StandardPenguinController contr;
+	private static StandardPenguinControl contr;
 	private static PhysicsCollisionEvent eventMock;
 	private static Spatial ballSpatialMock;
 	private static Spatial curveSpatialMock;
@@ -48,7 +48,7 @@ public class PhysicsControllerTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		contr = new StandardPenguinController(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
+		contr = new StandardPenguinControl(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
 		eventMock = mock(PhysicsCollisionEvent.class);
 		ballSpatialMock = mock(Spatial.class);
 		curveSpatialMock = mock(Spatial.class);

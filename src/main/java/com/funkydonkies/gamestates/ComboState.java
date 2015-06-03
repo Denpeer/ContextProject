@@ -14,20 +14,18 @@ import com.jme3.scene.Node;
  * Handles the combo in game.
  * (displaying, increasing, resetting etc)
  */
-public class ComboState extends AbstractAppState{
+public class ComboState extends AbstractAppState {
 	private static final Vector3f COUNTER_LOCATION = new Vector3f(300, 0, 0);
 	private static final int TEXT_SIZE = 30;
 	private static int currentCombo;
 	private static BitmapText comboText;
 	private Node guiNode;
 	
-	private AppStateManager stateManager;
 	private App app;
 	
 	@Override
 	public final void initialize(final AppStateManager sManager, final Application appl) {
 		super.initialize(sManager, appl);
-		stateManager = sManager;
 		if (appl instanceof App) {
 			this.app = (App) appl;
 		} else {
@@ -42,7 +40,7 @@ public class ComboState extends AbstractAppState{
 	/**
 	 * This method handles the text to display the combo.
 	 */
-	public void handleText(){
+	public void handleText() {
 		comboText = new BitmapText(
 				app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"), false);
 		comboText.setSize(TEXT_SIZE);
@@ -53,9 +51,9 @@ public class ComboState extends AbstractAppState{
 	
 	/**
 	 * The update method of the comboState.
-	 * @param tpf
+	 * @param tpf the time per frame
 	 */
-	public void update(float tpf){
+	public void update(final float tpf) {
 		updateText();
 	}
 	
