@@ -1,6 +1,6 @@
 package com.funkydonkies.obstacles;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -10,28 +10,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.controllers.TargetControl;
-import com.funkydonkies.obstacles.ObstacleFactory;
-import com.funkydonkies.obstacles.Target;
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 /**
  * This class takes care of testing the target class.
+ * 
  * @author SDumasy
  *
  */
 public class TargetTest {
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(13f, 3f, 1f);
-
 	private static ObstacleFactory obF;
 	private static Target tar;
 	private static Material mat;
 	private static Node rootNode;
 	private static PhysicsSpace psySpace;
-	
 	/**
 	 * Setup the test class, mock and instantiate objects.
 	 */
@@ -42,19 +38,19 @@ public class TargetTest {
 		tar = obF.makeTarget(rootNode);
 		mat = mock(Material.class);
 
-		psySpace = mock(PhysicsSpace.class); 
+		psySpace = mock(PhysicsSpace.class);
 	}
+
 	/**
 	 * Tests if the box is succesfully attached to the rootnode.
 	 */
 	@Test
-	public final void drawTest() {		
+	public final void drawTest() {
 		tar.draw(mat, psySpace);
 		verify(rootNode).attachChild(any(Spatial.class));
-//		verify(any(Spatial.class)).setMaterial(mat);
 		verify(psySpace).add(any(TargetControl.class));
 	}
-	
+
 	/**
 	 * verifies the correct destroying of the target.
 	 */
@@ -63,47 +59,57 @@ public class TargetTest {
 		tar.destroy();
 		verify(rootNode).detachChild(any(Spatial.class));
 	}
-	
+
 	/**
 	 * Tests the getlocation method.
 	 */
 	@Test
 	public final void testGetLocation() {
 		tar.draw(mat, psySpace);
-		assertEquals(INITIAL_SPAWN_LOCATION, tar.getLocation());
+		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
+		assertTrue(tar.getLocation().x >= 0);
+
+		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);
+		assertTrue(tar.getLocation().y >= 0);
+
+		assertTrue(tar.getLocation().z == 1.5f);
 	}
-	
+
 	/**
 	 * Tests the respawn method.
 	 */
-	@Test 
+	@Test
 	public final void testRespawn() {
 		tar.draw(mat, psySpace);
-		final Vector3f startLoc = tar.getLocation();
-		System.out.println(startLoc);
 		tar.respawn();
-		Vector3f newLoc = tar.getLocation();
-		System.out.println(newLoc);
-		System.out.println(startLoc);
-//		assertNotEquals(tar.getLocation(), startLoc);
+		assertTrue(tar.getLocation().x <= CurveState.POINT_DISTANCE
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
+		assertTrue(tar.getLocation().x >= 0);
+
+		assertTrue(tar.getLocation().y <= CurveState.POINTS_HEIGHT + 20);
+		assertTrue(tar.getLocation().y >= 0);
+
+		assertTrue(tar.getLocation().z == 1.5f);
 	}
-	
+
 	/**
 	 * Test the getters of obstacle.
 	 */
 	@Test
 	public final void getterTest() {
+		final float testWidth = ObstacleFactory.TARGET_WIDTH;
+		final float testHeight = ObstacleFactory.TARGET_HEIGHT;
+		final float testDepth = ObstacleFactory.TARGET_DEPTH;
 		final float testX = 30;
 		final float testY = 0.5f;
 		final float testZ = 1;
-		final float testWidth = 1;
-		final float testHeight = 1;
-		final float testDepth = 1;
 		assertTrue(tar.getxCoord() == testX);
 		assertTrue(tar.getyCoord() == testY);
 		assertTrue(tar.getzCoord() == testZ);
 		assertTrue(tar.getWidth() == testWidth);
 		assertTrue(tar.getHeight() == testHeight);
 		assertTrue(tar.getDepth() == testDepth);
+		assertNotNull(tar.getControl());
 	}
 }

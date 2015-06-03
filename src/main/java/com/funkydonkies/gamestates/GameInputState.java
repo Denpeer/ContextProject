@@ -1,7 +1,5 @@
 package com.funkydonkies.gamestates;
 
-import powerups.SuperSizePowerup;
-
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Ball;
@@ -22,12 +20,14 @@ import com.jme3.input.controls.KeyTrigger;
  *
  */
 public class GameInputState extends AbstractAppState {
-//	private static final String MAPPING_NAME_LEFT = "Left";
-//	private static final String MAPPING_NAME_RIGHT = "Right";
-//	private static final String MAPPING_NAME_ROTATE = "Rotate";
-	private static final String MAPPING_NAME_SPAWN_BALL = "Spawn Ball";
-	private static final String ENABLE_POWERUP_SIZE = "supersize";
-	private static final float TIME_PER_BALL_SPAWN = 0.5f; // x sec per ball
+	private static final String MAPPING_SPAWN_BALL = "Spawn Ball";
+	private static final String MAPPING_TOGGLE_CAMERA = "Toggle Camera";
+	private static final String MAPPING_TOGGLE_CURVE_UPDATE = "Toggle Curve Update";
+	private static final String MAPPING_ENABLE_CAMERA_DETECTION = "Start Camera";
+	private static final String DISABLE_POWERUP_SIZE = "supersize";
+	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
+	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
+	private static final float TIME_PER_BALL_SPAWN = 1f;
 	
 	private float time = TIME_PER_BALL_SPAWN;
 	private float timeCount = 0;
@@ -37,9 +37,10 @@ public class GameInputState extends AbstractAppState {
 	private App app;
 	private InputManager inputManager;
 	private AssetManager assetManager;
-	private BallState ballState;
+	private PlayState playState;
 	private AppStateManager stateManager;
-	private SuperSizePowerup sizePowerup;
+	private CameraState cameraState;
+	private CurveState curveState;
 	
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -53,110 +54,101 @@ public class GameInputState extends AbstractAppState {
 		}
 		this.inputManager = this.app.getInputManager();
 		this.assetManager = this.app.getAssetManager();
-		stateManager = sManager;
-		ballState = sManager.getState(BallState.class);
+		this.stateManager = sManager;
+		playState = sManager.getState(PlayState.class);
 		initKeys();
-		sizePowerup = sManager.getState(SuperSizePowerup.class);
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
+		cameraState = stateManager.getState(CameraState.class);
 		
-		// this.app.getRootNode();
-		// this.app.getStateManager();
-		// this.app.getViewPort();
-		// this.stateManager.getState(BulletAppState.class);
-
 		// init stuff that is independent of whether state is PAUSED or RUNNING
 		// this.app.doSomething(); // call custom methods...
 	}
 
-	@Override
-	public final void cleanup() {
-		// super.cleanup();
-		// unregister all my listeners, detach all my nodes, etc...
-		// this.app.doSomethingElse(); // call custom methods...
-	}
-
-	@Override
-	public final void setEnabled(final boolean enabled) {
-		// Pause and unpause
-		super.setEnabled(enabled);
-		
-//		if (enabled) {
-//			// init stuff that is in use while this state is RUNNING
-//			// this.app.doSomethingElse(); // call custom methods...
-//		} 
-//			else {
-//			// take away everything not needed while this state is PAUSED
-//			// ...
-//		}
-	}
 
 	// Note that update is only called while the state is both attached and enabled
 	@Override
 	public final void update(final float tpf) {
-		// do the following while game is RUNNING
-		// this.app.getRootNode().getChild("blah").scale(tpf); // modify scene
-		// graph...
-		// x.setUserData(...); // call some methods...
-		if (ballState == null) {
-			ballState = stateManager.getState(BallState.class);
+		timeCount += tpf;
+		if (curveState == null) {
+			curveState = stateManager.getState(CurveState.class);
+		}
+		if (timeCount > TIME_PER_BALL_SPAWN) {
+			timeCount = 0;
+			final Ball ball = new Ball(assetManager);
+			ball.spawn(playState.getBallNode(), PlayState.getPhysicsSpace(), true);
+//			app.getRootNode().attachChild(playState.getBallNode());
 		}
 	}
 
 	/** Custom Keybinding: Map named actions to inputs. */
 	public void initKeys() {
-//		inputManager.addMapping(MAPPING_NAME_LEFT, new KeyTrigger(KeyInput.KEY_J));
-//		inputManager.addMapping(MAPPING_NAME_RIGHT, new KeyTrigger(KeyInput.KEY_K));
 //		inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
+		inputManager.addMapping(MAPPING_TOGGLE_CAMERA, new KeyTrigger(KeyInput.KEY_C));
+		inputManager.addMapping(MAPPING_TOGGLE_CURVE_UPDATE, new KeyTrigger(KeyInput.KEY_U));
 		
-		//Control for spawing balls
-		inputManager.addMapping(MAPPING_NAME_SPAWN_BALL, 
-				new KeyTrigger(KeyInput.KEY_SPACE));
-		inputManager.addMapping(ENABLE_POWERUP_SIZE, 
+		//Control for spawning balls
+		inputManager.addMapping(MAPPING_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
+		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_S));
+		inputManager.addMapping(DISABLE_POWERUP_SIZE, 
 				new KeyTrigger(KeyInput.KEY_P));
-		
+		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
+
+		inputManager.addListener(analogListener, INCREMENT_HEIGHT_MAPPING);
+		inputManager.addListener(analogListener, DECREMENT_HEIGHT_MAPPING);
 		// Add the names to the action listener
-//		inputManager.addListener(actionListener, MAPPING_NAME_SPAWN_BALL);
+		inputManager.addListener(actionListener, MAPPING_TOGGLE_CAMERA, 
+				MAPPING_TOGGLE_CURVE_UPDATE, MAPPING_ENABLE_CAMERA_DETECTION);
 //		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
 //				MAPPING_NAME_ROTATE);
-		inputManager.addListener(analogListener, MAPPING_NAME_SPAWN_BALL);
-		inputManager.addListener(actionListener, ENABLE_POWERUP_SIZE);
+		inputManager.addListener(analogListener, MAPPING_SPAWN_BALL);
+		inputManager.addListener(actionListener, DISABLE_POWERUP_SIZE);
 
 	}
 
 	private ActionListener actionListener = new ActionListener() {
 		public void onAction(final String name, final boolean keyPressed, final float tpf) {
-			if (name.equals(ENABLE_POWERUP_SIZE) && !keyPressed) {
-				sizePowerup.toggleEnabled();
+			if (name.equals(MAPPING_TOGGLE_CAMERA) && !keyPressed) {
+				if (cameraState.cameraOpened()) { // C KEY
+					curveState.toggleCameraEnabled();
+					curveState.setUpdateEnabled(curveState.getCameraEnabled());
+				} else {
+					System.err.println("Open the Camera first! (S key)");
+				}
 			}
-	
+			if (name.equals(MAPPING_TOGGLE_CURVE_UPDATE) && !keyPressed) {
+				curveState.toggleUpdateEnabled(); // U KEY
+			}
+			if (name.equals(MAPPING_ENABLE_CAMERA_DETECTION) && !keyPressed) {
+				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
+			}
+			if (name.equals(DISABLE_POWERUP_SIZE) && !keyPressed) {
+				stateManager.getState(PowerupState.class).disableSuperSize();
+			}
 		}
 	};
 	
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
-//			if (name.equals(MAPPING_NAME_ROTATE)) {
-//				player.rotate(0, value * speed, 0);
-//			}
-//			if (name.equals(MAPPING_NAME_RIGHT)) {
-////				Vector3f v = player.getLocalTranslation();
-////				player.setLocalTranslation(v.x + value * speed, v.y, v.z);
-//			}
-//			if (name.equals(MAPPING_NAME_LEFT)) {
-////				Vector3f v = player.getLocalTranslation();
-////				player.setLocalTranslation(v.x - value * speed, v.y, v.z);
-//			}
-			if (name.equals(MAPPING_NAME_SPAWN_BALL)) {
+			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
 				timeCount += tpf;
 				if (timeCount > time) {
-					ballState.spawnBall();
+					final Ball ball = new Ball(assetManager);
+					ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
 					timeCount = 0;
 				}
 			}
-		
+			if (name.equals(INCREMENT_HEIGHT_MAPPING)) { // R KEY
+				curveState.getSplineCurve().incrementPoints();
+			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) { // F KEY
+				curveState.getSplineCurve().decrementPoints();
+			}
 		}
 	};
 	
-	
-	
-	
+	/** Returns ActionListener that implements actions mapped to keypresses.
+	 * @return ActionListener that implements actions mapped to keypresses
+	 */
+	public ActionListener getActionListener() {
+		return actionListener;
+	}
 }

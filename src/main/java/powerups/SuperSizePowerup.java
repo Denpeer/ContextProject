@@ -4,11 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.funkydonkies.controllers.BallController;
-import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.w4v3.App;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.scene.Node;
@@ -17,12 +15,9 @@ import com.jme3.scene.Spatial;
 /**
  * Defines the behavior for sizing up the balls. 
  */
-public class SuperSizePowerup extends AbstractAppState {
+public class SuperSizePowerup extends AbstractPowerup {
 	private static final float STANDARD_SCALEUP = 2f;
-	private static final float TIME_TO_SCALE = 1f;
-	private float counter;
-	
-	private App app;
+	private AppStateManager stateManager;
 	
 	/**
 	 * Initializes enables to false.
@@ -33,13 +28,7 @@ public class SuperSizePowerup extends AbstractAppState {
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
 		super.initialize(sManager, appl);
-		
-		if (appl instanceof App) {
-			this.app = (App) appl;
-		} else {
-			throw new BadDynamicTypeException();
-		}
-		setEnabled(false);
+		stateManager = sManager;
 	}
 	
 	/** 
@@ -60,30 +49,34 @@ public class SuperSizePowerup extends AbstractAppState {
 	 * Method for scaling up all balls in the scene.
 	 */
 	public void scaleUpAll() {
-		final Spatial ballNode = app.getBallNode();
+		final Spatial ballNode = stateManager.getState(PlayState.class).getBallNode();
 		List<Spatial> balls;
 		balls = ((Node) ballNode).getChildren();
 		final Iterator<Spatial> ballIterator = balls.iterator();
 		// Scale up all existing balls
-		final Spatial ball = ballIterator.next().scale(STANDARD_SCALEUP);
-		final float radius = ((SphereCollisionShape) 
-				ball.getControl(BallController.class).getCollisionShape()).getRadius();
-		ball.getControl(BallController.class).setCollisionShape(
-				new SphereCollisionShape(radius * STANDARD_SCALEUP));//
+		while (ballIterator.hasNext()) {
+			final Spatial ball = ballIterator.next().scale(STANDARD_SCALEUP);
+			final float radius = ((SphereCollisionShape) 
+					ball.getControl(BallController.class).getCollisionShape()).getRadius();
+			ball.getControl(BallController.class).setCollisionShape(
+					new SphereCollisionShape(radius * STANDARD_SCALEUP));
+		}
 	} 
 	
 	/**
 	 * Method for scaling down all the balls in the scene.
 	 */
 	public void scaleDownAll() {
-		final Spatial ballNode = app.getBallNode();
+		final Spatial ballNode = stateManager.getState(PlayState.class).getBallNode();
 		List<Spatial> balls;
 		balls = ((Node) ballNode).getChildren();
 		final Iterator<Spatial> ballIterator = balls.iterator();
-		final Spatial ball = ballIterator.next();
-		ball.scale(1 / ball.getWorldScale().x);
-		ball.getControl(BallController.class).setCollisionShape(
-				new SphereCollisionShape(Ball.DEFAULT_RADIUS));
+		while (ballIterator.hasNext()) {
+			final Spatial ball = ballIterator.next();
+			ball.scale(1 / ball.getWorldScale().x);
+			ball.getControl(BallController.class).setCollisionShape(
+					new SphereCollisionShape(Ball.DEFAULT_RADIUS));
+		}
 	}
 	
 	
@@ -101,6 +94,5 @@ public class SuperSizePowerup extends AbstractAppState {
 	@Override
 	public void update(final float tpf) {
 		super.update(tpf);
-
 	}
 }

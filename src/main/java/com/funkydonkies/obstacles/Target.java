@@ -1,6 +1,7 @@
 package com.funkydonkies.obstacles;
 
 import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
@@ -10,12 +11,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
 /**
- * The target class.
- * @author SDumasy
- *
+ * Represents the Target, is responsible for drawing and respawning the target.
  */
 public class Target extends Obstacle {
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(13f, 3f, 1f);
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 10f, 1f);
+	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	private Geometry geom;
 	private final Box box;
 	private TargetControl control;
@@ -55,6 +55,7 @@ public class Target extends Obstacle {
 		geom.addControl(control);
 		phySpace.add(control);
 		super.getNode().attachChild(geom);
+		respawn();
 	}
 	
 	/**
@@ -63,7 +64,7 @@ public class Target extends Obstacle {
 	 */
 	public void destroy() {
 //		control.delete();
-//		geom.removeControl(control);
+		geom.removeControl(control);
 		super.getNode().detachChild(geom);
 	}
 	
@@ -72,9 +73,11 @@ public class Target extends Obstacle {
 	 * TODO make the spawn location random and make sure its reachable
 	 */
 	public void respawn() {
-//		float x = (float) Math.random() * 50;
-//		float y = (float) Math.random() * 50;
-		final Vector3f respawnlocation = new Vector3f(40f, -2f, 1.5f);
+		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
+		
+		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
+		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		control.setPhysicsLocation(respawnlocation);
 		geom.setLocalTranslation(respawnlocation);
 	}
