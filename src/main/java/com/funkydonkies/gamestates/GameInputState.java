@@ -62,7 +62,7 @@ public class GameInputState extends AbstractAppState {
 		this.assetManager = this.app.getAssetManager();
 		this.stateManager = sManager;
 		this.soundState = stateManager.getState(SoundState.class);
-		this.penguinSpawnSound = new PenguinSpawnSound(soundState.getSoundPlayer());
+		this.penguinSpawnSound = new PenguinSpawnSound();
 		
 		initKeys();
 		cameraState = stateManager.getState(CameraState.class);

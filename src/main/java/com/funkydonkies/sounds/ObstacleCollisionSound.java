@@ -1,16 +1,16 @@
 package com.funkydonkies.sounds;
 
 /**
- * sound to be triggered at penguin spawn.
+ * sound to be triggered at obstacle collision.
  * 
  * @author Olivier Dikken
  *
  */
-public class PenguinSpawnSound implements Sound {
+public class ObstacleCollisionSound implements Sound {
 
 	@Override
 	public void play(final SoundPlayer sP) {
-		sP.penguinSpawnSound();
+		sP.obstacleCollisionSound();
 	}
 
 }

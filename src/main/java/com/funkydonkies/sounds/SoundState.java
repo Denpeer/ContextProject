@@ -54,12 +54,4 @@ public class SoundState extends AbstractAppState {
 		}
 		soundList.clear();
 	}
-	
-	/**
-	 * accessor method to get the SoundPlayer. Used when creating Sound objects.
-	 * @return this.soundPlayer
-	 */
-	public SoundPlayer getSoundPlayer() {
-		return this.soundPlayer;
-	}
 }
