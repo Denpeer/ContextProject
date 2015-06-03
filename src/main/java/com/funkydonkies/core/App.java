@@ -1,8 +1,10 @@
 package com.funkydonkies.core;
 
 import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.geometrys.obstacles.Shark;
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
+import com.jme3.scene.shape.Box;
 /**
  * Game is run through this class.
  *
@@ -23,6 +25,7 @@ public class App extends SimpleApplication {
 	public void simpleInitApp() {
 		playState = new PlayState();
 		stateManager.attach(playState);
+		
 	}
 
 	@Override

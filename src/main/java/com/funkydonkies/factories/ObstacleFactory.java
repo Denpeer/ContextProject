@@ -1,47 +1,64 @@
 package com.funkydonkies.factories;
 
-import com.funkydonkies.geometrys.Target;
 import com.funkydonkies.geometrys.obstacles.KillerWhale;
+import com.funkydonkies.geometrys.obstacles.PolarBear;
+import com.funkydonkies.geometrys.obstacles.SeaLion;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Box;
 
-/**
- * ObstacleFactory is the class for obstacles.
- * @author SDumasy
- *
- */
 public class ObstacleFactory {
-	public static final float OBSTACLE_WIDTH = 20;
-	public static final float OBSTACLE_HEIGHT = 40;
-	public static final float OBSTACLE_DEPTH = 10;
-	public static final float OBSTACLE_X = 150;
-	public static final float OBSTACLE_Y = 100;
-	public static final float OBSTACLE_Z = 0.5f;
-	public static final float TARGET_WIDTH = 5;
-	public static final float TARGET_HEIGHT = 5;
-	public static final float TARGET_DEPTH = 5;
 	
-	/**
-	 * This method creates a moving box obstacle with the specified parameters.
-	 * @param node Node to attach the spatial and add it to the scene
-	 * @param assetManager AssetManager for crating obstacles
-	 * @return a MovingBox object
-	 */
-	public final KillerWhale makeMovingBox(final Node node, final AssetManager assetManager) {
-		return new KillerWhale(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, OBSTACLE_DEPTH,
-				OBSTACLE_X, OBSTACLE_Y, OBSTACLE_Z, node);
+	private AssetManager assetManager;
+	private Node rootNode;
+	private PhysicsSpace physicSpace;
+	
+	private Material killerWhaleMaterial;
+	private Material polarBearMaterial;
+	private Material seaLionMaterial;
+	
+	public ObstacleFactory(AssetManager assetM, Node rootN, PhysicsSpace phy) {
+		this.rootNode = rootN;
+		this.assetManager = assetM;	
+		this.physicSpace = phy;
+		makeMaterials();
 	}
 	
-	/**
-	 * This method creates a target with the specified parameters.
-	 * @param node Node the node that the target will be attached to
-	 * @return a target object
-	 */
-	public final Target makeTarget(final Node node) {
-		final float targetX = 30;
-		final float targetY = 0.5f;
-		final float targetZ = 1;
-		return new Target(TARGET_WIDTH, TARGET_HEIGHT, TARGET_DEPTH,
-				targetX, targetY, targetZ, node);
+	public KillerWhale makeKillerWhale(){
+		Mesh mesh = new Box(10,10,10);
+		KillerWhale kWhale = new KillerWhale("fishie", mesh, rootNode, killerWhaleMaterial, physicSpace);
+		return kWhale;
+	}
+	
+	public PolarBear makePolarBear(){
+		Mesh mesh = new Box(10,10,10);
+		PolarBear pBear = new PolarBear("polarBear", mesh, rootNode, polarBearMaterial, physicSpace);
+		return pBear;
+	}
+	
+	public SeaLion makeSeaLion(){
+		Mesh mesh = new Box(10,10,10);
+		SeaLion sLion = new SeaLion("seaLion", mesh, rootNode, seaLionMaterial, physicSpace);
+		return sLion;
+	}
+	
+	
+	
+	public void makeMaterials(){
+		killerWhaleMaterial = new Material(assetManager,
+				"Common/MatDefs/Misc/Unshaded.j3md");
+		killerWhaleMaterial.setColor("Color", ColorRGBA.Blue);
+		
+		polarBearMaterial = new Material(assetManager,
+				"Common/MatDefs/Misc/Unshaded.j3md");
+		polarBearMaterial.setColor("Color", ColorRGBA.Orange);
+		
+		seaLionMaterial = new Material(assetManager,
+				"Common/MatDefs/Misc/Unshaded.j3md");
+		seaLionMaterial.setColor("Color", ColorRGBA.Cyan);
 	}
 }

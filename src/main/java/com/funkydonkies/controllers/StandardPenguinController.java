@@ -12,19 +12,26 @@ import com.jme3.math.Vector3f;
  * Physics controller class extending from RigidBodyControl specified to 
  * restrict the balls from moving over the z-axis.
  */
-public class PhysicsController extends RigidBodyControl implements
+public class StandardPenguinController extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
+	public static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(125f, 130f, 0f);
+	public static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(10, -22, 0);
 	
 	/**
 	 * Constructor for ball physics controller.
 	 * @param sphereCollisionShape Collision shape used by the physics
 	 * @param f mass of the sphere
 	 */
-	public PhysicsController(final SphereCollisionShape sphereCollisionShape, 
+	public StandardPenguinController(final SphereCollisionShape sphereCollisionShape, 
 			final float f) {
 		super(sphereCollisionShape, f);
+	}
+	
+	public void init(){
+		setLocation(DEFAULT_SPAWN_LOCATION);
+		setSpeed(DEFAULT_INITIAL_SPEED);
 	}
 	
 	/**
@@ -71,6 +78,7 @@ public class PhysicsController extends RigidBodyControl implements
 			angularvel.x = 0;
 			setAngularVelocity(angularvel);
 		}
+		
 	}
 	
 	/**
@@ -87,6 +95,22 @@ public class PhysicsController extends RigidBodyControl implements
 				setLinearVelocity(velocity);
 			}
 		}
+	}
+	
+	/**
+	 * Sets the speed for the Ball by calling setLinVelocity on the physics.
+	 * @param vel Vector3f, speed to set on the ball
+	 */
+	public void setSpeed(final Vector3f vel) {
+		setLinearVelocity(vel);
+	}
+	
+	/**
+	 * Sets the ball´s location by calling setPhysicsLocation on its physics.
+	 * @param loc Vector3f the new location
+	 */
+	public void setLocation(final Vector3f loc) {
+		setPhysicsLocation(loc);
 	}
 
 }

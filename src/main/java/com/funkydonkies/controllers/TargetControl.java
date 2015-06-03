@@ -1,29 +1,34 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.gamestates.Combo;
-import com.funkydonkies.geometrys.Target;
+import com.funkydonkies.gamestates.ComboState;
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.GhostControl;
+import com.jme3.math.Vector3f;
 /**
  * Control class for the target. Takes care of collisions between the ball and target.
  */
 public class TargetControl extends GhostControl implements PhysicsCollisionListener {
-	private static final String BALL_NAME = "ball";
-	private static final String TARGET_NAME = "target";
-	private Target target;
-	private Combo combo;
+	private static final String BALL_NAME = "standardPenguin";
+	private static final String TARGET_NAME = "fish";
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
+	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 
 	/**
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
-	 * @param t Target the target to control
+	 * @param fish Target the target to control
 	 */
-	public TargetControl(final CollisionShape shape, final Target t) {
+	public TargetControl(final CollisionShape shape) {
 		super(shape);
-		target = t;
+	}
+	
+	public void init(){
+		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
+		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
 	}
 	
 	/**
@@ -53,19 +58,23 @@ public class TargetControl extends GhostControl implements PhysicsCollisionListe
 				&& BALL_NAME.equals(event.getNodeB().getName())
 				|| BALL_NAME.equals(event.getNodeA().getName()) 
 						&& TARGET_NAME.equals(event.getNodeB().getName())) {
-			if (combo != null) {
-				combo.incCombo();
-			}
-			target.respawn();
+			ComboState.incCombo();
+			respawn();
 		}
 	}
 	
 	/**
-	 * Sets the combo for the controller so that it can update the combo counter.
-	 * @param c Combo 
+	 * Respawn the target at a reachable location.
+	 * TODO make the spawn location random and make sure its reachable
 	 */
-	public void setCombo(final Combo c) {
-		combo = c;
+	public void respawn() {
+		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
+		
+		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
+		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
+		setPhysicsLocation(respawnlocation);
+		spatial.setLocalTranslation(respawnlocation);
 	}
 
 }

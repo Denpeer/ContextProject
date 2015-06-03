@@ -2,7 +2,6 @@ package com.funkydonkies.gamestates;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.geometrys.Penguin;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -68,15 +67,11 @@ public class GameInputState extends AbstractAppState {
 	// Note that update is only called while the state is both attached and enabled
 	@Override
 	public final void update(final float tpf) {
-		timeCount += tpf;
+		
 		if (curveState == null) {
 			curveState = stateManager.getState(CurveState.class);
 		}
-		if (timeCount > TIME_PER_BALL_SPAWN) {
-			timeCount = 0;
-			final Penguin ball = new Penguin(assetManager);
-			ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
-		}
+
 	}
 
 	/** Custom Keybinding: Map named actions to inputs. */
@@ -87,7 +82,7 @@ public class GameInputState extends AbstractAppState {
 		
 		//Control for spawning balls
 		inputManager.addMapping(MAPPING_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
-		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_S));
+		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_T));
 		
 		inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
 		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
@@ -127,8 +122,8 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
 				timeCount += tpf;
 				if (timeCount > time) {
-					final Penguin ball = new Penguin(assetManager);
-					ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
+					//final Penguin ball = new Penguin(assetManager);
+					//ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
 					timeCount = 0;
 				}
 			}

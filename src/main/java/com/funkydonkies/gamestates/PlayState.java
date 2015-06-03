@@ -2,17 +2,11 @@ package com.funkydonkies.gamestates;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.factories.ObstacleFactory;
-import com.funkydonkies.geometrys.Target;
-import com.funkydonkies.geometrys.obstacles.KillerWhale;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.font.BitmapText;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 
 /**
@@ -26,15 +20,15 @@ public class PlayState extends AbstractAppState {
 	private static final Vector3f CAM_LOCATION = new Vector3f(160, 70, 190);
 
 	private App app;
-	private Target target;
-	private KillerWhale movBox;
-	private Combo combo;
-	private ObstacleFactory factory;
+	private AppStateManager stateManage;
 
-	private static BulletAppState bulletAppState = new BulletAppState();
+
+	private static BulletAppState bulletAppState;
+	
 	private GameInputState gameInputState;
-	private CurveState spController;
+	private CurveState curveState;
 	private CameraState cameraState;
+	private SpawnState spawnState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -51,36 +45,41 @@ public class PlayState extends AbstractAppState {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		
-		factory = new ObstacleFactory();
-		
-		final BitmapText comboText = new BitmapText(
-				app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"), false);
-		combo = new Combo(app.getGuiNode(), comboText);
-		movBox = factory.makeMovingBox(app.getRootNode(), app.getAssetManager());
-		target = factory.makeTarget(app.getRootNode());
-		target.getControl().setCombo(combo);
-		
-		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
-		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		app.getFlyByCamera().setEnabled(false);
+		stateManage = stateManager;
+		handleBulletAppState();
 
+		
+		app.getFlyByCamera().setEnabled(true);
+		app.getCamera().setLocation(CAM_LOCATION);
+
+		handleBulletAppState();
+		initStates();
+	}
+	/**
+	 * This method initializes the states.
+	 */
+	public void initStates(){
 		cameraState = new CameraState();
-		stateManager.attach(cameraState);
+		stateManage.attach(cameraState);
 		
 		gameInputState = new GameInputState();
-		stateManager.attach(gameInputState);
+		stateManage.attach(gameInputState);
 		
-		spController = new CurveState();
-		stateManager.attach(spController);
-
-		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		mat2.setColor(COLOR, ColorRGBA.Red);
-		movBox.draw(mat2, getPhysicsSpace());
-		target.draw(mat2, bulletAppState.getPhysicsSpace());
-		app.getCamera().setLocation(CAM_LOCATION);
-		combo.display();
+		curveState = new CurveState();
+		stateManage.attach(curveState);
+		
+		spawnState = new SpawnState();
+		stateManage.attach(spawnState);
+	}
+	
+	/**
+	 * This method handles bulletAppState
+	 */
+	public void handleBulletAppState(){
+		bulletAppState = new BulletAppState();
+		stateManage.attach(bulletAppState);
+		bulletAppState.setDebugEnabled(true);
+		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	
 	/**
