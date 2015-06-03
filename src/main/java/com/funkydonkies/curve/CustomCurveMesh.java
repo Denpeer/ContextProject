@@ -12,6 +12,8 @@ import com.jme3.util.BufferUtils;
  *
  */
 public class CustomCurveMesh {
+	private static float launchPadHeight;
+	private static final float launchPadWidth = 50f;
 	private Vector3f[] meshStructurePoints;
 	private int[] meshStructureTrianglesIndices;
 	private Vector3f[] splinePoints;
@@ -22,10 +24,10 @@ public class CustomCurveMesh {
 	 */
 	public CustomCurveMesh(final Vector3f[] sPoints) {
 		splinePoints = sPoints.clone();
-		final int mulLength = 5, offset = 2, triangleIndicesDegree = 15; // TODO rename
-		final int meshStructurePointsSize = splinePoints.length * mulLength - offset;
+		final int mulLength = 5, offset = 1, triangleIndicesDegree = 15; // TODO rename
+		final int meshStructurePointsSize = splinePoints.length * mulLength + offset;
 		meshStructurePoints = new Vector3f[meshStructurePointsSize];
-		meshStructureTrianglesIndices = new int[(splinePoints.length - 1) * triangleIndicesDegree];
+		meshStructureTrianglesIndices = new int[(splinePoints.length - 1) * triangleIndicesDegree + 12];
 		texCoords = new Vector2f[splinePoints.length];
 	}
 	
@@ -39,6 +41,7 @@ public class CustomCurveMesh {
 			setTriangleIndices(i);
 			texCoords[i] = new Vector2f(1, 1);
 		}	
+		launchPadHeight = splinePoints[0].getY();
 		final Mesh mesh = new Mesh();
 		final int indexBuffer = 3;
 		mesh.setBuffer(Type.Position, indexBuffer, 
@@ -64,8 +67,19 @@ public class CustomCurveMesh {
 		if (i != splinePoints.length - 1) {
 			getSegmentPoint(i); //TODO comment what this does
 		}
+		getLaunchPadPoints();
 	}
-	
+	/**
+	 * This method gets the launchpad vertices
+	 */
+	public void getLaunchPadPoints(){
+		meshStructurePoints[splinePoints.length * 5 - 2] = new Vector3f().
+				add(meshStructurePoints[0]).setX(meshStructurePoints[0].getX() - launchPadWidth);
+		meshStructurePoints[splinePoints.length * 5 - 1] = new Vector3f().
+				add(meshStructurePoints[splinePoints.length]).setX(meshStructurePoints[splinePoints.length].getX() - launchPadWidth);
+		meshStructurePoints[splinePoints.length * 5] = new Vector3f().
+				add(meshStructurePoints[splinePoints.length * 2]).setX(meshStructurePoints[splinePoints.length * 2].getX() - launchPadWidth);
+	}
 	/**
 	 * This method gets the two segment point for a splinepoint.
 	 * @param i the index of the splinepoint
@@ -96,6 +110,7 @@ public class CustomCurveMesh {
 			addBoxTriangles(i);
 			addUpperTriangles(i);
 			addOverlappingTriangles(i);
+			addLaunchPadTriangles();
 		}
 		
 	}
@@ -158,4 +173,36 @@ public class CustomCurveMesh {
 		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset
 		                              + mulLength * i + range] = splinePoints.length * 2 + i;
 	}
+	
+	/**
+	 * This method adds triangles for the launchbox.
+	 */
+	public void addLaunchPadTriangles(){
+		final int offSet = 2, multiplier = 5;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15] = splinePoints.length * multiplier - offSet;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 1] = 0;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 2] = splinePoints.length;
+		
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 3] = splinePoints.length * multiplier - offSet;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 4] = splinePoints.length;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 5] = splinePoints.length * multiplier - 1;
+		
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 6] = splinePoints.length * multiplier - 1;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 7] = splinePoints.length * offSet;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 8] = splinePoints.length * multiplier;
+		
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 9] = splinePoints.length * multiplier - 1;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 10] = splinePoints.length;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * 15 + 11] = splinePoints.length * offSet;
+	}
+
+	/**
+	 * The getter for the launchPadHeight
+	 * @return the launchPadHeight
+	 */
+	public static float getLaunchPadHeight() {
+		return launchPadHeight;
+	}
+
+
 }

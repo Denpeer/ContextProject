@@ -18,7 +18,7 @@ public class StandardPenguin extends Geometry{
 		rootNode.attachChild(this);
 		StandardPenguinController pc = new StandardPenguinController(new SphereCollisionShape(radius), 1f);
 		this.addControl(pc);
-		pc.setRestitution(1);
+		pc.setRestitution(10);
 		phy.add(pc);
 		pc.init();
 	}

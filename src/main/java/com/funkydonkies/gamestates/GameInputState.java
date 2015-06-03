@@ -130,7 +130,7 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(INCREMENT_HEIGHT_MAPPING)) { // R KEY
 				curveState.getSplineCurve().incrementPoints();
 			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) { // F KEY
-				curveState.getSplineCurve().decrementPoints();
+				curveState.getSplineCurve().incDecPoints();
 			}
 		}
 	};

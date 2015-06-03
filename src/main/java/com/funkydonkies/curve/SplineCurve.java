@@ -25,7 +25,9 @@ public class SplineCurve extends Spline {
 	private static final int TOTAL_POINTS_PER_CONTROLPOINT = 10;
 	private static final float SCALE_POINTS = 0.1f;
 	private Vector3f[] curvePoints;
-	private Geometry geo;
+
+	private Geometry curveGeom;
+
 	private RigidBodyControl phys;
 	
 	/**
@@ -35,9 +37,11 @@ public class SplineCurve extends Spline {
 	 */
 	public SplineCurve(final SplineType splineType, final boolean cycle) {
 		super(splineType, CurveState.testPoints(), TENSION, cycle);
-		geo = new Geometry("curve");
+		curveGeom = new Geometry("curve");
 		curvePoints = CurveState.testPoints();
 	}
+	
+
 	
 	/**
 	 * This method draws the curve.
@@ -50,15 +54,16 @@ public class SplineCurve extends Spline {
 			final PhysicsSpace physicsSpace, final RigidBodyControl rigidBody, final Node node) {
 		phys = rigidBody;
 		this.refreshControlPoints();
+		
 		final CustomCurveMesh curve = new CustomCurveMesh(getSplinePoints());
 		final Mesh mesh = curve.createMesh();
-		geo.setMesh(mesh);
-		geo.setMaterial(mat);
-		geo.addControl(phys);
+		curveGeom.setMesh(mesh);
+		curveGeom.setMaterial(mat);
+		curveGeom.addControl(phys);
 		phys.setRestitution(RESTITUTION);
 		phys.setFriction(FRICTION);
 		physicsSpace.add(phys);
-		node.attachChild(geo);
+		node.attachChild(curveGeom);
 	}
 	
 	/**
@@ -100,6 +105,21 @@ public class SplineCurve extends Spline {
 	}
 	
 	/**
+	 * This methods increments and decrements curvepoints
+	 */
+	public void incDecPoints() {
+		for (int i = 0; i < curvePoints.length; i = i + 3) {
+			final Vector3f vec = curvePoints[i];
+			if(i % 2 == 0){
+				curvePoints[i] = vec.setY(curvePoints[i].getY() - OFFSET * SCALE_POINTS);
+			}else{
+				curvePoints[i] = vec.setY(curvePoints[i].getY() + OFFSET * SCALE_POINTS);
+			}
+			
+		}
+	}
+	
+	/**
 	 * This method decrements the curvePoints.
 	 */
 	public void decrementPoints() {
@@ -114,7 +134,7 @@ public class SplineCurve extends Spline {
 	 * @return the geometry
 	 */
 	public Geometry getGeometry() {
-		return geo;
+		return curveGeom;
 	}
 	
 	/**

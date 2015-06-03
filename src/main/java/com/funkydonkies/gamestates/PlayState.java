@@ -29,6 +29,8 @@ public class PlayState extends AbstractAppState {
 	private CurveState curveState;
 	private CameraState cameraState;
 	private SpawnState spawnState;
+	private ComboState comboState;
+	private DifficultyState difState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -70,6 +72,13 @@ public class PlayState extends AbstractAppState {
 		
 		spawnState = new SpawnState();
 		stateManage.attach(spawnState);
+		
+		comboState = new ComboState();
+		stateManage.attach(comboState);
+		
+		difState = new DifficultyState();
+		stateManage.attach(difState);
+		
 	}
 	
 	/**
@@ -78,7 +87,7 @@ public class PlayState extends AbstractAppState {
 	public void handleBulletAppState(){
 		bulletAppState = new BulletAppState();
 		stateManage.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(false);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	

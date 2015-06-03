@@ -16,13 +16,12 @@ public class SpawnState extends AbstractAppState{
 	private ObstacleFactory obFac;
 	private PenguinFactory pengFac;
 	
+	private float spawnBallTime;
+	
 	private App app;
 	private AppStateManager stateManager;
 	private PhysicsSpace phy;
 	
-	private ComboState comboState;
-	private float InitialspawnBallTime = 5f;
-	private float spawnBallTime = 5f;
 	private float timeCount = 0;
 	
 	@Override
@@ -35,8 +34,7 @@ public class SpawnState extends AbstractAppState{
 			throw new BadDynamicTypeException();
 		}
 		phy = PlayState.getPhysicsSpace();
-		comboState = new ComboState();
-		stateManager.attach(comboState);
+
 		initFactories();
 		tarFac.makeFish();
 	}
@@ -61,9 +59,7 @@ public class SpawnState extends AbstractAppState{
 	}
 	
 	public final void updateDifficultyRatios(){
-		if(spawnBallTime > 1){
-			spawnBallTime = InitialspawnBallTime - ComboState.getCombo();
-		}
+		spawnBallTime = DifficultyState.getSpawnBallTime();
 	}
 
 	

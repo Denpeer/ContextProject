@@ -1,5 +1,7 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.curve.CustomCurveMesh;
+import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -16,8 +18,8 @@ public class StandardPenguinController extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	public static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(125f, 130f, 0f);
-	public static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(10, -22, 0);
+	public static Vector3f initialSpawn;
+	public static Vector3f initialSpeed;
 	
 	/**
 	 * Constructor for ball physics controller.
@@ -30,8 +32,10 @@ public class StandardPenguinController extends RigidBodyControl implements
 	}
 	
 	public void init(){
-		setLocation(DEFAULT_SPAWN_LOCATION);
-		setSpeed(DEFAULT_INITIAL_SPEED);
+		initialSpawn = new Vector3f(-20, CustomCurveMesh.getLaunchPadHeight() + 5, 0);
+		initialSpeed = new Vector3f(DifficultyState.getBallSpeed(), 0, 0);
+		setLocation(initialSpawn);
+		setSpeed(initialSpeed);
 	}
 	
 	/**
