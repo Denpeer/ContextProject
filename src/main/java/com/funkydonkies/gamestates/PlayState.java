@@ -15,6 +15,7 @@ import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.util.SkyFactory;
 
 /**
  * The AppState that controls the basic aspects of the game, it is responsible for initializing the 
@@ -65,7 +66,7 @@ public class PlayState extends AbstractAppState {
 		stateManager.attach(bulletAppState);
 		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		app.getFlyByCamera().setEnabled(false);
+//		app.getFlyByCamera().setEnabled(false);
 
 		cameraState = new CameraState();
 		stateManager.attach(cameraState);

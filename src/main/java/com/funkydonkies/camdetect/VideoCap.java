@@ -45,6 +45,11 @@ public class VideoCap {
 			camOn = true;
 		}
 	}
+	
+	public void closeAndReturn() {
+		cap.release();
+		camOn = false;
+	}
 
 	/**
 	 * @return

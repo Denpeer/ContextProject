@@ -1,23 +1,21 @@
 package com.funkydonkies.camdetect;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -34,15 +32,23 @@ import com.funkydonkies.camdetect.VideoCap.CameraNotOnException;
  * @author Olivier Dikken
  *
  */
+/**
+ * @author Jonathan
+ *
+ */
 public class MyFrame extends JFrame implements Runnable, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final int SLEEP_TIME = 30;
+	private static final String REFRESH_COMMAND = "refresh";
 	private JPanel contentPane;
 	private boolean triedCameras = false;
 	private ArrayList<Integer> cameras;
 	private ArrayList<JButton> buttons;
-
+	private JButton refreshButton;
+	private JPanel upperblock;
+	private JTextArea label;
+	
 	/**
 	 * Launch the application by starting a new thread.
 	 * 
@@ -62,6 +68,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
+		
 		new MyThread().start();
 	}
 
@@ -72,6 +79,34 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	 */
 	public VideoCap getVideoCap() {
 		return videoCap;
+	}
+	
+	/**
+	 * Creates the frame's layout for choosing the camera input.
+	 */
+	public void createUI() {
+		upperblock = new JPanel(null);
+		label = new JTextArea();
+		label.setText("Please Select an Input Source \n"
+				+ "When a source is chosen press 'b' to set a background \n"
+				+ "or press Esc to return here.");
+		label.setEditable(false);
+		final float[] hsb = Color.RGBtoHSB(238, 238, 238, null);
+		label.setBackground(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
+		
+		final int labelWidth = 500, labelHeight = 75;
+		label.setSize(labelWidth, labelHeight);
+		//May need to be changed due to after exporting the location of the icon may not be correct 
+		//anymore 
+		//@see http://stackoverflow.com/questions/17752884/jbutton-image-icon-not-displaying-png-file
+		final ImageIcon icon = new ImageIcon("assets/refresh-icon.png",
+                "");
+
+		final int xLoc = 585, yLoc = 2, buttonWidth = 40, buttonHeight = 40;
+		refreshButton = new JButton(icon);
+		refreshButton.setBounds(xLoc, yLoc, buttonWidth, buttonHeight);
+		refreshButton.setActionCommand(REFRESH_COMMAND);
+		refreshButton.addActionListener(this);
 	}
 
 	/**
@@ -103,6 +138,12 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	 * thread.
 	 */
 	public MyFrame() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (final ClassNotFoundException | InstantiationException | IllegalAccessException 
+				| UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
 		loadLib();
 		initVideoCap();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,11 +154,17 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		initXDAmountSetKey();
 		final int top = 5, left = 5, bottom = 5, right = 5;
 		contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
+		final int rows = 5, cols = 1;
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(5, 1));
+		contentPane.setLayout(new GridLayout(rows, cols));
+		
+		createUI();
 		setVisible(true);
 	}
 
+	/**
+	 * Initializes the VideoCap class.
+	 */
 	public void initVideoCap() {
 		videoCap = new VideoCap();
 	}
@@ -131,26 +178,41 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent e) {
-				System.out.println("action: " + e.getActionCommand());
-				if (e.getActionCommand().equals("b")){
-					System.out.println("setbg called");
+				if ("b".equals(e.getActionCommand())) {
 					videoCap.setBg();
 				}
-				if(e.getActionCommand().equals("n")){
+			}
+		};
+		Action startVid = new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				if ("n".equals(e.getActionCommand())) {
 					System.out.println("n called");
 					initVideoCap();
-					
 				}
+			}
+		};
+		Action goBack = new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.closeAndReturn();
 			}
 		};
 		// add keypress 'b' sets current frame as background
 		final String callSetTheBg = "callSetTheBg";
+		final String callStartVid = "start video";
+		final String callBack = "back";
+
 		contentPane.getInputMap()
 				.put(KeyStroke.getKeyStroke('b'), callSetTheBg);
 		contentPane.getInputMap()
-				.put(KeyStroke.getKeyStroke('n'), "start video");
+				.put(KeyStroke.getKeyStroke('n'), callStartVid);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), callBack);
 		contentPane.getActionMap().put(callSetTheBg, setTheBg);
-		contentPane.getActionMap().put("start video", setTheBg);
+		contentPane.getActionMap().put(callStartVid, startVid);
+		contentPane.getActionMap().put(callBack, goBack);
 		
 		
 	}
@@ -194,13 +256,12 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 			if (videoCap != null) {
 				contentPane.removeAll();
 				g.drawImage(videoCap.getOneFrame(), 0, 0, this);
-			} else {
 			}
 		} catch (final CameraNotOnException e) {
 			contentPane.removeAll();
-			JLabel label = new JLabel();
-			label.setText("Please Select an Input Source \n");
-			contentPane.add(label);
+			upperblock.add(refreshButton);
+			upperblock.add(label);
+			contentPane.add(upperblock);
 			if (!triedCameras) {
 				cameras = videoCap.tryCameras();
 				for (Integer camera : cameras) {
@@ -219,9 +280,9 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	/**
 	 * Creates a new button for selecting an input source.
 	 * @param name String to be displayed on the button.
-	 * @return
+	 * @return button JButton
 	 */
-	private JButton makeButton(String name) {
+	private JButton makeButton(final String name) {
 		final JButton button = new JButton(name);
 		button.setActionCommand(name.substring(name.length() - 1));
 		button.addActionListener(this);
@@ -240,13 +301,6 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		@Override
 		public void run() {
 			buttons = new ArrayList<>();
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e1) {
-				e1.printStackTrace();
-			} catch (UnsupportedLookAndFeelException e1) {
-				e1.printStackTrace();
-			}
 			for (;;) {
 				repaint();
 				try {
@@ -259,7 +313,12 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		videoCap.openCamera(Integer.parseInt(e.getActionCommand()));
+	public void actionPerformed(final ActionEvent e) {
+		if (REFRESH_COMMAND.equals(e.getActionCommand())) {
+			triedCameras = false;
+			buttons.clear();
+		} else {
+			videoCap.openCamera(Integer.parseInt(e.getActionCommand()));
+		}
 	}
 }
