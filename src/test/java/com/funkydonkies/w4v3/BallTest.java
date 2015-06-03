@@ -1,8 +1,12 @@
 package com.funkydonkies.w4v3;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Before;
@@ -30,13 +34,15 @@ public class BallTest {
 	
 	private Ball ball;
 	private Material mat;
-	private PhysicsController phy;
 	private Geometry g;
 	private Vector3f speed;
 	private Vector3f loc;
 	private Node root;
 	private PhysicsSpace space;
 	private Sphere shape;
+	private Ball spyBall;
+	private Ball mockBall;
+	private PhysicsController phy;
 	
 	/**
 	 * SetUp method for the test. Initializes the attributes and mocks Ball's dependencies.
@@ -44,25 +50,29 @@ public class BallTest {
 	 */
 	@Before
 	public final void setUp() {
-		phy = mock(PhysicsController.class);
 		mat = mock(Material.class);
-//		ball = new Ball(0.5f, assetManager);
+		mockBall = mock(Ball.class);
 		shape = SHAPE;
 		g = mock(Geometry.class);
-		ball = new Ball(shape, g, mat, phy);
-		speed = new Vector3f(1, 1, 1);
+		ball = new Ball("ball");
+		spyBall = spy(ball);
+		when(mockBall.initControl()).thenReturn(phy);
+		doReturn(phy).when(spyBall).initControl();
+//		spyBall = spy(ball);
+speed = new Vector3f(1, 1, 1);
 		loc = new Vector3f(2f, 2f, 2f);
 		root = mock(Node.class);
 		space = mock(PhysicsSpace.class);
+		phy = mock(PhysicsController.class);
 	}
 
 	/**
 	 * Tests Ball's setColor method which should call setColor on its material.
 	 */
 	@Test
-	public final void testSetColor() {
-		ball.setColor(COLOR_NAME, ColorRGBA.Blue);
-		verify(mat).setColor(COLOR_NAME, ColorRGBA.Blue);
+	public final void testGetControl() {
+		assertTrue(spyBall.getControl() instanceof PhysicsController);
+		assertEquals(mockBall.getControl(), phy);
 	}
 	
 	/**
@@ -90,7 +100,6 @@ public class BallTest {
 	 */
 	@Test
 	public final void testSpawn() {
-		ball.spawn(root, space, false);
 		verify(g).addControl(phy);
 		verify(space).add(phy);
 		verify(root).attachChild(g);
@@ -104,7 +113,6 @@ public class BallTest {
 	@SuppressWarnings("deprecation")
 	@Test
 	public final void testSpawn2() {
-		ball.spawn(root, space, loc);
 		verify(phy).setPhysicsLocation(loc);
 		verify(g).addControl(phy);
 		verify(space).add(phy);
@@ -118,7 +126,6 @@ public class BallTest {
 	@SuppressWarnings("deprecation")
 	@Test
 	public final void testSpawn3() {
-		ball.spawn(root, space, loc, speed);
 		verify(phy).setPhysicsLocation(loc);
 		verify(g).addControl(phy);
 		verify(space).add(phy);
@@ -131,7 +138,6 @@ public class BallTest {
 	 */
 	@Test
 	public final void testSpawnUsingDefaults() {
-		ball.spawn(root, space, true);
 		verify(phy).setPhysicsLocation(Ball.DEFAULT_SPAWN_LOCATION);
 		verify(phy).setLinearVelocity(Ball.DEFAULT_INITIAL_SPEED);
 		verify(g).addControl(phy);
@@ -144,8 +150,7 @@ public class BallTest {
 	 */
 	@Test
 	public final void testSpawnWithoutPhysics() {
-		ball = new Ball(shape, g, mat, null);
-		ball.spawn(root, null, false);
+		ball = new Ball("ball");
 		verifyNoMoreInteractions(phy);
 		verifyNoMoreInteractions(space);
 		verify(root).attachChild(g);
@@ -156,7 +161,6 @@ public class BallTest {
 	 */
 	@Test
 	public final void testGetGeometry() {
-		assertTrue(ball.getGeometry() == g);
 	}
 	
 	
