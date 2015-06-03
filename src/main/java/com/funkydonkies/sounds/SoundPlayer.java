@@ -115,7 +115,7 @@ public class SoundPlayer {
 		audioNode.setLooping(false);
 		audioNode.setVolume(1);
 		app.getRootNode().attachChild(audioNode);
-		System.out.println("=> " + path.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH)
+		System.out.println("	=> " + path.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH)
 				+ " sound initialized.");
 	}
 
