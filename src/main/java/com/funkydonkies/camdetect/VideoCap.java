@@ -2,7 +2,6 @@ package com.funkydonkies.camdetect;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.opencv.highgui.VideoCapture;
 
@@ -15,13 +14,11 @@ import org.opencv.highgui.VideoCapture;
  *
  */
 public class VideoCap {
-
+	
+	private static final int INPUTS = 4;
 	private VideoCapture cap;
 	private Mat2Image mat2Img = new Mat2Image();
 	private boolean camOn = false;
-	private ArrayList<Integer> cameras;
-	private HashMap<Integer, HashMap<String, Integer>> resolutions = 
-			new HashMap<Integer, HashMap<String, Integer>>();
 
 	/**
 	 * Create capture object which reads from the input source defined by INPUTSOURCENUMBER
@@ -35,7 +32,7 @@ public class VideoCap {
 	 * Opens camera indicated by input.
 	 * @param input int Source number of the camera to open.
 	 */
-	public void openCamera(int input) {
+	public void openCamera(final int input) {
 		cap.open(input);
 		if (!cap.isOpened()) {
 			System.err.println("Camera Error. Could not open camera.");
@@ -46,17 +43,21 @@ public class VideoCap {
 		}
 	}
 	
+	/**
+	 * Closes the camera and resets the camOn boolean to false.
+	 */
 	public void closeAndReturn() {
 		cap.release();
 		camOn = false;
 	}
 
 	/**
-	 * @return
+	 * Tries on which input number a camera can be found and adds it to the cameras list.
+	 * @return cameras ArrayList containing all the working inputssourcenumbers.
 	 */
 	public ArrayList<Integer> tryCameras() {
-		ArrayList<Integer> cameras = new ArrayList<Integer>();
-		for (int i = 0; i < 4; i++) {
+		final ArrayList<Integer> cameras = new ArrayList<Integer>();
+		for (int i = 0; i < INPUTS; i++) {
 			cap.open(i);
 			if (cap.isOpened()) {
 				cameras.add(i);
@@ -127,5 +128,12 @@ public class VideoCap {
 	 */
 	public void decXD() {
 		mat2Img.setxdist(mat2Img.getxdist() + 1);
+	}
+
+	/**
+	 * Releases memory allocated for camera.
+	 */
+	public void releaseCap() {
+		cap.release();
 	}
 }

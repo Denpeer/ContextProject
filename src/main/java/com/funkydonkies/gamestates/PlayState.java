@@ -15,7 +15,6 @@ import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.util.SkyFactory;
 
 /**
  * The AppState that controls the basic aspects of the game, it is responsible for initializing the 

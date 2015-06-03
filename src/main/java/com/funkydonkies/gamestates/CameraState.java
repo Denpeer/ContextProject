@@ -38,14 +38,22 @@ public class CameraState extends AbstractAppState {
 		}
 	}
 	
+	/**
+	 * Opens the camera frame in a new thread.
+	 */
 	public void openCamera() {
 		new Thread(cameraFrame).start();
 		bridge = cameraFrame.getVideoCap().getMat2Image();
 		cameraOpened = true;
 	}
 	
+	/**
+	 * Opens the camera if the camerastate becomes active and videocap has been initialized.
+	 * @param tpf time per frame
+	 * @see com.jme3.app.state.AbstractAppState#update(float)
+	 */
 	@Override
-	public void update(float tpf) {
+	public void update(final float tpf) {
 		super.update(tpf);
 		if (cameraFrame.getVideoCap() != null && !cameraOpened) {
 			System.out.println("CameraState: openedCamera");

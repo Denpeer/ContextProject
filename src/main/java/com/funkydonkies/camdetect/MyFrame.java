@@ -43,35 +43,40 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	private static final String REFRESH_COMMAND = "refresh";
 	private JPanel contentPane;
 	private boolean triedCameras = false;
+	private boolean runThread = true;
 	private ArrayList<Integer> cameras;
 	private ArrayList<JButton> buttons;
 	private JButton refreshButton;
 	private JPanel upperblock;
 	private JTextArea label;
 	
-	/**
-	 * Launch the application by starting a new thread.
-	 * 
-	 * @param args
-	 *            -
-	 */
-	public static void main(final String[] args) {
-		new Thread(new MyFrame()).start();
-	}
 
 	// the video capture object handles camera input
 	private VideoCap videoCap;
-
+	
 	/**
 	 * Runs the thread that paints the frames.
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
-		
-		new MyThread().start();
+		while (runThread) {
+			repaint();
+			try {
+				Thread.sleep(SLEEP_TIME);
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
+	@Override
+	public void dispose() {
+		super.dispose();
+		kill();
+		videoCap.releaseCap();
+	}
+	
 	/**
 	 * Accessor method to get this video capture object.
 	 * 
@@ -146,7 +151,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		}
 		loadLib();
 		initVideoCap();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		final int xbound = 100, ybound = 100, boundwidth = 650, boundheight = 490;
 		setBounds(xbound, ybound, boundwidth, boundheight);
 		contentPane = new JPanel();
@@ -157,7 +162,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		final int rows = 5, cols = 1;
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(rows, cols));
-		
+		buttons = new ArrayList<>();
 		createUI();
 		setVisible(true);
 	}
@@ -289,27 +294,12 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		button.setEnabled(true);
 		return button;
 	}
-
+	
 	/**
-	 * Thread that updates the frame.
-	 * 
-	 * @author Olivier Dikken
-	 *
+	 * Shuts the running thread down.
 	 */
-	class MyThread extends Thread {
-
-		@Override
-		public void run() {
-			buttons = new ArrayList<>();
-			for (;;) {
-				repaint();
-				try {
-					Thread.sleep(SLEEP_TIME);
-				} catch (final InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
+	public void kill() {
+		runThread = false;
 	}
 
 	@Override
