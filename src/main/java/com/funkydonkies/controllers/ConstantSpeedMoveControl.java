@@ -13,8 +13,8 @@ public class ConstantSpeedMoveControl extends RigidBodyControl {
 	private double speed;
 	private boolean moveUpOrRight;
 	private boolean moveHorizontally;
-	private final float initialXCoord = 60;
-	private final float initialYCoord = 10;
+	private static final float INITIAL_XCOORD = 60;
+	private static final float INITIAL_YCOORD = 10;
 	
 	/**
 	 * The constructor of the control.	
@@ -35,7 +35,7 @@ public class ConstantSpeedMoveControl extends RigidBodyControl {
 	 * An initialize method for the controller.
 	 */
 	public final void init() {
-		final Vector3f loci = new Vector3f(initialXCoord, initialYCoord, 0);
+		final Vector3f loci = new Vector3f(INITIAL_XCOORD, INITIAL_YCOORD, 0);
 		spatial.setLocalTranslation(loci);
 		this.setPhysicsLocation(loci);
 		setKinematic(true);

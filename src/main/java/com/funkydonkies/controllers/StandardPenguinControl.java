@@ -18,8 +18,8 @@ public class StandardPenguinControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	private static Vector3f initialSpawn;
-	private static Vector3f initialSpeed;
+	private Vector3f initialSpawn;
+	private Vector3f initialSpeed;
 	
 	/**
 	 * Constructor for ball physics controller.

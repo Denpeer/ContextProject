@@ -147,7 +147,7 @@ public class CustomCurveMesh {
 				= splinePoints.length * mulLength + offset * i + 1;
 		if (splinePoints[i].getY() > splinePoints[i + 1].getY()) {
 			meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset
-			                              + (mulLength * i) + 2]	= splinePoints.length + i;
+			                              + mulLength * i + 2]	= splinePoints.length + i;
 		} else {
 			meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset
 			                              + mulLength * i + 2]	= splinePoints.length + i + 1;
