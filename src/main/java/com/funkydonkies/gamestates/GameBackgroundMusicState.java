@@ -19,7 +19,7 @@ import com.jme3.audio.AudioSource;
  * @author Olivier Dikken
  *
  */
-public class GameSoundState extends AbstractAppState {
+public class GameBackgroundMusicState extends AbstractAppState {
 	private static final Path BACKGROUND_MUSIC1_PATH = Paths
 			.get("/Sound/Free_The_Robots_-_Yoga_Fire.wav");
 	private static final Path BACKGROUND_MUSIC2_PATH = Paths
@@ -68,7 +68,7 @@ public class GameSoundState extends AbstractAppState {
 	 * @param bgMusicPath
 	 *            must point to a mono .wav file
 	 */
-	private void initBackgroundMusic(final Path bgMusicPath) {
+	public void initBackgroundMusic(final Path bgMusicPath) {
 		final String pathString = bgMusicPath.toString().replace("\\", "/");
 		// set bg music, streaming set to true
 		bgMusic = new AudioNode(assetManager, pathString, true);
@@ -81,7 +81,7 @@ public class GameSoundState extends AbstractAppState {
 	/**
 	 * switches to next BG_MUSIC when previous track is done playing.
 	 */
-	private void updateBgMusic() {
+	public void updateBgMusic() {
 		if (bgMusic.getStatus() != AudioSource.Status.Playing) {
 			if (playingMusicId == BG_MUSIC_PATHS.length - 1) {
 				playingMusicId = 0;
