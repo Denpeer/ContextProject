@@ -51,8 +51,11 @@ public class SpawnState extends AbstractAppState {
 	 */
 	public void initFactories() {
 		tarFac = new TargetFactory(app.getAssetManager(), app.getRootNode(), phy);
+		tarFac.makeMaterials();
 		obFac = new ObstacleFactory(app.getAssetManager(), app.getRootNode(), phy);
+		obFac.makeMaterials();
 		pengFac = new PenguinFactory(app.getAssetManager(), app.getRootNode(), phy);
+		pengFac.makeMaterials();
 	}
 	
 	/**

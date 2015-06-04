@@ -20,7 +20,7 @@ import com.jme3.scene.Spatial;
  * @author Jonathan
  *
  */
-public class PhysicsControllerTest {
+public class StandardPenguincontrolTest {
 	private static final float BALL_RADIUS = 0.5f;
 	private static final String BALL_NAME = "ball";
 	private static final String CURVE_NAME = "curve";

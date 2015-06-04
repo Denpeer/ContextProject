@@ -46,15 +46,21 @@ public class PlayState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		stateManage = stateManager;
-		handleBulletAppState();
+		handleBulletAppState();	
 
-		
-		app.getFlyByCamera().setEnabled(true);
-		app.getCamera().setLocation(CAM_LOCATION);
-
+		handleCamera();
 		handleBulletAppState();
 		initStates();
 	}
+	
+	/**
+	 * This method handles the ingame camera.
+	 */
+	public void handleCamera(){
+		app.getFlyByCamera().setEnabled(true);
+		app.getCamera().setLocation(CAM_LOCATION);
+	}
+	
 	/**
 	 * This method initializes the states.
 	 */

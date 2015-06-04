@@ -36,7 +36,6 @@ public class ObstacleFactory {
 		this.rootNode = rootN;
 		this.assetManager = assetM;	
 		this.physicSpace = phy;
-		makeMaterials();
 	}
 	
 	/**
@@ -85,4 +84,30 @@ public class ObstacleFactory {
 		seaLionMaterial = new Material(assetManager, path);
 		seaLionMaterial.setColor(color, ColorRGBA.Cyan);
 	}
+	
+	/**
+	 * Sets the material for the killer whale.
+	 * @param mat the material
+	 */
+	public void setKillerWhaleMaterial(Material mat){
+		killerWhaleMaterial = mat;
+	}
+	
+	/**
+	 * Sets the material for the sea lion.
+	 * @param mat the material
+	 */
+	public void setSeaLionMaterial(Material mat){
+		seaLionMaterial = mat;
+	}
+	
+	/**
+	 * Sets the material for the polar bear.
+	 * @param mat the material
+	 */
+	public void setPolarBearMaterial(Material mat){
+		polarBearMaterial = mat;
+	}
+	
+
 }

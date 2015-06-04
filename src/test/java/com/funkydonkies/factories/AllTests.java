@@ -1,11 +1,12 @@
-package com.funkydonkies.w4v3.curve;
+package com.funkydonkies.factories;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CustomCurveMeshTest.class })
+@SuiteClasses({ ObstacleFactoryTest.class, PenguinFactoryTest.class,
+		TargetFactoryTest.class })
 public class AllTests {
 
 }

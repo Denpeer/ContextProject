@@ -39,7 +39,6 @@ public class PenguinFactory {
 		this.rootNode = rootN;
 		this.assetManager = assetM;	
 		this.physicSpace = phy;
-		makeMaterials();
 	}
 	
 	/**
@@ -88,4 +87,29 @@ public class PenguinFactory {
 		standardPenguinMaterial = new Material(assetManager, path);
 		standardPenguinMaterial.setColor(color, ColorRGBA.Cyan);
 	}
+	
+	/**
+	 * Sets the material for the standard penguin.
+	 * @param mat the material
+	 */
+	public void setStandardPenguinMaterial(Material mat){
+		standardPenguinMaterial = mat;
+	}
+	
+	/**
+	 * Sets the material for the fap penguin.
+	 * @param mat the material
+	 */
+	public void setFatPenguinMaterial(Material mat){
+		fatPenguinMaterial = mat;
+	}
+	
+	/**
+	 * Sets the material for the shiny penguin.
+	 * @param mat the material
+	 */
+	public void setShinyPenguinMaterial(Material mat){
+		shinyPenguinMaterial = mat;
+	}
+	
 }

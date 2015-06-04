@@ -37,7 +37,6 @@ public class TargetFactory {
 		this.rootNode = rootN;
 		this.assetManager = assetM;	
 		this.physicSpace = phy;
-		makeMaterials();
 	}
 	
 	/**
