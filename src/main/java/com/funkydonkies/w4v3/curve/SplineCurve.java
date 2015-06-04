@@ -34,9 +34,9 @@ public class SplineCurve extends Spline {
 	 * @param cycle the cycle of the curve
 	 */
 	public SplineCurve(final SplineType splineType, final boolean cycle) {
-		super(splineType, CurveState.testPoints(), TENSION, cycle);
+		super(splineType, CurveState.getStartingPoints(), TENSION, cycle);
 		geo = new Geometry("curve");
-		curvePoints = CurveState.testPoints();
+		curvePoints = CurveState.getStartingPoints();
 	}
 	
 	/**
