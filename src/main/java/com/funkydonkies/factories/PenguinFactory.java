@@ -22,7 +22,7 @@ public class PenguinFactory {
 	private static final float DEFAULT_RADIUS = 4f;
 	
 	private AssetManager assetManager;
-	private Node rootNode;
+	private Node penguinNode;
 	private PhysicsSpace physicSpace;
 	
 	private Material fatPenguinMaterial;
@@ -36,7 +36,7 @@ public class PenguinFactory {
 	 * @param phy the main physic location
 	 */
 	public PenguinFactory(final AssetManager assetM, final Node rootN, final PhysicsSpace phy) {
-		this.rootNode = rootN;
+		this.penguinNode = rootN;
 		this.assetManager = assetM;	
 		this.physicSpace = phy;
 		makeMaterials();
@@ -48,7 +48,7 @@ public class PenguinFactory {
 	 */
 	public FatPenguin makeFatPenguin() {
 		final Mesh mesh = new Box(10, 10, 10);
-		final FatPenguin fatPeng = new FatPenguin("fatOne", mesh, rootNode, fatPenguinMaterial, physicSpace);
+		final FatPenguin fatPeng = new FatPenguin("fatOne", mesh, penguinNode, fatPenguinMaterial, physicSpace);
 		return fatPeng;
 	}
 	
@@ -58,7 +58,7 @@ public class PenguinFactory {
 	 */
 	public ShinyPenguin makeShinyPenguin() {
 		final Mesh mesh = new Box(10, 10, 10);
-		final ShinyPenguin shinyPeng = new ShinyPenguin("ShinyPenguinie", mesh, rootNode, shinyPenguinMaterial, physicSpace);
+		final ShinyPenguin shinyPeng = new ShinyPenguin("ShinyPenguinie", mesh, penguinNode, shinyPenguinMaterial, physicSpace);
 		return shinyPeng;
 	}
 	
@@ -68,7 +68,7 @@ public class PenguinFactory {
 	 */
 	public StandardPenguin makeStandardPenguin() {
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final StandardPenguin standardPenguin = new StandardPenguin("standardPenguin", mesh, rootNode, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
+		final StandardPenguin standardPenguin = new StandardPenguin("standardPenguin", mesh, penguinNode, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
 		return standardPenguin;
 	}
 	

@@ -15,7 +15,7 @@ public abstract class AbstractPowerup implements AppState {
 	
 	protected boolean initialized = false;
     private boolean enabled = false;
-
+    
     public void initialize(AppStateManager stateManager, Application app) {
         initialized = true;
     }

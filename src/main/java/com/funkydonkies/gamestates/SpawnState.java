@@ -16,6 +16,7 @@ import com.jme3.bullet.PhysicsSpace;
  *
  */
 public class SpawnState extends AbstractAppState {
+	public static final float DEFAULT_BALL_SPAWN_TIME = 2;
 	private TargetFactory tarFac;
 	private ObstacleFactory obFac;
 	private PenguinFactory pengFac;
@@ -41,7 +42,7 @@ public class SpawnState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		phy = PlayState.getPhysicsSpace();
-
+		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
 		tarFac.makeFish();
 		obFac.makeKillerWhale();
@@ -52,7 +53,7 @@ public class SpawnState extends AbstractAppState {
 	public void initFactories() {
 		tarFac = new TargetFactory(app.getAssetManager(), app.getRootNode(), phy);
 		obFac = new ObstacleFactory(app.getAssetManager(), app.getRootNode(), phy);
-		pengFac = new PenguinFactory(app.getAssetManager(), app.getRootNode(), phy);
+		pengFac = new PenguinFactory(app.getAssetManager(), app.getPenguinNode(), phy);
 	}
 	
 	/**
@@ -66,8 +67,6 @@ public class SpawnState extends AbstractAppState {
 			timeCount = 0;
 			pengFac.makeStandardPenguin();
 		}
-		updateDifficultyRatios();
-		
 	}
 	
 	/**
@@ -76,7 +75,9 @@ public class SpawnState extends AbstractAppState {
 	public final void updateDifficultyRatios() {
 		spawnBallTime = DifficultyState.getSpawnBallTime();
 	}
-
 	
+	public void setBallSpawnTime(float newTime) {
+		spawnBallTime = newTime;
+	}
 
 }

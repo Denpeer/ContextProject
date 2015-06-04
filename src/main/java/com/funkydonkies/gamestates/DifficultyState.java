@@ -32,7 +32,7 @@ public class DifficultyState extends AbstractAppState {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		combo = new Combo(app.getGuiNode(), app.getAssetManager());
+	//	combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
 	
 	@Override

@@ -27,6 +27,10 @@ public class GameInputState extends AbstractAppState {
 	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
 	private static final float TIME_PER_BALL_SPAWN = 1f;
 	
+	private static final String ENABLE_TIER_ONE = "tier1";
+	private static final String ENABLE_TIER_TWO = "tier2";
+	private static final String ENABLE_TIER_THREE = "tier3";
+	
 	private float time = TIME_PER_BALL_SPAWN;
 	private float timeCount = 0;
 	
@@ -83,6 +87,9 @@ public class GameInputState extends AbstractAppState {
 				new KeyTrigger(KeyInput.KEY_P));
 				inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
 		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
+		inputManager.addMapping(ENABLE_TIER_ONE, new KeyTrigger(KeyInput.KEY_1));
+		inputManager.addMapping(ENABLE_TIER_TWO, new KeyTrigger(KeyInput.KEY_2));
+		inputManager.addMapping(ENABLE_TIER_THREE, new KeyTrigger(KeyInput.KEY_3));
 
 		inputManager.addListener(analogListener, INCREMENT_HEIGHT_MAPPING);
 		inputManager.addListener(analogListener, DECREMENT_HEIGHT_MAPPING);
@@ -92,7 +99,10 @@ public class GameInputState extends AbstractAppState {
 //		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
 //				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_SPAWN_BALL);
-		inputManager.addListener(actionListener, DISABLE_POWERUP_SIZE);
+		
+		inputManager.addListener(actionListener, ENABLE_TIER_ONE);
+		inputManager.addListener(actionListener, ENABLE_TIER_TWO);
+		inputManager.addListener(actionListener, ENABLE_TIER_THREE);
 
 	}
 
@@ -113,7 +123,7 @@ public class GameInputState extends AbstractAppState {
 				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
 			if (name.equals(DISABLE_POWERUP_SIZE) && !keyPressed) {
-				stateManager.getState(PowerupState.class).disableSuperSize();
+//				stateManager.getState(PowerupState.class).disableSuperSize();
 			}
 		}
 	};

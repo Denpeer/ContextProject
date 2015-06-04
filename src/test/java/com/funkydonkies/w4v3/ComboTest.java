@@ -8,12 +8,13 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.gamestates.Combo;
 import com.funkydonkies.gamestates.ComboState;
 import com.jme3.font.BitmapText;
 import com.jme3.scene.Node;
 
 public class ComboTest {
-	private static ComboState combo;
+	private static Combo combo;
 	private static BitmapText text;
 	private static Node node;
 	
@@ -25,7 +26,7 @@ public class ComboTest {
 	public void setUp() throws Exception {
 		node = mock(Node.class);
 		text = mock(BitmapText.class);
-		combo = new ComboState(node, text);
+		combo = new Combo(node, text);
 	}
 
 	/**

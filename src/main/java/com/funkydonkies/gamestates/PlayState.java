@@ -21,7 +21,6 @@ public class PlayState extends AbstractAppState {
 	private App app;
 	private AppStateManager stateManage;
 
-
 	private static BulletAppState bulletAppState;
 	
 	private GameInputState gameInputState;
@@ -29,8 +28,7 @@ public class PlayState extends AbstractAppState {
 	private CameraState cameraState;
 	private SpawnState spawnState;
 	private Combo combo;
-	private DifficultyState difState;
-	private Node ballNode;
+	private Node penguinNode;
 	
 	private PowerupState powerUpState;
 	
@@ -58,6 +56,8 @@ public class PlayState extends AbstractAppState {
 
 		handleBulletAppState();
 		initStates();
+		
+		combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
 	/**
 	 * This method initializes the states.
@@ -81,11 +81,8 @@ public class PlayState extends AbstractAppState {
 		//comboState = new ComboState();
 		//stateManage.attach(comboState);
 		
-		difState = new DifficultyState();
-		stateManage.attach(difState);
-		
-		ballNode = new Node("balls");//*********
-		app.getRootNode().attachChild(ballNode);
+//		difState = new DifficultyState();
+//		stateManage.attach(difState);
 	}
 	
 	/**
@@ -106,12 +103,8 @@ public class PlayState extends AbstractAppState {
 		return bulletAppState.getPhysicsSpace();
 	}
 	
-	/**
-	 * Returns the ball node, containing all the balls.
-	 * @return ballNode Node
-	 */
-	public Node getBallNode() {
-		return ballNode;
+	public Combo getCombo() {
+		return combo;
 	}
 	
 }

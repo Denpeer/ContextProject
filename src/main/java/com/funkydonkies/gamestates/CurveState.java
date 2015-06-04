@@ -1,6 +1,10 @@
 package com.funkydonkies.gamestates;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.mockito.internal.util.collections.ArrayUtils;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.curve.SplineCurve;
@@ -41,6 +45,7 @@ public class CurveState extends AbstractAppState {
 
 	private boolean cameraEnabled = false;
 	private boolean updateEnabled = false;
+	private boolean invertControlPoints = false;
 
 	private RigidBodyControl oldRigi;
 	private RigidBodyControl rigi;
@@ -118,7 +123,22 @@ public class CurveState extends AbstractAppState {
 		maxHeightDifference = (float) (bridge.getxdist() * Math
 				.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
 	}
-
+	
+	public void setInvertControlPoints(boolean b) {
+		System.out.println("inverted");
+		invertControlPoints = b;
+	}
+	
+	public float[] reverse(float[] points) {
+		for(int i = 0; i < points.length / 2; i++)
+		{
+		    float temp = points[i];
+		    points[i] = points[points.length - i - 1];
+		    points[points.length - i - 1] = temp;
+		}
+		return points;
+	}
+	
 	@Override
 	public final void update(final float tpf) {
 		float[] points;
@@ -140,6 +160,9 @@ public class CurveState extends AbstractAppState {
 				final int scale = 10;
 				points[i] = i * scale;
 			}
+		}
+		if (invertControlPoints) {
+//			points = reverse(points);
 		}
 
 		if (updateEnabled) {
@@ -229,7 +252,9 @@ public class CurveState extends AbstractAppState {
 	private void scaleValues(final float[] points, final int screenHeight) {
 		for (int i = 0; i < points.length; i++) {
 			float point = points[i];
-			point = screenHeight - point;
+			if (!invertControlPoints) {
+				point = screenHeight - point;
+			}
 			point = point / screenHeight;
 			point = point * POINTS_HEIGHT;
 			points[i] = point;

@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.funkydonkies.controllers.StandardPenguinControl;
+import com.funkydonkies.core.App;
+import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
@@ -18,6 +20,7 @@ import com.jme3.scene.Spatial;
 public class SuperSizePowerup extends AbstractPowerup {
 	private static final float STANDARD_SCALEUP = 2f;
 	private AppStateManager stateManager;
+	private App app;
 	
 	/**
 	 * Initializes enables to false.
@@ -28,7 +31,14 @@ public class SuperSizePowerup extends AbstractPowerup {
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
 		super.initialize(sManager, appl);
+		if (appl instanceof App) {
+			app = (App) appl;
+		} else {
+			throw new BadDynamicTypeException();
+		}
+		
 		stateManager = sManager;
+		
 	}
 	
 	/** 
@@ -49,7 +59,7 @@ public class SuperSizePowerup extends AbstractPowerup {
 	 * Method for scaling up all balls in the scene.
 	 */
 	public void scaleUpAll() {
-		final Spatial ballNode = stateManager.getState(PlayState.class).getBallNode();
+		final Spatial ballNode = app.getPenguinNode();
 		List<Spatial> balls;
 		balls = ((Node) ballNode).getChildren();
 		final Iterator<Spatial> ballIterator = balls.iterator();
@@ -67,7 +77,7 @@ public class SuperSizePowerup extends AbstractPowerup {
 	 * Method for scaling down all the balls in the scene.
 	 */
 	public void scaleDownAll() {
-		final Spatial ballNode = stateManager.getState(PlayState.class).getBallNode();
+		final Spatial ballNode = app.getPenguinNode();
 		List<Spatial> balls;
 		balls = ((Node) ballNode).getChildren();
 		final Iterator<Spatial> ballIterator = balls.iterator();
@@ -78,7 +88,6 @@ public class SuperSizePowerup extends AbstractPowerup {
 					new SphereCollisionShape(Ball.DEFAULT_RADIUS));
 		}
 	}
-	
 	
 	/**
 	 * Toggles enables by checking the enabled boolean and calling setEnabled.
