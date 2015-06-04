@@ -1,5 +1,8 @@
 package com.funkydonkies.w4v3;
 
+import java.util.Observable;
+
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -9,7 +12,7 @@ import com.jme3.scene.Node;
  * Handles the combo in game.
  * (displaying, increasing, resetting etc)
  */
-public class Combo {
+public class Combo extends Observable {
 	private static final Vector3f COUNTER_LOCATION = new Vector3f(300, 0, 0);
 	private static final int TEXT_SIZE = 30;
 	private int currentCombo;

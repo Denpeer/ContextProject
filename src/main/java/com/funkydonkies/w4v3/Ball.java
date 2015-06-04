@@ -1,6 +1,6 @@
 package com.funkydonkies.w4v3;
 
-import com.funkydonkies.controllers.PhysicsController;
+import com.funkydonkies.controllers.BallController;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -10,10 +10,11 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Sphere;
 
 /**
- * @author Jonathan
  *
  */
 public class Ball {
@@ -22,7 +23,7 @@ public class Ball {
 	private Geometry geom;
 	private Material mat;
 	private RigidBodyControl phy;
-	private static final float DEFAULT_RADIUS = 4f;
+	public static final float DEFAULT_RADIUS = 4f;
 	public static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(25f, 130f, 0f);
 	public static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(10, -22, 0);
 	
@@ -37,7 +38,7 @@ public class Ball {
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Blue);
 		geom.setMaterial(mat);
-		phy = new PhysicsController(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
+		phy = new BallController(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
 		phy.setRestitution(1);
 	}
 	
@@ -139,5 +140,31 @@ public class Ball {
 	public final Geometry getGeometry() {
 		return geom;
 	}
-
+	
+	/**
+	 * Method for resizing the Ball's geometry, uses scaling.
+	 * @param scale float the scale to scale the geeometry with. 
+	 * @return Spatial the spatial on which the scale is called on.
+	 * @see com.jme3.scene.Spatial.scale(float s)
+	 */
+	public final Spatial resize(final float scale){
+		return geom.scale(scale);
+	}
+	
+	/**
+	 * Adds a new control to the Ball's geometry.
+	 * @param c Control the control to be added
+	 * @see com.jme3.scene.Spatial.addControl(Control control)
+	 */
+	public final void addControl(Control c) {
+		geom.addControl(c);
+	}
+	
+	/**
+	 * Returns the BallController, or other RigidBodycontrol, used by the ball.
+	 * @return Control the ball's main controller.
+	 */
+	public final Control getControl() {
+		return phy;
+	}
 }

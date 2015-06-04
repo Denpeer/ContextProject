@@ -15,6 +15,7 @@ import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 
 /**
  * The AppState that controls the basic aspects of the game, it is responsible for initializing the 
@@ -36,6 +37,9 @@ public class PlayState extends AbstractAppState {
 	private GameInputState gameInputState;
 	private CurveState spController;
 	private CameraState cameraState;
+	private Node ballNode;
+	
+	private PowerupState powerUpState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -75,13 +79,19 @@ public class PlayState extends AbstractAppState {
 		
 		spController = new CurveState();
 		stateManager.attach(spController);
+		
+		powerUpState = new PowerupState();
+		stateManager.attach(powerUpState);
 
+		ballNode = new Node("balls");
+		
 		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
 		movBox.draw(mat2, getPhysicsSpace());
 		target.draw(mat2, bulletAppState.getPhysicsSpace());
 		app.getCamera().setLocation(CAM_LOCATION);
 		combo.display();
+		app.getRootNode().attachChild(ballNode);
 	}
 	
 	/**
@@ -92,6 +102,12 @@ public class PlayState extends AbstractAppState {
 		return bulletAppState.getPhysicsSpace();
 	}
 	
-	
+	/**
+	 * Returns the ball node, containing all the balls.
+	 * @return ballNode Node
+	 */
+	public Node getBallNode() {
+		return ballNode;
+	}
 	
 }
