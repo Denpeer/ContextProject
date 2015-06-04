@@ -44,8 +44,8 @@ public class ObstacleFactory {
 	 * @return a killerWhale Object
 	 */
 	public KillerWhale makeKillerWhale() {
-		final Mesh mesh = new Box(1, 1, 1);
-		final KillerWhale kWhale = new KillerWhale("fishie", mesh, rootNode, killerWhaleMaterial, physicSpace);
+		final Mesh mesh = new Box(30, 6, 1);
+		final KillerWhale kWhale = new KillerWhale("killerWhale", mesh, rootNode, killerWhaleMaterial, physicSpace);
 		return kWhale;
 	}
 	
@@ -77,7 +77,7 @@ public class ObstacleFactory {
 		final String path = "Common/MatDefs/Misc/Unshaded.j3md";
 		killerWhaleMaterial = new Material(assetManager,
 				path);
-		killerWhaleMaterial.setColor(color, ColorRGBA.Blue);
+		killerWhaleMaterial.setColor(color, ColorRGBA.Red);
 		
 		polarBearMaterial = new Material(assetManager, path);
 		polarBearMaterial.setColor(color, ColorRGBA.Orange);

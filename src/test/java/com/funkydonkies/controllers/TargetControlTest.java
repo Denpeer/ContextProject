@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.controllers.FishControl;
 import com.funkydonkies.gamestates.ComboState;
 import com.funkydonkies.geometrys.Target;
 import com.jme3.bullet.PhysicsSpace;
@@ -17,7 +17,7 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.scene.Spatial;
 
 public class TargetControlTest {
-	private static TargetControl control;
+	private static FishControl control;
 	private static CollisionShape shape;
 	private static Target target;
 	private static ComboState combo;
@@ -32,7 +32,7 @@ public class TargetControlTest {
 		target = mock(Target.class);
 		combo = mock(ComboState.class);
 		event = mock(PhysicsCollisionEvent.class);
-		control = new TargetControl(shape, target);
+		control = new FishControl(shape, target);
 		control.setCombo(combo);
 		ballSpatial = mock(Spatial.class);
 		targetSpatial = mock(Spatial.class);

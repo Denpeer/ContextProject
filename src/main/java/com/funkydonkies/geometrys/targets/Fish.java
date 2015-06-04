@@ -1,6 +1,6 @@
 package com.funkydonkies.geometrys.targets;
 
-import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.controllers.FishControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
@@ -27,7 +27,7 @@ public class Fish extends Geometry {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);
-		final TargetControl tarCont = new TargetControl(
+		final FishControl tarCont = new FishControl(
 				new BoxCollisionShape(dim));
 		
 		this.addControl(tarCont);

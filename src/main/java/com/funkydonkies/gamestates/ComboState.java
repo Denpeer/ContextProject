@@ -78,7 +78,7 @@ public class ComboState extends AbstractAppState {
 	/**
 	 * Resets the current combo to 0 and updates the text.
 	 */
-	public void resetCombo() {
+	public static void resetCombo() {
 		currentCombo = 0;
 		updateText();
 	}

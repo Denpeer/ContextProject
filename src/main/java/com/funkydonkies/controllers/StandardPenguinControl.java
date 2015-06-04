@@ -1,6 +1,7 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
+import com.funkydonkies.gamestates.ComboState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -18,6 +19,9 @@ public class StandardPenguinControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
+	private static final String OBSTACLE_NAME = "killerWhale";
+	private static final String PENGUIN_NAME = "standardPenguin";
+	private static final String CURVE_NAME = "curve";
 	private Vector3f initialSpawn;
 	private Vector3f initialSpeed;
 	
@@ -35,7 +39,7 @@ public class StandardPenguinControl extends RigidBodyControl implements
 	 */
 	public void init() {
 		final int yOffSet = 5, xOffSet = -20;
-		initialSpawn = new Vector3f(-xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
+		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		initialSpeed = new Vector3f(DifficultyState.getBallSpeed(), 0, 0);
 		setLocation(initialSpawn);
 		setSpeed(initialSpeed);
@@ -88,21 +92,7 @@ public class StandardPenguinControl extends RigidBodyControl implements
 		
 	}
 	
-	/**
-	 * Listens for collisions. If the ball collides (touches) with the curve and its speed is too 
-	 * low, increase it so that the ball can move uphill
-	 * @param event a PhysicsCollisionEvent which stores information about the collision
-	 */
-	public void collision(final PhysicsCollisionEvent event) {
-		if ("ball".equals(event.getNodeA().getName()) 
-				&& "curve".equals(event.getNodeB().getName())) {
-			final Vector3f velocity = getLinearVelocity();
-			if (velocity.x <= 1) {
-				velocity.x = 2;
-				setLinearVelocity(velocity);
-			}
-		}
-	}
+
 	
 	/**
 	 * Sets the speed for the Ball by calling setLinVelocity on the physics.
@@ -119,5 +109,42 @@ public class StandardPenguinControl extends RigidBodyControl implements
 	public void setLocation(final Vector3f loc) {
 		setPhysicsLocation(loc);
 	}
+	/**
+	 * This method listens to the penguin collisions.
+	 * @param event a PhysicsCollisionEvent which stores information about the collision
+	 */
+	public void collision(final PhysicsCollisionEvent event) {
+		curveCollision(event);
+		whaleCollision(event);
+	}
 
+	/**
+	 * Listens for collisions. If the ball collides (touches) with the curve and its speed is too 
+	 * low, increase it so that the ball can move uphill
+	 * @param event a PhysicsCollisionEvent which stores information about the collision
+	 */
+	public void curveCollision(final PhysicsCollisionEvent event) {
+		if (PENGUIN_NAME.equals(event.getNodeA().getName()) 
+				&& CURVE_NAME.equals(event.getNodeB().getName())) {
+			final Vector3f velocity = getLinearVelocity();
+			if (velocity.x <= 1) {
+				velocity.x = 2;
+				setLinearVelocity(velocity);
+			}
+		}
+	}
+	
+	/**
+	 * Listens for collisions with the killerwhale.
+	 * @param event a PhysicsCollisionEvent which stores information about the collision
+	 */
+	public void whaleCollision(final PhysicsCollisionEvent event) {
+	
+		if (PENGUIN_NAME.equals(event.getNodeB().getName()) 
+				&& OBSTACLE_NAME.equals(event.getNodeA().getName())) {
+			//todo olivier
+			
+			ComboState.resetCombo();
+		}
+	}
 }

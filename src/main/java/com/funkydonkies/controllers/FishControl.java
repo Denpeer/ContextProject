@@ -11,7 +11,7 @@ import com.jme3.math.Vector3f;
 /**
  * Control class for the target. Takes care of collisions between the ball and target.
  */
-public class TargetControl extends GhostControl implements PhysicsCollisionListener {
+public class FishControl extends GhostControl implements PhysicsCollisionListener {
 	private static final String BALL_NAME = "standardPenguin";
 	private static final String TARGET_NAME = "fish";
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
@@ -21,7 +21,7 @@ public class TargetControl extends GhostControl implements PhysicsCollisionListe
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
 	 */
-	public TargetControl(final CollisionShape shape) {
+	public FishControl(final CollisionShape shape) {
 		super(shape);
 	}
 	

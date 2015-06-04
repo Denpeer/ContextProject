@@ -2,7 +2,7 @@ package com.funkydonkies.gamestates;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-//import com.funkydonkies.factories.ObstacleFactory;
+import com.funkydonkies.factories.ObstacleFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.TargetFactory;
 import com.jme3.app.Application;
@@ -17,7 +17,7 @@ import com.jme3.bullet.PhysicsSpace;
  */
 public class SpawnState extends AbstractAppState {
 	private TargetFactory tarFac;
-	//private ObstacleFactory obFac;
+	private ObstacleFactory obFac;
 	private PenguinFactory pengFac;
 	
 	private float spawnBallTime;
@@ -44,13 +44,14 @@ public class SpawnState extends AbstractAppState {
 
 		initFactories();
 		tarFac.makeFish();
+		obFac.makeKillerWhale();
 	}
 	/**
 	 * This method initializes every factory.
 	 */
 	public void initFactories() {
 		tarFac = new TargetFactory(app.getAssetManager(), app.getRootNode(), phy);
-		//obFac = new ObstacleFactory(app.getAssetManager(), app.getRootNode(), phy);
+		obFac = new ObstacleFactory(app.getAssetManager(), app.getRootNode(), phy);
 		pengFac = new PenguinFactory(app.getAssetManager(), app.getRootNode(), phy);
 	}
 	
