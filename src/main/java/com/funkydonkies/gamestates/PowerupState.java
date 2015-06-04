@@ -1,7 +1,6 @@
 package com.funkydonkies.gamestates;
 
-import powerups.SuperSizePowerup;
-
+import com.funkydonkies.powerups.SuperSizePowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
