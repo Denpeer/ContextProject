@@ -8,6 +8,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 
 /**
  * The AppState that controls the basic aspects of the game, it is responsible for initializing the 
@@ -27,8 +28,11 @@ public class PlayState extends AbstractAppState {
 	private CurveState curveState;
 	private CameraState cameraState;
 	private SpawnState spawnState;
-	private ComboState comboState;
+	private Combo combo;
 	private DifficultyState difState;
+	private Node ballNode;
+	
+	private PowerupState powerUpState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -68,15 +72,20 @@ public class PlayState extends AbstractAppState {
 		curveState = new CurveState();
 		stateManage.attach(curveState);
 		
+		powerUpState = new PowerupState();
+		stateManage.attach(powerUpState);
+		
 		spawnState = new SpawnState();
 		stateManage.attach(spawnState);
 		
-		comboState = new ComboState();
-		stateManage.attach(comboState);
+		//comboState = new ComboState();
+		//stateManage.attach(comboState);
 		
 		difState = new DifficultyState();
 		stateManage.attach(difState);
 		
+		ballNode = new Node("balls");//*********
+		app.getRootNode().attachChild(ballNode);
 	}
 	
 	/**
@@ -97,6 +106,12 @@ public class PlayState extends AbstractAppState {
 		return bulletAppState.getPhysicsSpace();
 	}
 	
-	
+	/**
+	 * Returns the ball node, containing all the balls.
+	 * @return ballNode Node
+	 */
+	public Node getBallNode() {
+		return ballNode;
+	}
 	
 }

@@ -1,6 +1,5 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.gamestates.ComboState;
 import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -60,7 +59,6 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 				&& BALL_NAME.equals(event.getNodeB().getName())
 				|| BALL_NAME.equals(event.getNodeA().getName()) 
 						&& TARGET_NAME.equals(event.getNodeB().getName())) {
-			ComboState.incCombo();
 			respawn();
 		}
 	}

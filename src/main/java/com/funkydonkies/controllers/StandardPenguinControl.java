@@ -1,7 +1,6 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
-import com.funkydonkies.gamestates.ComboState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -144,7 +143,6 @@ public class StandardPenguinControl extends RigidBodyControl implements
 				&& OBSTACLE_NAME.equals(event.getNodeA().getName())) {
 			//todo olivier
 			
-			ComboState.resetCombo();
 		}
 	}
 }

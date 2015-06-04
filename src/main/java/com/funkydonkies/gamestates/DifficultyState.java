@@ -1,5 +1,7 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.core.App;
+import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -19,9 +21,18 @@ public class DifficultyState extends AbstractAppState {
 	private static float minSpawnBallTime = 1;
 	private final float speedMultiplier = 20;
 	
+	private Combo combo;
+	private App app;
+	
 	@Override
 	public final void initialize(final AppStateManager sManager, final Application appl) {
 		super.initialize(sManager, appl);
+		if (appl instanceof App) {
+			app = (App) appl;
+		} else {
+			throw new BadDynamicTypeException();
+		}
+		combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
 	
 	@Override
@@ -35,7 +46,7 @@ public class DifficultyState extends AbstractAppState {
 	 */
 	public void ballSpeedDifficulty() {
 		if (ballSpeed < MAX_BALL_SPEED) {
-			ballSpeed = INITIAL_BALL_SPEED + ComboState.getCombo() * speedMultiplier;
+			ballSpeed = INITIAL_BALL_SPEED + combo.getCombo() * speedMultiplier;
 		}		
 	}
 	
@@ -44,7 +55,7 @@ public class DifficultyState extends AbstractAppState {
 	 */
 	public void ballSpawnDifficulty() {
 		if (spawnBallTime > minSpawnBallTime) {
-			spawnBallTime = INITIAL_SPAWN_BALL_TIME - ComboState.getCombo();
+			spawnBallTime = INITIAL_SPAWN_BALL_TIME - combo.getCombo();
 		}	
 	}
 	

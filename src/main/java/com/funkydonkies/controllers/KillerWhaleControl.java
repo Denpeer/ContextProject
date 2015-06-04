@@ -1,6 +1,5 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.gamestates.ComboState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -97,7 +96,6 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 				&& BALL_NAME.equals(event.getNodeB().getName())
 				|| BALL_NAME.equals(event.getNodeA().getName()) 
 						&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
-			ComboState.resetCombo();
 		}
 	}
 

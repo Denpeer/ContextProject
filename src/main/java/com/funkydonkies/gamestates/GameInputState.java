@@ -22,9 +22,9 @@ public class GameInputState extends AbstractAppState {
 	private static final String MAPPING_TOGGLE_CAMERA = "Toggle Camera";
 	private static final String MAPPING_TOGGLE_CURVE_UPDATE = "Toggle Curve Update";
 	private static final String MAPPING_ENABLE_CAMERA_DETECTION = "Start Camera";
-	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
+	private static final String DISABLE_POWERUP_SIZE = "supersize";
 	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
-	
+	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
 	private static final float TIME_PER_BALL_SPAWN = 1f;
 	
 	private float time = TIME_PER_BALL_SPAWN;
@@ -35,10 +35,9 @@ public class GameInputState extends AbstractAppState {
 	private App app;
 	private InputManager inputManager;
 	private AppStateManager stateManager;
-	
-	private CurveState curveState;
 	private CameraState cameraState;
-
+	private CurveState curveState;
+	
 	@Override
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
@@ -51,10 +50,10 @@ public class GameInputState extends AbstractAppState {
 		}
 		this.inputManager = this.app.getInputManager();
 		this.stateManager = sManager;
-		
 		initKeys();
 		cameraState = stateManager.getState(CameraState.class);
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
+		cameraState = stateManager.getState(CameraState.class);
 		
 		// init stuff that is independent of whether state is PAUSED or RUNNING
 		// this.app.doSomething(); // call custom methods...
@@ -79,9 +78,10 @@ public class GameInputState extends AbstractAppState {
 		
 		//Control for spawning balls
 		inputManager.addMapping(MAPPING_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
-		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_T));
-		
-		inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
+		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_S));
+		inputManager.addMapping(DISABLE_POWERUP_SIZE, 
+				new KeyTrigger(KeyInput.KEY_P));
+				inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
 		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
 
 		inputManager.addListener(analogListener, INCREMENT_HEIGHT_MAPPING);
@@ -92,6 +92,7 @@ public class GameInputState extends AbstractAppState {
 //		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
 //				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_SPAWN_BALL);
+		inputManager.addListener(actionListener, DISABLE_POWERUP_SIZE);
 
 	}
 
@@ -111,6 +112,9 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_ENABLE_CAMERA_DETECTION) && !keyPressed) {
 				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
+			if (name.equals(DISABLE_POWERUP_SIZE) && !keyPressed) {
+				stateManager.getState(PowerupState.class).disableSuperSize();
+			}
 		}
 	};
 	
@@ -127,7 +131,7 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(INCREMENT_HEIGHT_MAPPING)) { // R KEY
 				curveState.getSplineCurve().incrementPoints();
 			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) { // F KEY
-				curveState.getSplineCurve().incDecPoints();
+				curveState.getSplineCurve().decrementPoints();
 			}
 		}
 	};
