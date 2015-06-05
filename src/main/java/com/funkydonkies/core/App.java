@@ -28,11 +28,9 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(final float tpf) {
-
 	}
 
 	@Override
 	public void simpleRender(final RenderManager rm) {
-
 	}
 }

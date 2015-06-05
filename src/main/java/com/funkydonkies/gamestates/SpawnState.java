@@ -12,8 +12,6 @@ import com.jme3.bullet.PhysicsSpace;
 
 /**
  * This class takes care of spawning most gameObjects.
- * @author SDumasy
- *
  */
 public class SpawnState extends AbstractAppState {
 	private TargetFactory tarFac;

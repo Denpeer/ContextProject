@@ -41,7 +41,7 @@ public class SplineCurve extends Spline {
 		curvePoints = CurveState.testPoints();
 	}
 	
-
+ 
 	
 	/**
 	 * This method draws the curve.
