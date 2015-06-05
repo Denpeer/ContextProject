@@ -23,6 +23,7 @@ public class PowerupTier1 extends AbstractPowerup {
 		if (enabled) {
 			enableSuperSize();
 			enableIncreasedSpawnSpeed();
+			
 		} else {
 			
 		}

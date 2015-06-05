@@ -19,7 +19,8 @@ import com.jme3.scene.shape.Sphere;
  */
 public class PenguinFactory {
 	private static final int SAMPLES = 20;
-	private static final float DEFAULT_RADIUS = 4f;
+	public static final float DEFAULT_RADIUS = 4f;
+	public static final String STANDARD_PENGUIN_NAME = "standardPenguin";
 	
 	private AssetManager assetManager;
 	private Node penguinNode;
@@ -68,7 +69,7 @@ public class PenguinFactory {
 	 */
 	public StandardPenguin makeStandardPenguin() {
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final StandardPenguin standardPenguin = new StandardPenguin("standardPenguin", mesh, penguinNode, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
+		final StandardPenguin standardPenguin = new StandardPenguin(STANDARD_PENGUIN_NAME, mesh, penguinNode, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
 		return standardPenguin;
 	}
 	

@@ -113,8 +113,8 @@ public class StandardPenguinControl extends RigidBodyControl implements
 	 * @param event a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		curveCollision(event);
-		whaleCollision(event);
+//		curveCollision(event);
+//		whaleCollision(event);
 	}
 
 	/**

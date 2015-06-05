@@ -24,6 +24,7 @@ public class SplineCurve extends Spline {
 	private static final int SEGMENTPOINTS_PER_CONTROLPOINT = 9;
 	private static final int TOTAL_POINTS_PER_CONTROLPOINT = 10;
 	private static final float SCALE_POINTS = 0.1f;
+	public static final String CURVE_NAME = "curve";
 	private Vector3f[] curvePoints;
 
 	private Geometry curveGeom;
@@ -37,7 +38,7 @@ public class SplineCurve extends Spline {
 	 */
 	public SplineCurve(final SplineType splineType, final boolean cycle) {
 		super(splineType, CurveState.testPoints(), TENSION, cycle);
-		curveGeom = new Geometry("curve");
+		curveGeom = new Geometry(CURVE_NAME);
 		curvePoints = CurveState.testPoints();
 	}
 	

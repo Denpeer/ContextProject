@@ -5,7 +5,8 @@ import com.jme3.app.state.AppStateManager;
 
 public class PowerupTier2 extends AbstractPowerup {
 	private static float INVERT_TIME = 5;
-
+	
+	private SnowballPowerup snowBall;
 	private InvertControlsPowerup invertControls;
 	
 	@Override
@@ -14,6 +15,9 @@ public class PowerupTier2 extends AbstractPowerup {
 		
 		invertControls = new InvertControlsPowerup();
 		stateManager.attach(invertControls);
+		
+		snowBall = new SnowballPowerup();
+		stateManager.attach(snowBall);
 	}
 	
 	@Override
@@ -21,8 +25,10 @@ public class PowerupTier2 extends AbstractPowerup {
 		super.setEnabled(enabled);
 		if (enabled) {
 			invertControls.setEnabled(true);
+			snowBall.setEnabled(true);
 		} else {
 			invertControls.setEnabled(false);
+			snowBall.setEnabled(false);
 		}
 	}
 	
