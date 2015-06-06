@@ -3,7 +3,7 @@ package com.funkydonkies.geometrys.targets;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import com.funkydonkies.geometrys.targets.Fish;
+import com.funkydonkies.geometries.targets.Fish;
 
 import org.junit.Test;
 

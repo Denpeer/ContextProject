@@ -1,4 +1,4 @@
-package com.funkydonkies.geometrys.targets;
+package com.funkydonkies.geometries.targets;
 
 import com.funkydonkies.controllers.KillerWhaleControl;
 import com.jme3.bullet.PhysicsSpace;

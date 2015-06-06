@@ -1,4 +1,4 @@
-package com.funkydonkies.gamestates;
+package com.funkydonkies.appstates;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
@@ -26,7 +26,7 @@ public class PlayState extends AbstractAppState {
 	private GameInputState gameInputState;
 	private CurveState curveState;
 	private CameraState cameraState;
-	private SpawnState spawnState;
+	private SpawnState2 spawnState;
 	private ComboState comboState;
 	private DifficultyState difState;
 	
@@ -74,7 +74,7 @@ public class PlayState extends AbstractAppState {
 		curveState = new CurveState();
 		stateManage.attach(curveState);
 		
-		spawnState = new SpawnState();
+		spawnState = new SpawnState2();
 		stateManage.attach(spawnState);
 		
 		comboState = new ComboState();

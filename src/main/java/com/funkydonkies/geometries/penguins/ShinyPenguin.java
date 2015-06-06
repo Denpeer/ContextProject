@@ -1,4 +1,4 @@
-package com.funkydonkies.geometrys.penguins;
+package com.funkydonkies.geometries.penguins;
 
 
 import com.funkydonkies.controllers.KillerWhaleControl;
@@ -9,19 +9,21 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 
 /**
- * This class represent the fat penguin.
+ * This class represents the shiny penguin class.
+ * @author SDumasy
+ *
  */
-public class FatPenguin extends Geometry {
+public class ShinyPenguin extends Geometry {
 	
 	/**
 	 * The constructor of the class.
-	 * @param name the name of the FatPenguin
-	 * @param mesh the mesh of the FatPenguin
-	 * @param mat the material of the FatPenguin
-	 * @param rootNode the rootNode of the FatPenguin
+	 * @param name the name of the shiny Penguin
+	 * @param mesh the mesh of the shiny Penguin
+	 * @param mat the material of the shiny Penguin
+	 * @param rootNode the rootNode of the shiny Penguin
 	 * @param phy the physics space
 	 */
-	public FatPenguin(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace phy) {
+	public ShinyPenguin(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace phy) {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);

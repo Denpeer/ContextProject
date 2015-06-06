@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 
-import com.funkydonkies.geometrys.obstacles.PolarBear;
+import com.funkydonkies.geometries.obstacles.PolarBear;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Mesh;

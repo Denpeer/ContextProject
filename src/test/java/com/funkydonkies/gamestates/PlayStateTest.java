@@ -7,6 +7,13 @@ import static org.mockito.Mockito.spy;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.funkydonkies.appstates.CameraState;
+import com.funkydonkies.appstates.ComboState;
+import com.funkydonkies.appstates.CurveState;
+import com.funkydonkies.appstates.DifficultyState;
+import com.funkydonkies.appstates.GameInputState;
+import com.funkydonkies.appstates.PlayState;
+import com.funkydonkies.appstates.SpawnState;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.jme3.app.Application;

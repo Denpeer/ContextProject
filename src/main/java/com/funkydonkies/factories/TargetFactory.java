@@ -1,8 +1,8 @@
 package com.funkydonkies.factories;
 
-import com.funkydonkies.geometrys.targets.Fish;
-import com.funkydonkies.geometrys.targets.Krill;
-import com.funkydonkies.geometrys.targets.Squid;
+import com.funkydonkies.geometries.targets.Fish;
+import com.funkydonkies.geometries.targets.Krill;
+import com.funkydonkies.geometries.targets.Squid;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;

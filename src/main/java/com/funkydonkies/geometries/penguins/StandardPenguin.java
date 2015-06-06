@@ -1,4 +1,4 @@
-package com.funkydonkies.geometrys.penguins;
+package com.funkydonkies.geometries.penguins;
 
 
 import com.funkydonkies.controllers.StandardPenguinControl;

@@ -8,12 +8,15 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.doNothing;
 
 
+
+
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.funkydonkies.geometrys.obstacles.KillerWhale;
-import com.funkydonkies.geometrys.obstacles.PolarBear;
-import com.funkydonkies.geometrys.obstacles.SeaLion;
+import com.funkydonkies.geometries.obstacles.KillerWhale;
+import com.funkydonkies.geometries.obstacles.PolarBear;
+import com.funkydonkies.geometries.obstacles.SeaLion;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;

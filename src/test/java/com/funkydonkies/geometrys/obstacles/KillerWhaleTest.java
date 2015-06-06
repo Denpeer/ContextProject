@@ -3,7 +3,7 @@ package com.funkydonkies.geometrys.obstacles;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import com.funkydonkies.geometrys.obstacles.KillerWhale;
+import com.funkydonkies.geometries.obstacles.KillerWhale;
 
 import org.junit.Test;
 

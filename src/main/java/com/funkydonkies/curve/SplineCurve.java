@@ -1,6 +1,6 @@
 package com.funkydonkies.curve;
 
-import com.funkydonkies.gamestates.CurveState;
+import com.funkydonkies.appstates.CurveState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;

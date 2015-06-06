@@ -1,4 +1,4 @@
-package com.funkydonkies.gamestates;
+package com.funkydonkies.appstates;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;

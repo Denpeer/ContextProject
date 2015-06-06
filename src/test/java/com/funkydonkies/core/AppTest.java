@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.appstates.PlayState;
 /**
  * The tests for app.
  */

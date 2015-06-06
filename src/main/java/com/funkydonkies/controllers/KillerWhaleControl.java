@@ -1,6 +1,6 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.gamestates.ComboState;
+import com.funkydonkies.appstates.ComboState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -12,7 +12,7 @@ import com.jme3.renderer.ViewPort;
 /**
  * This is a control to move floating spatials along the x- and y axis with a constant speed.
  */
-public class KillerWhaleControl extends RigidBodyControl implements PhysicsCollisionListener{
+public class KillerWhaleControl extends RigidBodyControl implements PhysicsCollisionListener {
 	private double speed;
 	private boolean moveUpOrRight;
 	private boolean moveHorizontally;
@@ -23,13 +23,11 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	
 	/**
 	 * The constructor of the control.	
-	 * @param mass the mass of the spatial
 	 * @param sp the constant speed for the spatial
 	 * @param moveHor a boolean to check if the spatial moves horizontal or vertical
 	 * @param moveUpRight a boolean to check if the spatial moves right or left
 	 */
-	public KillerWhaleControl(final float mass, final double sp,
-			final boolean moveHor, final boolean moveUpRight) {
+	public KillerWhaleControl(final float mass, final double sp, final boolean moveHor, final boolean moveUpRight) {
 		super(mass);
 		this.speed = sp;
 		moveHorizontally = moveHor;
@@ -71,7 +69,6 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 			} else {
 				loc = new Vector3f(vec.getX(), (float) (vec.getY() - speed), vec.getZ());
 			}
-			spatial.setLocalTranslation(loc);
 			this.setPhysicsLocation(loc);
 		}
 

@@ -1,4 +1,4 @@
-package com.funkydonkies.gamestates;
+package com.funkydonkies.appstates;
 
 import java.util.Arrays;
 

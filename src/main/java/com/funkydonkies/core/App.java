@@ -1,6 +1,6 @@
 package com.funkydonkies.core;
 
-import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.appstates.PlayState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
 /**

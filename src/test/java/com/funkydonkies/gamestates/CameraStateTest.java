@@ -10,6 +10,7 @@ import java.awt.GraphicsEnvironment;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.appstates.CameraState;
 import com.funkydonkies.camdetect.MyFrame;
 import com.funkydonkies.core.App;
 import com.jme3.app.state.AppStateManager;

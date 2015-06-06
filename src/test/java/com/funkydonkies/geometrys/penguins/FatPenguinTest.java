@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 
+import com.funkydonkies.geometries.penguins.FatPenguin;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Node;

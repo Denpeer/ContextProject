@@ -1,8 +1,8 @@
 package com.funkydonkies.factories;
 
-import com.funkydonkies.geometrys.penguins.FatPenguin;
-import com.funkydonkies.geometrys.penguins.ShinyPenguin;
-import com.funkydonkies.geometrys.penguins.StandardPenguin;
+import com.funkydonkies.geometries.penguins.FatPenguin;
+import com.funkydonkies.geometries.penguins.ShinyPenguin;
+import com.funkydonkies.geometries.penguins.StandardPenguin;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;

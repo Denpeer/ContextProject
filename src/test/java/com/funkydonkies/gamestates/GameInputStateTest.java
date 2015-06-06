@@ -10,6 +10,9 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.appstates.CameraState;
+import com.funkydonkies.appstates.CurveState;
+import com.funkydonkies.appstates.GameInputState;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.jme3.app.SimpleApplication;

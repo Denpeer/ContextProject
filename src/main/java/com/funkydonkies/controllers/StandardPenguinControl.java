@@ -1,8 +1,8 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.appstates.ComboState;
+import com.funkydonkies.appstates.DifficultyState;
 import com.funkydonkies.curve.CustomCurveMesh;
-import com.funkydonkies.gamestates.ComboState;
-import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
