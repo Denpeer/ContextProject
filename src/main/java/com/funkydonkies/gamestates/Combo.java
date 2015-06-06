@@ -1,5 +1,8 @@
-package com.funkydonkies.w4v3;
+package com.funkydonkies.gamestates;
 
+import java.util.Observable;
+
+import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -9,7 +12,7 @@ import com.jme3.scene.Node;
  * Handles the combo in game.
  * (displaying, increasing, resetting etc)
  */
-public class Combo {
+public class Combo extends Observable {
 	private static final Vector3f COUNTER_LOCATION = new Vector3f(300, 0, 0);
 	private static final int TEXT_SIZE = 30;
 	private int currentCombo;
@@ -21,14 +24,27 @@ public class Combo {
 	 * @param node guiNode, to attach the HUD counter
 	 * @param text BitMapText, to store the HUD text
 	 */
-	public Combo(final Node node, final BitmapText text) {
+	public Combo(final Node node, AssetManager assetManager) {
 		currentCombo = 0;
 		guiNode = node;
-		comboText = text;
+		comboText = createText(assetManager);
+	}
+	
+	public BitmapText createText(AssetManager assetManager) {
+		comboText = new BitmapText(
+				assetManager.loadFont("Interface/Fonts/Default.fnt"), false);
 		comboText.setSize(TEXT_SIZE);
 		comboText.setColor(ColorRGBA.Red);
 		COUNTER_LOCATION.y = comboText.getLineHeight();
 		comboText.setLocalTranslation(COUNTER_LOCATION);
+		return comboText;
+	}
+	
+	/**
+	 * The update method of the comboState.
+	 * @param tpf the time per frame
+	 */
+	public void update(final float tpf) {
 		updateText();
 	}
 	

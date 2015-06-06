@@ -8,9 +8,9 @@ import static org.mockito.Mockito.mock;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.funkydonkies.obstacles.MovingBox;
-import com.funkydonkies.obstacles.ObstacleFactory;
-import com.funkydonkies.obstacles.Target;
+import com.funkydonkies.factories.ObstacleFactory;
+import com.funkydonkies.geometrys.Target;
+import com.funkydonkies.geometrys.obstacles.KillerWhale;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
@@ -54,7 +54,7 @@ public class ObstacleFactoryTest {
 	 */
 	@Test
 	public final void instantiateMovingBox() {
-		final MovingBox mBox = obF.makeMovingBox(node, assetManager);
+		final KillerWhale mBox = obF.makeMovingBox(node, assetManager);
 		assertNotNull(mBox);
 		assertTrue(obstacleDepth == mBox.getDepth());
 		assertTrue(obstacleHeight == mBox.getHeight());

@@ -8,7 +8,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.PhysicsController;
+import com.funkydonkies.controllers.StandardPenguinControl;
+import com.funkydonkies.geometrys.Penguin;
 import com.funkydonkies.w4v3.Ball;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
@@ -28,9 +29,9 @@ public class BallTest {
 	private static final Vector3f DEFAULT_SPAWN_LOCATION = new Vector3f(10f, 15f, 0f);;
 	private static final Vector3f DEFAULT_INITIAL_SPEED = new Vector3f(5, -22, 0);;
 	
-	private Ball ball;
+	private Penguin ball;
 	private Material mat;
-	private PhysicsController phy;
+	private StandardPenguinControl phy;
 	private Geometry g;
 	private Vector3f speed;
 	private Vector3f loc;
@@ -44,12 +45,12 @@ public class BallTest {
 	 */
 	@Before
 	public final void setUp() {
-		phy = mock(PhysicsController.class);
+		phy = mock(StandardPenguinControl.class);
 		mat = mock(Material.class);
 //		ball = new Ball(0.5f, assetManager);
 		shape = SHAPE;
 		g = mock(Geometry.class);
-		ball = new Ball(shape, g, mat, phy);
+		ball = new Penguin(shape, g, mat, phy);
 		speed = new Vector3f(1, 1, 1);
 		loc = new Vector3f(2f, 2f, 2f);
 		root = mock(Node.class);
@@ -132,8 +133,8 @@ public class BallTest {
 	@Test
 	public final void testSpawnUsingDefaults() {
 		ball.spawn(root, space, true);
-		verify(phy).setPhysicsLocation(Ball.DEFAULT_SPAWN_LOCATION);
-		verify(phy).setLinearVelocity(Ball.DEFAULT_INITIAL_SPEED);
+		verify(phy).setPhysicsLocation(Penguin.DEFAULT_SPAWN_LOCATION);
+		verify(phy).setLinearVelocity(Penguin.DEFAULT_INITIAL_SPEED);
 		verify(g).addControl(phy);
 		verify(space).add(phy);
 		verify(root).attachChild(g);
@@ -144,7 +145,7 @@ public class BallTest {
 	 */
 	@Test
 	public final void testSpawnWithoutPhysics() {
-		ball = new Ball(shape, g, mat, null);
+		ball = new Penguin(shape, g, mat, null);
 		ball.spawn(root, null, false);
 		verifyNoMoreInteractions(phy);
 		verifyNoMoreInteractions(space);

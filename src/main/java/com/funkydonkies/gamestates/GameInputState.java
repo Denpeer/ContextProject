@@ -1,12 +1,10 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -24,10 +22,14 @@ public class GameInputState extends AbstractAppState {
 	private static final String MAPPING_TOGGLE_CAMERA = "Toggle Camera";
 	private static final String MAPPING_TOGGLE_CURVE_UPDATE = "Toggle Curve Update";
 	private static final String MAPPING_ENABLE_CAMERA_DETECTION = "Start Camera";
-	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
+	private static final String DISABLE_POWERUP_SIZE = "supersize";
 	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
-	
+	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
 	private static final float TIME_PER_BALL_SPAWN = 1f;
+	
+	private static final String ENABLE_TIER_ONE = "tier1";
+	private static final String ENABLE_TIER_TWO = "tier2";
+	private static final String ENABLE_TIER_THREE = "tier3";
 	
 	private float time = TIME_PER_BALL_SPAWN;
 	private float timeCount = 0;
@@ -36,12 +38,10 @@ public class GameInputState extends AbstractAppState {
 	
 	private App app;
 	private InputManager inputManager;
-	private AssetManager assetManager;
 	private AppStateManager stateManager;
-	
-	private CurveState curveState;
 	private CameraState cameraState;
-
+	private CurveState curveState;
+	
 	@Override
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
@@ -53,12 +53,11 @@ public class GameInputState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.inputManager = this.app.getInputManager();
-		this.assetManager = this.app.getAssetManager();
 		this.stateManager = sManager;
-		
 		initKeys();
 		cameraState = stateManager.getState(CameraState.class);
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
+		cameraState = stateManager.getState(CameraState.class);
 		
 		// init stuff that is independent of whether state is PAUSED or RUNNING
 		// this.app.doSomething(); // call custom methods...
@@ -68,15 +67,11 @@ public class GameInputState extends AbstractAppState {
 	// Note that update is only called while the state is both attached and enabled
 	@Override
 	public final void update(final float tpf) {
-		timeCount += tpf;
+		
 		if (curveState == null) {
 			curveState = stateManager.getState(CurveState.class);
 		}
-		if (timeCount > TIME_PER_BALL_SPAWN) {
-			timeCount = 0;
-			final Ball ball = new Ball(assetManager);
-			ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
-		}
+
 	}
 
 	/** Custom Keybinding: Map named actions to inputs. */
@@ -88,9 +83,13 @@ public class GameInputState extends AbstractAppState {
 		//Control for spawning balls
 		inputManager.addMapping(MAPPING_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_S));
-		
-		inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
+		inputManager.addMapping(DISABLE_POWERUP_SIZE, 
+				new KeyTrigger(KeyInput.KEY_P));
+				inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
 		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
+		inputManager.addMapping(ENABLE_TIER_ONE, new KeyTrigger(KeyInput.KEY_1));
+		inputManager.addMapping(ENABLE_TIER_TWO, new KeyTrigger(KeyInput.KEY_2));
+		inputManager.addMapping(ENABLE_TIER_THREE, new KeyTrigger(KeyInput.KEY_3));
 
 		inputManager.addListener(analogListener, INCREMENT_HEIGHT_MAPPING);
 		inputManager.addListener(analogListener, DECREMENT_HEIGHT_MAPPING);
@@ -100,6 +99,10 @@ public class GameInputState extends AbstractAppState {
 //		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
 //				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_SPAWN_BALL);
+		
+		inputManager.addListener(actionListener, ENABLE_TIER_ONE);
+		inputManager.addListener(actionListener, ENABLE_TIER_TWO);
+		inputManager.addListener(actionListener, ENABLE_TIER_THREE);
 
 	}
 
@@ -119,6 +122,9 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_ENABLE_CAMERA_DETECTION) && !keyPressed) {
 				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
+			if (name.equals(DISABLE_POWERUP_SIZE) && !keyPressed) {
+//				stateManager.getState(PowerupState.class).disableSuperSize();
+			}
 		}
 	};
 	
@@ -127,8 +133,8 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
 				timeCount += tpf;
 				if (timeCount > time) {
-					final Ball ball = new Ball(assetManager);
-					ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
+					//final Penguin ball = new Penguin(assetManager);
+					//ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
 					timeCount = 0;
 				}
 			}

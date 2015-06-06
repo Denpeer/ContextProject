@@ -9,8 +9,10 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.TargetControl;
+import com.funkydonkies.controllers.FishControl;
+import com.funkydonkies.factories.ObstacleFactory;
 import com.funkydonkies.gamestates.CurveState;
+import com.funkydonkies.geometrys.Target;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Node;
@@ -48,7 +50,7 @@ public class TargetTest {
 	public final void drawTest() {
 		tar.draw(mat, psySpace);
 		verify(rootNode).attachChild(any(Spatial.class));
-		verify(psySpace).add(any(TargetControl.class));
+		verify(psySpace).add(any(FishControl.class));
 	}
 
 	/**

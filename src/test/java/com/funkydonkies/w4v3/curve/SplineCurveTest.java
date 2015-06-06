@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.funkydonkies.curve.SplineCurve;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
