@@ -69,10 +69,10 @@ public class PenguinFactory {
 	 * @return a standard penguin object
 	 */
 	public StandardPenguin makeStandardPenguin() {
-		Node node = new Node("penguin");
+		Node node = new Node(STANDARD_PENGUIN_NAME);
 		penguinNode.attachChild(node);
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final StandardPenguin standardPenguin = new StandardPenguin(STANDARD_PENGUIN_NAME, mesh, node, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS, snowBallMaterial);
+		final StandardPenguin standardPenguin = new StandardPenguin("penguin", mesh, node, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS, snowBallMaterial);
 		return standardPenguin;
 	}
 	

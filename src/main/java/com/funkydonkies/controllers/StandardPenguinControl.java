@@ -1,6 +1,7 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
+import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -16,10 +17,10 @@ import com.jme3.math.Vector3f;
  */
 public class StandardPenguinControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
-	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
-	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
+	protected static final float MAX_DEVIANCE_ON_Z = 0.1f;
+	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
 	private static final String OBSTACLE_NAME = "killerWhale";
-	private static final String PENGUIN_NAME = "standardPenguin";
+	private static final String PENGUIN_NAME = PenguinFactory.STANDARD_PENGUIN_NAME;
 	private static final String CURVE_NAME = "curve";
 	private Vector3f initialSpawn;
 	private Vector3f initialSpeed;
@@ -75,19 +76,19 @@ public class StandardPenguinControl extends RigidBodyControl implements
 	 */
 	public void prePhysicsTick(final PhysicsSpace space, 
 			final float tpf) {
-		final Vector3f loc = getPhysicsLocation();
-		final Vector3f angularvel = getAngularVelocity();
+		final Vector3f loc = this.getPhysicsLocation();
+		final Vector3f angularvel = this.getAngularVelocity();
 		
 		//velocity.z = 0;
 		if (Math.abs(loc.z) > MAX_DEVIANCE_ON_Z) {
 			loc.z = 0;
-			setPhysicsLocation(loc);
+			this.setPhysicsLocation(loc);
 		}
 		if (Math.abs(angularvel.x) > MAX_ROTATIONAL_DEVIANCE 
 				|| Math.abs(angularvel.y) > MAX_ROTATIONAL_DEVIANCE) {
 			angularvel.y = 0;
 			angularvel.x = 0;
-			setAngularVelocity(angularvel);
+			this.setAngularVelocity(angularvel);
 		}
 		
 	}
@@ -114,7 +115,7 @@ public class StandardPenguinControl extends RigidBodyControl implements
 	 * @param event a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-//		curveCollision(event);
+		curveCollision(event);
 //		whaleCollision(event);
 	}
 
@@ -129,7 +130,7 @@ public class StandardPenguinControl extends RigidBodyControl implements
 			final Vector3f velocity = getLinearVelocity();
 			if (velocity.x <= 1) {
 				velocity.x = 2;
-				setLinearVelocity(velocity);
+				this.setLinearVelocity(velocity);
 			}
 		}
 	}

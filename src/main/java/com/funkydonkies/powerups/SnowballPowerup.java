@@ -14,10 +14,9 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.scene.Geometry;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
 
 public class SnowballPowerup extends AbstractPowerup implements PhysicsCollisionListener {
 	private App app;
@@ -45,7 +44,7 @@ public class SnowballPowerup extends AbstractPowerup implements PhysicsCollision
 		
 		if (enabled) {
 			for (Spatial penguin : penguins) {
-				System.out.println(penguin.getName());
+				Vector3f speed = ((Node) penguin).getControl(StandardPenguinControl.class).getLinearVelocity();
 				((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(false);
 				
 				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
@@ -60,6 +59,7 @@ public class SnowballPowerup extends AbstractPowerup implements PhysicsCollision
 							new SphereCollisionShape(5), 1f);
 					penguin.addControl(snowBallControl);
 					sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
+					snowBallControl.setLinearVelocity(speed);
 					System.out.println("Added snowballControl");
 				} else {
 					SBControl.setEnabled(true);

@@ -10,14 +10,15 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 public class GrowingSnowballControl extends StandardPenguinControl implements
 		PhysicsCollisionListener, PhysicsTickListener {
-	private static final float SCALE_UP_FACTOR = 0.5f;
-	private static float THRESHOLD = 1;
+	private static final float SCALE_UP_FACTOR = 0.3f;
+	private static float THRESHOLD = 0.5f;
 	private float timer = 0;
 	private boolean canScale = false;
 	
@@ -34,13 +35,11 @@ public class GrowingSnowballControl extends StandardPenguinControl implements
 	
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
-		super.collision(event);
 		if (event.getNodeA().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
 				&& event.getNodeB().getName().equals(SplineCurve.CURVE_NAME)
 				|| event.getNodeB().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
 				&&  event.getNodeA().getName().equals(SplineCurve.CURVE_NAME)) {
 			if (canScale) {
-				System.out.println("scaleup");
 				canScale = false;
 			}
 		}
@@ -49,18 +48,15 @@ public class GrowingSnowballControl extends StandardPenguinControl implements
 	public void update(float tpf) {
 		super.update(tpf);
 		timer += tpf;
-		if (timer > 1) {
-//			spatial.scale(1.1f);
+		if (timer > THRESHOLD) {
 			timer = 0;
 			canScale = true;
 			Spatial snowBall = ((Node) spatial).getChild("snowball");
-//			snowBall.scale(1.1f);
 			((Snowball) snowBall).setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
 			Vector3f loc = snowBall.getLocalTranslation();
 			loc.x = loc.x - 0.5f * SCALE_UP_FACTOR;
 			loc.y = loc.y - 0.5f * SCALE_UP_FACTOR;
 			CollisionShape s = getCollisionShape();
-//			s.setScale(new Vector3f(1.1f, 1.1f, 1.1f));
 			
 			float radius = ((SphereCollisionShape) s).getRadius();
 			setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * 0.5f));
@@ -71,4 +67,27 @@ public class GrowingSnowballControl extends StandardPenguinControl implements
 	public void scaleBack() {
 		spatial.scale(1 / spatial.getWorldScale().x);
 	}
+	
+	@Override
+	public void physicsTick(PhysicsSpace space, float tpf) {
+		super.physicsTick(space, tpf);
+	}
+	
+	/**
+	 * Performed before each physics tick.
+	 * Sets the z location to 0 to restrict the object from moving on the 
+	 * z-axis.
+	 * @param space The physics space 
+	 * @param tpf time per frame in seconds (time since last frame) 
+	 * 	for normalizing in faster computers 
+	 */
+	public void prePhysicsTick(final PhysicsSpace space, 
+			final float tpf) {
+		super.prePhysicsTick(space, tpf);
+		Vector3f a = getAngularVelocity();
+		a.x = 0;
+		a.y = 0;
+		setAngularVelocity(a);
+	}
+	
 }
