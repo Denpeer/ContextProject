@@ -4,6 +4,7 @@ import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.obstacles.MovingBox;
 import com.funkydonkies.obstacles.ObstacleFactory;
 import com.funkydonkies.obstacles.Target;
+import com.funkydonkies.sounds.SoundState;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Combo;
 import com.jme3.app.Application;
@@ -36,6 +37,7 @@ public class PlayState extends AbstractAppState {
 	private GameInputState gameInputState;
 	private CurveState spController;
 	private CameraState cameraState;
+	private SoundState soundState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -75,6 +77,9 @@ public class PlayState extends AbstractAppState {
 		
 		spController = new CurveState();
 		stateManager.attach(spController);
+		
+		soundState = new SoundState();
+		stateManager.attach(soundState);
 
 		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);

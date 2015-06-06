@@ -1,6 +1,9 @@
 package com.funkydonkies.gamestates;
 
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.sounds.PenguinSpawnSound;
+import com.funkydonkies.sounds.SoundPlayer;
+import com.funkydonkies.sounds.SoundState;
 import com.funkydonkies.w4v3.App;
 import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
@@ -41,6 +44,9 @@ public class GameInputState extends AbstractAppState {
 	
 	private CurveState curveState;
 	private CameraState cameraState;
+	
+	private SoundState soundState;
+	private PenguinSpawnSound penguinSpawnSound;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -55,6 +61,8 @@ public class GameInputState extends AbstractAppState {
 		this.inputManager = this.app.getInputManager();
 		this.assetManager = this.app.getAssetManager();
 		this.stateManager = sManager;
+		this.soundState = stateManager.getState(SoundState.class);
+		this.penguinSpawnSound = new PenguinSpawnSound();
 		
 		initKeys();
 		cameraState = stateManager.getState(CameraState.class);
@@ -76,6 +84,7 @@ public class GameInputState extends AbstractAppState {
 			timeCount = 0;
 			final Ball ball = new Ball(assetManager);
 			ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
+			soundState.queueSound(penguinSpawnSound);
 		}
 	}
 
