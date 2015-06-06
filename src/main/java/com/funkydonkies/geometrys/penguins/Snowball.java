@@ -52,19 +52,24 @@ public class Snowball extends Node {
 	    material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 	    initSpatial();
 	    updateSpatial();
+	    setName("snowball");
 	}
 
 	private void initSpatial() {
 	    generateImage();
 	    Quad q = new Quad(10, 10);
-	    geometry = new Geometry("circle", q);
-	    geometry.rotate(-3.1416f / 2, 0, 0);
+	    geometry = new Geometry("sball", q);
+	    geometry.rotate(0, 0, 0);
 	    geometry.setMaterial(material);
 	    this.attachChild(geometry);
 	}
 
 	private void updateSpatial() {
 	    geometry.setLocalScale(radius / 10f, radius / 10f, radius / 10f);
+	}
+	
+	public float getRadius() {
+		return radius;
 	}
 
 	public void generateImage() {
