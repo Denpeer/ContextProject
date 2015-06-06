@@ -77,6 +77,7 @@ public class StandardPenguinControl extends RigidBodyControl implements
 			final float tpf) {
 		final Vector3f loc = getPhysicsLocation();
 		final Vector3f angularvel = getAngularVelocity();
+		
 		//velocity.z = 0;
 		if (Math.abs(loc.z) > MAX_DEVIANCE_ON_Z) {
 			loc.z = 0;

@@ -3,10 +3,8 @@ package com.funkydonkies.powerups;
 
 import java.util.List;
 
-import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.factories.PenguinFactory;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -14,10 +12,10 @@ import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Sphere;
 
 public class SnowballPowerup extends AbstractPowerup implements PhysicsCollisionListener {
@@ -46,26 +44,28 @@ public class SnowballPowerup extends AbstractPowerup implements PhysicsCollision
 		
 		if (enabled) {
 			for (Spatial penguin : penguins) {
-				penguin.getControl(StandardPenguinControl.class).setEnabled(false);
+				System.out.println(penguin.getName());
+//				((Node) penguin).getChild("standardPenguin").getControl(StandardPenguinControl.class).setEnabled(false);
 				
-				GrowingSnowballControl SBControl = penguin.getParent()
-						.getControl(GrowingSnowballControl.class);
+				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
 				//Check if the penguin already has a snowballcontrol
 				if (SBControl == null) {
-					Sphere shape = new Sphere(20, 20, 1);
+					final Sphere shape = new Sphere(20, 20, 3);
 					Geometry snowball = new Geometry("snowball", shape);
 					Material snowMaterial = new Material(app.getAssetManager(), 
 							"Common/MatDefs/Misc/Unshaded.j3md");
 					snowMaterial.setColor("Color", ColorRGBA.White);
 					snowball.setMaterial(snowMaterial);
-					
-					Node parentNode = penguin.getParent();
-					parentNode.attachChild(snowball);
+					Vector3f snowballLoc = snowball.getLocalTranslation();
+					snowballLoc.z = -4f;
+					snowballLoc.x = -1.5f;
+					snowballLoc.y = -1;
+					snowball.setLocalTranslation(snowballLoc);
+					((Node) penguin).attachChild(snowball);
 					
 					GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
-							new SphereCollisionShape(penguin.getWorldScale().x 
-									* PenguinFactory.DEFAULT_RADIUS), 20f);
-					penguinNode.addControl(snowBallControl);
+							new SphereCollisionShape(20), 1f);
+					penguin.addControl(snowBallControl);
 					System.out.println("Added snowballControl");
 				} else {
 					SBControl.setEnabled(true);
@@ -76,6 +76,7 @@ public class SnowballPowerup extends AbstractPowerup implements PhysicsCollision
 			for (Spatial penguin : penguins) {
 				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
 				if (SBControl != null) {
+//					SBControl.scaleBack();
 					SBControl.setEnabled(false);
 				}
 			}

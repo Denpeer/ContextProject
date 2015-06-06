@@ -29,6 +29,7 @@ public class PenguinFactory {
 	private Material fatPenguinMaterial;
 	private Material shinyPenguinMaterial;
 	private Material standardPenguinMaterial;
+	private Material snowBallMaterial;
 	
 	/**
 	 * The constructor of the penguin factory.
@@ -68,8 +69,10 @@ public class PenguinFactory {
 	 * @return a standard penguin object
 	 */
 	public StandardPenguin makeStandardPenguin() {
+		Node node = new Node("penguin");
+		penguinNode.attachChild(node);
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final StandardPenguin standardPenguin = new StandardPenguin(STANDARD_PENGUIN_NAME, mesh, penguinNode, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
+		final StandardPenguin standardPenguin = new StandardPenguin(STANDARD_PENGUIN_NAME, mesh, node, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS, snowBallMaterial);
 		return standardPenguin;
 	}
 	
@@ -88,5 +91,8 @@ public class PenguinFactory {
 		
 		standardPenguinMaterial = new Material(assetManager, path);
 		standardPenguinMaterial.setColor(color, ColorRGBA.Cyan);
+		
+		snowBallMaterial = new Material(assetManager, path);
+		snowBallMaterial.setColor(color, ColorRGBA.White);
 	}
 }

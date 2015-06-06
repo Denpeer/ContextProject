@@ -24,7 +24,7 @@ public class PowerupTier2 extends AbstractPowerup {
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			invertControls.setEnabled(true);
+			//invertControls.setEnabled(true);
 			snowBall.setEnabled(true);
 		} else {
 			invertControls.setEnabled(false);
