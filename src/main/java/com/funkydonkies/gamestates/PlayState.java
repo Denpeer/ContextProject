@@ -1,5 +1,6 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.combo.Combo;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.jme3.app.Application;
@@ -30,7 +31,7 @@ public class PlayState extends AbstractAppState {
 	private Combo combo;
 	private Node penguinNode;
 	
-	private PowerupState powerUpState;
+	private DifficultyState powerUpState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -57,7 +58,6 @@ public class PlayState extends AbstractAppState {
 		handleBulletAppState();
 		initStates();
 		
-		combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
 	/**
 	 * This method initializes the states.
@@ -72,7 +72,7 @@ public class PlayState extends AbstractAppState {
 		curveState = new CurveState();
 		stateManage.attach(curveState);
 		
-		powerUpState = new PowerupState();
+		powerUpState = new DifficultyState();
 		stateManage.attach(powerUpState);
 		
 		spawnState = new SpawnState();
@@ -99,7 +99,7 @@ public class PlayState extends AbstractAppState {
 	 * Returns the physicsSpace of the application, taken from bulletAppState.
 	 * @return PhysicsSpace
 	 */
-	public static PhysicsSpace getPhysicsSpace() {
+	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
 	
@@ -107,4 +107,7 @@ public class PlayState extends AbstractAppState {
 		return combo;
 	}
 	
+	public Node getRootNode() {
+		return app.getRootNode();
+	}
 }

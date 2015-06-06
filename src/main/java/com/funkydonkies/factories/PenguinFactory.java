@@ -1,8 +1,10 @@
 package com.funkydonkies.factories;
 
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.geometrys.penguins.FatPenguin;
 import com.funkydonkies.geometrys.penguins.ShinyPenguin;
 import com.funkydonkies.geometrys.penguins.StandardPenguin;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
@@ -35,10 +37,10 @@ public class PenguinFactory {
 	 * @param rootN the main rootNode
 	 * @param phy the main physic location
 	 */
-	public PenguinFactory(final AssetManager assetM, final Node rootN, final PhysicsSpace phy) {
-		this.penguinNode = rootN;
-		this.assetManager = assetM;	
-		this.physicSpace = phy;
+	public PenguinFactory(final AppStateManager sm) {
+		this.penguinNode = sm.getState(PlayState.class).getRootNode();
+		this.assetManager = sm.getApplication().getAssetManager();	
+		this.physicSpace = sm.getState(PlayState.class).getPhysicsSpace();
 		makeMaterials();
 	}
 	

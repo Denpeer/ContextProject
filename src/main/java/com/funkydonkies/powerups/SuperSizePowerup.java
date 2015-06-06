@@ -6,6 +6,7 @@ import java.util.List;
 import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.gamestates.DisabledState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
@@ -17,7 +18,7 @@ import com.jme3.scene.Spatial;
 /**
  * Defines the behavior for sizing up the balls. 
  */
-public class SuperSizePowerup extends AbstractPowerup {
+public class SuperSizePowerup extends DisabledState {
 	private static final float STANDARD_SCALEUP = 2f;
 	private AppStateManager stateManager;
 	private App app;

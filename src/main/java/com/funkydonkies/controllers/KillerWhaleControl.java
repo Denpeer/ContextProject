@@ -1,5 +1,8 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.gamestates.DifficultyState;
+import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -13,6 +16,7 @@ import com.jme3.renderer.ViewPort;
  */
 public class KillerWhaleControl extends RigidBodyControl implements PhysicsCollisionListener{
 	private double speed;
+	private AppStateManager sm;
 	private boolean moveUpOrRight;
 	private boolean moveHorizontally;
 	private static final String BALL_NAME = "standardPenguin";
@@ -28,8 +32,9 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	 * @param moveUpRight a boolean to check if the spatial moves right or left
 	 */
 	public KillerWhaleControl(final float mass, final double sp,
-			final boolean moveHor, final boolean moveUpRight) {
+			final boolean moveHor, final boolean moveUpRight, AppStateManager asm) {
 		super(mass);
+		sm = asm;
 		this.speed = sp;
 		moveHorizontally = moveHor;
 		moveUpOrRight = moveUpRight;
@@ -75,7 +80,15 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 		}
 
 	}
-
+	/**
+	 * Set the physics space and add this controller as tick listener.
+	 * @param space takes a pre-defined jme3 physicsSpace
+	 */
+	@Override
+	public void setPhysicsSpace(final PhysicsSpace space) {
+		super.setPhysicsSpace(space);
+		space.addCollisionListener(this);
+	}
 	/**
 	 * The renderer for the control.
 	 * @param rm the renderManager 
@@ -92,10 +105,12 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	 * @param event PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
+
 		if (OBSTACLE_NAME.equals(event.getNodeA().getName()) 
 				&& BALL_NAME.equals(event.getNodeB().getName())
 				|| BALL_NAME.equals(event.getNodeA().getName()) 
 						&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
+			sm.getState(DifficultyState.class).resetDiff();
 		}
 	}
 

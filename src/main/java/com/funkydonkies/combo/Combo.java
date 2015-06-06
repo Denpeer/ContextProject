@@ -1,4 +1,4 @@
-package com.funkydonkies.gamestates;
+package com.funkydonkies.combo;
 
 import java.util.Observable;
 
@@ -13,10 +13,12 @@ import com.jme3.scene.Node;
  * (displaying, increasing, resetting etc)
  */
 public class Combo extends Observable {
-	private static final Vector3f COUNTER_LOCATION = new Vector3f(300, 0, 0);
+	private static final Vector3f COUNTER_LOCATION = new Vector3f(250, 100, 0);
 	private static final int TEXT_SIZE = 30;
 	private int currentCombo;
+	private int highestCombo;
 	private BitmapText comboText;
+	private BitmapText highestComboText;
 	private Node guiNode;
 	
 	/**
@@ -26,26 +28,30 @@ public class Combo extends Observable {
 	 */
 	public Combo(final Node node, AssetManager assetManager) {
 		currentCombo = 0;
+		highestCombo = 0;
 		guiNode = node;
-		comboText = createText(assetManager);
+		createCurrentComboText(assetManager);
+		createHighestComboText(assetManager);
+		updateText();
+		display();
 	}
 	
-	public BitmapText createText(AssetManager assetManager) {
+	public void createCurrentComboText(AssetManager assetManager) {
 		comboText = new BitmapText(
 				assetManager.loadFont("Interface/Fonts/Default.fnt"), false);
 		comboText.setSize(TEXT_SIZE);
 		comboText.setColor(ColorRGBA.Red);
 		COUNTER_LOCATION.y = comboText.getLineHeight();
 		comboText.setLocalTranslation(COUNTER_LOCATION);
-		return comboText;
 	}
 	
-	/**
-	 * The update method of the comboState.
-	 * @param tpf the time per frame
-	 */
-	public void update(final float tpf) {
-		updateText();
+	public void createHighestComboText(AssetManager assetManager) {
+		highestComboText = new BitmapText(
+				assetManager.loadFont("Interface/Fonts/Default.fnt"), false);
+		highestComboText.setSize(TEXT_SIZE);
+		highestComboText.setColor(ColorRGBA.Yellow);
+		COUNTER_LOCATION.y = highestComboText.getLineHeight();
+		highestComboText.setLocalTranslation(COUNTER_LOCATION.setX(500));
 	}
 	
 	/**
@@ -55,6 +61,7 @@ public class Combo extends Observable {
 	public int incCombo() {
 		currentCombo++;
 		updateText();
+		
 		return currentCombo;
 	}
 	
@@ -79,6 +86,10 @@ public class Combo extends Observable {
 	 */
 	public void updateText() {
 		comboText.setText("Current combo: " + (currentCombo));
+		if(currentCombo >= highestCombo){
+			highestCombo = currentCombo;
+			highestComboText.setText("Highest combo: " + (currentCombo));
+		}
 	}
 	
 	/**
@@ -87,5 +98,6 @@ public class Combo extends Observable {
 	 */
 	public void display() {
 		guiNode.attachChild(comboText);
+		guiNode.attachChild(highestComboText);
 	}
 }

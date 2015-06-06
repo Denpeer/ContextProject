@@ -1,77 +1,93 @@
 package com.funkydonkies.gamestates;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import com.funkydonkies.combo.Combo;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.powerups.SuperSizePowerup;
+import com.funkydonkies.tiers.Tier1;
+import com.funkydonkies.tiers.Tier2;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-/**
- * This state handles the difficulty of the game.
- * @author SDumasy
- *
- */
-public class DifficultyState extends AbstractAppState {
 
-	private static final float INITIAL_BALL_SPEED = 50;
-	private static float ballSpeed = INITIAL_BALL_SPEED;
-	private static final float MAX_BALL_SPEED = 250;
+/**
+ * This class controls the activation and deactivation of the different power ups.
+ */
+public class DifficultyState extends AbstractAppState implements Observer {
+	private static final float TIER_ONE_ACTIVATION = 5;
 	
-	private static final float INITIAL_SPAWN_BALL_TIME = 5;
-	private static float spawnBallTime = INITIAL_SPAWN_BALL_TIME;
-	private static float minSpawnBallTime = 1;
-	private final float speedMultiplier = 20;
-	
-	private Combo combo;
+	private float time = 0;
+	private SuperSizePowerup superSize = null;
+	private DisabledState activatedTier;
+	private Tier1 tier1;
+	private Tier2 tier2;
 	private App app;
+	private AppStateManager stateManage;
+
+	private Combo combo;
+	private int currCombo = 0;
 	
 	@Override
-	public final void initialize(final AppStateManager sManager, final Application appl) {
+	public final void initialize(final AppStateManager sManager,
+			final Application appl) {
 		super.initialize(sManager, appl);
 		if (appl instanceof App) {
-			app = (App) appl;
+			this.app = (App) appl;
 		} else {
 			throw new BadDynamicTypeException();
 		}
-	//	combo = new Combo(app.getGuiNode(), app.getAssetManager());
+		stateManage = sManager;
+		
+		tier1 = new Tier1();
+		sManager.attach(tier1);
+		tier2 = new Tier2();
+		sManager.attach(tier2);
+		
+		combo = new Combo(app.getGuiNode(), app.getAssetManager());
+		combo.addObserver(this);
 	}
 	
 	@Override
 	public void update(final float tpf) {
-		ballSpeedDifficulty();
-		ballSpawnDifficulty();
+		super.update(tpf);
+		time += tpf;
+		if (time > 5) {
+			time = 0;
+			setTier1();
+		}
+		
+	}
+	public void disableAllPowerups() {
+		
 	}
 	
-	/**
-	 * This method handles the difficulty by adjusting the ball speed.
-	 */
-	public void ballSpeedDifficulty() {
-		if (ballSpeed < MAX_BALL_SPEED) {
-			ballSpeed = INITIAL_BALL_SPEED + combo.getCombo() * speedMultiplier;
-		}		
+	public void setTier1() {
+		if (!tier1.isEnabled()) {
+			tier1.setEnabled(true);
+		}
 	}
 	
-	/**
-	 * This method the difficult by spawning more balls.
-	 */
-	public void ballSpawnDifficulty() {
-		if (spawnBallTime > minSpawnBallTime) {
-			spawnBallTime = INITIAL_SPAWN_BALL_TIME - combo.getCombo();
-		}	
+	public void setTier2() {
+		if (tier1.isEnabled()) {
+			tier1.setEnabled(false);
+		}
+		if (!tier2.isEnabled()) {
+			tier2.setEnabled(true);
+		}
+	}
+
+	public void update(Observable o, Object arg) {
+		currCombo = combo.getCombo();
 	}
 	
-	/**
-	 * The getter for the ballspeed.
-	 * @return the speed of the ball
-	 */
-	public static final float getBallSpeed() {
-		return ballSpeed;
+	public void incDiff(){
+		combo.incCombo();
 	}
 	
-	/**
-	 * The getter of the spawnBallTime.
-	 * @return the time between the spawning of balls
-	 */
-	public static final float getSpawnBallTime() {
-		return spawnBallTime;
+	public void resetDiff(){
+		combo.resetCombo();
 	}
 }

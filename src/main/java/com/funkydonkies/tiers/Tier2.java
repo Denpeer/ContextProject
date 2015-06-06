@@ -1,9 +1,11 @@
-package com.funkydonkies.powerups;
+package com.funkydonkies.tiers;
 
+import com.funkydonkies.gamestates.DisabledState;
+import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
-public class PowerupTier2 extends AbstractPowerup {
+public class Tier2 extends DisabledState {
 	private static float INVERT_TIME = 5;
 
 	private InvertControlsPowerup invertControls;

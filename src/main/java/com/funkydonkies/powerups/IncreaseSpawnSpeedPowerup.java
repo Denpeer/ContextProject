@@ -1,5 +1,6 @@
 package com.funkydonkies.powerups;
 
+import com.funkydonkies.gamestates.DisabledState;
 import com.funkydonkies.gamestates.SpawnState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -8,7 +9,7 @@ import com.jme3.app.state.AppStateManager;
  * This powerup increases the game difficulty by increasing the time between new penguin spawns.
  *
  */
-public class IncreaseSpawnSpeedPowerup extends AbstractPowerup {
+public class IncreaseSpawnSpeedPowerup extends DisabledState {
 	private static final float INITIAL_BALL_SPEED = 50;
 	
 	private float speedMultiplier = 0;
@@ -29,7 +30,7 @@ public class IncreaseSpawnSpeedPowerup extends AbstractPowerup {
 	
 	/**
 	 * Enables or disables the powerup by setting the ballspawntime variable on spawnstate.
-	 * @see com.funkydonkies.powerups.AbstractPowerup#setEnabled(boolean)
+	 * @see com.funkydonkies.gamestates.DisabledState#setEnabled(boolean)
 	 */
 	@Override
 	public void setEnabled(final boolean enabled) {

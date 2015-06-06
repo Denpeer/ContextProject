@@ -12,13 +12,13 @@ import com.funkydonkies.w4v3.App;
 import com.jme3.app.state.AppStateManager;
 
 public class PowerupStateTest {
-	private PowerupState powerupState;
+	private DifficultyState powerupState;
 	private App app;
 	private AppStateManager sManager;
 	
 	@Before
 	public void setUp() throws Exception {
-		powerupState = new PowerupState();
+		powerupState = new DifficultyState();
 		app = mock(App.class);
 		sManager = mock(AppStateManager.class);
 	}

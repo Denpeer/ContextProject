@@ -180,7 +180,7 @@ public class CurveState extends AbstractAppState {
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
-		splineCurve.drawCurve(curveMaterial, PlayState.getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class).getPhysicsSpace(), rigi, app.getRootNode());
 		splineCurve.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 	}

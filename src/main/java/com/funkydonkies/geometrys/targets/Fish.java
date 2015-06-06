@@ -23,16 +23,10 @@ public class Fish extends Geometry {
 	 * @param phy the physics space
 	 * @param dim the dimension of the fish target
 	 */
-	public Fish(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace phy, final Vector3f dim) {
+	public Fish(final String name, final Mesh mesh, final Node rootNode, final Material mat) {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);
-		final FishControl tarCont = new FishControl(
-				new BoxCollisionShape(dim));
-		
-		this.addControl(tarCont);
-		phy.add(tarCont);
-		tarCont.init();
 	}
 	
 	

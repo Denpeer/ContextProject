@@ -24,9 +24,5 @@ public class Shark extends Geometry {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);
-		final KillerWhaleControl cSMS = new KillerWhaleControl(2.0f, 0.10, false, true);
-		this.addControl(cSMS);
-		p.add(cSMS);
-		cSMS.init();	
 	}
 }

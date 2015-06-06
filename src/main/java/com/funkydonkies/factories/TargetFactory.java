@@ -1,10 +1,14 @@
 package com.funkydonkies.factories;
 
+import com.funkydonkies.controllers.FishControl;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.geometrys.targets.Fish;
 import com.funkydonkies.geometrys.targets.Krill;
 import com.funkydonkies.geometrys.targets.Squid;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -22,6 +26,7 @@ public class TargetFactory {
 	private AssetManager assetManager;
 	private Node rootNode;
 	private PhysicsSpace physicSpace;
+	private AppStateManager asm;
 	
 	private Material fishMaterial;
 	private Material krillMaterial;
@@ -33,10 +38,11 @@ public class TargetFactory {
 	 * @param rootN the main rootNode
 	 * @param phy the main physicSpace
 	 */
-	public TargetFactory(final AssetManager assetM, final Node rootN, final PhysicsSpace phy) {
-		this.rootNode = rootN;
-		this.assetManager = assetM;	
-		this.physicSpace = phy;
+	public TargetFactory(final AppStateManager sm) {
+		this.rootNode = sm.getState(PlayState.class).getRootNode();
+		this.assetManager = sm.getApplication().getAssetManager();	
+		this.physicSpace = sm.getState(PlayState.class).getPhysicsSpace();
+		asm = sm;
 		makeMaterials();
 	}
 	
@@ -48,9 +54,13 @@ public class TargetFactory {
 		final float fishWidth = 5;
 		final float fishHeight = 5;
 		final float fishDepth = 5;
-		final Vector3f dimensions = new Vector3f(fishWidth, fishHeight, fishDepth);
 		final Mesh mesh = new Box(fishWidth, fishHeight, fishDepth);
-		final Fish fish = new Fish("fish", mesh, rootNode, fishMaterial, physicSpace, dimensions);
+		final Fish fish = new Fish("fish", mesh, rootNode, fishMaterial);
+		final FishControl tarCont = new FishControl(
+				new BoxCollisionShape(new Vector3f(fishWidth, fishHeight, fishDepth)), asm);
+		fish.addControl(tarCont);
+		physicSpace.add(tarCont);
+		tarCont.init();
 		return fish;
 	}
 	

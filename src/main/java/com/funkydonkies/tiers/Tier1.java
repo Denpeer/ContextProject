@@ -1,9 +1,12 @@
-package com.funkydonkies.powerups;
+package com.funkydonkies.tiers;
 
+import com.funkydonkies.gamestates.DisabledState;
+import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
+import com.funkydonkies.powerups.SuperSizePowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
-public class PowerupTier1 extends AbstractPowerup {
+public class Tier1 extends DisabledState {
 	private SuperSizePowerup superSize;
 	private IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
 	

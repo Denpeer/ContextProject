@@ -1,8 +1,11 @@
 package com.funkydonkies.factories;
 
+import com.funkydonkies.controllers.KillerWhaleControl;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.geometrys.obstacles.KillerWhale;
 import com.funkydonkies.geometrys.obstacles.PolarBear;
 import com.funkydonkies.geometrys.obstacles.SeaLion;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
@@ -25,6 +28,7 @@ public class ObstacleFactory {
 	private Material killerWhaleMaterial;
 	private Material polarBearMaterial;
 	private Material seaLionMaterial;
+	private AppStateManager asm;
 	
 	/**
 	 * The constructor for the obstacleFactory.
@@ -32,10 +36,11 @@ public class ObstacleFactory {
 	 * @param rootN the main rootNode
 	 * @param phy the main physicsLocation
 	 */
-	public ObstacleFactory(final AssetManager assetM, final Node rootN, final PhysicsSpace phy) {
-		this.rootNode = rootN;
-		this.assetManager = assetM;	
-		this.physicSpace = phy;
+	public ObstacleFactory(final AppStateManager sm) {
+		this.rootNode = sm.getState(PlayState.class).getRootNode();
+		this.assetManager = sm.getApplication().getAssetManager();	
+		this.physicSpace = sm.getState(PlayState.class).getPhysicsSpace();
+		asm = sm;
 		makeMaterials();
 	}
 	
@@ -45,7 +50,11 @@ public class ObstacleFactory {
 	 */
 	public KillerWhale makeKillerWhale() {
 		final Mesh mesh = new Box(30, 6, 1);
-		final KillerWhale kWhale = new KillerWhale("killerWhale", mesh, rootNode, killerWhaleMaterial, physicSpace);
+		final KillerWhale kWhale = new KillerWhale("killerWhale", mesh, rootNode, killerWhaleMaterial);
+		final KillerWhaleControl cSMS = new KillerWhaleControl(2.0f, 0.10, true, false, asm);
+		kWhale.addControl(cSMS);
+		physicSpace.add(cSMS);
+		cSMS.init();	
 		return kWhale;
 	}
 	

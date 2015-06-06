@@ -20,15 +20,9 @@ public class KillerWhale extends Geometry {
 	 * @param rootNode the rootNode of the shark
 	 * @param p the physics space
 	 */
-	public KillerWhale(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace p) {
+	public KillerWhale(final String name, final Mesh mesh, final Node rootNode, final Material mat) {
 		super(name, mesh);
 		this.setMaterial(mat);
-		rootNode.attachChild(this);
-		final KillerWhaleControl cSMS = new KillerWhaleControl(2.0f, 0.10, true, false);
-		this.addControl(cSMS);
-		p.add(cSMS);
-		cSMS.init();
-
-		
+		rootNode.attachChild(this);		
 	}
 }

@@ -5,6 +5,7 @@ import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.factories.ObstacleFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.TargetFactory;
+import com.funkydonkies.tiers.Tier1;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -21,6 +22,7 @@ public class SpawnState extends AbstractAppState {
 	private ObstacleFactory obFac;
 	private PenguinFactory pengFac;
 	
+	private AppStateManager stManager;
 	private float spawnBallTime;
 	
 	private App app;
@@ -41,7 +43,8 @@ public class SpawnState extends AbstractAppState {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		phy = PlayState.getPhysicsSpace();
+		stManager = sManager;
+		phy = stManager.getState(PlayState.class).getPhysicsSpace();
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
 		tarFac.makeFish();
@@ -51,9 +54,9 @@ public class SpawnState extends AbstractAppState {
 	 * This method initializes every factory.
 	 */
 	public void initFactories() {
-		tarFac = new TargetFactory(app.getAssetManager(), app.getRootNode(), phy);
-		obFac = new ObstacleFactory(app.getAssetManager(), app.getRootNode(), phy);
-		pengFac = new PenguinFactory(app.getAssetManager(), app.getPenguinNode(), phy);
+		tarFac = new TargetFactory(stManager);
+		obFac = new ObstacleFactory(stManager);
+		pengFac = new PenguinFactory(stManager);
 	}
 	
 	/**
@@ -66,14 +69,11 @@ public class SpawnState extends AbstractAppState {
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
 			pengFac.makeStandardPenguin();
+			if(stManager.getState(Tier1.class).isEnabled()){
+			//	obFac.makeKillerWhale();
+			}
 		}
-	}
-	
-	/**
-	 * This method updates the difficulty ratings needed for spawning.
-	 */
-	public final void updateDifficultyRatios() {
-		spawnBallTime = DifficultyState.getSpawnBallTime();
+
 	}
 	
 	public void setBallSpawnTime(float newTime) {

@@ -1,4 +1,4 @@
-package com.funkydonkies.powerups;
+package com.funkydonkies.gamestates;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppState;
@@ -11,7 +11,7 @@ import com.jme3.renderer.RenderManager;
  * that the class is actually abstract.
  * @see com.jme3.app.state.AbstractAppState
  */
-public abstract class AbstractPowerup implements AppState {
+public abstract class DisabledState implements AppState {
 	
 	protected boolean initialized = false;
     private boolean enabled = false;
