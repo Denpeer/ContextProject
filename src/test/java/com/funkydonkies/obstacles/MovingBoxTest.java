@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.funkydonkies.factories.ObstacleFactory;
-import com.funkydonkies.geometrys.obstacles.KillerWhale;
+import com.funkydonkies.geometrys.obstacles.Spear;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
@@ -21,7 +21,7 @@ import com.jme3.scene.Node;
  */
 public class MovingBoxTest {
 	private static ObstacleFactory obF;
-	private static KillerWhale mBox;
+	private static Spear mBox;
 	private static Material mat;
 	private static PhysicsSpace psySpace;
 	private static Node rootNode;

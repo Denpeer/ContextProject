@@ -1,6 +1,6 @@
 package com.funkydonkies.geometrys.targets;
 
-import com.funkydonkies.controllers.KillerWhaleControl;
+import com.funkydonkies.controllers.SpearControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
@@ -23,7 +23,7 @@ public class Krill extends Geometry {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);
-		final KillerWhaleControl cSMS = new KillerWhaleControl(2.0f, 0.10, false, true);
+		final SpearControl cSMS = new SpearControl(2.0f, 0.10, false, true);
 		this.addControl(cSMS);
 		phy.add(cSMS);
 		cSMS.setKinematic(true);

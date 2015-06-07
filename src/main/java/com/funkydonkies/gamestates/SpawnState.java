@@ -17,7 +17,7 @@ import com.jme3.bullet.PhysicsSpace;
  *
  */
 public class SpawnState extends AbstractAppState {
-	public static final float DEFAULT_BALL_SPAWN_TIME = 2;
+	public static final float DEFAULT_BALL_SPAWN_TIME = 10;
 	private TargetFactory tarFac;
 	private ObstacleFactory obFac;
 	private PenguinFactory pengFac;
@@ -27,8 +27,9 @@ public class SpawnState extends AbstractAppState {
 	
 	private App app;
 	private PhysicsSpace phy;
-	
+	boolean bool = true;
 	private float timeCount = 0;
+	private float time = 0;
 	
 	/**
 	 * The initialize method of the state.
@@ -48,7 +49,6 @@ public class SpawnState extends AbstractAppState {
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
 		tarFac.makeFish();
-		obFac.makeKillerWhale();
 	}
 	/**
 	 * This method initializes every factory.
@@ -56,7 +56,7 @@ public class SpawnState extends AbstractAppState {
 	public void initFactories() {
 		tarFac = new TargetFactory(stManager);
 		obFac = new ObstacleFactory(stManager);
-		pengFac = new PenguinFactory(stManager);
+		pengFac = new PenguinFactory(stManager, app.getPenguinNode());
 	}
 	
 	/**
@@ -66,12 +66,14 @@ public class SpawnState extends AbstractAppState {
 	@Override
 	public final void update(final float tpf) {
 		timeCount += tpf;
+		time += tpf;
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
 			pengFac.makeStandardPenguin();
-			if(stManager.getState(Tier1.class).isEnabled()){
-			//	obFac.makeKillerWhale();
-			}
+		}
+		if(time > 5){
+			obFac.makeSpear();
+			time = 0;
 		}
 
 	}

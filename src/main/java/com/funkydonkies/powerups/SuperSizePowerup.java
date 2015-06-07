@@ -7,8 +7,6 @@ import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.gamestates.DisabledState;
-import com.funkydonkies.gamestates.PlayState;
-import com.funkydonkies.w4v3.Ball;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;

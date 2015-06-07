@@ -37,8 +37,8 @@ public class PenguinFactory {
 	 * @param rootN the main rootNode
 	 * @param phy the main physic location
 	 */
-	public PenguinFactory(final AppStateManager sm) {
-		this.penguinNode = sm.getState(PlayState.class).getRootNode();
+	public PenguinFactory(final AppStateManager sm, Node n) {
+		this.penguinNode = n;
 		this.assetManager = sm.getApplication().getAssetManager();	
 		this.physicSpace = sm.getState(PlayState.class).getPhysicsSpace();
 		makeMaterials();

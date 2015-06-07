@@ -82,7 +82,7 @@ public class GameInputState extends AbstractAppState {
 		
 		//Control for spawning balls
 		inputManager.addMapping(MAPPING_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
-		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_S));
+		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_T));
 		inputManager.addMapping(DISABLE_POWERUP_SIZE, 
 				new KeyTrigger(KeyInput.KEY_P));
 				inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
@@ -113,7 +113,7 @@ public class GameInputState extends AbstractAppState {
 					curveState.toggleCameraEnabled();
 					curveState.setUpdateEnabled(curveState.getCameraEnabled());
 				} else {
-					System.err.println("Open the Camera first! (S key)");
+					System.err.println("Open the Camera first! (T key)");
 				}
 			}
 			if (name.equals(MAPPING_TOGGLE_CURVE_UPDATE) && !keyPressed) {

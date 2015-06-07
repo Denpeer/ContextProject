@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.gamestates.PlayState;
-import com.funkydonkies.w4v3.App;
+import com.funkydonkies.geometries.App;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 

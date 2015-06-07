@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.geometries.App;
 import com.funkydonkies.powerups.SuperSizePowerup;
-import com.funkydonkies.w4v3.App;
 import com.jme3.app.state.AppStateManager;
 
 public class PowerupStateTest {
