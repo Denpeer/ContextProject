@@ -1,5 +1,6 @@
 package com.funkydonkies.factories;
 
+import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.geometrys.penguins.FatPenguin;
 import com.funkydonkies.geometrys.penguins.ShinyPenguin;
@@ -7,6 +8,7 @@ import com.funkydonkies.geometrys.penguins.StandardPenguin;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Mesh;
@@ -70,7 +72,12 @@ public class PenguinFactory {
 	 */
 	public StandardPenguin makeStandardPenguin() {
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final StandardPenguin standardPenguin = new StandardPenguin("standardPenguin", mesh, penguinNode, standardPenguinMaterial, physicSpace, DEFAULT_RADIUS);
+		final StandardPenguin standardPenguin = new StandardPenguin("standardPenguin", mesh, penguinNode, standardPenguinMaterial);
+		final StandardPenguinControl pc = new StandardPenguinControl(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
+		standardPenguin.addControl(pc);
+		pc.setRestitution(1);
+		physicSpace.add(pc);
+		pc.init();
 		return standardPenguin;
 	}
 	

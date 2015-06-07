@@ -23,14 +23,10 @@ public class ShinyPenguin extends Geometry {
 	 * @param rootNode the rootNode of the shiny Penguin
 	 * @param phy the physics space
 	 */
-	public ShinyPenguin(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace phy) {
+	public ShinyPenguin(final String name, final Mesh mesh, final Node rootNode, final Material mat) {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);
-		final SpearControl cSMS = new SpearControl(2.0f, 0.10, false, true);
-		this.addControl(cSMS);
-		phy.add(cSMS);
-		cSMS.setKinematic(true);
 	}
 	
 	

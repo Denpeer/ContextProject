@@ -23,13 +23,7 @@ public class PolarBear extends Geometry {
 	public PolarBear(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace p) {
 		super(name, mesh);
 		this.setMaterial(mat);
-		rootNode.attachChild(this);
-		final SpearControl cSMS = new SpearControl(2.0f, 0.10, false, true);
-		this.addControl(cSMS);
-		p.add(cSMS);
-		cSMS.setKinematic(true);
-
-		
+		rootNode.attachChild(this);		
 	}
  
 }

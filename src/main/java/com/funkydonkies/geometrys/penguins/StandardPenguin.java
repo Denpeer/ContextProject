@@ -23,15 +23,10 @@ public class StandardPenguin extends Geometry {
 	 * @param phy the physics space
 	 * @param radius is the sphere radius of the penguin
 	 */
-	public StandardPenguin(final String name, final Mesh mesh, final Node rootNode, final Material mat, final PhysicsSpace phy, final float radius) {
+	public StandardPenguin(final String name, final Mesh mesh, final Node rootNode, final Material mat) {
 		super(name, mesh);
 		this.setMaterial(mat);
 		rootNode.attachChild(this);
-		final StandardPenguinControl pc = new StandardPenguinControl(new SphereCollisionShape(radius), 1f);
-		this.addControl(pc);
-		pc.setRestitution(1);
-		phy.add(pc);
-		pc.init();
 	}
 	
 	
