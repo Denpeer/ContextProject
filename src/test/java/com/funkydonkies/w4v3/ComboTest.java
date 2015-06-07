@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.combo.Combo;
-import com.funkydonkies.combo.ComboState;
 import com.jme3.font.BitmapText;
 import com.jme3.scene.Node;
 

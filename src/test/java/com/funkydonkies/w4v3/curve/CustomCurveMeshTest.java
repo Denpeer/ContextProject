@@ -1,14 +1,12 @@
 package com.funkydonkies.w4v3.curve;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
 
 import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.mockito.Mockito.*;
 
 import com.funkydonkies.curve.CustomCurveMesh;
 import com.jme3.math.Vector3f;

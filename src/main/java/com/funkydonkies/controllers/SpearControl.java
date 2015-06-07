@@ -1,7 +1,5 @@
 package com.funkydonkies.controllers;
 
-import java.util.Random;
-
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
@@ -12,7 +10,6 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.shape.Box;
 
 
 /**
@@ -60,17 +57,13 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 	public void update(final float tpf) {
 		moveSpatial();
 		time += tpf;
-		if(spatial.getLocalTranslation().getX() < -500){
-			destroy();
+		if(spatial.getLocalTranslation().getX() < -100){
+			this.destroy();
 		}
 
 	}
 	
-	public void destroy(){
-		spatial.getParent().detachChild(spatial);
-		spatial.removeControl(this);
-	//	sm.getState(PlayState.class).getPhysicsSpace().remove(this);
-	}
+
 	
 	/**
 	 * This method moves the spatial in the desired direction.

@@ -1,7 +1,5 @@
 package com.funkydonkies.controllers;
 
-import java.util.Random;
-
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
@@ -12,7 +10,6 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.shape.Box;
 
 
 /**

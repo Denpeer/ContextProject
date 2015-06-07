@@ -8,9 +8,6 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.controllers.FishControl;
-import com.funkydonkies.gamestates.ComboState;
-import com.funkydonkies.geometrys.Target;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.CollisionShape;

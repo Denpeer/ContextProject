@@ -2,7 +2,7 @@ package com.funkydonkies.factories;
 
 import java.util.Random;
 
-import com.funkydonkies.controllers.SpearControl;
+import com.funkydonkies.controllers.KillerWhaleControl;
 import com.funkydonkies.controllers.WarningLineControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
@@ -19,48 +19,49 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
-public class SpearFactory implements FactoryInterface {
+public class KillerWhaleFactory implements FactoryInterface {
 	
 
 	
-	/** This method does not attach the spatial to the rootNode. Initializes Spear obstacles.
+	/** This method does not attach the spatial to the rootNode. Initializes whale obstacles.
 	 * @see com.funkydonkies.interfaces.FactoryInterface
 	 * #makeObst(com.jme3.asset.AssetManager)
 	 */
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication app) {	
 		final Random rand = new Random();
-		final float xCoord = 500;
-		final float yCoord = rand.nextInt(100);
+		final float xCoord = rand.nextInt(320);
+		final float yCoord = -100;
+		final float whaleYCoord = -500;
 		
-		final Geometry line = makeWarningLine(app, yCoord); 
-		final Geometry spear = makeSpear(app, yCoord, xCoord, sManager);
+		final Geometry line = makeWarningLine(app, xCoord); 
+		final Geometry whale = makeKillerWhale(app, whaleYCoord, xCoord, sManager);
 			
 		Node obstacleNode = new Node();
-		obstacleNode.attachChild(spear);
+		obstacleNode.attachChild(whale);
 		obstacleNode.attachChild(line);
 		
 		return obstacleNode;
 	}
 	
-	public Geometry makeSpear(SimpleApplication app, float yCoord, float xCoord, AppStateManager sManager){
-		final Mesh spearMesh = new Box(15, 2, 1);
-		Geometry spear = new Geometry("spear", spearMesh);
-		spear.setMaterial(getSpearMaterial(app.getAssetManager()));
+	public Geometry makeKillerWhale(SimpleApplication app, float yCoord, float xCoord, AppStateManager sManager){
+		final Mesh whaleMesh = new Box(50, 200, 1);
+		Geometry whale = new Geometry("killerWhale", whaleMesh);
+		whale.setMaterial(getKillerWhaleMaterial(app.getAssetManager()));
 		
 		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
-		final SpearControl spearControl = new SpearControl(1f, 6, sManager, loci);
-		spear.addControl(spearControl);
-		spearControl.init();
+		final KillerWhaleControl whaleControl = new KillerWhaleControl(1f, 6, sManager, loci);
+		whale.addControl(whaleControl);
+		whaleControl.init();
 		
-		return spear;
+		return whale;
 	}
-	public Geometry makeWarningLine(SimpleApplication app, float yCoord){
-		final Mesh warningLineMesh = new Box(1000, 2, 1);
+	public Geometry makeWarningLine(SimpleApplication app, float xCoord){
+		final Mesh warningLineMesh = new Box(50, 200, 1);
 		Geometry geom = new Geometry("warning line", warningLineMesh);
 		geom.setMaterial(getLineMaterial(app.getAssetManager()));
 		geom.setQueueBucket(Bucket.Transparent);
 		
-		WarningLineControl wLC = new WarningLineControl(0, yCoord);
+		WarningLineControl wLC = new WarningLineControl(xCoord, 0);
 		geom.addControl(wLC);
 		wLC.init();
 		return geom;
@@ -73,7 +74,7 @@ public class SpearFactory implements FactoryInterface {
 		return mat;
 	}
 
-	public Material getSpearMaterial(AssetManager assetManager) {
+	public Material getKillerWhaleMaterial(AssetManager assetManager) {
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Green);
 		return mat;

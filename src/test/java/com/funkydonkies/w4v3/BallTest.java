@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.controllers.StandardPenguinControl;
-import com.funkydonkies.geometries.Ball;
-import com.funkydonkies.geometrys.Penguin;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;

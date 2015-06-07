@@ -4,13 +4,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.camdetect.MyFrame;
 import com.funkydonkies.core.App;
 import com.jme3.app.state.AppStateManager;
 

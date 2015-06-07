@@ -8,9 +8,6 @@ import static org.mockito.Mockito.mock;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.funkydonkies.factories.ObstacleFactory;
-import com.funkydonkies.geometrys.Target;
-import com.funkydonkies.geometrys.obstacles.Spear;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
