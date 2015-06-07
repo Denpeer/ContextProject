@@ -9,7 +9,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import com.funkydonkies.w4v3.Bridge;
+import com.funkydonkies.interfaces.Bridge;
 
 /**
  * This class performs the image matrix math and is used by VideoCap to get the
