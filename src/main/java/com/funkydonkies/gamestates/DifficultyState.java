@@ -54,7 +54,7 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	public void update(final float tpf) {
 		super.update(tpf);
 		time += tpf;
-		if (time > 5) {
+		if (time > 10) {
 			time = 0;
 			setTier1();
 		}

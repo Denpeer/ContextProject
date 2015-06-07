@@ -7,13 +7,10 @@ import org.reflections.Reflections;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.factories.FishFactory;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Spatial;
 
@@ -23,7 +20,7 @@ import com.jme3.scene.Spatial;
  *
  */
 public class SpawnState extends AbstractAppState {
-	public static final float DEFAULT_BALL_SPAWN_TIME = 10;
+	public static final float DEFAULT_BALL_SPAWN_TIME = 5;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;

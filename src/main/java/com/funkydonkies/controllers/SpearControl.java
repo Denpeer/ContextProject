@@ -46,7 +46,8 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 	 * An initialize method for the controller.
 	 */
 	public final void init() {
-		setKinematic(true);
+		setKinematic(true);	
+		sm.getState(PlayState.class).getPhysicsSpace().add(this);
 		spatial.setLocalTranslation(initialLoc);
 		this.setPhysicsLocation(initialLoc);
 	}
@@ -113,10 +114,16 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 					&& BALL_NAME.equals(event.getNodeB().getName())){
 				sm.getState(DifficultyState.class).resetDiff();
 				sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
+				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
+				//event.getNodeB().getParent().detachChild(event.getNodeB());
+				//event.getNodeB().removeControl(this);
 			}else if(BALL_NAME.equals(event.getNodeA().getName())
 					&& OBSTACLE_NAME.equals(event.getNodeB().getName())){
 				sm.getState(DifficultyState.class).resetDiff();
 				sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
+				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
+				//event.getNodeA().getParent().detachChild(event.getNodeA());
+				//event.getNodeA().removeControl(this);
 			}
 		}		
 	}	
