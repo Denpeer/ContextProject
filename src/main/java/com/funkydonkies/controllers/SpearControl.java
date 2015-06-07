@@ -66,7 +66,7 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 	}
 	
 	public void destroy(){
-		sm.getState(PlayState.class).getRootNode().detachChild(spatial);
+		spatial.getParent().detachChild(spatial);
 		spatial.removeControl(this);
 	}
 	
