@@ -1,14 +1,14 @@
 package com.funkydonkies.gamestates;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import org.reflections.Reflections;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.factories.PenguinFactory;
-import com.funkydonkies.factories.TargetFactory;
-import com.funkydonkies.interfaces.ObstacleFactoryInterface;
+import com.funkydonkies.factories.FishFactory;
+import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -26,16 +26,16 @@ public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 10;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
-	private ObstacleFactoryInterface obstacleFactory;
-	private PenguinFactory pengFac;
-	private TargetFactory tarFac;
+	private HashMap<String, FactoryInterface> facHm;
 	
 	private AppStateManager stManager;
-	private AssetManager assetManager;
 	private float spawnBallTime;
 	
+	private FactoryInterface penguin;
+	private FactoryInterface spear;
+	private FactoryInterface fish;
+	
 	private App app;
-	private PhysicsSpace phy;
 	boolean bool = true;
 	private float timeCount = 0;
 	private float time = 0;
@@ -54,11 +54,10 @@ public class SpawnState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		stManager = sManager;
-		assetManager = app.getAssetManager();
-		phy = stManager.getState(PlayState.class).getPhysicsSpace();
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
-		tarFac.makeFish();
+		setSpawnAbleObjects();
+		spawn(fish);
 		initRootNodeMat(app);
 	}
 	
@@ -66,8 +65,13 @@ public class SpawnState extends AbstractAppState {
 	 * This method initializes every factory.
 	 */
 	public void initFactories() {
-		pengFac = new PenguinFactory(stManager, app.getPenguinNode());
-		tarFac = new TargetFactory(stManager);
+		fillObstacleFactoriesMap();
+	}
+	
+	public void setSpawnAbleObjects(){
+		penguin = facHm.get("PenguinFactory");
+		spear = facHm.get("SpearFactory");
+		fish = facHm.get("FishFactory");
 	}
 	
 	/**
@@ -80,41 +84,38 @@ public class SpawnState extends AbstractAppState {
 		time += tpf;
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
-			pengFac.makeStandardPenguin();
+			spawn(penguin);
 		}
 		final int spawnSpear = 5;
 		if (time > spawnSpear) {
 			time = 0;
-			obstacleFactory = getObstacleFactory();
-			if (obstacleFactory != null) {
-				spawnObstacle(obstacleFactory);
-			}
+			spawn(spear);
+			
 		}
 
 	}
 	
-	private void spawnObstacle(ObstacleFactoryInterface obstacleFactory) {
-		final Spatial obstacle = obstacleFactory.makeObst(stManager, app);
+	private void spawn(FactoryInterface obstacleFactory) {
+		final Spatial obstacle = obstacleFactory.makeObject(stManager, app);
 		if (obstacle != null) {
 			app.getRootNode().attachChild(obstacle);
 		}
 	}
 	
-	public ObstacleFactoryInterface getObstacleFactory() {
+	public void fillObstacleFactoriesMap() {
+		facHm = new  HashMap<String, FactoryInterface>();
 		final Reflections reflections = new Reflections(FACTORY_PACKAGE);
-		final Set<Class<? extends ObstacleFactoryInterface>> classes = 
-				reflections.getSubTypesOf(ObstacleFactoryInterface.class);
+		final Set<Class<? extends FactoryInterface>> classes = 
+				reflections.getSubTypesOf(FactoryInterface.class);
 	    for (Class c : classes) {
 	        try {
-	        	System.out.println(c.getSimpleName());
-				return (ObstacleFactoryInterface) c.newInstance();
+	        	facHm.put(c.getSimpleName(),  (FactoryInterface) c.newInstance());
 			} catch (final InstantiationException e) {
 				e.printStackTrace();
 			} catch (final IllegalAccessException e) {
 				e.printStackTrace();
 			}
 	    }
-		return null;
 	}
 	
 	public void setBallSpawnTime(float newTime) {

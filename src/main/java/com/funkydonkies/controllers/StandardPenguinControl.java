@@ -112,12 +112,14 @@ public class StandardPenguinControl extends RigidBodyControl implements
 	 * @param event a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (PENGUIN_NAME.equals(event.getNodeA().getName()) 
-				&& CURVE_NAME.equals(event.getNodeB().getName())) {
-			final Vector3f velocity = getLinearVelocity();
-			if (velocity.x <= 1) {
-				velocity.x = 2;
-				setLinearVelocity(velocity);
+		if(event.getNodeA() != null && event.getNodeB() != null){
+			if (PENGUIN_NAME.equals(event.getNodeA().getName()) 
+					&& CURVE_NAME.equals(event.getNodeB().getName())) {
+				final Vector3f velocity = getLinearVelocity();
+				if (velocity.x <= 1) {
+					velocity.x = 2;
+					setLinearVelocity(velocity);
+				}
 			}
 		}
 	}

@@ -5,7 +5,7 @@ import java.util.Random;
 import com.funkydonkies.controllers.SpearControl;
 import com.funkydonkies.controllers.WarningLineControl;
 import com.funkydonkies.gamestates.PlayState;
-import com.funkydonkies.interfaces.ObstacleFactoryInterface;
+import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -20,17 +20,15 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
-public class SpearFactory implements ObstacleFactoryInterface {
+public class SpearFactory implements FactoryInterface {
 	
-	private Material defMaterial;
+
 	
 	/** This method does not attach the spatial to the rootNode. Initializes Spear obstacles.
-	 * @see com.funkydonkies.interfaces.ObstacleFactoryInterface
+	 * @see com.funkydonkies.interfaces.FactoryInterface
 	 * #makeObst(com.jme3.asset.AssetManager)
 	 */
-	public Spatial makeObst(final AppStateManager sManager, final SimpleApplication app) {
-		defMaterial = app.getRootNode().getUserData("default material");
-		
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication app) {		
 		final Mesh spearMesh = new Box(15, 2, 1);
 		final Mesh warningLineMesh = new Box(1000, 2, 1);
 		final Geometry spear = new Geometry("spear", spearMesh);
@@ -62,15 +60,15 @@ public class SpearFactory implements ObstacleFactoryInterface {
 		return obstacleNode;
 	}
 
-	public Material getLineMaterial(final AssetManager assetManager) {
-		Material mat = defMaterial.clone();
+	public Material getLineMaterial(AssetManager assetManager) {
+		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", new ColorRGBA(1, 0, 0, (float)0.2));
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
 	}
 
-	public Material getSpearMaterial(final AssetManager assetManager) {
-		Material mat = defMaterial.clone();
+	public Material getSpearMaterial(AssetManager assetManager) {
+		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Green);
 		return mat;
 	}

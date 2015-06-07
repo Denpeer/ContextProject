@@ -108,18 +108,17 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 	 * @param event PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-
-		if (OBSTACLE_NAME.equals(event.getNodeA().getName()) 
-				&& BALL_NAME.equals(event.getNodeB().getName())){
-			sm.getState(DifficultyState.class).resetDiff();
-			sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
-		}else if(BALL_NAME.equals(event.getNodeA().getName())
-				&& OBSTACLE_NAME.equals(event.getNodeB().getName())){
-			sm.getState(DifficultyState.class).resetDiff();
-			sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
-		}
-						 
-			
+		if(event.getNodeA() != null || event.getNodeB() != null){
+			if (OBSTACLE_NAME.equals(event.getNodeA().getName()) 
+					&& BALL_NAME.equals(event.getNodeB().getName())){
+				sm.getState(DifficultyState.class).resetDiff();
+				sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
+			}else if(BALL_NAME.equals(event.getNodeA().getName())
+					&& OBSTACLE_NAME.equals(event.getNodeB().getName())){
+				sm.getState(DifficultyState.class).resetDiff();
+				sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
+			}
+		}		
 	}	
 
 		
