@@ -59,13 +59,16 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 	 * @param event PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (TARGET_NAME.equals(event.getNodeA().getName()) 
-				&& BALL_NAME.equals(event.getNodeB().getName())
-				|| BALL_NAME.equals(event.getNodeA().getName()) 
-						&& TARGET_NAME.equals(event.getNodeB().getName())) {
-			respawn();
-			diffState.incDiff();
+		if(event.getNodeA() != null && event.getNodeB() != null){
+			if (TARGET_NAME.equals(event.getNodeA().getName()) 
+					&& BALL_NAME.equals(event.getNodeB().getName())
+					|| BALL_NAME.equals(event.getNodeA().getName()) 
+							&& TARGET_NAME.equals(event.getNodeB().getName())) {
+				respawn();
+				diffState.incDiff();
+			}
 		}
+
 	}
 	
 	/**
