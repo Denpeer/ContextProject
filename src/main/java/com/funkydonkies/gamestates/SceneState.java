@@ -24,13 +24,13 @@ public class SceneState extends AbstractAppState {
 	private AssetManager assetManager;
 
 	// path to the scene to be loaded on start up
-	private static final Path SCENE_PATH = Paths.get("/Scenes/testScene.j3o");
+	private static final String SCENE_PATH = "/Scenes/main.j3o";
 	// 1 default value, defines the scale of the scene to be loaded by
 	// 'initScene()'
 	private static final int SCENE_SCALE = 1;
 	// default scene translation, defines the translation of the scene to be
 	// loaded by 'initScene()'
-	private static final Vector3f SCENE_TRANSLATION = new Vector3f(0, 0, 0);
+	private static final Vector3f SCENE_TRANSLATION = new Vector3f(50, 0, 0);
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -66,7 +66,7 @@ public class SceneState extends AbstractAppState {
 	public void initScene(final int scale, final Vector3f translation) {
 		System.out.println("SCENE_PATH file found!");
 		System.out.println("=> loading " + SCENE_PATH.toString() + " Spatial ...");
-		loadScene(SCENE_PATH, scale, translation);
+		loadScene(scale, translation);
 		System.out.println("... DONE loading .scene Spatial <=");
 	}
 
@@ -74,17 +74,13 @@ public class SceneState extends AbstractAppState {
 	 * Method is called from the 'initScene()' method. Loads the specified
 	 * scene.
 	 * 
-	 * @param scenePath
-	 *            the directory of the .j3o or .scene file.
 	 * @param scale
 	 *            the scale
 	 * @param trans
 	 *            the translation
 	 */
-	private void loadScene(final Path scenePath, final int scale,
-			final Vector3f trans) {
-		final Spatial gameLevel = assetManager.loadModel(scenePath.toString()
-				.replace('\\', '/'));
+	private void loadScene(final int scale, final Vector3f trans) {
+		final Spatial gameLevel = assetManager.loadModel(SCENE_PATH);
 		gameLevel.setLocalTranslation(trans);
 		gameLevel.setLocalScale(scale);
 		app.getRootNode().attachChild(gameLevel);
