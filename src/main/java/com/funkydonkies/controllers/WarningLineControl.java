@@ -29,10 +29,16 @@ public class WarningLineControl extends AbstractControl {
 		time += tpf;
 		
 		if (time > 1) {
-			System.out.println("da");
-			rootN.detachChild(spatial);
+			detach();
 			spatial.removeControl(this);
 		}
+	}
+
+	/**
+	 * Detaches spatial from scene.
+	 */
+	public void detach() {
+		spatial.getParent().detachChild(spatial);
 	}
 
 	@Override
