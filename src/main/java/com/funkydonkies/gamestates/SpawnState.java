@@ -85,6 +85,7 @@ public class SpawnState extends AbstractAppState {
 		}
 		final int spawnSpear = 5;
 		if (time > spawnSpear) {
+			time = 0;
 			obstacleFactory = getObstacleFactory();
 			if (obstacleFactory != null) {
 				spawnObstacle(obstacleFactory);
