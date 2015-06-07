@@ -10,8 +10,10 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
@@ -40,6 +42,7 @@ public class SpearFactory implements ObstacleFactoryInterface {
 		
 		Geometry line = new Geometry("warning line", warningLineMesh);
 		line.setMaterial(getLineMaterial(app.getAssetManager()));
+		line.setQueueBucket(Bucket.Transparent);
 		
 		WarningLineControl wLC = new WarningLineControl(app.getRootNode(), 0, yCoord);
 		line.addControl(wLC);
@@ -61,13 +64,14 @@ public class SpearFactory implements ObstacleFactoryInterface {
 
 	public Material getLineMaterial(final AssetManager assetManager) {
 		Material mat = defMaterial.clone();
-		mat.setColor("Color", ColorRGBA.Yellow);
+		mat.setColor("Color", new ColorRGBA(1, 0, 0, (float)0.2));
+		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
 	}
 
 	public Material getSpearMaterial(final AssetManager assetManager) {
 		Material mat = defMaterial.clone();
-		mat.setColor("Color", ColorRGBA.Red);
+		mat.setColor("Color", ColorRGBA.Green);
 		return mat;
 	}
 
