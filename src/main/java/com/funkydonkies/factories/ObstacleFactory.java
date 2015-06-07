@@ -1,6 +1,7 @@
 package com.funkydonkies.factories;
 
 import java.util.Random;
+import java.util.Set;
 
 import com.funkydonkies.controllers.KillerWhaleControl;
 import com.funkydonkies.controllers.SpearControl;
@@ -10,6 +11,7 @@ import com.funkydonkies.geometries.WarningLine;
 import com.funkydonkies.geometrys.obstacles.KillerWhale;
 import com.funkydonkies.geometrys.obstacles.PolarBear;
 import com.funkydonkies.geometrys.obstacles.Spear;
+import com.funkydonkies.interfaces.ObstacleFactoryInterface;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -99,7 +101,6 @@ public class ObstacleFactory {
 		cSMS.init();
 		return kWhale;
 	}
-	
 	
 	/**
 	 * This method makes all the required materials.

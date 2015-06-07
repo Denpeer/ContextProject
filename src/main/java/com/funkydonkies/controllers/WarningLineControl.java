@@ -1,6 +1,5 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.curve.CustomCurveMesh;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -8,7 +7,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 
 public class WarningLineControl extends AbstractControl {
-	float time = 0;
+	private float time = 0;
 	private Node rootN;
 	private Vector3f initialSpawn;
 
@@ -26,10 +25,10 @@ public class WarningLineControl extends AbstractControl {
 	}
 	
 	@Override
-	protected void controlUpdate(float tpf) {
+	protected void controlUpdate(final float tpf) {
 		time += tpf;
 		
-		if(time > 1){
+		if (time > 1) {
 			System.out.println("da");
 			rootN.detachChild(spatial);
 			spatial.removeControl(this);
@@ -41,5 +40,5 @@ public class WarningLineControl extends AbstractControl {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }
