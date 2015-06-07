@@ -3,17 +3,15 @@ package com.funkydonkies.controllers;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 
 public class WarningLineControl extends AbstractControl {
 	private float time = 0;
-	private Node rootN;
+
 	private Vector3f initialSpawn;
 
 	
-	public WarningLineControl(Node rootNode, float xOff, float yOff){
-		rootN = rootNode;
+	public WarningLineControl(float xOff, float yOff){
 		initialSpawn = new Vector3f(xOff, yOff, 0);
 	}
 	
