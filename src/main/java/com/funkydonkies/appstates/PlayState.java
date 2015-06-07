@@ -7,6 +7,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.light.DirectionalLight;
 import com.jme3.math.Vector3f;
 
 /**
@@ -51,6 +52,10 @@ public class PlayState extends AbstractAppState {
 		handleCamera();
 		handleBulletAppState();
 		initStates();
+		final DirectionalLight sun = new DirectionalLight();
+		final Vector3f dir = new Vector3f(0, -1, 1);
+		sun.setDirection(dir);
+		app.getRootNode().addLight(sun);
 	}
 	
 	/**

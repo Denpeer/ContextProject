@@ -27,9 +27,13 @@ import com.jme3.scene.Spatial;
  * This class takes care of spawning most gameObjects.
  */
 public class SpawnState2 extends AbstractAppState {
+	private static final int SPAWN_OBSTACLE_TIME = 10;
+	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories"; 
 	private TargetFactory tarFac;
 	private ObstacleFactory obFac;
 	private PenguinFactory pengFac;
+	
+	private int obstacleTimer;
 	
 	private float spawnBallTime;
 	
@@ -85,7 +89,6 @@ public class SpawnState2 extends AbstractAppState {
 		pengFac.makeMaterials();
 	}
 	
-	private Vector3f a = new Vector3f();
 	/**
 	 * The update method of the state.
 	 * @param tpf the time per frame
@@ -93,27 +96,35 @@ public class SpawnState2 extends AbstractAppState {
 	@Override
 	public final void update(final float tpf) {
 		timeCount += tpf;
+		obstacleTimer += tpf * 100;
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
-			pengFac.makeStandardPenguin();
+//			pengFac.makeStandardPenguin();
 		}
 		updateDifficultyRatios();
 		
-		obstacleFactory = getObstacleFactory();
-		final Spatial obstacle = obstacleFactory.makeObst(assetManager);
-		if (obstacle != null) {
-			a.add(new Vector3f(1, 1, 0));
-			rootNode.attachChild(obstacle);
-			final FishControl c = new FishControl(new BoxCollisionShape(new Vector3f(20, 20, 20)));
-			obstacle.addControl(c);
-			phy.add(obstacle);
-			c.setPhysicsLocation(a);
+		if (obstacleTimer > SPAWN_OBSTACLE_TIME) {
+			obstacleTimer = 0;
+			obstacleFactory = getObstacleFactory();
+			if (obstacleFactory != null) {
+				spawnObstacle(obstacleFactory);
+			}
 		}
 		
 	}
 	
+	private void spawnObstacle(ObstacleFactoryInterface obstacleFactory) {
+		final Spatial obstacle = obstacleFactory.makeObst(assetManager);
+		if (obstacle != null) {
+			rootNode.attachChild(obstacle);
+			final FishControl c = new FishControl(new BoxCollisionShape(new Vector3f(20, 20, 20)));
+			obstacle.addControl(c);
+			phy.add(obstacle);
+		}
+	}
+
 	public ObstacleFactoryInterface getObstacleFactory() {
-		final Reflections reflections = new Reflections("com.funkydonkies.factories");
+		final Reflections reflections = new Reflections(FACTORY_PACKAGE);
 		final Set<Class<? extends ObstacleFactoryInterface>> classes = 
 				reflections.getSubTypesOf(ObstacleFactoryInterface.class);
 	    for (Class c : classes) {
