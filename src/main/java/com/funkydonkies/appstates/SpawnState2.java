@@ -31,7 +31,7 @@ import com.jme3.ui.Picture;
  * This class takes care of spawning most gameObjects.
  */
 public class SpawnState2 extends AbstractAppState {
-	private static final int SPAWN_OBSTACLE_TIME = 10;
+	private static final int SPAWN_OBSTACLE_TIME = 3;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories"; 
 	private TargetFactory tarFac;
 	private ObstacleFactory obFac;
@@ -109,7 +109,7 @@ public class SpawnState2 extends AbstractAppState {
 		}
 		updateDifficultyRatios();
 		
-		if (obstacleTimer > 3) {
+		if (obstacleTimer > SPAWN_OBSTACLE_TIME) {
 			obstacleTimer = 0;
 			obstacleFactory = getObstacleFactory();
 			if (obstacleFactory != null) {
@@ -145,8 +145,6 @@ public class SpawnState2 extends AbstractAppState {
 			obstacle.addControl(c);
 			phy.add(c);
 			c.setEnabled(false);
-			spawntimer = 0;
-			showWarning = true;
 			pending.put(2f, obstacle);
 		}
 	}
