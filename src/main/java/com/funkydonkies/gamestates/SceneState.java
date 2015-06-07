@@ -1,8 +1,6 @@
 package com.funkydonkies.gamestates;
 
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 
 import com.funkydonkies.exceptions.BadDynamicTypeException;
@@ -15,7 +13,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 /**
- * Loads the scene
+ * Loads the scene.
  * 
  * @author Olivier Dikken
  *
@@ -24,7 +22,6 @@ public class SceneState extends AbstractAppState {
 
 	private App app;
 	private AssetManager assetManager;
-	private AppStateManager stateManager;
 
 	// path to the scene to be loaded on start up
 	private static final Path SCENE_PATH = Paths.get("/Scenes/testScene.j3o");
@@ -46,7 +43,6 @@ public class SceneState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.assetManager = this.app.getAssetManager();
-		this.stateManager = sManager;
 		initScene();
 	}
 
@@ -92,5 +88,7 @@ public class SceneState extends AbstractAppState {
 		gameLevel.setLocalTranslation(trans);
 		gameLevel.setLocalScale(scale);
 		app.getRootNode().attachChild(gameLevel);
+		final int x = 100;
+		gameLevel.move(x, 0, 0);
 	}
 }
