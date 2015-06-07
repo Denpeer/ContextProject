@@ -26,9 +26,9 @@ public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 10;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
-	private TargetFactory tarFac;
 	private ObstacleFactoryInterface obstacleFactory;
 	private PenguinFactory pengFac;
+	private TargetFactory tarFac;
 	
 	private AppStateManager stManager;
 	private AssetManager assetManager;
@@ -59,7 +59,6 @@ public class SpawnState extends AbstractAppState {
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
 		tarFac.makeFish();
-		
 		initRootNodeMat(app);
 	}
 	
@@ -67,8 +66,8 @@ public class SpawnState extends AbstractAppState {
 	 * This method initializes every factory.
 	 */
 	public void initFactories() {
-		tarFac = new TargetFactory(stManager);
 		pengFac = new PenguinFactory(stManager, app.getPenguinNode());
+		tarFac = new TargetFactory(stManager);
 	}
 	
 	/**
