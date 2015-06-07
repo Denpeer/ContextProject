@@ -14,7 +14,7 @@ import com.jme3.math.Vector3f;
 public class FishControl extends GhostControl implements PhysicsCollisionListener {
 	private static final String BALL_NAME = "standardPenguin";
 	private static final String TARGET_NAME = "fish";
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
+	public static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 
 	/**

@@ -1,8 +1,10 @@
 package com.funkydonkies.appstates;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.reflections.Reflections;
 
@@ -19,9 +21,11 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.ui.Picture;
 
 /**
  * This class takes care of spawning most gameObjects.
@@ -33,7 +37,7 @@ public class SpawnState2 extends AbstractAppState {
 	private ObstacleFactory obFac;
 	private PenguinFactory pengFac;
 	
-	private int obstacleTimer;
+	private float obstacleTimer = 0;
 	
 	private float spawnBallTime;
 	
@@ -43,9 +47,11 @@ public class SpawnState2 extends AbstractAppState {
 	private Node rootNode;
 	
 	private float timeCount = 0;
-	
+
 	private List<String> obstacleFactories = new ArrayList<String>();
 	private ObstacleFactoryInterface obstacleFactory;
+	
+	private ConcurrentHashMap<Float, Spatial> pending = new ConcurrentHashMap<>();
 	
 	/**
 	 * The initialize method of the state.
@@ -65,8 +71,8 @@ public class SpawnState2 extends AbstractAppState {
 		rootNode = app.getRootNode();
 
 		initFactories();
-		tarFac.makeFish();
-		obFac.makeKillerWhale();
+//		tarFac.makeFish();
+//		obFac.makeKillerWhale();
 		
 		initFactoryList();
 	}
@@ -96,19 +102,35 @@ public class SpawnState2 extends AbstractAppState {
 	@Override
 	public final void update(final float tpf) {
 		timeCount += tpf;
-		obstacleTimer += tpf * 100;
+		obstacleTimer += tpf;
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
 //			pengFac.makeStandardPenguin();
 		}
 		updateDifficultyRatios();
 		
-		if (obstacleTimer > SPAWN_OBSTACLE_TIME) {
+		if (obstacleTimer > 3) {
 			obstacleTimer = 0;
 			obstacleFactory = getObstacleFactory();
 			if (obstacleFactory != null) {
 				spawnObstacle(obstacleFactory);
 			}
+		}
+		if (pending.size() > 0) {
+			System.out.println(pending);
+			Set<Float> keys = pending.keySet();
+		for (Float key : keys) {
+			float newkey = key - tpf;
+			Spatial obst = pending.get(key);
+			pending.remove(key);
+			
+			if (newkey <= 0) {
+				rootNode.attachChild(obst);
+				((GhostControl) obst.getControl(0)).setEnabled(true);
+			} else {
+				pending.put(newkey, obst);
+			}
+		}
 		}
 		
 	}
@@ -116,11 +138,26 @@ public class SpawnState2 extends AbstractAppState {
 	private void spawnObstacle(ObstacleFactoryInterface obstacleFactory) {
 		final Spatial obstacle = obstacleFactory.makeObst(assetManager);
 		if (obstacle != null) {
-			rootNode.attachChild(obstacle);
+			Picture pic = createNotification(assetManager);
+			rootNode.attachChild(pic);
+//			rootNode.attachChild(obstacle);
 			final FishControl c = new FishControl(new BoxCollisionShape(new Vector3f(20, 20, 20)));
 			obstacle.addControl(c);
-			phy.add(obstacle);
+			phy.add(c);
+			c.setEnabled(false);
+			spawntimer = 0;
+			showWarning = true;
+			pending.put(2f, obstacle);
 		}
+	}
+	
+	private Picture createNotification(AssetManager assetManager) {
+		Picture pic = new Picture("notification");
+		pic.setImage(assetManager, "Images/uitroepteken.jpg", false);
+		pic.setHeight(50);
+		pic.setWidth(40);
+		pic.setLocalTranslation(FishControl.INITIAL_SPAWN_LOCATION);
+		return pic;
 	}
 
 	public ObstacleFactoryInterface getObstacleFactory() {
