@@ -4,6 +4,7 @@ package com.funkydonkies.powerups;
 import java.awt.Color;
 import java.util.List;
 
+import com.funkydonkies.controllers.GrowingSnowballControl;
 import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;

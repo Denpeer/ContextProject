@@ -1,6 +1,5 @@
-package com.funkydonkies.powerups;
+package com.funkydonkies.controllers;
 
-import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.curve.SplineCurve;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.geometrys.penguins.Snowball;

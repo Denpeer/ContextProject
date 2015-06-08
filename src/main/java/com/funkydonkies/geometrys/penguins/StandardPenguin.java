@@ -1,9 +1,9 @@
 package com.funkydonkies.geometrys.penguins;
 
 
+import com.funkydonkies.controllers.GrowingSnowballControl;
 import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.factories.PenguinFactory;
-import com.funkydonkies.powerups.GrowingSnowballControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
