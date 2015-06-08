@@ -28,6 +28,7 @@ public class PlayState extends AbstractAppState {
 	private GameInputState gameInputState;
 	private CurveState curveState;
 	private CameraState cameraState;
+	private SceneState sceneState;
 	private GameBackgroundMusicState gameSoundState;
 	private SpawnState spawnState;
 	private Combo combo;
@@ -73,6 +74,9 @@ public class PlayState extends AbstractAppState {
 		
 		curveState = new CurveState();
 		stateManage.attach(curveState);
+		
+		sceneState = new SceneState();
+		stateManage.attach(sceneState);
 		
 		gameSoundState = new GameBackgroundMusicState();
 		stateManage.attach(gameSoundState);
