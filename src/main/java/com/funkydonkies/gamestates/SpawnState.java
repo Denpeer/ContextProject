@@ -1,6 +1,7 @@
 package com.funkydonkies.gamestates;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 import org.reflections.Reflections;
@@ -21,6 +22,7 @@ import com.jme3.scene.Spatial;
  */
 public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 2;
+	public static final float OBSTACLE_SPAWN_TIME = 3;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
@@ -32,11 +34,14 @@ public class SpawnState extends AbstractAppState {
 	private FactoryInterface spear;
 	private FactoryInterface fish;
 	private FactoryInterface killerWhale;
+	private FactoryInterface yeti;
 	
 	private App app;
 	boolean bool = true;
 	private float timeCount = 0;
 	private float time = 0;
+	
+	private Random rand;
 	
 	/**
 	 * The initialize method of the state.
@@ -57,6 +62,7 @@ public class SpawnState extends AbstractAppState {
 		setSpawnAbleObjects();
 		spawn(fish);
 		initRootNodeMat(app);
+		rand = new Random();
 	}
 	
 	/**
@@ -71,6 +77,7 @@ public class SpawnState extends AbstractAppState {
 		spear = facHm.get("SpearFactory");
 		fish = facHm.get("FishFactory");
 		killerWhale = facHm.get("KillerWhaleFactory");
+		yeti = facHm.get("YetiFactory");
 	}
 	
 	/**
@@ -85,12 +92,22 @@ public class SpawnState extends AbstractAppState {
 			timeCount = 0;
 			spawnPenguin(penguin);
 		}
-		final int spawnSpear = 5;
-		if (time > spawnSpear) {
+		if (time > OBSTACLE_SPAWN_TIME) {
 			time = 0;
-			spawn(spear);
-			spawn(killerWhale);
-			
+			int i = rand.nextInt(4);
+			switch (i) {
+				case 0:
+					spawn(spear);
+					break;
+				case 1:
+					spawn(killerWhale);
+					break;
+				case 2:
+					spawn(yeti);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 	

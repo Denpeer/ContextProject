@@ -1,5 +1,6 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
@@ -105,19 +106,15 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 	public void collision(final PhysicsCollisionEvent event) {
 		if(event.getNodeA() != null && event.getNodeB() != null){
 			if (OBSTACLE_NAME.equals(event.getNodeA().getName()) 
-					&& BALL_NAME.equals(event.getNodeB().getName())){
+					&& PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeB().getName())){
 				sm.getState(DifficultyState.class).resetDiff();
-				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
-				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
-				//event.getNodeB().getParent().detachChild(event.getNodeB());
-				//event.getNodeB().removeControl(this);
-			}else if(BALL_NAME.equals(event.getNodeA().getName())
-					&& OBSTACLE_NAME.equals(event.getNodeB().getName())){
+				event.getNodeB().removeFromParent();
+				((RigidBodyControl) event.getNodeB().getControl(0)).setEnabled(false);
+			} else if(PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeA().getName())
+					&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
-				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
-				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
-				//event.getNodeA().getParent().detachChild(event.getNodeA());
-				//event.getNodeA().removeControl(this);
+				event.getNodeA().removeFromParent();
+				((RigidBodyControl) event.getNodeB().getControl(0)).setEnabled(false);
 			}
 		}		
 	}	

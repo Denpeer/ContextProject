@@ -60,7 +60,7 @@ public class PlayState extends AbstractAppState {
 
 		handleBulletAppState();
 		initStates();
-		
+		penguinNode = app.getPenguinNode();
 		//combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
 	/**

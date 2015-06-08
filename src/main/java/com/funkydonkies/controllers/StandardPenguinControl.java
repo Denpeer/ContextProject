@@ -88,7 +88,6 @@ public class StandardPenguinControl extends RigidBodyControl implements
 			angularvel.x = 0;
 			this.setAngularVelocity(angularvel);
 		}
-		
 	}
 	
 

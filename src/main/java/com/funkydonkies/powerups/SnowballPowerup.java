@@ -71,7 +71,8 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 			for (Spatial penguin : penguins) {
 				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
 				if (SBControl != null) {
-//					SBControl.scaleBack();
+					SBControl.scaleBack();
+					((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(true);
 					SBControl.setEnabled(false);
 				}
 			}
