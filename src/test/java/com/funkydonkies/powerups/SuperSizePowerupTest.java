@@ -4,14 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.core.App;
 import com.funkydonkies.gamestates.PlayState;
-import com.funkydonkies.w4v3.App;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 

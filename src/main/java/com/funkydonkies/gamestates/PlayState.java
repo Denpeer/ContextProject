@@ -1,8 +1,8 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.combo.Combo;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.factories.ObstacleFactory;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -22,9 +22,9 @@ public class PlayState extends AbstractAppState {
 	private static final Vector3f CAM_LOCATION = new Vector3f(160, 70, 190);
 
 	private App app;
-	private ObstacleFactory factory;
 
-	private static BulletAppState bulletAppState = new BulletAppState();
+	private static BulletAppState bulletAppState;
+	
 	private GameInputState gameInputState;
 	private CurveState curveState;
 	private CameraState cameraState;
@@ -33,7 +33,7 @@ public class PlayState extends AbstractAppState {
 	private Combo combo;
 	private Node penguinNode;
 	
-	private PowerupState powerUpState;
+	private DifficultyState powerUpState;
 	private AppStateManager stateManage;
 	
 	/**
@@ -61,7 +61,7 @@ public class PlayState extends AbstractAppState {
 		handleBulletAppState();
 		initStates();
 		
-		combo = new Combo(app.getGuiNode(), app.getAssetManager());
+		//combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
 	/**
 	 * This method initializes the states.
@@ -79,7 +79,7 @@ public class PlayState extends AbstractAppState {
 		gameSoundState = new GameBackgroundMusicState();
 		stateManage.attach(gameSoundState);
 		
-		powerUpState = new PowerupState();
+		powerUpState = new DifficultyState();
 		stateManage.attach(powerUpState);
 		
 		spawnState = new SpawnState();
@@ -106,7 +106,7 @@ public class PlayState extends AbstractAppState {
 	 * Returns the physicsSpace of the application, taken from bulletAppState.
 	 * @return PhysicsSpace
 	 */
-	public static PhysicsSpace getPhysicsSpace() {
+	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
 	
@@ -114,4 +114,11 @@ public class PlayState extends AbstractAppState {
 		return combo;
 	}
 	
+	public Node getRootNode() {
+		return app.getRootNode();
+	}
+	
+	public Node getPenguinNode() {
+		return penguinNode;
+	}
 }

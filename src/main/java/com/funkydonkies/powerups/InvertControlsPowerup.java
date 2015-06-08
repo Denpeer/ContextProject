@@ -1,10 +1,11 @@
 package com.funkydonkies.powerups;
 
 import com.funkydonkies.gamestates.CurveState;
+import com.funkydonkies.gamestates.DisabledState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
-public class InvertControlsPowerup extends AbstractPowerup {
+public class InvertControlsPowerup extends DisabledState {
 	private static float INVERT_TIME = 5;
 	private CurveState curveState;
 	private float timer = 0;

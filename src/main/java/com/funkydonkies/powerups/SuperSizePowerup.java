@@ -6,8 +6,8 @@ import java.util.List;
 import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.gamestates.PlayState;
-import com.funkydonkies.w4v3.Ball;
+import com.funkydonkies.factories.PenguinFactory;
+import com.funkydonkies.gamestates.DisabledState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -17,7 +17,7 @@ import com.jme3.scene.Spatial;
 /**
  * Defines the behavior for sizing up the balls. 
  */
-public class SuperSizePowerup extends AbstractPowerup {
+public class SuperSizePowerup extends DisabledState {
 	private static final float STANDARD_SCALEUP = 2f;
 	private AppStateManager stateManager;
 	private App app;
@@ -85,7 +85,7 @@ public class SuperSizePowerup extends AbstractPowerup {
 			final Spatial ball = ballIterator.next();
 			ball.scale(1 / ball.getWorldScale().x);
 			ball.getControl(StandardPenguinControl.class).setCollisionShape(
-					new SphereCollisionShape(Ball.DEFAULT_RADIUS));
+					new SphereCollisionShape(PenguinFactory.DEFAULT_RADIUS));
 		}
 	}
 	

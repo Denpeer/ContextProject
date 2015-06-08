@@ -7,6 +7,7 @@ import java.util.List;
 import com.funkydonkies.controllers.StandardPenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.gamestates.DisabledState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.geometrys.penguins.Snowball;
 import com.jme3.app.Application;
@@ -18,7 +19,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-public class SnowballPowerup extends AbstractPowerup implements PhysicsCollisionListener {
+public class SnowballPowerup extends DisabledState implements PhysicsCollisionListener {
 	private App app;
 	private AppStateManager sManager;
 
@@ -41,7 +42,7 @@ public class SnowballPowerup extends AbstractPowerup implements PhysicsCollision
 		
 		Node penguinNode = app.getPenguinNode();
 		List<Spatial> penguins = penguinNode.getChildren();
-		
+		System.out.println("snowball enabled: " + penguins);
 		if (enabled) {
 			for (Spatial penguin : penguins) {
 				Vector3f speed = ((Node) penguin).getControl(StandardPenguinControl.class).getLinearVelocity();

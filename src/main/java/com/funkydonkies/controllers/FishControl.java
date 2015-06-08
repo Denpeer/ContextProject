@@ -1,6 +1,8 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.gamestates.CurveState;
+import com.funkydonkies.gamestates.DifficultyState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
@@ -15,13 +17,15 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 	private static final String TARGET_NAME = "fish";
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
+	private DifficultyState diffState;
 
 	/**
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
 	 */
-	public FishControl(final CollisionShape shape) {
+	public FishControl(final CollisionShape shape, AppStateManager sm) {
 		super(shape);
+		diffState = sm.getState(DifficultyState.class);
 	}
 	
 	/**
@@ -55,12 +59,16 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 	 * @param event PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (TARGET_NAME.equals(event.getNodeA().getName()) 
-				&& BALL_NAME.equals(event.getNodeB().getName())
-				|| BALL_NAME.equals(event.getNodeA().getName()) 
-						&& TARGET_NAME.equals(event.getNodeB().getName())) {
-			respawn();
+		if(event.getNodeA() != null && event.getNodeB() != null){
+			if (TARGET_NAME.equals(event.getNodeA().getName()) 
+					&& BALL_NAME.equals(event.getNodeB().getName())
+					|| BALL_NAME.equals(event.getNodeA().getName()) 
+							&& TARGET_NAME.equals(event.getNodeB().getName())) {
+				respawn();
+				diffState.incDiff();
+			}
 		}
+
 	}
 	
 	/**

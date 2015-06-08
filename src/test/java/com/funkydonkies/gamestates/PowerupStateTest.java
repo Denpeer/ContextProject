@@ -7,18 +7,18 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.core.App;
 import com.funkydonkies.powerups.SuperSizePowerup;
-import com.funkydonkies.w4v3.App;
 import com.jme3.app.state.AppStateManager;
 
 public class PowerupStateTest {
-	private PowerupState powerupState;
+	private DifficultyState powerupState;
 	private App app;
 	private AppStateManager sManager;
 	
 	@Before
 	public void setUp() throws Exception {
-		powerupState = new PowerupState();
+		powerupState = new DifficultyState();
 		app = mock(App.class);
 		sManager = mock(AppStateManager.class);
 	}

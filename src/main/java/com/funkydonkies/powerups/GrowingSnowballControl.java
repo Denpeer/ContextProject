@@ -35,15 +35,19 @@ public class GrowingSnowballControl extends StandardPenguinControl implements
 	
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
-		if (event.getNodeA().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
-				&& event.getNodeB().getName().equals(SplineCurve.CURVE_NAME)
-				|| event.getNodeB().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
-				&&  event.getNodeA().getName().equals(SplineCurve.CURVE_NAME)) {
-			if (canScale) {
-				canScale = false;
+		if(event.getNodeA() != null && event.getNodeB() != null){
+			if (event.getNodeA().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
+					&& event.getNodeB().getName().equals(SplineCurve.CURVE_NAME)
+					|| event.getNodeB().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
+					&&  event.getNodeA().getName().equals(SplineCurve.CURVE_NAME)) {
+				if (canScale) {
+					canScale = false;
+					//TODO only scale here
+				}
 			}
 		}
 	}
+	
 	@Override
 	public void update(float tpf) {
 		super.update(tpf);
