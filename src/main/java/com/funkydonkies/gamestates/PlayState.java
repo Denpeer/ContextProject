@@ -66,7 +66,7 @@ public class PlayState extends AbstractAppState {
 		stateManager.attach(bulletAppState);
 		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-		app.getFlyByCamera().setEnabled(false);
+//		app.getFlyByCamera().setEnabled(false);
 
 		cameraState = new CameraState();
 		stateManager.attach(cameraState);
