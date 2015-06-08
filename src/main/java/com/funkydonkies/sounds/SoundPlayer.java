@@ -1,8 +1,5 @@
 package com.funkydonkies.sounds;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
 import com.jme3.app.Application;
@@ -60,8 +57,6 @@ public class SoundPlayer {
 	 * 
 	 */
 	private void initSounds() {
-		System.out.println("***** LOADING GAME SOUNDS ***** =>");
-
 		penguinSpawnAudioNode = new AudioNode(assetManager,
 				PENGUIN_SPAWN_SOUND_PATH, false);
 		penguinSavedAudioNode = new AudioNode(assetManager,
@@ -88,8 +83,6 @@ public class SoundPlayer {
 				OBSTACLE_COLLISION_SOUND_PATH);
 		initSingleSound(comboNewLevelAudioNode, COMBO_NEW_LEVEL_SOUND_PATH);
 		initSingleSound(comboLostAudioNode, COMBO_LOST_SOUND_PATH);
-
-		System.out.println("<= ***** DONE LOADING GAME SOUNDS *****");
 	}
 
 	/**
@@ -105,7 +98,6 @@ public class SoundPlayer {
 		audioNode.setLooping(false);
 		audioNode.setVolume(1);
 		app.getRootNode().attachChild(audioNode);
-		System.out.println("	=> " + path + " sound initialized.");
 	}
 
 	/**

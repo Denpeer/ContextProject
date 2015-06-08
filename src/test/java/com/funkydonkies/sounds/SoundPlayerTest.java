@@ -1,6 +1,5 @@
 package com.funkydonkies.sounds;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -8,15 +7,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.w4v3.App;
-import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
+/**
+ * test the soundplayer class.
+ * @author Olivier Dikken
+ *
+ */
 public class SoundPlayerTest {
 	
 	private AppStateManager stateManager;
@@ -29,6 +30,9 @@ public class SoundPlayerTest {
 	private Node rootNodeMock;
 	private SoundState soundState;
 	
+	/**
+	 * setup.
+	 */
 	@Before
 	public void setUp() {
 		stateManager = mock(AppStateManager.class);
@@ -42,6 +46,9 @@ public class SoundPlayerTest {
 		when(appMock.getRootNode()).thenReturn(rootNodeMock);
 	}
 	
+	/**
+	 * test the creation of the soundplayer.
+	 */
 	@Test
 	public void testSoundPlayer() {
 		soundPlayer = new SoundPlayer(appMock);
