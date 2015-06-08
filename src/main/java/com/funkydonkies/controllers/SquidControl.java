@@ -39,6 +39,7 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 	public void init() {
 		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		respawn();
 	}
 
 	/**
@@ -101,14 +102,14 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 				diffState.incDiff();
 				event.getNodeA().removeFromParent();
 				((GhostControl) event.getNodeA().getControl(SquidControl.class)).setEnabled(false);
-				diffState.activateInvertControls();
+				diffState.activateSnowBallPowerup();
 			} else if (PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeA().getName())
 					&& TARGET_NAME.equals(event.getNodeB().getName())) {
 				diffState.incDiff();
 				diffState.incDiff();
 				event.getNodeB().removeFromParent();
 				((GhostControl) event.getNodeB().getControl(SquidControl.class)).setEnabled(false);
-				diffState.activateInvertControls();
+				diffState.activateSnowBallPowerup();
 			}
 		}
 
