@@ -44,19 +44,19 @@ public class KillerWhaleFactory implements FactoryInterface {
 	}
 	
 	public Geometry makeKillerWhale(SimpleApplication app, float yCoord, float xCoord, AppStateManager sManager){
-		final Mesh whaleMesh = new Box(50, 200, 1);
+		final Mesh whaleMesh = new Box(50, 100, 1);
 		Geometry whale = new Geometry("killerWhale", whaleMesh);
 		whale.setMaterial(getKillerWhaleMaterial(app.getAssetManager()));
 		
 		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
-		final KillerWhaleControl whaleControl = new KillerWhaleControl(1f, 6, sManager, loci);
+		final KillerWhaleControl whaleControl = new KillerWhaleControl(1f, 4, sManager, loci);
 		whale.addControl(whaleControl);
 		whaleControl.init();
 		
 		return whale;
 	}
 	public Geometry makeWarningLine(SimpleApplication app, float xCoord){
-		final Mesh warningLineMesh = new Box(50, 200, 1);
+		final Mesh warningLineMesh = new Box(50, 50, 1);
 		Geometry geom = new Geometry("warning line", warningLineMesh);
 		geom.setMaterial(getLineMaterial(app.getAssetManager()));
 		geom.setQueueBucket(Bucket.Transparent);

@@ -32,7 +32,6 @@ public class SquidFactory implements FactoryInterface{
 		final Mesh mesh = new Box(squidWidth, squidHeight, squidDepth);
 		final Geometry squid = new Geometry("squid", mesh);
 		squid.setMaterial(getsquidMaterial(app.getAssetManager()));
-		app.getRootNode().attachChild(squid);
 		final SquidControl tarCont = new SquidControl(
 				new BoxCollisionShape(new Vector3f(squidWidth, squidHeight, squidDepth)), sManager);
 		squid.addControl(tarCont);

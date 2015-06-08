@@ -37,6 +37,7 @@ public class SpawnState extends AbstractAppState {
 	private FactoryInterface squid;
 	private FactoryInterface killerWhale;
 	private FactoryInterface spikeyBall;
+	private FactoryInterface polarBear;
 	private FactoryInterface yeti;
 	
 	private App app;
@@ -84,6 +85,7 @@ public class SpawnState extends AbstractAppState {
 		killerWhale = facHm.get("KillerWhaleFactory");
 		yeti = facHm.get("YetiFactory");
 		spikeyBall = facHm.get("SpikeyBallFactory");
+		polarBear = facHm.get("PolarBearFactory");
 	}
 	
 	/**

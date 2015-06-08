@@ -267,7 +267,7 @@ public class CurveState extends AbstractAppState {
 		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
-			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
+			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 15, 0));
 		}
 
 		return points;
