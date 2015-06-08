@@ -19,12 +19,10 @@ public class SpikeyBallControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	private static final String WHALE_NAME = "killerWhale";
 	private static final String SPIKEY_BALL_NAME = "spikeyBall";
 	private static final String PENGUIN_NAME = "standardPenguin";
-	private static final String CURVE_NAME = "curve";
 	private Vector3f initialSpawn;
-	private Vector3f initialSpeed = new Vector3f(0, 1, 0);
+	private Vector3f initialSpeed = new Vector3f(0, 50, 0);
 	private final AppStateManager sm;
 
 	/**
@@ -34,7 +32,7 @@ public class SpikeyBallControl extends RigidBodyControl implements
 	 *            Collision shape used by the physics
 	 * @param f
 	 *            mass of the sphere
-	 * @param sm
+	 * @param stateManager
 	 *            the AppStateManager
 	 */
 	public SpikeyBallControl(final SphereCollisionShape sphereCollisionShape,
@@ -47,7 +45,7 @@ public class SpikeyBallControl extends RigidBodyControl implements
 	 * The initialize method for the control.
 	 */
 	public void init() {
-		final int yOffSet = 5, xOffSet = 0;
+		final int yOffSet = 50, xOffSet = 100;
 		initialSpawn = new Vector3f(xOffSet,
 				CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		setLocation(initialSpawn);
@@ -92,7 +90,6 @@ public class SpikeyBallControl extends RigidBodyControl implements
 	public void prePhysicsTick(final PhysicsSpace space, final float tpf) {
 		final Vector3f loc = getPhysicsLocation();
 		final Vector3f angularvel = getAngularVelocity();
-		// velocity.z = 0;
 		if (Math.abs(loc.z) > MAX_DEVIANCE_ON_Z) {
 			loc.z = 0;
 			setPhysicsLocation(loc);
