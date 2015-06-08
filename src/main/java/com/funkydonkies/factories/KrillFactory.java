@@ -32,7 +32,6 @@ public class KrillFactory implements FactoryInterface{
 		final Mesh mesh = new Box(krillWidth, krillHeight, krillDepth);
 		final Geometry krill = new Geometry("krill", mesh);
 		krill.setMaterial(getkrillMaterial(app.getAssetManager()));
-		app.getRootNode().attachChild(krill);
 		final KrillControl tarCont = new KrillControl(
 				new BoxCollisionShape(new Vector3f(krillWidth, krillHeight, krillDepth)), sManager);
 		krill.addControl(tarCont);

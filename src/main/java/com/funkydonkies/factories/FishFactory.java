@@ -32,7 +32,6 @@ public class FishFactory implements FactoryInterface{
 		final Mesh mesh = new Box(fishWidth, fishHeight, fishDepth);
 		final Geometry fish = new Geometry("fish", mesh);
 		fish.setMaterial(getFishMaterial(app.getAssetManager()));
-		app.getRootNode().attachChild(fish);
 		final FishControl tarCont = new FishControl(
 				new BoxCollisionShape(new Vector3f(fishWidth, fishHeight, fishDepth)), sManager);
 		fish.addControl(tarCont);

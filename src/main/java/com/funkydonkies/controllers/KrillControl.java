@@ -43,8 +43,7 @@ public class KrillControl extends GhostControl implements PhysicsCollisionListen
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
-			space.addCollisionListener(this);
-		
+		space.addCollisionListener(this);		
 	}
 	
 	/**
