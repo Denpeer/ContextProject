@@ -6,7 +6,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
 public class InvertControlsPowerup extends DisabledState {
-	private static float INVERT_TIME = 5;
+	private static float INVERT_TIME = 10;
 	private CurveState curveState;
 	private float timer = 0;
 	
@@ -29,10 +29,10 @@ public class InvertControlsPowerup extends DisabledState {
 	public void update(float tpf) {
 		super.update(tpf);
 		timer += tpf;
-//		if (timer > INVERT_TIME) {
-//			timer = 0;
-//			setEnabled(false);
-//		}
+		if (timer > INVERT_TIME) {
+			timer = 0;
+			setEnabled(false);
+		}
 	}
 	
 	

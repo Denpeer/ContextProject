@@ -98,6 +98,6 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	}
 	
 	public void activateInvertControls() {
-		
+		invertControls.setEnabled(true);
 	}
 }
