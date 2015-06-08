@@ -65,7 +65,7 @@ public class SceneState extends AbstractAppState {
 	 */
 	public void initScene(final int scale, final Vector3f translation) {
 		System.out.println("SCENE_PATH file found!");
-		System.out.println("=> loading " + SCENE_PATH.toString() + " Spatial ...");
+		System.out.println("=> loading " + SCENE_PATH + " Spatial ...");
 		loadScene(scale, translation);
 		System.out.println("... DONE loading .scene Spatial <=");
 	}
