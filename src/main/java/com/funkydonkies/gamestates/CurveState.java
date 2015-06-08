@@ -40,6 +40,7 @@ public class CurveState extends AbstractAppState {
 	private SplineCurve splineCurve;
 	
 	private float[] updatedXPoints = null;
+	private static float[] points;
 
 	private boolean cameraEnabled = false;
 	private boolean updateEnabled = false;
@@ -138,7 +139,7 @@ public class CurveState extends AbstractAppState {
 	
 	@Override
 	public final void update(final float tpf) {
-		float[] points;
+		
 		if (bridge == null) {
 			bridge = stateManager.getState(CameraState.class).getBridge();
 		}
@@ -346,5 +347,9 @@ public class CurveState extends AbstractAppState {
 		}
 		
 		return highestIndex * POINT_DISTANCE;
+	}
+	
+	public void setPoint(int index, int amount){
+		points[index] += amount;
 	}
 }

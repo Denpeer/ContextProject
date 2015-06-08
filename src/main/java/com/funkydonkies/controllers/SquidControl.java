@@ -94,7 +94,7 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 				diffState.incDiff();
 				diffState.incDiff();
 				event.getNodeA().removeFromParent();
-				((GhostControl) event.getNodeA().getControl(KrillControl.class))
+				((GhostControl) event.getNodeA().getControl(SquidControl.class))
 				.setEnabled(false);
 				diffState.activateInvertControls();
 			} else if( PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeA().getName()) 
@@ -102,7 +102,7 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 				diffState.incDiff();
 				diffState.incDiff();
 				event.getNodeB().removeFromParent();
-				((GhostControl) event.getNodeB().getControl(KrillControl.class))
+				((GhostControl) event.getNodeB().getControl(SquidControl.class))
 				.setEnabled(false);
 				diffState.activateInvertControls();
 			}

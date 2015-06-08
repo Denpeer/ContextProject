@@ -9,6 +9,7 @@ import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
 import com.funkydonkies.powerups.SuperSizePowerup;
+import com.funkydonkies.powerups.TsunamiPowerup;
 import com.funkydonkies.tiers.Tier1;
 import com.funkydonkies.tiers.Tier2;
 import com.jme3.app.Application;
@@ -57,6 +58,8 @@ public class DifficultyState extends AbstractAppState implements Observer {
 		snowBallPowerup = new SnowballPowerup();
 		sManager.attach(snowBallPowerup);
 		
+
+		
 		combo = new Combo(app.getGuiNode(), app.getAssetManager());
 		combo.addObserver(this);
 	}
@@ -64,11 +67,11 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	@Override
 	public void update(final float tpf) {
 		super.update(tpf);
-//		time += tpf;
-//		if (time > 8) {
-//			time = 0;
-//			setTier2();
-//		}
+		time += tpf;
+		if (time > 8) {
+			time = 0;
+			setTier1();
+		}
 		
 	}
 	public void disableAllPowerups() {
