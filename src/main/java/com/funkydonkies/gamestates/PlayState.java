@@ -36,6 +36,7 @@ public class PlayState extends AbstractAppState {
 	private GameInputState gameInputState;
 	private CurveState spController;
 	private CameraState cameraState;
+	private SceneState sceneState;
 	private GameBackgroundMusicState gameSoundState;
 	
 	/**
@@ -76,6 +77,9 @@ public class PlayState extends AbstractAppState {
 		
 		spController = new CurveState();
 		stateManager.attach(spController);
+		
+		sceneState = new SceneState();
+		stateManager.attach(sceneState);
 		
 		gameSoundState = new GameBackgroundMusicState();
 		stateManager.attach(gameSoundState);
