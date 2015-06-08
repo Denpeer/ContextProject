@@ -67,16 +67,21 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 				}
 			}
 		} else {
-			for (Spatial penguin : penguins) {
-				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
-				if (SBControl != null) {
-					SBControl.scaleBack();
-					((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(true);
-					penguin.setName("standardPenguin");
-					SBControl.setEnabled(false);
-				}
-			}
+//			for (Spatial penguin : penguins) {
+//				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
+//				if (SBControl != null) {
+//					SBControl.scaleBack();
+//					((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(true);
+//					penguin.setName("standardPenguin");
+//					SBControl.setEnabled(false);
+//				}
+//			}
 		}
+	}
+	
+	@Override
+	public void update(float tpf) {
+		super.update(tpf);
 	}
 	
 	

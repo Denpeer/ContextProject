@@ -7,6 +7,7 @@ import com.funkydonkies.combo.Combo;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.powerups.InvertControlsPowerup;
+import com.funkydonkies.powerups.SnowballPowerup;
 import com.funkydonkies.powerups.SuperSizePowerup;
 import com.funkydonkies.tiers.Tier1;
 import com.funkydonkies.tiers.Tier2;
@@ -32,6 +33,7 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	private int currCombo = 0;
 	
 	private InvertControlsPowerup invertControls;
+	private SnowballPowerup snowBallPowerup;
 	
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -52,6 +54,9 @@ public class DifficultyState extends AbstractAppState implements Observer {
 		invertControls = new InvertControlsPowerup();
 		sManager.attach(invertControls);
 		
+		snowBallPowerup = new SnowballPowerup();
+		sManager.attach(snowBallPowerup);
+		
 		combo = new Combo(app.getGuiNode(), app.getAssetManager());
 		combo.addObserver(this);
 	}
@@ -59,11 +64,11 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	@Override
 	public void update(final float tpf) {
 		super.update(tpf);
-		time += tpf;
-		if (time > 8) {
-			time = 0;
-			setTier2();
-		}
+//		time += tpf;
+//		if (time > 8) {
+//			time = 0;
+//			setTier2();
+//		}
 		
 	}
 	public void disableAllPowerups() {
@@ -99,5 +104,9 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	
 	public void activateInvertControls() {
 		invertControls.setEnabled(true);
+	}
+	
+	public void activateSnowBallPowerup() {
+		snowBallPowerup.setEnabled(true);
 	}
 }

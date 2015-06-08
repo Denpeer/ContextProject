@@ -26,7 +26,6 @@ public class Tier2 extends DisabledState {
 			//invertControls.setEnabled(true);
 			snowBall.setEnabled(true);
 		} else {
-			invertControls.setEnabled(false);
 			snowBall.setEnabled(false);
 		}
 	}

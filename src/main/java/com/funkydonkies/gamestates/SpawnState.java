@@ -23,6 +23,7 @@ import com.jme3.scene.Spatial;
 public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 2;
 	public static final float OBSTACLE_SPAWN_TIME = 5;
+	public static final float SPECIAL_FISH_SPAWN_TIME = 10;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
@@ -39,11 +40,13 @@ public class SpawnState extends AbstractAppState {
 	private FactoryInterface spikeyBall;
 	private FactoryInterface polarBear;
 	private FactoryInterface yeti;
+	private FactoryInterface thunder;
 	
 	private App app;
 	boolean bool = true;
 	private float timeCount = 0;
 	private float time = 0;
+	private float specialFishTimer = 0;
 	
 	private Random rand;
 	
@@ -85,6 +88,7 @@ public class SpawnState extends AbstractAppState {
 		killerWhale = facHm.get("KillerWhaleFactory");
 		yeti = facHm.get("YetiFactory");
 		spikeyBall = facHm.get("SpikeyBallFactory");
+		thunder = facHm.get("ThunderFactory");
 		polarBear = facHm.get("PolarBearFactory");
 	}
 	
@@ -100,9 +104,20 @@ public class SpawnState extends AbstractAppState {
 			timeCount = 0;
 			spawnPenguin(penguin);
 		}
+		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME){
+			int i = rand.nextInt(2);
+			switch (i) {
+				case 0:
+					spawn(krill);
+					break;
+				case 1: 
+					spawn(squid);
+					break;
+			}
+		}
 		if (time > OBSTACLE_SPAWN_TIME) {
 			time = 0;
-			int i = rand.nextInt(5);
+			int i = rand.nextInt(6);
 			switch (i) {
 				case 0:
 					spawn(spear);
@@ -118,6 +133,9 @@ public class SpawnState extends AbstractAppState {
 					break;
 				case 4:
 					spawn(polarBear);
+					break;
+				case 5:
+					spawn(thunder);
 					break;
 				default:
 					break;

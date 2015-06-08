@@ -1,5 +1,6 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.app.state.AppStateManager;
@@ -8,12 +9,12 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.GhostControl;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 /**
  * Control class for the target. Takes care of collisions between the ball and target.
  */
 public class KrillControl extends GhostControl implements PhysicsCollisionListener {
-	private static final String BALL_NAME = "standardPenguin";
 	private static final String TARGET_NAME = "krill";
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(130f, 90f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
@@ -63,12 +64,21 @@ public class KrillControl extends GhostControl implements PhysicsCollisionListen
 	public void collision(final PhysicsCollisionEvent event) {
 		if(event.getNodeA() != null && event.getNodeB() != null){
 			if (TARGET_NAME.equals(event.getNodeA().getName()) 
-					&& BALL_NAME.equals(event.getNodeB().getName())
-					|| BALL_NAME.equals(event.getNodeA().getName()) 
+					&& PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeB().getName())) {
+				diffState.incDiff();
+				diffState.incDiff();
+				event.getNodeA().removeFromParent();
+				((GhostControl) event.getNodeA().getControl(KrillControl.class))
+				.setEnabled(false);
+				diffState.activateInvertControls();
+			} else if( PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeA().getName()) 
 							&& TARGET_NAME.equals(event.getNodeB().getName())) {
-				respawn();
 				diffState.incDiff();
 				diffState.incDiff();
+				event.getNodeB().removeFromParent();
+				((GhostControl) event.getNodeB().getControl(KrillControl.class))
+				.setEnabled(false);
+				diffState.activateInvertControls();
 			}
 		}
 
