@@ -1,20 +1,15 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.obstacles.MovingBox;
-import com.funkydonkies.obstacles.ObstacleFactory;
-import com.funkydonkies.obstacles.Target;
-import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.Combo;
+import com.funkydonkies.factories.ObstacleFactory;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.font.BitmapText;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 
 /**
  * The AppState that controls the basic aspects of the game, it is responsible for initializing the 
@@ -27,16 +22,19 @@ public class PlayState extends AbstractAppState {
 	private static final Vector3f CAM_LOCATION = new Vector3f(160, 70, 190);
 
 	private App app;
-	private Target target;
-	private MovingBox movBox;
-	private Combo combo;
 	private ObstacleFactory factory;
 
 	private static BulletAppState bulletAppState = new BulletAppState();
 	private GameInputState gameInputState;
-	private CurveState spController;
+	private CurveState curveState;
 	private CameraState cameraState;
 	private GameBackgroundMusicState gameSoundState;
+	private SpawnState spawnState;
+	private Combo combo;
+	private Node penguinNode;
+	
+	private PowerupState powerUpState;
+	private AppStateManager stateManage;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -53,39 +51,55 @@ public class PlayState extends AbstractAppState {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		
-		factory = new ObstacleFactory();
-		
-		final BitmapText comboText = new BitmapText(
-				app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"), false);
-		combo = new Combo(app.getGuiNode(), comboText);
-		movBox = factory.makeMovingBox(app.getRootNode(), app.getAssetManager());
-		target = factory.makeTarget(app.getRootNode());
-		target.getControl().setCombo(combo);
-		
-		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
-		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-//		app.getFlyByCamera().setEnabled(false);
+		stateManage = stateManager;
+		handleBulletAppState();
 
+		
+		app.getFlyByCamera().setEnabled(true);
+		app.getCamera().setLocation(CAM_LOCATION);
+
+		handleBulletAppState();
+		initStates();
+		
+		combo = new Combo(app.getGuiNode(), app.getAssetManager());
+	}
+	/**
+	 * This method initializes the states.
+	 */
+	public void initStates() {
 		cameraState = new CameraState();
-		stateManager.attach(cameraState);
+		stateManage.attach(cameraState);
 		
 		gameInputState = new GameInputState();
-		stateManager.attach(gameInputState);
+		stateManage.attach(gameInputState);
 		
-		spController = new CurveState();
-		stateManager.attach(spController);
+		curveState = new CurveState();
+		stateManage.attach(curveState);
 		
 		gameSoundState = new GameBackgroundMusicState();
-		stateManager.attach(gameSoundState);
-
-		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		mat2.setColor(COLOR, ColorRGBA.Red);
-		movBox.draw(mat2, getPhysicsSpace());
-		target.draw(mat2, bulletAppState.getPhysicsSpace());
-		app.getCamera().setLocation(CAM_LOCATION);
-		combo.display();
+		stateManage.attach(gameSoundState);
+		
+		powerUpState = new PowerupState();
+		stateManage.attach(powerUpState);
+		
+		spawnState = new SpawnState();
+		stateManage.attach(spawnState);
+		
+		//comboState = new ComboState();
+		//stateManage.attach(comboState);
+		
+//		difState = new DifficultyState();
+//		stateManage.attach(difState);
+	}
+	
+	/**
+	 * This method handles bulletAppState.
+	 */
+	public void handleBulletAppState() {
+		bulletAppState = new BulletAppState();
+		stateManage.attach(bulletAppState);
+		bulletAppState.setDebugEnabled(true);
+		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	
 	/**
@@ -96,6 +110,8 @@ public class PlayState extends AbstractAppState {
 		return bulletAppState.getPhysicsSpace();
 	}
 	
-	
+	public Combo getCombo() {
+		return combo;
+	}
 	
 }

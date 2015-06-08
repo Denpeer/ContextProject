@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3.curve;
+package com.funkydonkies.curve;
 
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -12,6 +12,8 @@ import com.jme3.util.BufferUtils;
  *
  */
 public class CustomCurveMesh {
+	private static float launchPadHeight;
+	private static final float LAUNCHPAD_WIDTH = 50f;
 	private Vector3f[] meshStructurePoints;
 	private int[] meshStructureTrianglesIndices;
 	private Vector3f[] splinePoints;
@@ -22,10 +24,10 @@ public class CustomCurveMesh {
 	 */
 	public CustomCurveMesh(final Vector3f[] sPoints) {
 		splinePoints = sPoints.clone();
-		final int mulLength = 5, offset = 2, triangleIndicesDegree = 15; // TODO rename
-		final int meshStructurePointsSize = splinePoints.length * mulLength - offset;
+		final int mulLength = 5, offset = 1, additionalSplinePointLength = 15, launchpadTriangleSize =  12; // TODO rename
+		final int meshStructurePointsSize = splinePoints.length * mulLength + offset;
 		meshStructurePoints = new Vector3f[meshStructurePointsSize];
-		meshStructureTrianglesIndices = new int[(splinePoints.length - 1) * triangleIndicesDegree];
+		meshStructureTrianglesIndices = new int[(splinePoints.length - 1) * additionalSplinePointLength + launchpadTriangleSize];
 		texCoords = new Vector2f[splinePoints.length];
 	}
 	
@@ -39,6 +41,7 @@ public class CustomCurveMesh {
 			setTriangleIndices(i);
 			texCoords[i] = new Vector2f(1, 1);
 		}	
+		launchPadHeight = splinePoints[0].getY();
 		final Mesh mesh = new Mesh();
 		final int indexBuffer = 3;
 		mesh.setBuffer(Type.Position, indexBuffer, 
@@ -64,8 +67,20 @@ public class CustomCurveMesh {
 		if (i != splinePoints.length - 1) {
 			getSegmentPoint(i); //TODO comment what this does
 		}
+		getLaunchPadPoints();
 	}
-	
+	/**
+	 * This method gets the launchpad vertices.
+	 */
+	public void getLaunchPadPoints() {
+		final int offSet = 2, additionalSplinePointsLength = 5;
+		meshStructurePoints[splinePoints.length * additionalSplinePointsLength - offSet] = new Vector3f().
+				add(meshStructurePoints[0]).setX(meshStructurePoints[0].getX() - LAUNCHPAD_WIDTH);
+		meshStructurePoints[splinePoints.length * additionalSplinePointsLength - 1] = new Vector3f().
+				add(meshStructurePoints[splinePoints.length]).setX(meshStructurePoints[splinePoints.length].getX() - LAUNCHPAD_WIDTH);
+		meshStructurePoints[splinePoints.length * additionalSplinePointsLength] = new Vector3f().
+				add(meshStructurePoints[splinePoints.length * 2]).setX(meshStructurePoints[splinePoints.length * 2].getX() - LAUNCHPAD_WIDTH);
+	}
 	/**
 	 * This method gets the two segment point for a splinepoint.
 	 * @param i the index of the splinepoint
@@ -96,6 +111,7 @@ public class CustomCurveMesh {
 			addBoxTriangles(i);
 			addUpperTriangles(i);
 			addOverlappingTriangles(i);
+			addLaunchPadTriangles();
 		}
 		
 	}
@@ -131,7 +147,7 @@ public class CustomCurveMesh {
 				= splinePoints.length * mulLength + offset * i + 1;
 		if (splinePoints[i].getY() > splinePoints[i + 1].getY()) {
 			meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset
-			                              + (mulLength * i) + 2]	= splinePoints.length + i;
+			                              + mulLength * i + 2]	= splinePoints.length + i;
 		} else {
 			meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset
 			                              + mulLength * i + 2]	= splinePoints.length + i + 1;
@@ -158,4 +174,37 @@ public class CustomCurveMesh {
 		meshStructureTrianglesIndices[(splinePoints.length - 1) * mulOffset
 		                              + mulLength * i + range] = splinePoints.length * 2 + i;
 	}
+	
+	/**
+	 * This method adds triangles for the launchbox.
+	 */
+	public void addLaunchPadTriangles() {
+		final int offSet = 2, multiplier = 5, additionalSplinePointLength = 15; 
+		int i = 1;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength] = splinePoints.length * multiplier - offSet;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = 0; i++;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length; i++;
+		
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length * multiplier - offSet; i++;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length; i++;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length * multiplier - 1; i++;
+		
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length * multiplier - 1; i++;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length * offSet; i++;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length * multiplier; i++;
+		
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length * multiplier - 1; i++;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length; i++;
+		meshStructureTrianglesIndices[(splinePoints.length - 1) * additionalSplinePointLength + i] = splinePoints.length * offSet;
+	}
+
+	/**
+	 * The getter for the launchPadHeight.
+	 * @return the launchPadHeight
+	 */
+	public static float getLaunchPadHeight() {
+		return launchPadHeight;
+	}
+
+
 }

@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3;
+package com.funkydonkies.interfaces;
 
 /**
  * Bridge between openCV and DetectionInterpreter.
