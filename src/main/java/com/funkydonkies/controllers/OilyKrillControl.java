@@ -2,30 +2,39 @@ package com.funkydonkies.controllers;
 
 import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.powerups.OilSpillPowerup;
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.GhostControl;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 /**
  * Control class for the target. Takes care of collisions between the ball and target.
  */
-public class KrillControl extends GhostControl implements PhysicsCollisionListener {
+public class OilyKrillControl extends GhostControl implements PhysicsCollisionListener {
 	private static final String BALL_NAME = "standardPenguin";
-	private static final String TARGET_NAME = "krill";
+	private static final String TARGET_NAME = "oilyKrill";
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(130f, 90f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	private DifficultyState diffState;
+	private AppStateManager sm;
+	OilSpillPowerup osp;
 
 	/**
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
 	 */
-	public KrillControl(final CollisionShape shape, AppStateManager sm) {
+	public OilyKrillControl(final CollisionShape shape, AppStateManager sm) {
 		super(shape);
+		this.sm = sm;
 		diffState = sm.getState(DifficultyState.class);
+		osp = new OilSpillPowerup();
+		sm.attach(osp);
 	}
 	
 	/**
@@ -66,24 +75,15 @@ public class KrillControl extends GhostControl implements PhysicsCollisionListen
 					&& BALL_NAME.equals(event.getNodeB().getName())
 					|| BALL_NAME.equals(event.getNodeA().getName()) 
 							&& TARGET_NAME.equals(event.getNodeB().getName())) {
-				respawn();
-				diffState.incDiff();
-				diffState.incDiff();
+				osp.setEnabled(true);
+				if (TARGET_NAME.equals(event.getNodeA())) {
+					sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
+					((RigidBodyControl) event.getNodeA().getControl(0)).setEnabled(false);
+				} else if (TARGET_NAME.equals(event.getNodeB())) {
+					sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
+					((RigidBodyControl) event.getNodeB().getControl(0)).setEnabled(false);
+				}
 			}
 		}
-	}
-	
-	/**
-	 * Respawn the target at a reachable location.
-	 * TODO make the spawn location random and make sure its reachable
-	 */
-	public void respawn() {
-		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
-				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
-		
-		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
-		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
-		setPhysicsLocation(respawnlocation);
-		spatial.setLocalTranslation(respawnlocation);
 	}
 }

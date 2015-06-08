@@ -9,6 +9,7 @@ import org.reflections.Reflections;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.interfaces.FactoryInterface;
+import com.funkydonkies.powerups.OilSpillPowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -17,6 +18,7 @@ import com.jme3.scene.Spatial;
 
 /**
  * This class takes care of spawning most gameObjects.
+ * 
  * @author SDumasy
  *
  */
@@ -26,10 +28,10 @@ public class SpawnState extends AbstractAppState {
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
-	
+
 	private AppStateManager stManager;
 	private float spawnBallTime;
-	
+
 	private FactoryInterface penguin;
 	private FactoryInterface spear;
 	private FactoryInterface fish;
@@ -39,21 +41,26 @@ public class SpawnState extends AbstractAppState {
 	private FactoryInterface spikeyBall;
 	private FactoryInterface polarBear;
 	private FactoryInterface yeti;
-	
+	private FactoryInterface oilyKrill;
+
 	private App app;
 	boolean bool = true;
 	private float timeCount = 0;
 	private float time = 0;
-	
+
 	private Random rand;
-	
+
 	/**
 	 * The initialize method of the state.
-	 * @param appl the application
-	 * @param sManager the appstate manager
+	 * 
+	 * @param appl
+	 *            the application
+	 * @param sManager
+	 *            the appstate manager
 	 */
 	@Override
-	public final void initialize(final AppStateManager sManager, final Application appl) {
+	public final void initialize(final AppStateManager sManager,
+			final Application appl) {
 		super.initialize(sManager, appl);
 		if (appl instanceof App) {
 			this.app = (App) appl;
@@ -68,15 +75,15 @@ public class SpawnState extends AbstractAppState {
 		initRootNodeMat(app);
 		rand = new Random();
 	}
-	
+
 	/**
 	 * This method initializes every factory.
 	 */
 	public void initFactories() {
 		fillObstacleFactoriesMap();
 	}
-	
-	public void setSpawnAbleObjects(){
+
+	public void setSpawnAbleObjects() {
 		penguin = facHm.get("PenguinFactory");
 		spear = facHm.get("SpearFactory");
 		fish = facHm.get("FishFactory");
@@ -86,11 +93,14 @@ public class SpawnState extends AbstractAppState {
 		yeti = facHm.get("YetiFactory");
 		spikeyBall = facHm.get("SpikeyBallFactory");
 		polarBear = facHm.get("PolarBearFactory");
+		oilyKrill = facHm.get("OilyKrillFactory");
 	}
-	
+
 	/**
 	 * The update method of the state.
-	 * @param tpf the time per frame
+	 * 
+	 * @param tpf
+	 *            the time per frame
 	 */
 	@Override
 	public final void update(final float tpf) {
@@ -102,65 +112,70 @@ public class SpawnState extends AbstractAppState {
 		}
 		if (time > OBSTACLE_SPAWN_TIME) {
 			time = 0;
-			int i = rand.nextInt(5);
+			// int i = rand.nextInt(6);
+			int i = 5;
 			switch (i) {
-				case 0:
-					spawn(spear);
-					break;
-				case 1:
-					spawn(killerWhale);
-					break;
-				case 2:
-					spawn(yeti);
-					break;
-				case 3:
-					spawn(spikeyBall);
-					break;
-				case 4:
-					spawn(polarBear);
-					break;
-				default:
-					break;
+			case 0:
+				spawn(spear);
+				break;
+			case 1:
+				spawn(killerWhale);
+				break;
+			case 2:
+				spawn(yeti);
+				break;
+			case 3:
+				spawn(spikeyBall);
+				break;
+			case 4:
+				spawn(polarBear);
+				break;
+			case 5:
+				spawn(oilyKrill);
+				break;
+			default:
+				break;
 			}
 		}
 	}
-	
+
 	private void spawnPenguin(FactoryInterface penguinFactory) {
 		final Spatial penguin = penguinFactory.makeObject(stManager, app);
 		if (penguin != null) {
 			app.getPenguinNode().attachChild(penguin);
 		}
 	}
-	
+
 	private void spawn(FactoryInterface obstacleFactory) {
 		final Spatial obstacle = obstacleFactory.makeObject(stManager, app);
 		if (obstacle != null) {
 			app.getRootNode().attachChild(obstacle);
 		}
 	}
-	
+
 	public void fillObstacleFactoriesMap() {
-		facHm = new  HashMap<String, FactoryInterface>();
+		facHm = new HashMap<String, FactoryInterface>();
 		final Reflections reflections = new Reflections(FACTORY_PACKAGE);
-		final Set<Class<? extends FactoryInterface>> classes = 
-				reflections.getSubTypesOf(FactoryInterface.class);
-	    for (Class c : classes) {
-	        try {
-	        	facHm.put(c.getSimpleName(),  (FactoryInterface) c.newInstance());
+		final Set<Class<? extends FactoryInterface>> classes = reflections
+				.getSubTypesOf(FactoryInterface.class);
+		for (Class c : classes) {
+			try {
+				facHm.put(c.getSimpleName(), (FactoryInterface) c.newInstance());
 			} catch (final InstantiationException e) {
 				e.printStackTrace();
 			} catch (final IllegalAccessException e) {
 				e.printStackTrace();
 			}
-	    }
+		}
 	}
-	
+
 	public void setBallSpawnTime(float newTime) {
 		spawnBallTime = newTime;
 	}
 
 	public void initRootNodeMat(final App appl) {
-		final Material mat = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(appl.getAssetManager(),
+				UNSHADED_MATERIAL_PATH);
 		appl.getRootNode().setUserData("default material", mat);
 	}
 }

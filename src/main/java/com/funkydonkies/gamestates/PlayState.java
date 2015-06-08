@@ -3,6 +3,7 @@ package com.funkydonkies.gamestates;
 import com.funkydonkies.combo.Combo;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.powerups.OilSpillPowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -63,6 +64,7 @@ public class PlayState extends AbstractAppState {
 		penguinNode = app.getPenguinNode();
 		//combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
+	
 	/**
 	 * This method initializes the states.
 	 */
