@@ -34,7 +34,7 @@ public class ThunderWarningLineControl extends AbstractControl {
 			moveToX(updateX);
 		}
 		
-		if (time > 2) {
+		if (time > 1) {
 			detach();
 			spatial.removeControl(this);
 		}

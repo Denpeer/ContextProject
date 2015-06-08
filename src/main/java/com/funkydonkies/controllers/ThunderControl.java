@@ -50,11 +50,11 @@ public class ThunderControl extends GhostControl implements PhysicsCollisionList
 		time += tpf;
 		
 		final float updateX = curveState.getHighestPointX();
-		if (updateX > 0) {
+		if (updateX > 0 && time > 2) {
 			moveToX(updateX);
 		}
 		
-		if (time > 1) {
+		if (time > 3) {
 			detach();
 			spatial.removeControl(this);
 			setEnabled(false);
