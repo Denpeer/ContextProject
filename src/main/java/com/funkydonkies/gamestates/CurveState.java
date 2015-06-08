@@ -64,7 +64,7 @@ public class CurveState extends AbstractAppState {
 
 		bridge = sManager.getState(CameraState.class).getBridge();
 		curveMaterial = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMaterial.setColor(COLOR, ColorRGBA.randomColor());
+		curveMaterial.setColor(COLOR, ColorRGBA.White);
 		oldRigi = new RigidBodyControl(0f);
 		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
 	}
