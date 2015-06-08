@@ -56,7 +56,6 @@ public class CameraState extends AbstractAppState {
 	public void update(final float tpf) {
 		super.update(tpf);
 		if (cameraFrame.getVideoCap() != null && !cameraOpened) {
-			System.out.println("CameraState: openedCamera");
 			openCamera();
 		}
 	}

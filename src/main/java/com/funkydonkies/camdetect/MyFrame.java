@@ -193,7 +193,6 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 
 			public void actionPerformed(final ActionEvent e) {
 				if ("n".equals(e.getActionCommand())) {
-					System.out.println("n called");
 					initVideoCap();
 				}
 			}

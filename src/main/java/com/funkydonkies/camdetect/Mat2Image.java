@@ -78,7 +78,6 @@ public class Mat2Image implements Bridge {
 	public void setBg() {
 		bg = mat.clone();
 		bgSet = true;
-		System.out.println("Background has been set");
 	}
 
 	/**
@@ -241,7 +240,6 @@ public class Mat2Image implements Bridge {
 		final String newDist = "newXDist: ";
 		if (newXDist > 0 && newXDist < mat.width()) {
 			xDist = newXDist;
-			System.out.println(newDist + newXDist);
 		} else {
 			System.out
 					.println(newDist

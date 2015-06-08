@@ -79,7 +79,6 @@ public class ThunderControl extends GhostControl implements PhysicsCollisionList
 
 	@Override
 	public void collision(final PhysicsCollisionEvent event) {
-		System.out.println("collision");
 		if (event.getNodeA() != null && event.getNodeB() != null) {
 			if (ThunderFactory.THUNDER_NAME.equals(event.getNodeA().getName()) 
 					&& PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeB().getName())) {

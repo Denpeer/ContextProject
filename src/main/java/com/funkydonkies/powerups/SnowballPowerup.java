@@ -42,7 +42,6 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 		
 		Node penguinNode = app.getPenguinNode();
 		List<Spatial> penguins = penguinNode.getChildren();
-		System.out.println("snowball enabled: " + penguins);
 		if (enabled) {
 			for (Spatial penguin : penguins) {
 				Vector3f speed = ((Node) penguin).getControl(StandardPenguinControl.class).getLinearVelocity();

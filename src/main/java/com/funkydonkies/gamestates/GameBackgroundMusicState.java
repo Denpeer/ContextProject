@@ -89,8 +89,6 @@ public class GameBackgroundMusicState extends AbstractAppState {
 				playingMusicId++;
 			}
 			initBackgroundMusic(BG_MUSIC_PATHS[playingMusicId]);
-			System.out.println("New BG_MUSIC audio started: "
-					+ BG_MUSIC_PATHS[playingMusicId]);
 		}
 	}
 	
