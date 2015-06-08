@@ -123,7 +123,6 @@ public class CurveState extends AbstractAppState {
 	}
 	
 	public void setInvertControlPoints(boolean b) {
-		System.out.println("inverted");
 		invertControlPoints = b;
 	}
 	

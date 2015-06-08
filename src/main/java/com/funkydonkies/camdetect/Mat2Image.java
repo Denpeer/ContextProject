@@ -78,7 +78,6 @@ public class Mat2Image implements Bridge {
 	public void setBg() {
 		bg = mat.clone();
 		bgSet = true;
-		System.out.println("Background has been set");
 	}
 
 	/**
