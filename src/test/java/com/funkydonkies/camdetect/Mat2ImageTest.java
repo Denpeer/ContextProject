@@ -182,8 +182,6 @@ public class Mat2ImageTest {
 			System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
 			
 			im2Mat(imageFG).copyTo(m2i.getMat());
-//			final BufferedImage ret = m2i.getImage();
-//			assertTrue(matEq(im2Mat(ret), im2Mat(imageProcessed)));
 		}
 	}
 

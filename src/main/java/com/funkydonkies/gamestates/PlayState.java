@@ -37,6 +37,7 @@ public class PlayState extends AbstractAppState {
 	private CurveState spController;
 	private CameraState cameraState;
 	private SceneState sceneState;
+	private GameBackgroundMusicState gameSoundState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -79,6 +80,9 @@ public class PlayState extends AbstractAppState {
 		
 		sceneState = new SceneState();
 		stateManager.attach(sceneState);
+		
+		gameSoundState = new GameBackgroundMusicState();
+		stateManager.attach(gameSoundState);
 
 		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
 		mat2.setColor(COLOR, ColorRGBA.Red);
