@@ -22,6 +22,7 @@ import com.jme3.scene.shape.Sphere;
 public class PenguinFactory implements FactoryInterface{
 	private static final int SAMPLES = 20;
 	private static final float DEFAULT_RADIUS = 4f;
+	public static final String PENGUIN_NAME = "standardPenguin";
 
 	
 	/**
