@@ -82,7 +82,7 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 		
 		if (spatial != null && time > 1) {
 			final Vector3f vec = spatial.getLocalTranslation();
-			if(vec.getY() > 20){
+			if(vec.getY() > -30){
 				moveUp = false;
 			}
 			if(moveUp){
