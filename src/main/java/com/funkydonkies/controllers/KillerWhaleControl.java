@@ -19,7 +19,7 @@ import com.jme3.scene.Spatial;
  */
 public class KillerWhaleControl extends RigidBodyControl implements PhysicsCollisionListener{
 	private double speed;
-	private Vector3f initialLoc;
+	private Vector3f loc;
 	private AppStateManager sm;
 	private static final String BALL_NAME = "standardPenguin";
 	private static final String OBSTACLE_NAME = "killerWhale";
@@ -34,11 +34,11 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	 * @param moveHor a boolean to check if the spatial moves horizontal or vertical
 	 * @param moveUpRight a boolean to check if the spatial moves right or left
 	 */
-	public KillerWhaleControl(final float mass, final double sp, AppStateManager asm, Vector3f loci) {
+	public KillerWhaleControl(final float mass, final double sp, AppStateManager asm, Vector3f location) {
 		super(mass);
 		sm = asm;
 		this.speed = sp;
-		initialLoc = loci;
+		loc = location;
 		time = 0;
 	}
 	
@@ -48,8 +48,8 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	public final void init() {
 		setKinematic(true);	
 		sm.getState(PlayState.class).getPhysicsSpace().add(this);
-		spatial.setLocalTranslation(initialLoc);
-		this.setPhysicsLocation(initialLoc);
+		spatial.setLocalTranslation(loc);
+		this.setPhysicsLocation(loc);
 	}
 	
 	/**
@@ -59,6 +59,9 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	@Override
 	public void update(final float tpf) {
 		moveSpatial();
+		if(spatial.getLocalTranslation().getY() > -50){
+			moveUp = false;
+		}
 		time += tpf;
 	}
 	
@@ -66,19 +69,14 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	 * This method moves the spatial in the desired direction.
 	 */
 	private void moveSpatial() {
-		Vector3f loc;
-		
+
 		if (spatial != null && time > 1) {
-			final Vector3f vec = spatial.getLocalTranslation();
-			if(vec.getY() > 20){
-				moveUp = false;
-			}
 			if(moveUp){
-				loc = new Vector3f(vec.getX(), (float) (vec.getY() + speed), vec.getZ());
+				loc = new Vector3f(loc.getX(), (float) (loc.getY() + speed), loc.getZ());
 				spatial.setLocalTranslation(loc);
 				this.setPhysicsLocation(loc);
 			}else{
-				loc = new Vector3f(vec.getX(), (float) (vec.getY() - speed), vec.getZ());
+				loc = new Vector3f(loc.getX(), (float) (loc.getY() - speed), loc.getZ());
 				spatial.setLocalTranslation(loc);
 				this.setPhysicsLocation(loc);
 			}
