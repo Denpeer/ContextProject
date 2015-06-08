@@ -31,6 +31,8 @@ public class SpawnState extends AbstractAppState {
 	private FactoryInterface penguin;
 	private FactoryInterface spear;
 	private FactoryInterface fish;
+	private FactoryInterface krill;
+	private FactoryInterface squid;
 	private FactoryInterface killerWhale;
 	
 	private App app;
@@ -56,6 +58,8 @@ public class SpawnState extends AbstractAppState {
 		initFactories();
 		setSpawnAbleObjects();
 		spawn(fish);
+		spawn(squid);
+		spawn(krill);
 		initRootNodeMat(app);
 	}
 	
@@ -70,6 +74,8 @@ public class SpawnState extends AbstractAppState {
 		penguin = facHm.get("PenguinFactory");
 		spear = facHm.get("SpearFactory");
 		fish = facHm.get("FishFactory");
+		krill = facHm.get("KrillFactory");
+		squid = facHm.get("SquidFactory");
 		killerWhale = facHm.get("KillerWhaleFactory");
 	}
 	

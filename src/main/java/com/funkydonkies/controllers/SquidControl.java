@@ -12,19 +12,20 @@ import com.jme3.math.Vector3f;
 /**
  * Control class for the target. Takes care of collisions between the ball and target.
  */
-public class FishControl extends GhostControl implements PhysicsCollisionListener {
+public class SquidControl extends GhostControl implements PhysicsCollisionListener {
 	private static final String BALL_NAME = "standardPenguin";
-	private static final String TARGET_NAME = "fish";
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
+	private static final String TARGET_NAME = "squid";
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(250f, 10f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	private DifficultyState diffState;
-	private boolean initialized = false;
+	private boolean moveRight = true;
+	private float time = 0;
 
 	/**
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
 	 */
-	public FishControl(final CollisionShape shape, AppStateManager sm) {
+	public SquidControl(final CollisionShape shape, AppStateManager sm) {
 		super(shape);
 		diffState = sm.getState(DifficultyState.class);
 	}
@@ -44,11 +45,7 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
-		if(!initialized){
-			space.addCollisionListener(this);
-			initialized = true;
-		}
-		
+			space.addCollisionListener(this);	
 	}
 	
 	/**
@@ -58,6 +55,30 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 		space.removeCollisionListener(this);
 		space.remove(this);
 		spatial.getParent().detachChild(spatial);
+	}
+	
+	public void update(float tpf){
+		time += tpf;
+		if(time > 4){
+			time = 0;
+			if(moveRight){
+				moveRight = false;
+			}else{
+				moveRight = true;
+			}
+		}
+		if(moveRight){
+			final Vector3f vec = spatial.getLocalTranslation();
+			Vector3f loc = new Vector3f((float) (vec.getX() - 0.5), vec.getY(), vec.getZ());
+			spatial.setLocalTranslation(loc);
+			this.setPhysicsLocation(loc);
+		}else{
+			final Vector3f vec = spatial.getLocalTranslation();
+			Vector3f loc = new Vector3f((float) (vec.getX() + 0.5), vec.getY(), vec.getZ());
+			spatial.setLocalTranslation(loc);
+			this.setPhysicsLocation(loc);
+		}
+
 	}
 
 	/**
@@ -71,8 +92,8 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 					&& BALL_NAME.equals(event.getNodeB().getName())
 					|| BALL_NAME.equals(event.getNodeA().getName()) 
 							&& TARGET_NAME.equals(event.getNodeB().getName())) {
-				respawn();
-				diffState.incDiff();
+					respawn();
+					diffState.incDiff();						
 			}
 		}
 

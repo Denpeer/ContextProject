@@ -17,7 +17,7 @@ public class StandardPenguinControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	private static final String OBSTACLE_NAME = "killerWhale";
+	private static final String WHALE_NAME = "killerWhale";
 	private static final String PENGUIN_NAME = "standardPenguin";
 	private static final String CURVE_NAME = "curve";
 	private Vector3f initialSpawn;
@@ -121,6 +121,12 @@ public class StandardPenguinControl extends RigidBodyControl implements
 					setLinearVelocity(velocity);
 				}
 			}
+//			else if(PENGUIN_NAME.equals(event.getNodeA().getName()) 
+//					&& WHALE_NAME.equals(event.getNodeB().getName())){
+//				enabled = false;
+//				space.remove(this);
+//				spatial.getParent().detachChild(spatial);
+//			}
 		}
 	}
 

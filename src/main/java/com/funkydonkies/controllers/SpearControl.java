@@ -10,6 +10,8 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 
 
 /**
@@ -57,10 +59,6 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 	public void update(final float tpf) {
 		moveSpatial();
 		time += tpf;
-		if(spatial.getLocalTranslation().getX() < -100){
-			this.destroy();
-		}
-
 	}
 	
 
@@ -109,7 +107,6 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 				sm.getState(DifficultyState.class).resetDiff();
 				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
 				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
-				//event.getNodeB().getParent().detachChild(event.getNodeB());
 				//event.getNodeB().removeControl(this);
 			}else if(BALL_NAME.equals(event.getNodeA().getName())
 					&& OBSTACLE_NAME.equals(event.getNodeB().getName())){
@@ -118,6 +115,7 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
 				//event.getNodeA().getParent().detachChild(event.getNodeA());
 				//event.getNodeA().removeControl(this);
+
 			}
 		}		
 	}	

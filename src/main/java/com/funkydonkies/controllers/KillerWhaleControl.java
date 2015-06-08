@@ -10,6 +10,8 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 
 
 /**
@@ -58,17 +60,6 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	public void update(final float tpf) {
 		moveSpatial();
 		time += tpf;
-		if(spatial.getLocalTranslation().getY() < -500){
-			destroy();
-		}
-
-	}
-	
-	public void destroy(){
-		spatial.getParent().detachChild(spatial);
-		spatial.removeControl(this);
-	//	sm.getState(PlayState.class).getPhysicsSpace().remove(this);
-
 	}
 	
 	/**
@@ -123,17 +114,20 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 			if (OBSTACLE_NAME.equals(event.getNodeA().getName()) 
 					&& BALL_NAME.equals(event.getNodeB().getName())){
 				sm.getState(DifficultyState.class).resetDiff();
-				sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
+				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
 				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
 				//event.getNodeB().getParent().detachChild(event.getNodeB());
 				//event.getNodeB().removeControl(this);
+				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
 			}else if(BALL_NAME.equals(event.getNodeA().getName())
 					&& OBSTACLE_NAME.equals(event.getNodeB().getName())){
 				sm.getState(DifficultyState.class).resetDiff();
-				sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
+				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
 				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
 				//event.getNodeA().getParent().detachChild(event.getNodeA());
 				//event.getNodeA().removeControl(this);
+
+				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
 			}
 		}		
 	}	
