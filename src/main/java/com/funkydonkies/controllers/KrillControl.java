@@ -12,19 +12,18 @@ import com.jme3.math.Vector3f;
 /**
  * Control class for the target. Takes care of collisions between the ball and target.
  */
-public class FishControl extends GhostControl implements PhysicsCollisionListener {
+public class KrillControl extends GhostControl implements PhysicsCollisionListener {
 	private static final String BALL_NAME = "standardPenguin";
-	private static final String TARGET_NAME = "fish";
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
+	private static final String TARGET_NAME = "krill";
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(130f, 90f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	private DifficultyState diffState;
-	private boolean initialized = false;
 
 	/**
 	 * Constructor method for target control.
 	 * @param shape Collisionshape for the target
 	 */
-	public FishControl(final CollisionShape shape, AppStateManager sm) {
+	public KrillControl(final CollisionShape shape, AppStateManager sm) {
 		super(shape);
 		diffState = sm.getState(DifficultyState.class);
 	}
@@ -44,10 +43,7 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
-		if(!initialized){
 			space.addCollisionListener(this);
-			initialized = true;
-		}
 		
 	}
 	
@@ -72,6 +68,7 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 					|| BALL_NAME.equals(event.getNodeA().getName()) 
 							&& TARGET_NAME.equals(event.getNodeB().getName())) {
 				respawn();
+				diffState.incDiff();
 				diffState.incDiff();
 			}
 		}

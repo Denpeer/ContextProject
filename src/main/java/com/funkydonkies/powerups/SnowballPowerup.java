@@ -55,13 +55,12 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 							, 0,Color.white,0,Color.white,360);
 					sball.setLocalTranslation(-5, -5, 0);
 					((Node) penguin).attachChild(sball);
-					
 					GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
 							new SphereCollisionShape(5), 1f);
 					penguin.addControl(snowBallControl);
 					sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
 					snowBallControl.setLinearVelocity(speed);
-					System.out.println("Added snowballControl");
+					penguin.setName("snowBallPenguin");
 				} else {
 					SBControl.setEnabled(true);
 					SBControl.scaleBack();
@@ -73,6 +72,7 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 				if (SBControl != null) {
 					SBControl.scaleBack();
 					((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(true);
+					penguin.setName("standardPenguin");
 					SBControl.setEnabled(false);
 				}
 			}

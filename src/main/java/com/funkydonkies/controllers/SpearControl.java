@@ -109,12 +109,12 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 					&& PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeB().getName())){
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(0)).setEnabled(false);
+				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class)).setEnabled(false);
 			} else if(PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeA().getName())
 					&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(0)).setEnabled(false);
+				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class)).setEnabled(false);
 			}
 		}		
 	}	

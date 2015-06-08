@@ -11,6 +11,8 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 
 
 /**
@@ -125,12 +127,12 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 					&& BALL_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(0)).setEnabled(false);
+				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class)).setEnabled(false);
 			} else if(BALL_NAME.equals(event.getNodeA().getName())
 					&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeA().getControl(0)).setEnabled(false);
+				((RigidBodyControl) event.getNodeA().getControl(StandardPenguinControl.class)).setEnabled(false);
 			}
 		}		
 	}	
