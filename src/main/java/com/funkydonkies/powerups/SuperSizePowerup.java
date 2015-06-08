@@ -84,7 +84,7 @@ public class SuperSizePowerup extends DisabledState {
 			final Spatial ball = ballIterator.next();
 			ball.scale(1 / ball.getWorldScale().x);
 			ball.getControl(StandardPenguinControl.class).setCollisionShape(
-					new SphereCollisionShape(Ball.DEFAULT_RADIUS));
+					new SphereCollisionShape(2f));
 		}
 	}
 	

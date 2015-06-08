@@ -38,6 +38,8 @@ public class CurveState extends AbstractAppState {
 	private Bridge bridge;
 	private App app;
 	private SplineCurve splineCurve;
+	
+	private float[] updatedXPoints = null;
 
 	private boolean cameraEnabled = false;
 	private boolean updateEnabled = false;
@@ -167,6 +169,7 @@ public class CurveState extends AbstractAppState {
 			} else {
 				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
 			}
+			updatedXPoints = points;
 			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
@@ -324,5 +327,25 @@ public class CurveState extends AbstractAppState {
 	 */
 	public SplineCurve getSplineCurve() {
 		return splineCurve;
+	}
+	
+	/** Loops over the curvepoints and gets the x location of the highest controlpoint. 
+	 * @return the x location of the highest controlpoint
+	 */
+	public float getHighestPointX() {
+		float highest = 0;
+		int highestIndex = -1;
+		
+		if (updatedXPoints != null) {
+			for (int i = 0; i < updatedXPoints.length; i++) {
+				final float tmp = updatedXPoints[i];
+				if (tmp > highest) {
+					highest = tmp;
+					highestIndex = i;
+				}
+			}
+		}
+		
+		return highestIndex * POINT_DISTANCE;
 	}
 }

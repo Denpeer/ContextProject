@@ -33,6 +33,7 @@ public class SpawnState extends AbstractAppState {
 	private FactoryInterface fish;
 	private FactoryInterface killerWhale;
 	private FactoryInterface yeti;
+	private FactoryInterface thunder;
 	
 	private App app;
 	boolean bool = true;
@@ -73,6 +74,7 @@ public class SpawnState extends AbstractAppState {
 		fish = facHm.get("FishFactory");
 		killerWhale = facHm.get("KillerWhaleFactory");
 		yeti = facHm.get("YetiFactory");
+		thunder = facHm.get("ThunderFactory");
 	}
 	
 	/**
@@ -90,10 +92,10 @@ public class SpawnState extends AbstractAppState {
 		final int spawnSpear = 5;
 		if (time > spawnSpear) {
 			time = 0;
-			spawn(spear);
-			//spawn(killerWhale);
-			spawn(yeti);
-			
+//			spawn(spear);
+			spawn(killerWhale);
+//			spawn(yeti);
+			spawn(thunder);
 		}
 
 	}
