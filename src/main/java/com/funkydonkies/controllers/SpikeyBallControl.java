@@ -22,7 +22,7 @@ public class SpikeyBallControl extends RigidBodyControl implements
 	private static final String SPIKEY_BALL_NAME = "spikeyBall";
 	private static final String PENGUIN_NAME = "standardPenguin";
 	private Vector3f initialSpawn;
-	private Vector3f initialSpeed = new Vector3f(0, 50, 0);
+	private Vector3f initialSpeed = new Vector3f(0, 0, 0);
 	private final AppStateManager sm;
 
 	/**
