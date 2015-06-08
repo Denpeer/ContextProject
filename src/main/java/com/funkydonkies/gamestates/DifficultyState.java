@@ -6,6 +6,7 @@ import java.util.Observer;
 import com.funkydonkies.combo.Combo;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SuperSizePowerup;
 import com.funkydonkies.tiers.Tier1;
 import com.funkydonkies.tiers.Tier2;
@@ -16,8 +17,8 @@ import com.jme3.app.state.AppStateManager;
 /**
  * This class controls the activation and deactivation of the different power ups.
  */
-public class PowerUpState extends AbstractAppState implements Observer {
-	private static final float TIER_ONE_ACTIVATION = 5;
+public class DifficultyState extends AbstractAppState implements Observer {
+	private static final float TIER_ONE_ACTIVATION = 1;
 	
 	private float time = 0;
 	private SuperSizePowerup superSize = null;
@@ -29,6 +30,8 @@ public class PowerUpState extends AbstractAppState implements Observer {
 
 	private Combo combo;
 	private int currCombo = 0;
+	
+	private InvertControlsPowerup invertControls;
 	
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -46,6 +49,9 @@ public class PowerUpState extends AbstractAppState implements Observer {
 		tier2 = new Tier2();
 		sManager.attach(tier2);
 		
+		invertControls = new InvertControlsPowerup();
+		sManager.attach(invertControls);
+		
 		combo = new Combo(app.getGuiNode(), app.getAssetManager());
 		combo.addObserver(this);
 	}
@@ -56,7 +62,6 @@ public class PowerUpState extends AbstractAppState implements Observer {
 		time += tpf;
 		if (time > 8) {
 			time = 0;
-			System.out.println("Setting tier2");
 			setTier2();
 		}
 		
@@ -90,5 +95,9 @@ public class PowerUpState extends AbstractAppState implements Observer {
 	
 	public void resetDiff(){
 		combo.resetCombo();
+	}
+	
+	public void activateInvertControls() {
+		
 	}
 }

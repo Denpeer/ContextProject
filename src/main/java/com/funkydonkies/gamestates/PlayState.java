@@ -33,7 +33,7 @@ public class PlayState extends AbstractAppState {
 	private Combo combo;
 	private Node penguinNode;
 	
-	private DifficultyState powerUpState;
+	private DifficultyState difficultyState;
 	private AppStateManager stateManage;
 	
 	/**
@@ -79,8 +79,8 @@ public class PlayState extends AbstractAppState {
 		gameSoundState = new GameBackgroundMusicState();
 		stateManage.attach(gameSoundState);
 		
-		powerUpState = new DifficultyState();
-		stateManage.attach(powerUpState);
+		difficultyState = new DifficultyState();
+		stateManage.attach(difficultyState);
 		
 		spawnState = new SpawnState();
 		stateManage.attach(spawnState);

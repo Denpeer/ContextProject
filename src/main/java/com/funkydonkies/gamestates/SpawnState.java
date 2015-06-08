@@ -22,7 +22,7 @@ import com.jme3.scene.Spatial;
  */
 public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 2;
-	public static final float OBSTACLE_SPAWN_TIME = 3;
+	public static final float OBSTACLE_SPAWN_TIME = 5;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
@@ -102,7 +102,7 @@ public class SpawnState extends AbstractAppState {
 		}
 		if (time > OBSTACLE_SPAWN_TIME) {
 			time = 0;
-			int i = rand.nextInt(4);
+			int i = rand.nextInt(5);
 			switch (i) {
 				case 0:
 					spawn(spear);
@@ -115,6 +115,9 @@ public class SpawnState extends AbstractAppState {
 					break;
 				case 3:
 					spawn(spikeyBall);
+					break;
+				case 4:
+					spawn(polarBear);
 					break;
 				default:
 					break;

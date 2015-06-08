@@ -1,7 +1,7 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.gamestates.CurveState;
-import com.funkydonkies.gamestates.PowerUpState;
+import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -17,7 +17,7 @@ public class KrillControl extends GhostControl implements PhysicsCollisionListen
 	private static final String TARGET_NAME = "krill";
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(130f, 90f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
-	private PowerUpState diffState;
+	private DifficultyState diffState;
 
 	/**
 	 * Constructor method for target control.
@@ -25,7 +25,7 @@ public class KrillControl extends GhostControl implements PhysicsCollisionListen
 	 */
 	public KrillControl(final CollisionShape shape, AppStateManager sm) {
 		super(shape);
-		diffState = sm.getState(PowerUpState.class);
+		diffState = sm.getState(DifficultyState.class);
 	}
 	
 	/**

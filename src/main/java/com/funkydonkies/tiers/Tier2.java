@@ -10,14 +10,10 @@ public class Tier2 extends DisabledState {
 	private static float INVERT_TIME = 5;
 	
 	private SnowballPowerup snowBall;
-	private InvertControlsPowerup invertControls;
 	
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
-		
-		invertControls = new InvertControlsPowerup();
-		stateManager.attach(invertControls);
 		
 		snowBall = new SnowballPowerup();
 		stateManager.attach(snowBall);
