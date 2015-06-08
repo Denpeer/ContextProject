@@ -100,11 +100,13 @@ public class SpawnState extends AbstractAppState {
 	public final void update(final float tpf) {
 		timeCount += tpf;
 		time += tpf;
+		specialFishTimer += tpf;
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
 			spawnPenguin(penguin);
 		}
 		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME){
+			specialFishTimer = 0;
 			int i = rand.nextInt(2);
 			switch (i) {
 				case 0:
