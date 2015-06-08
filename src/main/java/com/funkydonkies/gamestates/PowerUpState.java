@@ -17,7 +17,7 @@ import com.jme3.app.state.AppStateManager;
  * This class controls the activation and deactivation of the different power ups.
  */
 public class PowerUpState extends AbstractAppState implements Observer {
-	private static final float TIER_ONE_ACTIVATION = 5;
+	private static final float TIER_ONE_ACTIVATION = 1;
 	
 	private float time = 0;
 	private SuperSizePowerup superSize = null;
@@ -54,7 +54,7 @@ public class PowerUpState extends AbstractAppState implements Observer {
 	public void update(final float tpf) {
 		super.update(tpf);
 		time += tpf;
-		if (time > 10) {
+		if (time > 1) {
 			time = 0;
 			setTier1();
 		}
