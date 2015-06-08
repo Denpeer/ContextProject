@@ -54,14 +54,12 @@ public class PlayState extends AbstractAppState {
 		stateManage = stateManager;
 		handleBulletAppState();
 
-		
-		app.getFlyByCamera().setEnabled(true);
+		app.getFlyByCamera().setEnabled(false);
 		app.getCamera().setLocation(CAM_LOCATION);
 
 		handleBulletAppState();
 		initStates();
 		penguinNode = app.getPenguinNode();
-		//combo = new Combo(app.getGuiNode(), app.getAssetManager());
 	}
 	/**
 	 * This method initializes the states.
@@ -85,11 +83,6 @@ public class PlayState extends AbstractAppState {
 		spawnState = new SpawnState();
 		stateManage.attach(spawnState);
 		
-		//comboState = new ComboState();
-		//stateManage.attach(comboState);
-		
-//		difState = new DifficultyState();
-//		stateManage.attach(difState);
 	}
 	
 	/**

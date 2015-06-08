@@ -23,6 +23,8 @@ import com.jme3.scene.Spatial;
 public class SnowballPowerup extends DisabledState implements PhysicsCollisionListener {
 	private App app;
 	private AppStateManager sManager;
+	
+	private boolean enablePowerupNextCycle = false;
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application appl) {
@@ -40,50 +42,44 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		
-		Node penguinNode = app.getPenguinNode();
-		List<Spatial> penguins = penguinNode.getChildren();
-		if (enabled) {
-			for (Spatial penguin : penguins) {
-				Vector3f speed = ((Node) penguin).getControl(StandardPenguinControl.class).getLinearVelocity();
-				((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(false);
-				
-				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
-				//Check if the penguin already has a snowballcontrol
-				if (SBControl == null) {
-					Snowball sball = new Snowball(app.getAssetManager(), 10
-							, 0,Color.white,0,Color.white,360);
-					sball.setLocalTranslation(-5, -5, 0);
-					((Node) penguin).attachChild(sball);
-					GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
-							new SphereCollisionShape(5), 1f);
-					penguin.addControl(snowBallControl);
-					sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
-					snowBallControl.setLinearVelocity(speed);
-					penguin.setName("snowBallPenguin");
-				} else {
-					SBControl.setEnabled(true);
-					SBControl.scaleBack();
-				}
-			}
-		} else {
-//			for (Spatial penguin : penguins) {
-//				GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
-//				if (SBControl != null) {
-//					SBControl.scaleBack();
-//					((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(true);
-//					penguin.setName("standardPenguin");
-//					SBControl.setEnabled(false);
-//				}
-//			}
-		}
+		enablePowerupNextCycle = true;
 	}
 	
 	@Override
 	public void update(float tpf) {
 		super.update(tpf);
+		if (enablePowerupNextCycle) {
+			activate();
+			enablePowerupNextCycle = false;
+		} 
 	}
 	
+	public void activate() {
+		Node penguinNode = app.getPenguinNode();
+		List<Spatial> penguins = penguinNode.getChildren();
+		for (Spatial penguin : penguins) {
+			Vector3f speed = ((Node) penguin).getControl(StandardPenguinControl.class).getLinearVelocity();
+			((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(false);
+			
+			GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
+			//Check if the penguin already has a snowballcontrol
+			if (SBControl == null) {
+				Snowball sball = new Snowball(app.getAssetManager(), 10
+						, 0,Color.white,0,Color.white,360);
+				sball.setLocalTranslation(-5, -5, 0);
+				((Node) penguin).attachChild(sball);
+				GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
+						new SphereCollisionShape(5), 1f);
+				penguin.addControl(snowBallControl);
+				sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
+				snowBallControl.setLinearVelocity(speed);
+				penguin.setName("snowBallPenguin");
+			} else {
+				SBControl.setEnabled(true);
+				SBControl.scaleBack();
+			}
+		}
+	}
 	
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
