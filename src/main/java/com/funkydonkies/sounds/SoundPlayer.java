@@ -17,26 +17,15 @@ import com.jme3.audio.AudioNode;
  *
  */
 public class SoundPlayer {
-	//TODO: put new sounds into project and update the paths!
-	private static final Path PENGUIN_SPAWN_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	private static final Path PENGUIN_SAVED_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	private static final Path TARGET_SPAWN_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	private static final Path OBSTACLE_SPAWN_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	private static final Path TARGET_COLLISION_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	private static final Path OBSTACLE_COLLISION_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	private static final Path COMBO_NEW_LEVEL_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	private static final Path COMBO_LOST_SOUND_PATH = Paths
-			.get("/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav");
-	
-	private static final String DOUBLE_BACKSLASH = "\\";
-	private static final String FRONT_SLASH = "/";
+	// TODO: put new sounds into project and update the paths!
+	private static final String PENGUIN_SPAWN_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
+	private static final String PENGUIN_SAVED_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
+	private static final String TARGET_SPAWN_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
+	private static final String OBSTACLE_SPAWN_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
+	private static final String TARGET_COLLISION_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
+	private static final String OBSTACLE_COLLISION_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
+	private static final String COMBO_NEW_LEVEL_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
+	private static final String COMBO_LOST_SOUND_PATH = "/Sounds/PenguinSpawn_VEH1_Cutted_Sounds_-_021.wav";
 
 	private AudioNode penguinSpawnAudioNode;
 	private AudioNode penguinSavedAudioNode;
@@ -72,33 +61,34 @@ public class SoundPlayer {
 	 */
 	private void initSounds() {
 		System.out.println("***** LOADING GAME SOUNDS ***** =>");
-		
+
 		penguinSpawnAudioNode = new AudioNode(assetManager,
-				PENGUIN_SPAWN_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
+				PENGUIN_SPAWN_SOUND_PATH, false);
 		penguinSavedAudioNode = new AudioNode(assetManager,
-				PENGUIN_SAVED_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
+				PENGUIN_SAVED_SOUND_PATH, false);
 		targetSpawnAudioNode = new AudioNode(assetManager,
-				TARGET_SPAWN_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
+				TARGET_SPAWN_SOUND_PATH, false);
 		obstacleSpawnAudioNode = new AudioNode(assetManager,
-				OBSTACLE_SPAWN_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
+				OBSTACLE_SPAWN_SOUND_PATH, false);
 		targetCollisionAudioNode = new AudioNode(assetManager,
-				TARGET_COLLISION_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
+				TARGET_COLLISION_SOUND_PATH, false);
 		obstacleCollisionAudioNode = new AudioNode(assetManager,
-				OBSTACLE_COLLISION_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
+				OBSTACLE_COLLISION_SOUND_PATH, false);
 		comboNewLevelAudioNode = new AudioNode(assetManager,
-				COMBO_NEW_LEVEL_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
-		comboLostAudioNode = new AudioNode(assetManager,
-				COMBO_LOST_SOUND_PATH.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH), false);
-		
+				COMBO_NEW_LEVEL_SOUND_PATH, false);
+		comboLostAudioNode = new AudioNode(assetManager, COMBO_LOST_SOUND_PATH,
+				false);
+
 		initSingleSound(penguinSpawnAudioNode, PENGUIN_SPAWN_SOUND_PATH);
 		initSingleSound(penguinSavedAudioNode, PENGUIN_SAVED_SOUND_PATH);
 		initSingleSound(targetSpawnAudioNode, TARGET_SPAWN_SOUND_PATH);
 		initSingleSound(obstacleSpawnAudioNode, OBSTACLE_SPAWN_SOUND_PATH);
 		initSingleSound(targetCollisionAudioNode, TARGET_COLLISION_SOUND_PATH);
-		initSingleSound(obstacleCollisionAudioNode, OBSTACLE_COLLISION_SOUND_PATH);
+		initSingleSound(obstacleCollisionAudioNode,
+				OBSTACLE_COLLISION_SOUND_PATH);
 		initSingleSound(comboNewLevelAudioNode, COMBO_NEW_LEVEL_SOUND_PATH);
 		initSingleSound(comboLostAudioNode, COMBO_LOST_SOUND_PATH);
-		
+
 		System.out.println("<= ***** DONE LOADING GAME SOUNDS *****");
 	}
 
@@ -110,13 +100,12 @@ public class SoundPlayer {
 	 * @param path
 	 *            of the sound file (under assets/Sounds).
 	 */
-	private void initSingleSound(final AudioNode audioNode, final Path path) {
+	private void initSingleSound(final AudioNode audioNode, final String path) {
 		audioNode.setPositional(false);
 		audioNode.setLooping(false);
 		audioNode.setVolume(1);
 		app.getRootNode().attachChild(audioNode);
-		System.out.println("	=> " + path.toString().replace(DOUBLE_BACKSLASH, FRONT_SLASH)
-				+ " sound initialized.");
+		System.out.println("	=> " + path + " sound initialized.");
 	}
 
 	/**
@@ -132,7 +121,7 @@ public class SoundPlayer {
 	public void penguinSavedSound() {
 		penguinSavedAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of target spawning.
 	 */
