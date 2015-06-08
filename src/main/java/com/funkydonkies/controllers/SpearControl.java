@@ -1,6 +1,6 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.gamestates.PowerUpState;
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -101,24 +101,21 @@ public class SpearControl extends RigidBodyControl implements PhysicsCollisionLi
 	 * @param event PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if(event.getNodeA() != null && event.getNodeB() != null){
+		if (event.getNodeA() != null && event.getNodeB() != null){
 			if (OBSTACLE_NAME.equals(event.getNodeA().getName()) 
-					&& BALL_NAME.equals(event.getNodeB().getName())){
-				sm.getState(DifficultyState.class).resetDiff();
-				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
-				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
-				//event.getNodeB().removeControl(this);
-			}else if(BALL_NAME.equals(event.getNodeA().getName())
-					&& OBSTACLE_NAME.equals(event.getNodeB().getName())){
-				sm.getState(DifficultyState.class).resetDiff();
-				//sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
-				//sm.getState(PlayState.class).getPhysicsSpace().remove(this);
-				//event.getNodeA().getParent().detachChild(event.getNodeA());
-				//event.getNodeA().removeControl(this);
-
+					&& BALL_NAME.equals(event.getNodeB().getName())) {
+				sm.getState(PowerUpState.class).resetDiff();
+				sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeB());
+				((RigidBodyControl) event.getNodeB().getControl(0)).setEnabled(false);
+		
+			} else if(BALL_NAME.equals(event.getNodeA().getName())
+				&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
+			sm.getState(PowerUpState.class).resetDiff();
+			sm.getState(PlayState.class).getRootNode().detachChild(event.getNodeA());
+			((RigidBodyControl) event.getNodeA().getControl(0)).setEnabled(false);
 			}
-		}		
+		} 
 	}	
 
-		
+
 }

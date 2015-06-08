@@ -31,7 +31,7 @@ public class PlayState extends AbstractAppState {
 	private Combo combo;
 	private Node penguinNode;
 	
-	private DifficultyState powerUpState;
+	private PowerUpState powerUpState;
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -72,7 +72,7 @@ public class PlayState extends AbstractAppState {
 		curveState = new CurveState();
 		stateManage.attach(curveState);
 		
-		powerUpState = new DifficultyState();
+		powerUpState = new PowerUpState();
 		stateManage.attach(powerUpState);
 		
 		spawnState = new SpawnState();

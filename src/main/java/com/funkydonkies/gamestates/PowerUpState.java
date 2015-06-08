@@ -16,7 +16,7 @@ import com.jme3.app.state.AppStateManager;
 /**
  * This class controls the activation and deactivation of the different power ups.
  */
-public class DifficultyState extends AbstractAppState implements Observer {
+public class PowerUpState extends AbstractAppState implements Observer {
 	private static final float TIER_ONE_ACTIVATION = 5;
 	
 	private float time = 0;

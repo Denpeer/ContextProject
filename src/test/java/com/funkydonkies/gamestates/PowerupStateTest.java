@@ -12,13 +12,13 @@ import com.funkydonkies.powerups.SuperSizePowerup;
 import com.jme3.app.state.AppStateManager;
 
 public class PowerupStateTest {
-	private DifficultyState powerupState;
+	private PowerUpState powerupState;
 	private App app;
 	private AppStateManager sManager;
 	
 	@Before
 	public void setUp() throws Exception {
-		powerupState = new DifficultyState();
+		powerupState = new PowerUpState();
 		app = mock(App.class);
 		sManager = mock(AppStateManager.class);
 	}
