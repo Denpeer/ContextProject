@@ -35,7 +35,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 		
 		final Geometry line = makeWarningLine(app, xCoord); 
 		final Geometry whale = makeKillerWhale(app, whaleYCoord, xCoord, sManager);
-			
+
 		Node obstacleNode = new Node();
 		obstacleNode.attachChild(whale);
 		obstacleNode.attachChild(line);
