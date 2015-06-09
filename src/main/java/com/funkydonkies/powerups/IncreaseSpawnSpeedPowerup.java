@@ -10,8 +10,6 @@ import com.jme3.app.state.AppStateManager;
  *
  */
 public class IncreaseSpawnSpeedPowerup extends DisabledState {
-	private static final float INITIAL_BALL_SPEED = 50;
-	
 	private float speedMultiplier = 0;
 	
 	private AppStateManager sManager;
@@ -38,7 +36,7 @@ public class IncreaseSpawnSpeedPowerup extends DisabledState {
 		if (enabled) {
 			spawnState.setBallSpawnTime(speedMultiplier);
 		} else {
-			spawnState.setBallSpawnTime(spawnState.DEFAULT_BALL_SPAWN_TIME);
+			spawnState.setBallSpawnTime(SpawnState.DEFAULT_BALL_SPAWN_TIME);
 		}
 	}
 }
