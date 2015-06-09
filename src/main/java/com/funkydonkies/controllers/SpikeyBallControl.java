@@ -1,6 +1,7 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
+import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -134,12 +135,14 @@ public class SpikeyBallControl extends RigidBodyControl implements
 		if (event.getNodeA() != null && event.getNodeB() != null) {
 			if (SPIKEY_BALL_NAME.equals(event.getNodeA().getName())
 					&& PENGUIN_NAME.equals(event.getNodeB().getName())) {
+				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeB().removeFromParent();
 				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class))
 						.setEnabled(false);
 			}
 			if (PENGUIN_NAME.equals(event.getNodeA().getName())
 					&& SPIKEY_BALL_NAME.equals(event.getNodeB().getName())) {
+				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeA().removeFromParent();
 				((RigidBodyControl) event.getNodeA().getControl(StandardPenguinControl.class))
 						.setEnabled(false);
