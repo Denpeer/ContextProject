@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3;
+package com.funkydonkies.core;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
