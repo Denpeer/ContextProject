@@ -1,69 +1,81 @@
 package com.funkydonkies.combo;
-//package com.funkydonkies.w4v3;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.mockito.Mockito.mock;
-//import static org.mockito.Mockito.times;
-//import static org.mockito.Mockito.verify;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import com.funkydonkies.combo.Combo;
-//import com.jme3.font.BitmapText;
-//import com.jme3.scene.Node;
 
-//
-//public class ComboTest {
-//	private static Combo combo;
-//	private static BitmapText text;
-//	private static Node node;
-//	
-//	/**
-//	 * Instantiates objects.
-//	 * @throws Exception
-//	 */
-//	@Before
-//	public void setUp() throws Exception {
-//		node = mock(Node.class);
-//		text = mock(BitmapText.class);
-//		combo = new Combo(node, text);
-//	}
-//
-//	/**
-//	 * Tests the increasing of the combo.
-//	 */
-//	@Test
-//	public void testIncCombo() {
-//		verify(text).setText(("Current combo: 0"));
-//		assertEquals(combo.getCombo(), 0);
-//		combo.incCombo();
-//		assertEquals(combo.getCombo(), 1);
-//		verify(text).setText(("Current combo: 1"));
-//	}
-//
-//	/**
-//	 * Tests the combo reset.
-//	 */
-//	@Test
-//	public void testResetCombo() {
-//		assertEquals(combo.getCombo(), 0);
-//		combo.incCombo();
-//		assertEquals(combo.getCombo(), 1);
-//		combo.resetCombo();
-//		assertEquals(combo.getCombo(), 0);
-//		verify(text, times(2)).setText(("Current combo: 0"));
-//		verify(text).setText(("Current combo: 1"));
-//
-//	}
-//
-//	/**
-//	 * Tests the currect displaying of the combo.
-//	 */
-//	@Test
-//	public void testDisplay() {
-//		combo.display();
-//		verify(node).attachChild(text);
-//	}
-//
-//}
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.reset;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.jme3.asset.AssetManager;
+import com.jme3.font.BitmapText;
+import com.jme3.scene.Node;
+
+
+public class ComboTest {
+	private static Combo combo;
+	private Combo comboSpy;
+	private static BitmapText text;
+	private Node node;
+	private AssetManager sManager;
+	
+	/**
+	 * Instantiates objects.
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		node = mock(Node.class);
+		text = mock(BitmapText.class);
+		sManager = mock(AssetManager.class);
+		node =mock(Node.class);
+		combo = new Combo(node);
+		comboSpy = spy(combo);
+		doNothing().when(comboSpy).createCurrentComboText(sManager);
+		doNothing().when(comboSpy).createHighestComboText(sManager);
+	}
+
+	@Test
+	public void testCombo() {
+		verify(node, times(2)).attachChild(any(BitmapText.class));
+	}
+	/**
+	 * Tests the increasing of the combo.
+	 */
+	@Test
+	public void testIncCombo() {
+		assertEquals(comboSpy.getCombo(), 0);
+		comboSpy.incCombo();
+		assertEquals(comboSpy.getCombo(), 1);
+		verify(comboSpy).updateText();
+	}
+
+	/**
+	 * Tests the combo reset.
+	 */
+	@Test
+	public void testResetCombo() {
+		assertEquals(comboSpy.getCombo(), 0);
+		comboSpy.incCombo();
+		assertEquals(comboSpy.getCombo(), 1);
+		comboSpy.resetCombo();
+		assertEquals(comboSpy.getCombo(), 0);
+		verify(comboSpy, times(2)).updateText();
+	}
+
+	/**
+	 * Tests the currect displaying of the combo.
+	 */
+	@Test
+	public void testDisplay() {
+		reset(node);
+		combo.display();
+		verify(node, times(2)).attachChild(any(BitmapText.class));
+	}
+
+}

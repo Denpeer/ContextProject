@@ -27,7 +27,6 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	private Tier1 tier1;
 	private Tier2 tier2;
 	private App app;
-	private AppStateManager stateManage;
 
 	private Combo combo;
 	private int currCombo = 0;
@@ -44,7 +43,6 @@ public class DifficultyState extends AbstractAppState implements Observer {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		stateManage = sManager;
 		
 		tier1 = new Tier1();
 		sManager.attach(tier1);
@@ -57,8 +55,10 @@ public class DifficultyState extends AbstractAppState implements Observer {
 		snowBallPowerup = new SnowballPowerup();
 		sManager.attach(snowBallPowerup);
 		
-		combo = new Combo(app.getGuiNode(), app.getAssetManager());
+		combo = new Combo(app.getGuiNode());
 		combo.addObserver(this);
+		combo.createCurrentComboText(app.getAssetManager());
+		combo.createHighestComboText(app.getAssetManager());
 	}
 	
 	@Override

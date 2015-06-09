@@ -26,12 +26,10 @@ public class Combo extends Observable {
 	 * @param node guiNode, to attach the HUD counter
 	 * @param text BitMapText, to store the HUD text
 	 */
-	public Combo(final Node node, AssetManager assetManager) {
+	public Combo(final Node node) {
 		currentCombo = 0;
 		highestCombo = 0;
 		guiNode = node;
-		createCurrentComboText(assetManager);
-		createHighestComboText(assetManager);
 		updateText();
 		display();
 	}
@@ -61,7 +59,6 @@ public class Combo extends Observable {
 	public int incCombo() {
 		currentCombo++;
 		updateText();
-		
 		return currentCombo;
 	}
 	
@@ -85,10 +82,12 @@ public class Combo extends Observable {
 	 * Calls setText on the bitmapText to update it to represent the current combo.
 	 */
 	public void updateText() {
-		comboText.setText("Current combo: " + (currentCombo));
-		if(currentCombo >= highestCombo){
-			highestCombo = currentCombo;
-			highestComboText.setText("Highest combo: " + (currentCombo));
+		if (comboText != null) {
+			comboText.setText("Current combo: " + (currentCombo));
+			if(currentCombo >= highestCombo){
+				highestCombo = currentCombo;
+				highestComboText.setText("Highest combo: " + (currentCombo));
+			}
 		}
 	}
 	
