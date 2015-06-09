@@ -1,4 +1,4 @@
-package com.funkydonkies.w4v3.curve;
+package com.funkydonkies.curve;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

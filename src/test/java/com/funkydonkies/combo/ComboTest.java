@@ -1,3 +1,4 @@
+package com.funkydonkies.combo;
 //package com.funkydonkies.w4v3;
 //
 //import static org.junit.Assert.assertEquals;
