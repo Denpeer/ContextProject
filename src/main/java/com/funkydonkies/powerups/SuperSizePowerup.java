@@ -3,7 +3,7 @@ package com.funkydonkies.powerups;
 import java.util.Iterator;
 import java.util.List;
 
-import com.funkydonkies.controllers.StandardPenguinControl;
+import com.funkydonkies.controllers.PenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.factories.PenguinFactory;
@@ -67,8 +67,8 @@ public class SuperSizePowerup extends DisabledState {
 		while (ballIterator.hasNext()) {
 			final Spatial ball = ballIterator.next().scale(STANDARD_SCALEUP);
 			final float radius = ((SphereCollisionShape) 
-					ball.getControl(StandardPenguinControl.class).getCollisionShape()).getRadius();
-			ball.getControl(StandardPenguinControl.class).setCollisionShape(
+					ball.getControl(PenguinControl.class).getCollisionShape()).getRadius();
+			ball.getControl(PenguinControl.class).setCollisionShape(
 					new SphereCollisionShape(radius * STANDARD_SCALEUP));
 		}
 	} 
@@ -84,7 +84,7 @@ public class SuperSizePowerup extends DisabledState {
 		while (ballIterator.hasNext()) {
 			final Spatial ball = ballIterator.next();
 			ball.scale(1 / ball.getWorldScale().x);
-			ball.getControl(StandardPenguinControl.class).setCollisionShape(
+			ball.getControl(PenguinControl.class).setCollisionShape(
 					new SphereCollisionShape(PenguinFactory.DEFAULT_RADIUS));
 		}
 	}

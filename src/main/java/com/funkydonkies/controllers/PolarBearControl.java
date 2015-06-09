@@ -138,14 +138,14 @@ public class PolarBearControl extends GhostControl implements PhysicsCollisionLi
 					&& BALL_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class))
+				((RigidBodyControl) event.getNodeB().getControl(PenguinControl.class))
 						.setEnabled(false);
 
 			} else if (BALL_NAME.equals(event.getNodeA().getName())
 					&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeA().getControl(StandardPenguinControl.class))
+				((RigidBodyControl) event.getNodeA().getControl(PenguinControl.class))
 						.setEnabled(false);
 			}
 		}

@@ -1,6 +1,6 @@
 package com.funkydonkies.factories;
 
-import com.funkydonkies.controllers.StandardPenguinControl;
+import com.funkydonkies.controllers.PenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
@@ -36,7 +36,7 @@ public class PenguinFactory implements FactoryInterface{
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
 		final Geometry standardPenguin = new Geometry("penguin", mesh);
 		standardPenguin.setMaterial(getPenguinMaterial(app.getAssetManager()));
-		final StandardPenguinControl controller = new StandardPenguinControl(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
+		final PenguinControl controller = new PenguinControl(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
 		controller.setRestitution(1);
 		sManager.getState(PlayState.class).getPhysicsSpace().add(controller);
 		node.attachChild(standardPenguin);

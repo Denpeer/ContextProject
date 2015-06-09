@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.funkydonkies.controllers.ThunderControl;
 import com.funkydonkies.controllers.ThunderWarningLineControl;
-import com.funkydonkies.controllers.WarningLineControl;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
