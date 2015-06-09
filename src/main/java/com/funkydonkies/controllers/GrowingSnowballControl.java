@@ -9,70 +9,75 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-public class GrowingSnowballControl extends StandardPenguinControl implements
+/**
+ * Control for turning penguins into invincible snowballs.
+ */
+public class GrowingSnowballControl extends PenguinControl implements
 		PhysicsCollisionListener, PhysicsTickListener {
+	private static final String SNOW_BALL_NAME = "snowball";
 	private static final float SCALE_UP_FACTOR = 0.3f;
-	private static float THRESHOLD = 0.5f;
+	private static final float THRESHOLD = 0.5f;
+	private static final float SCALE_OFFSET = 0.5f;
 	private float timer = 0;
 	private boolean canScale = false;
 	
-	public GrowingSnowballControl(SphereCollisionShape sphereCollisionShape, float f) {
-		super(sphereCollisionShape, f);
+	/**
+	 * Constructor for GrowingSnowBallControl.
+	 * @param sphereCollisionShape the Snow Ball's collisionShape (should be based on the mesh)
+	 * @param mass the Snow Ball's desired mass
+	 */
+	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape, 
+			final float mass) {
+		super(sphereCollisionShape, mass);
 		
 	}
 	@Override
-	public void setPhysicsSpace(PhysicsSpace space) {
+	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
 		space.addTickListener(this);
 	}
 	
 	@Override
-	public void collision(PhysicsCollisionEvent event) {
-		if(event.getNodeA() != null && event.getNodeB() != null){
-			if (event.getNodeA().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
-					&& event.getNodeB().getName().equals(SplineCurve.CURVE_NAME)
-					|| event.getNodeB().getName().equals(PenguinFactory.STANDARD_PENGUIN_NAME) 
-					&&  event.getNodeA().getName().equals(SplineCurve.CURVE_NAME)) {
-				if (canScale) {
-					canScale = false;
-					//TODO only scale here
-				}
-			}
-		}
+	public void update(final float tpf) {
+		super.update(tpf);
+		scaleSnowBall(tpf);
 	}
 	
-	@Override
-	public void update(float tpf) {
-		super.update(tpf);
+	/** Scales Snow Ball every THRESHOLD seconds.
+	 * @param tpf elapsed time per frame
+	 */
+	public void scaleSnowBall(final float tpf) {
 		timer += tpf;
 		if (timer > THRESHOLD) {
 			timer = 0;
 			canScale = true;
-			Spatial snowBall = ((Node) spatial).getChild("snowball");
+			final Spatial snowBall = ((Node) spatial).getChild(SNOW_BALL_NAME);
 			((Snowball) snowBall).setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
-			Vector3f loc = snowBall.getLocalTranslation();
-			loc.x = loc.x - 0.5f * SCALE_UP_FACTOR;
-			loc.y = loc.y - 0.5f * SCALE_UP_FACTOR;
-			CollisionShape s = getCollisionShape();
 			
-			float radius = ((SphereCollisionShape) s).getRadius();
-			setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * 0.5f));
+			final Vector3f loc = snowBall.getLocalTranslation();
+			loc.x = loc.x - SCALE_OFFSET * SCALE_UP_FACTOR;
+			loc.y = loc.y - SCALE_OFFSET * SCALE_UP_FACTOR;
+			
+			final CollisionShape s = getCollisionShape();
+			final float radius = ((SphereCollisionShape) s).getRadius();
+			setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * SCALE_OFFSET));
 			snowBall.setLocalTranslation(loc);
 		}
 	}
-	
+	/**
+	 * Scales the Snow Balls to normal.
+	 */
 	public void scaleBack() {
 		spatial.scale(1 / spatial.getWorldScale().x);
 	}
 	
 	@Override
-	public void physicsTick(PhysicsSpace space, float tpf) {
+	public void physicsTick(final PhysicsSpace space, final float tpf) {
 		super.physicsTick(space, tpf);
 	}
 	
@@ -87,10 +92,46 @@ public class GrowingSnowballControl extends StandardPenguinControl implements
 	public void prePhysicsTick(final PhysicsSpace space, 
 			final float tpf) {
 		super.prePhysicsTick(space, tpf);
-		Vector3f a = getAngularVelocity();
+		final Vector3f a = getAngularVelocity();
 		a.x = 0;
 		a.y = 0;
 		setAngularVelocity(a);
+	}
+	
+	@Override
+	public void collision(final PhysicsCollisionEvent event) {
+		if (checkCollision(event, PenguinFactory.STANDARD_PENGUIN_NAME, SplineCurve.CURVE_NAME)) {
+			if (canScale) {
+				canScale = false;
+			}
+		}
+	}
+	
+	/** 
+	 * Checks collision on an event between two Spatials c1 and c2.
+	 * @param e PhysicsCollisionEvent to get the node names from
+	 * @param c1 collidee 1
+	 * @param c2 collidee 2
+	 * @return result of collision check
+	 */
+	public boolean checkCollision(final PhysicsCollisionEvent e, final String c1, final String c2) {
+		if (checkNull(e)) {
+			return false;
+		}
+		
+		final String nameA = e.getNodeA().getName();
+		final String nameB = e.getNodeB().getName();
+		
+		return (c1.equals(nameA) && c2.equals(nameB)
+				|| c2.equals(nameA) && c1.equals(nameB));
+	}
+
+	/** Checks whether the event has/is null.
+	 * @param e event to check
+	 * @return true when e has/iss null
+	 */
+	public boolean checkNull(final PhysicsCollisionEvent e) {
+		return e == null || e.getNodeA() == null || e.getNodeB() == null;
 	}
 	
 }

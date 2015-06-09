@@ -84,12 +84,12 @@ public class ThunderControl extends GhostControl implements PhysicsCollisionList
 					&& PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeB().getName())) {
 				stateManager.getState(DifficultyState.class).resetDiff();
 				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class)).setEnabled(false);
+				((RigidBodyControl) event.getNodeB().getControl(PenguinControl.class)).setEnabled(false);
 			} else if (PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeA().getName())
 					&& ThunderFactory.THUNDER_NAME.equals(event.getNodeB().getName())) {
 				stateManager.getState(DifficultyState.class).resetDiff();
 				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeA().getControl(StandardPenguinControl.class)).setEnabled(false);
+				((RigidBodyControl) event.getNodeA().getControl(PenguinControl.class)).setEnabled(false);
 			}
 		}
 	}

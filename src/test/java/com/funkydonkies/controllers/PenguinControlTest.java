@@ -19,7 +19,7 @@ import com.jme3.scene.Spatial;
  * @author Jonathan
  *
  */
-public class PhysicsControllerTest {
+public class PenguinControlTest {
 	private static final float BALL_RADIUS = 0.5f;
 	private static final String BALL_NAME = "ball";
 	private static final String CURVE_NAME = "curve";
@@ -36,7 +36,7 @@ public class PhysicsControllerTest {
 	//Normal speed, this is the speed after the x value was modified by prePhysicsTick
 	private static final Vector3f SPEED_NORMAL = new Vector3f(2f, 1f, 1f); 
 
-	private static StandardPenguinControl contr;
+	private static PenguinControl contr;
 	private static PhysicsCollisionEvent eventMock;
 	private static Spatial ballSpatialMock;
 	private static Spatial curveSpatialMock;
@@ -47,7 +47,7 @@ public class PhysicsControllerTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		contr = new StandardPenguinControl(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
+		contr = new PenguinControl(new SphereCollisionShape(BALL_RADIUS), BALL_RADIUS * 2);
 		eventMock = mock(PhysicsCollisionEvent.class);
 		ballSpatialMock = mock(Spatial.class);
 		curveSpatialMock = mock(Spatial.class);

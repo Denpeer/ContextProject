@@ -14,7 +14,7 @@ import com.jme3.math.Vector3f;
  * Physics controller class extending from RigidBodyControl specified to 
  * restrict the balls from moving over the z-axis.
  */
-public class StandardPenguinControl extends RigidBodyControl implements
+public class PenguinControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
 	protected static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
@@ -29,7 +29,7 @@ public class StandardPenguinControl extends RigidBodyControl implements
 	 * @param sphereCollisionShape Collision shape used by the physics
 	 * @param f mass of the sphere
 	 */
-	public StandardPenguinControl(final SphereCollisionShape sphereCollisionShape, 
+	public PenguinControl(final SphereCollisionShape sphereCollisionShape, 
 			final float f) {
 		super(sphereCollisionShape, f);
 	}

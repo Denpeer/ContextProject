@@ -127,12 +127,12 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 					&& BALL_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class)).setEnabled(false);
+				((RigidBodyControl) event.getNodeB().getControl(PenguinControl.class)).setEnabled(false);
 			} else if(BALL_NAME.equals(event.getNodeA().getName())
 					&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeA().getControl(StandardPenguinControl.class)).setEnabled(false);
+				((RigidBodyControl) event.getNodeA().getControl(PenguinControl.class)).setEnabled(false);
 			}
 		}		
 	}	

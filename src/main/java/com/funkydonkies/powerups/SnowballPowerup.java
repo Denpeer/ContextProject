@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.List;
 
 import com.funkydonkies.controllers.GrowingSnowballControl;
-import com.funkydonkies.controllers.StandardPenguinControl;
+import com.funkydonkies.controllers.PenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.gamestates.DisabledState;
@@ -58,8 +58,8 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 		Node penguinNode = app.getPenguinNode();
 		List<Spatial> penguins = penguinNode.getChildren();
 		for (Spatial penguin : penguins) {
-			Vector3f speed = ((Node) penguin).getControl(StandardPenguinControl.class).getLinearVelocity();
-			((Node) penguin).getControl(StandardPenguinControl.class).setEnabled(false);
+			Vector3f speed = ((Node) penguin).getControl(PenguinControl.class).getLinearVelocity();
+			((Node) penguin).getControl(PenguinControl.class).setEnabled(false);
 			
 			GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
 			//Check if the penguin already has a snowballcontrol

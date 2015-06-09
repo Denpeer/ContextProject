@@ -40,7 +40,7 @@ public class SceneState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.assetManager = this.app.getAssetManager();
-		initScene();
+//		initScene();
 	}
 
 	/**

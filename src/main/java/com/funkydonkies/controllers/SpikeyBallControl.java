@@ -137,14 +137,14 @@ public class SpikeyBallControl extends RigidBodyControl implements
 					&& PENGUIN_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(StandardPenguinControl.class))
+				((RigidBodyControl) event.getNodeB().getControl(PenguinControl.class))
 						.setEnabled(false);
 			}
 			if (PENGUIN_NAME.equals(event.getNodeA().getName())
 					&& SPIKEY_BALL_NAME.equals(event.getNodeB().getName())) {
 				sm.getState(DifficultyState.class).resetDiff();
 				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeA().getControl(StandardPenguinControl.class))
+				((RigidBodyControl) event.getNodeA().getControl(PenguinControl.class))
 						.setEnabled(false);
 			}
 		}
