@@ -29,16 +29,6 @@ public class App extends SimpleApplication {
 		rootNode.attachChild(penguinNode);
 	}
 
-	@Override
-	public void simpleUpdate(final float tpf) {
-
-	}
-
-	@Override
-	public void simpleRender(final RenderManager rm) {
-
-	}
-	
 	/**
 	 * Returns the penguin node, containing all the penguins.
 	 * @return penguinNode Node
