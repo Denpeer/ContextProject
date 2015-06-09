@@ -34,6 +34,4 @@ public class InvertControlsPowerup extends DisabledState {
 			setEnabled(false);
 		}
 	}
-	
-	
 }
