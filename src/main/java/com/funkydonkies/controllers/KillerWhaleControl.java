@@ -1,56 +1,64 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.factories.KillerWhaleFactory;
+import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.control.GhostControl;
+import com.jme3.bullet.control.PhysicsControl;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.control.Control;
 
 
 /**
  * This is a control to move floating spatials along the x- and y axis with a constant speed.
  */
-public class KillerWhaleControl extends RigidBodyControl implements PhysicsCollisionListener{
-	private double speed;
-	private Vector3f initialLoc;
-	private AppStateManager sm;
-	private static final String BALL_NAME = "standardPenguin";
-	private static final String OBSTACLE_NAME = "killerWhale";
-	private float time;
-	private boolean moveUp = true;
+public class KillerWhaleControl extends GhostControl implements PhysicsCollisionListener {
+	private AppStateManager stateManager;
 
+	private Vector3f initialLoc;
+
+	private float time;
+	
+	private boolean moveUp = true;
+	
+	private static final float SPEED = 4;;
+	private static final float STOP_HEIGHT = -30;
+	private static final float DESTROY_HEIGHT = -500;
 	
 	/**
-	 * The constructor of the control.	
-	 * @param mass the mass of the spatial
-	 * @param sp the constant speed for the spatial
-	 * @param moveHor a boolean to check if the spatial moves horizontal or vertical
-	 * @param moveUpRight a boolean to check if the spatial moves right or left
+	 * The constructor of the control.
+	 * @param colShape desired colShape
+	 * @param sManager jme AppStateManager to get states
+	 * @param iLoc initial location of the whale
+	 * 
 	 */
-	public KillerWhaleControl(final float mass, final double sp, AppStateManager asm, Vector3f loci) {
-		super(mass);
-		sm = asm;
-		this.speed = sp;
-		initialLoc = loci;
+	public KillerWhaleControl(final CollisionShape colShape, final AppStateManager sManager, 
+			final Vector3f iLoc) {
+		super(colShape);
+		stateManager = sManager;
+		initialLoc = iLoc;
 		time = 0;
+	}
+	
+	@Override
+	public void setSpatial(final Spatial spatial) {
+		super.setSpatial(spatial);
+		initLocation();
 	}
 	
 	/**
 	 * An initialize method for the controller.
 	 */
-	public final void init() {
-		setKinematic(true);	
-		sm.getState(PlayState.class).getPhysicsSpace().add(this);
+	public final void initLocation() {
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 		spatial.setLocalTranslation(initialLoc);
-		this.setPhysicsLocation(initialLoc);
 	}
 	
 	/**
@@ -59,21 +67,21 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 	 */
 	@Override
 	public void update(final float tpf) {
-		moveSpatial();
 		time += tpf;
-		if(spatial.getLocalTranslation().getY() < -500){
-			destroy();
+		moveSpatial();
+		removeCheck();
+	}
+	
+	/**
+	 * Checks whether the whale should be removed.
+	 */
+	public void removeCheck() {
+		if (spatial.getLocalTranslation().getY() < DESTROY_HEIGHT) {
+			spatial.removeFromParent();
+			setEnabled(false);
 		}
-
 	}
-	
-	public void destroy(){
-		spatial.getParent().detachChild(spatial);
-		spatial.removeControl(this);
-	//	sm.getState(PlayState.class).getPhysicsSpace().remove(this);
 
-	}
-	
 	/**
 	 * This method moves the spatial in the desired direction.
 	 */
@@ -82,23 +90,22 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 		
 		if (spatial != null && time > 1) {
 			final Vector3f vec = spatial.getLocalTranslation();
-			if(vec.getY() > -30){
+			if (vec.getY() > STOP_HEIGHT) {
 				moveUp = false;
 			}
-			if(moveUp){
-				loc = new Vector3f(vec.getX(), (float) (vec.getY() + speed), vec.getZ());
+			if (moveUp) {
+				loc = new Vector3f(vec.getX(), (float) (vec.getY() + SPEED), vec.getZ());
 				spatial.setLocalTranslation(loc);
-				this.setPhysicsLocation(loc);
-			}else{
-				loc = new Vector3f(vec.getX(), (float) (vec.getY() - speed), vec.getZ());
+			} else {
+				loc = new Vector3f(vec.getX(), (float) (vec.getY() - SPEED), vec.getZ());
 				spatial.setLocalTranslation(loc);
-				this.setPhysicsLocation(loc);
 			}
 		}
 
 	}
 	/**
 	 * Set the physics space and add this controller as tick listener.
+	 * 
 	 * @param space takes a pre-defined jme3 physicsSpace
 	 */
 	@Override
@@ -106,36 +113,96 @@ public class KillerWhaleControl extends RigidBodyControl implements PhysicsColli
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
 	}
-	/**
-	 * The renderer for the control.
-	 * @param rm the renderManager 
-	 * @param vp the viewPort
+	
+	/** 
+	 * Removes the given spatial from the scene and disables its controls.
+	 * 
+	 * @param e event the Spatial to destroy participates in
+	 * @param toDestroyName name of the Spatial to be destroyed
+	 * @return true if the Spatial was found and destroyed
 	 */
-	protected void controlRender(final RenderManager rm, final ViewPort vp) {
-		// TODO Auto-generated method stub
+	public boolean destroy(final PhysicsCollisionEvent e, final String toDestroyName) {
+		final Spatial toDestroy = getCollisionSpatial(e, toDestroyName);
 		
+		if (toDestroy != null) {
+			toDestroy.removeFromParent();
+			disableControls(toDestroy);
+			return true;
+		}
+		return false;
 	}
 
 	/**
-	 * Handles a collision between ball and target.
-	 * Calls methods to increase the combo and respawn the target.
+	 * Disables all the PhysicsControllers on the given spatial.
+	 * @param s spatial to disable controls on
+	 */
+	public void disableControls(final Spatial s) {
+		final int controlsAmount = s.getNumControls();
+		
+		for (int i = 0; i < controlsAmount; i++) {
+			final Control tmp = s.getControl(i);
+			if (tmp instanceof PhysicsControl) {
+				((PhysicsControl) tmp).setEnabled(false);
+			}
+		}
+	}
+
+	/** 
+	 * Get a collision Spatial by name.
+	 * 
+	 * @param e collision event
+	 * @param name wanted node
+	 * @return null if there is no such node
+	 */
+	public Spatial getCollisionSpatial(final PhysicsCollisionEvent e, final String name) {
+		if (e.getNodeA().getName() == name) {
+			return e.getNodeA();
+		} else if (e.getNodeB().getName() == name) {
+			return e.getNodeB();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Handles a collision between penguin and killer whale.
+	 * Destroys the penguin on collision.
+	 * 
 	 * @param event PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (event.getNodeA() != null && event.getNodeB() != null){
-			if (OBSTACLE_NAME.equals(event.getNodeA().getName()) 
-					&& BALL_NAME.equals(event.getNodeB().getName())) {
-				sm.getState(DifficultyState.class).resetDiff();
-				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(PenguinControl.class)).setEnabled(false);
-			} else if(BALL_NAME.equals(event.getNodeA().getName())
-					&& OBSTACLE_NAME.equals(event.getNodeB().getName())) {
-				sm.getState(DifficultyState.class).resetDiff();
-				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeA().getControl(PenguinControl.class)).setEnabled(false);
-			}
-		}		
-	}	
+		if (checkCollision(event, KillerWhaleFactory.WHALE_NAME, 
+				PenguinFactory.STANDARD_PENGUIN_NAME)) {
+			stateManager.getState(DifficultyState.class).resetDiff();
+			destroy(event, PenguinFactory.STANDARD_PENGUIN_NAME);
+		}
+	}
 
+	/** 
+	 * Checks collision on an event between two Spatials c1 and c2.
+	 * @param e PhysicsCollisionEvent to get the node names from
+	 * @param c1 collidee 1
+	 * @param c2 collidee 2
+	 * @return result of collision check
+	 */
+	public boolean checkCollision(final PhysicsCollisionEvent e, final String c1, final String c2) {
+		if (checkNull(e)) {
+			return false;
+		}
+		
+		final String nameA = e.getNodeA().getName();
+		final String nameB = e.getNodeB().getName();
+		
+		return (c1.equals(nameA) && c2.equals(nameB)
+				|| c2.equals(nameA) && c1.equals(nameB));
+	}
+
+	/** Checks whether the event has/is null.
+	 * @param e event to check
+	 * @return true when e has/iss null
+	 */
+	public boolean checkNull(final PhysicsCollisionEvent e) {
+		return e == null || e.getNodeA() == null || e.getNodeB() == null;
+	}
 		
 }
