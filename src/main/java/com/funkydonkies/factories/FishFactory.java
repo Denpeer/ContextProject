@@ -40,8 +40,7 @@ public class FishFactory implements FactoryInterface {
 	 *            jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a fish object
 	 */
-	public Geometry makeObject(final AppStateManager sManager,
-			final SimpleApplication appl) {
+	public Geometry makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
 
@@ -60,14 +59,13 @@ public class FishFactory implements FactoryInterface {
 		final Geometry geom = new Geometry(FISH_NAME, mesh);
 		geom.setMaterial(getFishMaterial(app.getAssetManager()));
 
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(
-				FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH));
+		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(FISH_WIDTH, FISH_HEIGHT,
+				FISH_DEPTH));
 
 		final FishControl tarControl = new FishControl(colShape, stateManager);
 
 		geom.addControl(tarControl);
-		stateManager.getState(PlayState.class).getPhysicsSpace()
-				.add(tarControl);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(tarControl);
 
 		return geom;
 	}
@@ -80,8 +78,7 @@ public class FishFactory implements FactoryInterface {
 	 * @return a Material object
 	 */
 	public Material getFishMaterial(final AssetManager assetManager) {
-		final Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
+		final Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Green);
 		return mat;
 	}

@@ -33,8 +33,11 @@ public class SquidFactory implements FactoryInterface {
 
 	/**
 	 * The create method for a squid object.
-	 * @param sManager jme AppStateManager for getting states
-	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
+	 * 
+	 * @param sManager
+	 *            jme AppStateManager for getting states
+	 * @param appl
+	 *            jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a squid object
 	 */
 	public Geometry makeObject(final AppStateManager sManager, final SimpleApplication appl) {
@@ -46,14 +49,15 @@ public class SquidFactory implements FactoryInterface {
 
 	/**
 	 * Makes a new squid geometry and sets its material and control(s).
+	 * 
 	 * @return new squid geometry instance
 	 */
 	public Geometry makeSquid() {
 		final Mesh mesh = new Box(SQUID_WIDTH, SQUID_HEIGHT, SQUID_DEPTH);
 		final Geometry geom = new Geometry(SQUID_NAME, mesh);
 		geom.setMaterial(getSquidMaterial(app.getAssetManager()));
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(
-				SQUID_WIDTH, SQUID_HEIGHT, SQUID_DEPTH));
+		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(SQUID_WIDTH,
+				SQUID_HEIGHT, SQUID_DEPTH));
 		final SquidControl tarCont = new SquidControl(colShape, stateManager);
 		geom.addControl(tarCont);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(tarCont);
@@ -62,12 +66,13 @@ public class SquidFactory implements FactoryInterface {
 
 	/**
 	 * This method makes all the required materials.
-	 * @param assetManager jme AssetManager for loading models
+	 * 
+	 * @param assetManager
+	 *            jme AssetManager for loading models
 	 * @return a Material object
 	 */
 	public Material getSquidMaterial(final AssetManager assetManager) {
-		final Material mat = new Material(assetManager,
-				"Common/MatDefs/Misc/Unshaded.j3md");
+		final Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Yellow);
 		return mat;
 	}

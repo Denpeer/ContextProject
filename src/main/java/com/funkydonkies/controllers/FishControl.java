@@ -24,7 +24,7 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 	/**
 	 * Constructor method for fish control.
 	 * @param shape Collisionshape for the fish
-	 * @param sm jme AppstateManager to get AppStates
+	 * @param sm jme AppStateManager to get AppStates
 	 */
 	public FishControl(final CollisionShape shape, final AppStateManager sm) {
 		super(shape);
@@ -62,15 +62,6 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 			initialized = true;
 		}
 		
-	}
-	
-	/**
-	 * Removes the control from the physics space.
-	 */
-	public void delete() {
-		space.removeCollisionListener(this);
-		space.remove(this);
-		spatial.getParent().detachChild(spatial);
 	}
 
 	/**
