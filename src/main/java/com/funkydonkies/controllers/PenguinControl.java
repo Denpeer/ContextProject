@@ -27,8 +27,7 @@ public class PenguinControl extends RigidBodyControl implements
 	/**
 	 * Constructor for ball physics controller.
 	 * @param sphereCollisionShape Collision shape used by the physics
-	 * @param f mass of the sphere
-	 * @param speed the initial speed of the ball
+	 * @param mass desired mass of the sphere
 	 */
 	public PenguinControl(final SphereCollisionShape sphereCollisionShape, final float mass) {
 		super(sphereCollisionShape, mass);
