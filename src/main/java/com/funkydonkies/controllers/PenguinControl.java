@@ -2,19 +2,18 @@ package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
 import com.funkydonkies.factories.PenguinFactory;
+import com.funkydonkies.interfaces.MyAbstractRigidBodyControl;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
 /**
  * Control class for the penguin. Takes care of collisions between the penguin and the curve.
  */
-public class PenguinControl extends RigidBodyControl implements
+public class PenguinControl extends MyAbstractRigidBodyControl implements
 	PhysicsTickListener, PhysicsCollisionListener {
 	protected static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
@@ -33,19 +32,8 @@ public class PenguinControl extends RigidBodyControl implements
 		super(sphereCollisionShape, mass);
 	}
 	
-	/** 
-	 * This Method calls initialization which should occur after the control has been added to the
-	 * spatial. setSpatial(spatial) is called by addControl(control) in Spatial.
-	 * @param spatial spatial this control should control
-	 */
-	@Override
-	public void setSpatial(final Spatial spatial) {
-		super.setSpatial(spatial);
-		init();
-	}
-	
 	/**
-	 * The initialize method for the control.
+	 * The initialize method for the control. called by super.setSpatial(spatial).
 	 */
 	public void init() {
 		final int yOffSet = 5, xOffSet = -20;
@@ -132,31 +120,4 @@ public class PenguinControl extends RigidBodyControl implements
 		}
 	}
 	
-	
-	/** 
-	 * Checks collision on an event between two Spatials c1 and c2.
-	 * @param e PhysicsCollisionEvent to get the node names from
-	 * @param c1 collidee 1
-	 * @param c2 collidee 2
-	 * @return result of collision check
-	 */
-	public boolean checkCollision(final PhysicsCollisionEvent e, final String c1, final String c2) {
-		if (checkNull(e)) {
-			return false;
-		}
-		
-		final String nameA = e.getNodeA().getName();
-		final String nameB = e.getNodeB().getName();
-		
-		return (c1.equals(nameA) && c2.equals(nameB)
-				|| c2.equals(nameA) && c1.equals(nameB));
-	}
-	
-	/** Checks whether the event has/is null.
-	 * @param e event to check
-	 * @return true when e has/iss null
-	 */
-	public boolean checkNull(final PhysicsCollisionEvent e) {
-		return e == null || e.getNodeA() == null || e.getNodeB() == null;
-	}
 }

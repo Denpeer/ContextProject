@@ -32,6 +32,13 @@ public class SpearFactory implements FactoryInterface {
 	
 	public static final String SPEAR_NAME = "spear";
 	
+	public static final String WARNING_NAME = "warning line";
+	
+	private static final float WARNING_LINE_ALPHA = 0.2f;
+	
+	private static final String COLOR = "Color";
+	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	
 	private AppStateManager stateManager;
 	private SimpleApplication app;
 	
@@ -46,11 +53,11 @@ public class SpearFactory implements FactoryInterface {
 		stateManager = sManager;
 		
 		final Random rand = new Random();
-		final float xCoord = 500;
-		final float yCoord = rand.nextInt(100);
+		final float x = 500;
+		final float y = rand.nextInt(100);
 		
-		final Geometry line = makeWarningLine(yCoord); 
-		final Geometry spear = makeSpear(yCoord, xCoord);
+		final Geometry line = makeWarningLine(y); 
+		final Geometry spear = makeSpear(y, x);
 			
 		final Node obstacleNode = new Node();
 		obstacleNode.attachChild(spear);
@@ -61,36 +68,36 @@ public class SpearFactory implements FactoryInterface {
 	
 	/**
 	 * This method make and returns a spear geometry.
-	 * @param yCoord the initial yCoord of the spear
-	 * @param xCoord the initial xCoord of the spear
+	 * @param y the initial y of the spear
+	 * @param x the initial x of the spear
 	 * @return a spear geometry
 	 */
-	public Geometry makeSpear(final float yCoord, final float xCoord) {
+	public Geometry makeSpear(final float y, final float x) {
 		
 		final Mesh spearMesh = new Box(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH);
 		final Geometry spear = new Geometry(SPEAR_NAME, spearMesh);
-		spear.setMaterial(getSpearMaterial(app.getAssetManager()));
+		spear.setMaterial(getSpearMaterial());
 		
-		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
+		final Vector3f loci = new Vector3f(x, y, 0);
 		final CollisionShape colShape = 
 				new BoxCollisionShape(new Vector3f(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH));
-		final SpearControl spearControl = new SpearControl(colShape, 6, stateManager, loci);
+		final SpearControl spearControl = new SpearControl(colShape, stateManager, loci);
 		spear.addControl(spearControl);
 		
 		return spear;
 	}
 	/**
 	 * This method a warning line geometry.
-	 * @param yCoord the y coordinate of the warning line
+	 * @param y the y coordinate of the warning line
 	 * @return the warning line geometry
 	 */
-	public Geometry makeWarningLine(final float yCoord) {
+	public Geometry makeWarningLine(final float y) {
 		final Mesh warningLineMesh = new Box(1000, 2, 1);
-		final Geometry geom = new Geometry("warning line", warningLineMesh);
+		final Geometry geom = new Geometry(WARNING_NAME, warningLineMesh);
 		geom.setMaterial(getLineMaterial(app.getAssetManager()));
 		geom.setQueueBucket(Bucket.Transparent);
 		
-		final WarningLineControl wLC = new WarningLineControl(0, yCoord);
+		final WarningLineControl wLC = new WarningLineControl(0, y);
 		geom.addControl(wLC);
 		wLC.init();
 		return geom;
@@ -102,20 +109,19 @@ public class SpearFactory implements FactoryInterface {
 	 * @return the line material
 	 */
 	public Material getLineMaterial(final AssetManager assetManager) {
-		final Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", new ColorRGBA(1, 0, 0, (float) 0.2));
+		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, new ColorRGBA(1, 0, 0, WARNING_LINE_ALPHA));
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
 	}
 
 	/**
 	 * This method gets the material for the spear.
-	 * @param assetManager jme AssetManager for loading models
 	 * @return the spear material
 	 */
-	public Material getSpearMaterial(AssetManager assetManager) {
-		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Green);
+	public Material getSpearMaterial() {
+		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, ColorRGBA.Green);
 		return mat;
 	}
 
