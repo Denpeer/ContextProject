@@ -31,7 +31,7 @@ public class InvertControlsPowerupTest {
 		when(sManager.getState(CurveState.class)).thenReturn(curveState);
 		powerup.initialize(sManager, app);
 		powerupSpy.initialize(sManager, app);
-}
+	}
 	
 	@Test
 	public void setEnabledTest() {

@@ -3,7 +3,6 @@ package com.funkydonkies.controllers;
 import com.funkydonkies.factories.KillerWhaleFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.DifficultyState;
-import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -57,7 +56,6 @@ public class KillerWhaleControl extends GhostControl implements PhysicsCollision
 	 * An initialize method for the controller.
 	 */
 	public final void initLocation() {
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 		spatial.setLocalTranslation(initialLoc);
 	}
 	
@@ -112,6 +110,7 @@ public class KillerWhaleControl extends GhostControl implements PhysicsCollision
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 	
 	/** 

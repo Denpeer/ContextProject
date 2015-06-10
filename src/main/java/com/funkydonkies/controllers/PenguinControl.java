@@ -18,20 +18,19 @@ public class PenguinControl extends RigidBodyControl implements
 	PhysicsTickListener, PhysicsCollisionListener {
 	protected static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
+
 	private static final String CURVE_NAME = "curve";
+	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
+	
 	private Vector3f initialSpawn;
-	private Vector3f initialSpeed;
 	
 	/**
 	 * Constructor for ball physics controller.
 	 * @param sphereCollisionShape Collision shape used by the physics
-	 * @param f mass of the sphere
-	 * @param speed the initial speed of the ball
+	 * @param mass desired mass of the sphere
 	 */
-	public PenguinControl(final SphereCollisionShape sphereCollisionShape, 
-			final float f, final Vector3f speed) {
-		super(sphereCollisionShape, f);
-		initialSpeed = speed;
+	public PenguinControl(final SphereCollisionShape sphereCollisionShape, final float mass) {
+		super(sphereCollisionShape, mass);
 	}
 	
 	/** 
@@ -52,7 +51,7 @@ public class PenguinControl extends RigidBodyControl implements
 		final int yOffSet = 5, xOffSet = -20;
 		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		setLocation(initialSpawn);
-		setSpeed(initialSpeed);
+		setSpeed(INITIAL_SPEED);
 	}
 		
 	/**
