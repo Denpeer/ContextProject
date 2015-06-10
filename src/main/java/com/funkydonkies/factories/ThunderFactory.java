@@ -47,8 +47,7 @@ public class ThunderFactory implements FactoryInterface {
 	private final String color = "Color";
 
 	@Override
-	public Spatial makeObject(final AppStateManager sManager,
-			final SimpleApplication appl) {
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
 
@@ -86,8 +85,8 @@ public class ThunderFactory implements FactoryInterface {
 		final Geometry geom = new Geometry(THUNDER_NAME, mesh);
 		geom.setMaterial(getThunderMaterial());
 
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(
-				THUNDER_WIDTH, THUNDER_HEIGHT, THUNDER_DEPTH));
+		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(THUNDER_WIDTH,
+				THUNDER_HEIGHT, THUNDER_DEPTH));
 
 		final ThunderControl control = new ThunderControl(colShape, stateManager, xCoord);
 		geom.addControl(control);
@@ -103,17 +102,16 @@ public class ThunderFactory implements FactoryInterface {
 	 * @return new warning line geometry
 	 */
 	public Geometry makeWarningLine(final float xCoord) {
-		final Mesh warningLineMesh = new Box(WARNING_LINE_WIDTH,
-				WARNING_LINE_HEIGHT, WARNING_LINE_DEPTH);
+		final Mesh warningLineMesh = new Box(WARNING_LINE_WIDTH, WARNING_LINE_HEIGHT,
+				WARNING_LINE_DEPTH);
 		final Geometry geom = new Geometry(WARNING_LINE_NAME, warningLineMesh);
 		geom.setMaterial(getWarningLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(
-				WARNING_LINE_WIDTH, WARNING_LINE_HEIGHT, WARNING_LINE_DEPTH));
+		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(WARNING_LINE_WIDTH,
+				WARNING_LINE_HEIGHT, WARNING_LINE_DEPTH));
 
-		final ThunderWarningLineControl wLC = new ThunderWarningLineControl(
-				stateManager, xCoord, 0);
+		final ThunderWarningLineControl wLC = new ThunderWarningLineControl(stateManager, xCoord, 0);
 		geom.addControl(wLC);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(wLC);
 		return geom;
@@ -126,8 +124,7 @@ public class ThunderFactory implements FactoryInterface {
 	 */
 	public Material getThunderMaterial() {
 		Material thunderMaterial;
-		thunderMaterial = ((Material) app.getRootNode().getUserData(
-				defaultMaterial)).clone();
+		thunderMaterial = ((Material) app.getRootNode().getUserData(defaultMaterial)).clone();
 		thunderMaterial.setColor(color, ColorRGBA.Pink);
 		return thunderMaterial;
 	}
@@ -140,12 +137,9 @@ public class ThunderFactory implements FactoryInterface {
 	public Material getWarningLineMaterial() {
 		Material warningLineMaterial;
 		final float colorAlpha = 0.2f;
-		warningLineMaterial = ((Material) app.getRootNode().getUserData(
-				defaultMaterial)).clone();
-		warningLineMaterial.setColor(color, new ColorRGBA(1, 0, 0,
-				(float) colorAlpha));
-		warningLineMaterial.getAdditionalRenderState().setBlendMode(
-				BlendMode.Alpha);
+		warningLineMaterial = ((Material) app.getRootNode().getUserData(defaultMaterial)).clone();
+		warningLineMaterial.setColor(color, new ColorRGBA(1, 0, 0, (float) colorAlpha));
+		warningLineMaterial.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return warningLineMaterial;
 	}
 

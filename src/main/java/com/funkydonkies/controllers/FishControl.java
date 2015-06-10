@@ -23,7 +23,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	/**
 	 * Constructor method for fish control.
 	 * @param shape Collisionshape for the fish
-	 * @param sm jme AppstateManager to get AppStates
+	 * @param sm jme AppStateManager to get AppStates
 	 */
 	public FishControl(final CollisionShape shape, final AppStateManager sm) {
 		super(shape);

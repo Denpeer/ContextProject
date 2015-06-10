@@ -17,10 +17,8 @@ import com.jme3.scene.Spatial;
  * Control class for the target. Takes care of collisions between the ball and
  * target.
  */
-public class SquidControl extends GhostControl implements
-		PhysicsCollisionListener {
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(250f,
-			10f, 1f);
+public class SquidControl extends GhostControl implements PhysicsCollisionListener {
+	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(250f, 10f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	private boolean initialized = false;
 	private DifficultyState diffState;
@@ -80,15 +78,6 @@ public class SquidControl extends GhostControl implements
 	}
 
 	/**
-	 * Removes the control from the physics space.
-	 */
-	public void delete() {
-		space.removeCollisionListener(this);
-		space.remove(this);
-		spatial.getParent().detachChild(spatial);
-	}
-
-	/**
 	 * Handles a collision between penguin and squid. Calls methods to increase
 	 * the combo and activate snow ball powerup.
 	 * 
@@ -97,8 +86,7 @@ public class SquidControl extends GhostControl implements
 	 *            collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, SquidFactory.SQUID_NAME,
-				PenguinFactory.STANDARD_PENGUIN_NAME)) {
+		if (checkCollision(event, SquidFactory.SQUID_NAME, PenguinFactory.STANDARD_PENGUIN_NAME)) {
 			respawn();
 			diffState.incDiff();
 			diffState.activateSnowBallPowerup();
@@ -117,8 +105,7 @@ public class SquidControl extends GhostControl implements
 	 *            collidee 2
 	 * @return result of collision check
 	 */
-	public boolean checkCollision(final PhysicsCollisionEvent e,
-			final String c1, final String c2) {
+	public boolean checkCollision(final PhysicsCollisionEvent e, final String c1, final String c2) {
 		if (checkNull(e)) {
 			return false;
 		}
@@ -126,8 +113,7 @@ public class SquidControl extends GhostControl implements
 		final String nameA = e.getNodeA().getName();
 		final String nameB = e.getNodeB().getName();
 
-		return (c1.equals(nameA) && c2.equals(nameB) || c2.equals(nameA)
-				&& c1.equals(nameA));
+		return (c1.equals(nameA) && c2.equals(nameB) || c2.equals(nameA) && c1.equals(nameA));
 	}
 
 	/**
@@ -152,12 +138,10 @@ public class SquidControl extends GhostControl implements
 	public void remove(final PhysicsCollisionEvent event, final String name) {
 		if (name.equals(event.getNodeA().getName())) {
 			event.getNodeA().removeFromParent();
-			((GhostControl) event.getNodeA().getControl(SquidControl.class))
-					.setEnabled(false);
+			((GhostControl) event.getNodeA().getControl(SquidControl.class)).setEnabled(false);
 		} else if (name.equals(event.getNodeB().getName())) {
 			event.getNodeB().removeFromParent();
-			((GhostControl) event.getNodeB().getControl(SquidControl.class))
-					.setEnabled(false);
+			((GhostControl) event.getNodeB().getControl(SquidControl.class)).setEnabled(false);
 		}
 	}
 
@@ -181,14 +165,14 @@ public class SquidControl extends GhostControl implements
 		}
 		if (moveRight) {
 			final Vector3f vec = spatial.getLocalTranslation();
-			final Vector3f loc = new Vector3f((float) (vec.getX() - numHalf),
-					vec.getY(), vec.getZ());
+			final Vector3f loc = new Vector3f((float) (vec.getX() - numHalf), vec.getY(),
+					vec.getZ());
 			spatial.setLocalTranslation(loc);
 			this.setPhysicsLocation(loc);
 		} else {
 			final Vector3f vec = spatial.getLocalTranslation();
-			final Vector3f loc = new Vector3f((float) (vec.getX() + numHalf),
-					vec.getY(), vec.getZ());
+			final Vector3f loc = new Vector3f((float) (vec.getX() + numHalf), vec.getY(),
+					vec.getZ());
 			spatial.setLocalTranslation(loc);
 			this.setPhysicsLocation(loc);
 		}
@@ -202,8 +186,7 @@ public class SquidControl extends GhostControl implements
 		final float x = (float) Math.random()
 				* (CurveState.POINT_DISTANCE * CurveState.DEFAULT_CONTROL_POINTS_COUNT);
 
-		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT
-				+ Y_PADDING;
+		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		setPhysicsLocation(respawnlocation);
 		spatial.setLocalTranslation(respawnlocation);
