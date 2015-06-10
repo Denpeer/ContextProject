@@ -127,5 +127,4 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 		setPhysicsLocation(respawnlocation);
 		spatial.setLocalTranslation(respawnlocation);
 	}
-
 }
