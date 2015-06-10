@@ -63,7 +63,7 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	}
 	
 	public Tier2 makeTier2() {
-		return new Tier2();
+		return new Tier2(); 
 	}
 	
 	public InvertControlsPowerup makeInvertControlsPowerup() {
@@ -77,6 +77,9 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	public Combo initCombo() {
 		Combo combo = new Combo(app);
 		combo.addObserver(this);
+		combo.createCurrentComboText(app);
+		combo.createHighestComboText(app);
+		combo.updateText();
 		return combo;
 	}
 	
