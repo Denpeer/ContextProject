@@ -55,10 +55,10 @@ public class DifficultyState extends AbstractAppState implements Observer {
 		snowBallPowerup = new SnowballPowerup();
 		sManager.attach(snowBallPowerup);
 		
-		combo = new Combo(app.getGuiNode());
+		combo = new Combo(app);
 		combo.addObserver(this);
-		combo.createCurrentComboText(app.getAssetManager());
-		combo.createHighestComboText(app.getAssetManager());
+//		combo.createCurrentComboText(app.getAssetManager());
+//		combo.createHighestComboText(app.getAssetManager());
 	}
 	
 	@Override
