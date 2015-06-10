@@ -75,12 +75,16 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	}
 	
 	public Combo initCombo() {
-		Combo combo = new Combo(app);
+		Combo combo = makeCombo();
 		combo.addObserver(this);
 		combo.createCurrentComboText(app);
 		combo.createHighestComboText(app);
 		combo.updateText();
 		return combo;
+	}
+	
+	public Combo makeCombo() {
+		return new Combo(app);
 	}
 	
 	@Override

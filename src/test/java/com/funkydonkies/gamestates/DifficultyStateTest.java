@@ -42,7 +42,7 @@ public class DifficultyStateTest {
 		
 		diffState = new DifficultyState();
 		diffSpy = spy(diffState);
-		doReturn(combo).when(diffSpy).initCombo();
+		doReturn(combo).when(diffSpy).makeCombo();
 		doReturn(tier1).when(diffSpy).makeTier1();
 		doReturn(tier2).when(diffSpy).makeTier2();
 		doReturn(snowBall).when(diffSpy).makeSnowBallPowerup();
@@ -141,5 +141,15 @@ public class DifficultyStateTest {
 		
 		diffSpy.activateSnowBallPowerup();
 		verify(snowBall).setEnabled(true);
+	}
+	
+	@Test
+	public void testInitCombo() {
+		diffSpy.initialize(sManager, app);
+
+		verify(combo).createCurrentComboText(app);
+		verify(combo).createHighestComboText(app);
+		verify(combo).addObserver(diffSpy);
+		verify(combo).updateText();
 	}
 }
