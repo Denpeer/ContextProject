@@ -7,7 +7,6 @@ import com.funkydonkies.controllers.WarningLineControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
@@ -26,6 +25,7 @@ import com.jme3.scene.shape.Box;
  */
 public class SpearFactory implements FactoryInterface {
 	
+	private static final float WARNING_WIDTH = 1000;
 	private static final float SPEAR_WIDTH = 15;
 	private static final float SPEAR_HEIGHT = 2;
 	private static final float SPEAR_DEPTH = 1;
@@ -92,9 +92,9 @@ public class SpearFactory implements FactoryInterface {
 	 * @return the warning line geometry
 	 */
 	public Geometry makeWarningLine(final float y) {
-		final Mesh warningLineMesh = new Box(1000, 2, 1);
+		final Mesh warningLineMesh = new Box(WARNING_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH);
 		final Geometry geom = new Geometry(WARNING_NAME, warningLineMesh);
-		geom.setMaterial(getLineMaterial(app.getAssetManager()));
+		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 		
 		final WarningLineControl wLC = new WarningLineControl(0, y);
@@ -105,11 +105,10 @@ public class SpearFactory implements FactoryInterface {
 
 	/**
 	 * This method gets the material for the warningline.
-	 * @param assetManager jme AssetManager for loading models
 	 * @return the line material
 	 */
-	public Material getLineMaterial(final AssetManager assetManager) {
-		final Material mat = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+	public Material getLineMaterial() {
+		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
 		mat.setColor(COLOR, new ColorRGBA(1, 0, 0, WARNING_LINE_ALPHA));
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;

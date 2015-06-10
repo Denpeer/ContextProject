@@ -69,7 +69,6 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		moveSpatial();
 
 		if (doneMoving) {
-			space.addCollisionListener(this);
 			time += tpf;
 			if (time > destroyTime) {
 				spatial.getParent().detachChild(spatial);
@@ -90,6 +89,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 	/**
