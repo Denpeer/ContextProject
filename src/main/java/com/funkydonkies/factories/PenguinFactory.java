@@ -10,7 +10,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
@@ -22,7 +21,6 @@ import com.jme3.scene.shape.Sphere;
  */
 public class PenguinFactory implements FactoryInterface {
 	private static final int SAMPLES = 20;
-	private final float intialXSpeed = 50;
 	public static final float DEFAULT_RADIUS = 4f;
 	public static final String STANDARD_PENGUIN_NAME = "penguin";
 
@@ -35,11 +33,10 @@ public class PenguinFactory implements FactoryInterface {
 	 */
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		final Node node = new Node(STANDARD_PENGUIN_NAME);
-		final Vector3f speed = new Vector3f(intialXSpeed, 0 , 0);
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
 		final Geometry standardPenguin = new Geometry(STANDARD_PENGUIN_NAME, mesh);
 		standardPenguin.setMaterial(getPenguinMaterial(appl.getAssetManager()));
-		final PenguinControl controller = new PenguinControl(new SphereCollisionShape(DEFAULT_RADIUS), 1f, speed);
+		final PenguinControl controller = new PenguinControl(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
 		controller.setRestitution(1);
 		sManager.getState(PlayState.class).getPhysicsSpace().add(controller);
 		node.attachChild(standardPenguin);
