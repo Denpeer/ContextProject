@@ -27,6 +27,7 @@ public class CameraStateTest {
 		assertFalse(cameraState.isInitialized());
 		cameraState.initialize(sManager, app);
 		assertTrue(cameraState.isInitialized());
+		assertFalse(cameraState.isEnabled());
 	}
 
 	@Test

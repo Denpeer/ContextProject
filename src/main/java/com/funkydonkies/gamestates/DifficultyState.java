@@ -44,21 +44,40 @@ public class DifficultyState extends AbstractAppState implements Observer {
 			throw new BadDynamicTypeException();
 		}
 		
-		tier1 = new Tier1();
+		tier1 = makeTier1();
 		sManager.attach(tier1);
-		tier2 = new Tier2();
+		tier2 = makeTier2();
 		sManager.attach(tier2);
 		
-		invertControls = new InvertControlsPowerup();
+		invertControls = makeInvertControlsPowerup();
 		sManager.attach(invertControls);
 		
-		snowBallPowerup = new SnowballPowerup();
+		snowBallPowerup = makeSnowBallPowerup();
 		sManager.attach(snowBallPowerup);
 		
-		combo = new Combo(app);
+		combo = initCombo();
+	}
+	
+	public Tier1 makeTier1() {
+		return new Tier1();
+	}
+	
+	public Tier2 makeTier2() {
+		return new Tier2();
+	}
+	
+	public InvertControlsPowerup makeInvertControlsPowerup() {
+		return new InvertControlsPowerup();
+	}
+	
+	public SnowballPowerup makeSnowBallPowerup() {
+		return new SnowballPowerup();
+	}
+	
+	public Combo initCombo() {
+		Combo combo = new Combo(app);
 		combo.addObserver(this);
-//		combo.createCurrentComboText(app.getAssetManager());
-//		combo.createHighestComboText(app.getAssetManager());
+		return combo;
 	}
 	
 	@Override
@@ -69,10 +88,6 @@ public class DifficultyState extends AbstractAppState implements Observer {
 //			time = 0;
 //			setTier2();
 //		}
-		
-	}
-	public void disableAllPowerups() {
-		
 	}
 	
 	public void setTier1() {
