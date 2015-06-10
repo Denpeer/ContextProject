@@ -2,7 +2,6 @@ package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
 import com.funkydonkies.gamestates.DifficultyState;
-import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -11,10 +10,10 @@ import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
- * Physics controller class extending from RigidBodyControl specified to
- * restrict the balls from moving over the z-axis.
+ * Control class for the spikey ball. Takes care of collisions between the fish and the penguins.
  */
 public class SpikeyBallControl extends RigidBodyControl implements
 		PhysicsTickListener, PhysicsCollisionListener {
@@ -28,13 +27,9 @@ public class SpikeyBallControl extends RigidBodyControl implements
 
 	/**
 	 * Constructor for ball physics controller.
-	 * 
-	 * @param sphereCollisionShape
-	 *            Collision shape used by the physics
-	 * @param f
-	 *            mass of the sphere
-	 * @param stateManager
-	 *            the AppStateManager
+	 * @param sphereCollisionShape Collision shape used by the physics
+	 * @param f mass of the sphere
+	 * @param stateManager the AppStateManager
 	 */
 	public SpikeyBallControl(final SphereCollisionShape sphereCollisionShape,
 			final AppStateManager stateManager, final float f) {
@@ -42,6 +37,17 @@ public class SpikeyBallControl extends RigidBodyControl implements
 		this.sm = stateManager;
 	}
 
+	/** 
+	 * This Method calls initialization which should occur after the control has been added to the
+	 * spatial. setSpatial(spatial) is called by addControl(control) in Spatial.
+	 * @param spatial spatial this control should control
+	 */
+	@Override
+	public void setSpatial(final Spatial spatial) {
+		super.setSpatial(spatial);
+		init();
+	}
+	
 	/**
 	 * The initialize method for the control.
 	 */

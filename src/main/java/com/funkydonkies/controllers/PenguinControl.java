@@ -9,30 +9,42 @@ import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
- * Physics controller class extending from RigidBodyControl specified to 
- * restrict the balls from moving over the z-axis.
+ * Control class for the penguin. Takes care of collisions between the penguin and the curve.
  */
 public class PenguinControl extends RigidBodyControl implements
-		PhysicsTickListener, PhysicsCollisionListener {
+	PhysicsTickListener, PhysicsCollisionListener {
 	protected static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	private static final String OBSTACLE_NAME = "killerWhale";
-	private static final String PENGUIN_NAME = PenguinFactory.STANDARD_PENGUIN_NAME;
 	private static final String CURVE_NAME = "curve";
 	private Vector3f initialSpawn;
-	private Vector3f initialSpeed  = new Vector3f(50, 0, 0);
+	private Vector3f initialSpeed;
 	
 	/**
 	 * Constructor for ball physics controller.
 	 * @param sphereCollisionShape Collision shape used by the physics
 	 * @param f mass of the sphere
+	 * @param speed the initial speed of the ball
 	 */
 	public PenguinControl(final SphereCollisionShape sphereCollisionShape, 
-			final float f) {
+			final float f, final Vector3f speed) {
 		super(sphereCollisionShape, f);
+		initialSpeed = speed;
 	}
+	
+	/** 
+	 * This Method calls initialization which should occur after the control has been added to the
+	 * spatial. setSpatial(spatial) is called by addControl(control) in Spatial.
+	 * @param spatial spatial this control should control
+	 */
+	@Override
+	public void setSpatial(final Spatial spatial) {
+		super.setSpatial(spatial);
+		init();
+	}
+	
 	/**
 	 * The initialize method for the control.
 	 */
@@ -42,9 +54,9 @@ public class PenguinControl extends RigidBodyControl implements
 		setLocation(initialSpawn);
 		setSpeed(initialSpeed);
 	}
-	
+		
 	/**
-	 * Set the physics space and add this controller as tick listener.
+	 * Set the physics space and add a tick listener and collision listener to the controller.
 	 * @param space takes a pre-defined jme3 physicsSpace
 	 */
 	@Override
@@ -90,8 +102,6 @@ public class PenguinControl extends RigidBodyControl implements
 		}
 	}
 	
-
-	
 	/**
 	 * Sets the speed for the Ball by calling setLinVelocity on the physics.
 	 * @param vel Vector3f, speed to set on the ball
@@ -107,14 +117,6 @@ public class PenguinControl extends RigidBodyControl implements
 	public void setLocation(final Vector3f loc) {
 		setPhysicsLocation(loc);
 	}
-//	/**
-//	 * This method listens to the penguin collisions.
-//	 * @param event a PhysicsCollisionEvent which stores information about the collision
-//	 */
-//	public void collision(final PhysicsCollisionEvent event) {
-//		curveCollision(event);
-////		whaleCollision(event);
-//	}
 
 	/**
 	 * Listens for collisions. If the ball collides (touches) with the curve and its speed is too 
@@ -122,15 +124,40 @@ public class PenguinControl extends RigidBodyControl implements
 	 * @param event a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if(event.getNodeA() != null && event.getNodeB() != null){
-			if (PENGUIN_NAME.equals(event.getNodeA().getName()) 
-					&& CURVE_NAME.equals(event.getNodeB().getName())) {
+		if (checkCollision(event, CURVE_NAME, PenguinFactory.STANDARD_PENGUIN_NAME)) {
 				final Vector3f velocity = getLinearVelocity();
 				if (velocity.x <= 1) {
 					velocity.x = 2;
 					setLinearVelocity(velocity);
 				}
-			}
 		}
+	}
+	
+	
+	/** 
+	 * Checks collision on an event between two Spatials c1 and c2.
+	 * @param e PhysicsCollisionEvent to get the node names from
+	 * @param c1 collidee 1
+	 * @param c2 collidee 2
+	 * @return result of collision check
+	 */
+	public boolean checkCollision(final PhysicsCollisionEvent e, final String c1, final String c2) {
+		if (checkNull(e)) {
+			return false;
+		}
+		
+		final String nameA = e.getNodeA().getName();
+		final String nameB = e.getNodeB().getName();
+		
+		return (c1.equals(nameA) && c2.equals(nameB)
+				|| c2.equals(nameA) && c1.equals(nameB));
+	}
+	
+	/** Checks whether the event has/is null.
+	 * @param e event to check
+	 * @return true when e has/iss null
+	 */
+	public boolean checkNull(final PhysicsCollisionEvent e) {
+		return e == null || e.getNodeA() == null || e.getNodeB() == null;
 	}
 }

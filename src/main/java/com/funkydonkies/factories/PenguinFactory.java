@@ -10,6 +10,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
@@ -17,48 +18,55 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 
 /**
- * This class represent the factory for penguins.
- * @author SDumasy
- *
+ * This class represent the factory for the target.
  */
-public class PenguinFactory implements FactoryInterface{
+public class PenguinFactory implements FactoryInterface {
 	private static final int SAMPLES = 20;
+	private final float intialXSpeed = 50;
 	public static final float DEFAULT_RADIUS = 4f;
-	public static final String STANDARD_PENGUIN_NAME = "standardPenguin";
+	public static final String STANDARD_PENGUIN_NAME = "penguin";
 
 	
 	/**
-	 * The create method to make standard penguins.
-	 * @return a standard penguin object
+	 * The create method for a penguin object.
+	 * @param sManager jme AppStateManager for getting states
+	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
+	 * @return a penguin object
 	 */
-	public Spatial makeObject(AppStateManager sManager, SimpleApplication app) {
-		Node node = new Node(STANDARD_PENGUIN_NAME);
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
+		final Node node = new Node(STANDARD_PENGUIN_NAME);
+		final Vector3f speed = new Vector3f(intialXSpeed, 0 , 0);
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final Geometry standardPenguin = new Geometry("penguin", mesh);
-		standardPenguin.setMaterial(getPenguinMaterial(app.getAssetManager()));
-		final PenguinControl controller = new PenguinControl(new SphereCollisionShape(DEFAULT_RADIUS), 1f);
+		final Geometry standardPenguin = new Geometry(STANDARD_PENGUIN_NAME, mesh);
+		standardPenguin.setMaterial(getPenguinMaterial(appl.getAssetManager()));
+		final PenguinControl controller = new PenguinControl(new SphereCollisionShape(DEFAULT_RADIUS), 1f, speed);
 		controller.setRestitution(1);
 		sManager.getState(PlayState.class).getPhysicsSpace().add(controller);
 		node.attachChild(standardPenguin);
 		node.addControl(controller);
-		controller.init();
-		((App) app).getPenguinNode().attachChild(node);
+		((App) appl).getPenguinNode().attachChild(node);
 		return node;
 	}
 	
 	
 	/**
-	 * This method makes all the required materials.
+	 * This method gets the material for the penguin.
+	 * @param assetManager jme AssetManager for loading models
+	 * @return the penguin material
 	 */
-	public Material getPenguinMaterial(AssetManager assetManager) {
+	public Material getPenguinMaterial(final AssetManager assetManager) {
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Orange);
 		return mat;
 		
 		
 	}
-	
-	public Material getSnowballMaterial(AssetManager assetManager) {
+	/**
+	 * This method gets the material for the snowball.
+	 * @param assetManager jme AssetManager for loading models
+	 * @return the snowball material
+	 */
+	public Material getSnowballMaterial(final AssetManager assetManager) {
 		Material snowBallMaterial;
 		snowBallMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		snowBallMaterial.setColor("Color", ColorRGBA.White);
