@@ -152,7 +152,7 @@ public class SpawnState extends AbstractAppState {
 		}
 	}
 	
-	private void spawn(FactoryInterface obstacleFactory) {
+	public void spawn(FactoryInterface obstacleFactory) {
 		final Spatial obstacle = obstacleFactory.makeObject(stManager, app);
 		if (obstacle != null) {
 			app.getRootNode().attachChild(obstacle);
