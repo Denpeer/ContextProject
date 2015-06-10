@@ -17,8 +17,6 @@ import com.jme3.scene.shape.Box;
 
 /**
  * This class represent the factory for the target.
- * @author SDumasy
- *
  */
 public class FishFactory implements FactoryInterface {
 
@@ -51,18 +49,31 @@ public class FishFactory implements FactoryInterface {
 	 */
 	public Geometry makeFish() {
 		final Mesh mesh = new Box(FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH);
-		final Geometry geom = new Geometry(FISH_NAME, mesh);
+		final Geometry geom = makeGeometry(mesh);
 		geom.setMaterial(getFishMaterial(app.getAssetManager()));
-		
-		final CollisionShape colShape = 
-				new BoxCollisionShape(new Vector3f(FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH));
-		
-		final FishControl tarControl = new FishControl(colShape, stateManager);
-		
-		geom.addControl(tarControl);
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(tarControl);
+		final FishControl control = makeFishControl();
+		geom.addControl(control);
 		
 		return geom;
+	}
+	
+	/**
+	 * This method makes the fish control.
+	 * @return a fish control object
+	 */
+	public FishControl makeFishControl() {
+		final CollisionShape colShape = 
+				new BoxCollisionShape(new Vector3f(FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH));	
+		return new FishControl(colShape, stateManager);
+	}
+	
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the fish
+	 * @return a fish geometry
+	 */
+	public final Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(FISH_NAME, mesh);
 	}
 	
 	/**
@@ -75,4 +86,5 @@ public class FishFactory implements FactoryInterface {
 		mat.setColor("Color", ColorRGBA.Green);
 		return mat;
 	}
+
 }
