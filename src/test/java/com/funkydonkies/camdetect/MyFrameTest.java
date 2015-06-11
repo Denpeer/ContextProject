@@ -5,19 +5,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.AWTException;
 import java.awt.HeadlessException;
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
 import javax.swing.JPanel;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.opencv.core.Core;
 
 /**
  * Test the MyFrame class.
@@ -28,10 +24,11 @@ import org.opencv.core.Core;
 @RunWith(MockitoJUnitRunner.class)
 public class MyFrameTest {
 	
+	private MyFrame frame;
 	private boolean runTest = false;
 	
 	/**
-	 * Initialize vars, make sure opencv is not run on travis
+	 * Initialize vars, make sure opencv is not run on travis.
 	 */
 	@Before
 	public void setUp() {
@@ -42,42 +39,26 @@ public class MyFrameTest {
 			runTest = false;
 		}
 	}
-
+	
+	/**
+	 * Runs after every test, kills frame thread.
+	 */
+	@After
+	public void tearDown() {
+		if (frame != null) {
+			frame.dispose();
+		}
+	}
+	
 	/**
 	 * Get videocap objects and compare.
 	 */
 	@Test
 	public void testGetVideoCap() {
-		final MyFrame test = Mockito.mock(MyFrame.class);
-		final VideoCap first = test.getVideoCap();
-		final VideoCap second = test.getVideoCap();
+		frame = Mockito.mock(MyFrame.class);
+		final VideoCap first = frame.getVideoCap();
+		final VideoCap second = frame.getVideoCap();
 		assertEquals(first, second);
-	}
-
-	/**
-	 * Load the lib and check if the version is as expected.
-	 * 
-	 * @throws UnsatisfiedLinkError
-	 *             in case the library is not found
-	 */
-	@Test
-	public void testLoadLib() throws UnsatisfiedLinkError {
-		final ByteArrayOutputStream sink = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(sink, true));
-		try {
-			MyFrame.loadLib();
-		} catch (final UnsatisfiedLinkError e) {
-		}
-		final String javaLibPath = "java.library.path";
-		System.setProperty(javaLibPath, "./lib");
-		final StringBuilder result = new StringBuilder();
-		result.append("Lib name: " + Core.NATIVE_LIBRARY_NAME);
-		final String lineseparator = "line.separator";
-		result.append(System.getProperty(lineseparator));
-		result.append("Path: " + System.getProperty(javaLibPath));
-		result.append(System.getProperty(lineseparator));
-//		assertEquals(new String(sink.toByteArray()), result.toString());
-		System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
 	}
 
 	/**
@@ -89,8 +70,8 @@ public class MyFrameTest {
 	@Test
 	public void testMyFrame() {
 		if (runTest) {
-			final MyFrame test = new MyFrame();
-			assertTrue(test.isVisible());
+			frame = new MyFrame();
+			assertTrue(frame.isVisible());
 		}
 	}
 
@@ -106,9 +87,9 @@ public class MyFrameTest {
 	public void testInitBgSetKey() {
 		if (runTest) {
 			JPanel testpanel = new JPanel();
-			final MyFrame test = new MyFrame();
-			test.initBgSetKey();
-			testpanel = (JPanel) test.getContentPane();
+			frame = new MyFrame();
+			frame.initBgSetKey();
+			testpanel = (JPanel) frame.getContentPane();
 			assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
 		}
 	}
@@ -119,8 +100,8 @@ public class MyFrameTest {
 	@Test
 	public void testPaintGraphics() {
 		if (runTest) {
-			final MyFrame test = new MyFrame();
-			test.repaint();
+			frame = new MyFrame();
+			frame.repaint();
 		}
 	}
 
@@ -130,8 +111,9 @@ public class MyFrameTest {
 	@Test
 	public void testRun() {
 		if (runTest) {
-			final MyFrame test = new MyFrame();
-			test.run();
+			frame = new MyFrame();
+			new Thread(frame).start();
+			
 		}
 	}
 
