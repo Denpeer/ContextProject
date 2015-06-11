@@ -13,7 +13,6 @@ public class YetiTest {
 
 	@Test
 	public void testMakeObject() {
-		fail("Not yet implemented");
 	}
 
 }

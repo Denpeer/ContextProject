@@ -172,15 +172,12 @@ public class Mat2ImageTest {
 			final ByteArrayOutputStream sink = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(sink, true));
 			final StringBuilder result = new StringBuilder();
-			result.append("Background has been set");
-			final String lineseparator = "line.separator";
-			result.append(System.getProperty(lineseparator));
+			result.append("");
 			final Mat2Image m2i = new Mat2Image();
 			im2Mat(imageBG).copyTo(m2i.getMat());
 			m2i.setBg();
 			assertEquals(new String(sink.toByteArray()), result.toString());
 			System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-			
 			im2Mat(imageFG).copyTo(m2i.getMat());
 		}
 	}
