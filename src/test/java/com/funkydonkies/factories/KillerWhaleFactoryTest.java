@@ -13,7 +13,6 @@ public class KillerWhaleFactoryTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

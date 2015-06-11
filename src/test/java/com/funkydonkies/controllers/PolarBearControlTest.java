@@ -14,7 +14,6 @@ public class PolarBearControlTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

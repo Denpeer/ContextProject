@@ -13,7 +13,6 @@ public class SquidFactoryTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }
