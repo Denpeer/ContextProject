@@ -34,6 +34,8 @@ public class SquidFactoryTest {
 	private MatParam mpMock;
 	private PlayState psMock;
 	private PhysicsSpace physMock;
+	
+	private final int numThree = 3;
 
 	/**
 	 * setup for tests. Mock all that is needed.
@@ -73,11 +75,13 @@ public class SquidFactoryTest {
 	 */
 	@Test
 	public void testMakeSquid() {
+		Mockito.reset(saMock);
+		Mockito.when(saMock.getAssetManager()).thenReturn(amMock);
 		sf.makeObject(asmMock, saMock);
 		assertTrue(sf.makeSquid() instanceof Geometry);
 		assertTrue(sf.makeSquid().getControl(0) instanceof SquidControl);
 		sfMock.makeSquid();
-		Mockito.verify(saMock.getAssetManager(), Mockito.times(1));
+		Mockito.verify(saMock, Mockito.times(numThree)).getAssetManager();
 	}
 
 	/**
