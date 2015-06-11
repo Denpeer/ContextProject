@@ -20,6 +20,9 @@ import com.jme3.scene.Spatial;
 public class SquidControl extends GhostControl implements PhysicsCollisionListener {
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(250f, 10f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
+	private static final float TIME_TO_MOVE_IN_ONE_DIRECTION = 4;
+	private static final float STEP_SIZE = 0.5f;
+	
 	private boolean initialized = false;
 	private DifficultyState diffState;
 
@@ -152,10 +155,8 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 	 *            update interval
 	 */
 	public void update(final float tpf) {
-		final double numHalf = 0.5;
-		final int numFour = 4;
 		time += tpf;
-		if (time > numFour) {
+		if (time > TIME_TO_MOVE_IN_ONE_DIRECTION) {
 			time = 0;
 			if (moveRight) {
 				moveRight = false;
@@ -165,13 +166,13 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 		}
 		if (moveRight) {
 			final Vector3f vec = spatial.getLocalTranslation();
-			final Vector3f loc = new Vector3f((float) (vec.getX() - numHalf), vec.getY(),
+			final Vector3f loc = new Vector3f((float) (vec.getX() - STEP_SIZE), vec.getY(),
 					vec.getZ());
 			spatial.setLocalTranslation(loc);
 			this.setPhysicsLocation(loc);
 		} else {
 			final Vector3f vec = spatial.getLocalTranslation();
-			final Vector3f loc = new Vector3f((float) (vec.getX() + numHalf), vec.getY(),
+			final Vector3f loc = new Vector3f((float) (vec.getX() + STEP_SIZE), vec.getY(),
 					vec.getZ());
 			spatial.setLocalTranslation(loc);
 			this.setPhysicsLocation(loc);
