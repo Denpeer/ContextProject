@@ -14,7 +14,6 @@ public class KrillControlTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

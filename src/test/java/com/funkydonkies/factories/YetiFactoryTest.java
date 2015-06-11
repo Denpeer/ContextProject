@@ -1,7 +1,5 @@
 package com.funkydonkies.factories;
 
-
-
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
