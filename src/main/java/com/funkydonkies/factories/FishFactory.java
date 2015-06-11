@@ -71,7 +71,7 @@ public class FishFactory implements FactoryInterface {
 	 * @param mesh the mesh of the fish
 	 * @return a fish geometry
 	 */
-	public final Geometry makeGeometry(final Mesh mesh) {
+	public Geometry makeGeometry(final Mesh mesh) {
 		return new Geometry(FISH_NAME, mesh);
 	}
 	

@@ -17,6 +17,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.shape.Box;
 /**
  * This class tests the fish factory class.
  */
@@ -64,8 +65,7 @@ public class FishFactoryTest {
 		@SuppressWarnings("unused")
 		final Geometry fish = mockFactory.makeObject(assManager, app);
 		verify(mockFactory).makeFish();
-		final Mesh mesh = new Mesh();
-		verify(mockFactory).makeGeometry(mesh);
+		verify(mockFactory).makeGeometry(any(Box.class));
 	}
 
 }

@@ -2,6 +2,7 @@ package com.funkydonkies.core;
 
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.font.BitmapText;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
 /**
@@ -27,6 +28,13 @@ public class App extends SimpleApplication {
 		
 		penguinNode = new Node("penguins");//*********
 		rootNode.attachChild(penguinNode);
+		
+		setRootNodeUserData();
+	}
+	
+	public void setRootNodeUserData() {
+		rootNode.setUserData("default text", new BitmapText(
+				assetManager.loadFont("Interface/Fonts/Default.fnt"), false));
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.factories.PenguinFactory;
+import com.funkydonkies.factories.SquidFactory;
 import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.jme3.app.state.AppStateManager;
@@ -10,15 +11,21 @@ import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
- * Control class for the target. Takes care of collisions between the ball and target.
+ * Control class for the target. Takes care of collisions between the ball and
+ * target.
  */
 public class SquidControl extends GhostControl implements PhysicsCollisionListener {
-	private static final String TARGET_NAME = "squid";
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(250f, 10f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
+	private static final float TIME_TO_MOVE_IN_ONE_DIRECTION = 4;
+	private static final float STEP_SIZE = 0.5f;
+	
+	private boolean initialized = false;
 	private DifficultyState diffState;
+
 	private boolean moveRight = true;
 	private float time = 0;
 
@@ -27,19 +34,34 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 	 * 
 	 * @param shape
 	 *            Collisionshape for the target
+	 * @param sm
+	 *            jme AppstateManager to get AppStates
 	 */
-	public SquidControl(final CollisionShape shape, AppStateManager sm) {
+	public SquidControl(final CollisionShape shape, final AppStateManager sm) {
 		super(shape);
 		diffState = sm.getState(DifficultyState.class);
 	}
 
 	/**
+	 * This Method calls initialization which should occur after the control has
+	 * been added to the spatial. setSpatial(spatial) is called by
+	 * addControl(control) in Spatial.
+	 * 
+	 * @param spatial
+	 *            spatial this control should control
+	 */
+	@Override
+	public void setSpatial(final Spatial spatial) {
+		super.setSpatial(spatial);
+		initLocation();
+	}
+
+	/**
 	 * An initialize method for the controller.
 	 */
-	public void init() {
+	public void initLocation() {
 		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
-		respawn();
 	}
 
 	/**
@@ -51,21 +73,90 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
-		space.addCollisionListener(this);
+		if (!initialized) {
+			space.addCollisionListener(this);
+			initialized = true;
+		}
+
 	}
 
 	/**
-	 * Removes the control from the physics space.
+	 * Handles a collision between penguin and squid. Calls methods to increase
+	 * the combo and activate snow ball powerup.
+	 * 
+	 * @param event
+	 *            PhysicsCollisionEvent containing information about the
+	 *            collision
 	 */
-	public void delete() {
-		space.removeCollisionListener(this);
-		space.remove(this);
-		spatial.getParent().detachChild(spatial);
+	public void collision(final PhysicsCollisionEvent event) {
+		if (checkCollision(event, SquidFactory.SQUID_NAME, PenguinFactory.STANDARD_PENGUIN_NAME)) {
+			respawn();
+			diffState.incDiff();
+			diffState.activateSnowBallPowerup();
+			remove(event, SquidFactory.SQUID_NAME);
+		}
 	}
 
-	public void update(float tpf) {
+	/**
+	 * Checks collision on an event between two Spatials c1 and c2.
+	 * 
+	 * @param e
+	 *            PhysicsCollisionEvent to get the node names from
+	 * @param c1
+	 *            collidee 1
+	 * @param c2
+	 *            collidee 2
+	 * @return result of collision check
+	 */
+	public boolean checkCollision(final PhysicsCollisionEvent e, final String c1, final String c2) {
+		if (checkNull(e)) {
+			return false;
+		}
+
+		final String nameA = e.getNodeA().getName();
+		final String nameB = e.getNodeB().getName();
+
+		return (c1.equals(nameA) && c2.equals(nameB) || c2.equals(nameA) && c1.equals(nameA));
+	}
+
+	/**
+	 * Checks whether the event has/is null.
+	 * 
+	 * @param e
+	 *            event to check
+	 * @return true when e has/iss null
+	 */
+	public boolean checkNull(final PhysicsCollisionEvent e) {
+		return e == null || e.getNodeA() == null || e.getNodeB() == null;
+	}
+
+	/**
+	 * remove this instance from parent and disable controller.
+	 * 
+	 * @param event
+	 *            collision event
+	 * @param name
+	 *            of the node to be removed
+	 */
+	public void remove(final PhysicsCollisionEvent event, final String name) {
+		if (name.equals(event.getNodeA().getName())) {
+			event.getNodeA().removeFromParent();
+			((GhostControl) event.getNodeA().getControl(SquidControl.class)).setEnabled(false);
+		} else if (name.equals(event.getNodeB().getName())) {
+			event.getNodeB().removeFromParent();
+			((GhostControl) event.getNodeB().getControl(SquidControl.class)).setEnabled(false);
+		}
+	}
+
+	/**
+	 * updates the location of the squid powerup.
+	 * 
+	 * @param tpf
+	 *            update interval
+	 */
+	public void update(final float tpf) {
 		time += tpf;
-		if (time > 4) {
+		if (time > TIME_TO_MOVE_IN_ONE_DIRECTION) {
 			time = 0;
 			if (moveRight) {
 				moveRight = false;
@@ -75,49 +166,22 @@ public class SquidControl extends GhostControl implements PhysicsCollisionListen
 		}
 		if (moveRight) {
 			final Vector3f vec = spatial.getLocalTranslation();
-			Vector3f loc = new Vector3f((float) (vec.getX() - 0.5), vec.getY(), vec.getZ());
+			final Vector3f loc = new Vector3f((float) (vec.getX() - STEP_SIZE), vec.getY(),
+					vec.getZ());
 			spatial.setLocalTranslation(loc);
 			this.setPhysicsLocation(loc);
 		} else {
 			final Vector3f vec = spatial.getLocalTranslation();
-			Vector3f loc = new Vector3f((float) (vec.getX() + 0.5), vec.getY(), vec.getZ());
+			final Vector3f loc = new Vector3f((float) (vec.getX() + STEP_SIZE), vec.getY(),
+					vec.getZ());
 			spatial.setLocalTranslation(loc);
 			this.setPhysicsLocation(loc);
 		}
-
 	}
 
 	/**
-	 * Handles a collision between ball and target. Calls methods to increase the combo and respawn
-	 * the target.
-	 * 
-	 * @param event
-	 *            PhysicsCollisionEvent containing information about the collision
-	 */
-	public void collision(final PhysicsCollisionEvent event) {
-		if (event.getNodeA() != null && event.getNodeB() != null) {
-			if (TARGET_NAME.equals(event.getNodeA().getName())
-					&& PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeB().getName())) {
-				diffState.incDiff();
-				diffState.incDiff();
-				event.getNodeA().removeFromParent();
-				((GhostControl) event.getNodeA().getControl(SquidControl.class)).setEnabled(false);
-				diffState.activateSnowBallPowerup();
-			} else if (PenguinFactory.STANDARD_PENGUIN_NAME.equals(event.getNodeA().getName())
-					&& TARGET_NAME.equals(event.getNodeB().getName())) {
-				diffState.incDiff();
-				diffState.incDiff();
-				event.getNodeB().removeFromParent();
-				((GhostControl) event.getNodeB().getControl(SquidControl.class)).setEnabled(false);
-				diffState.activateSnowBallPowerup();
-			}
-		}
-
-	}
-
-	/**
-	 * Respawn the target at a reachable location. TODO make the spawn location random and make sure
-	 * its reachable
+	 * Respawn the target at a reachable location. TODO make the spawn location
+	 * random and make sure its reachable
 	 */
 	public void respawn() {
 		final float x = (float) Math.random()

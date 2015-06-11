@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.funkydonkies.factories.PenguinFactory;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -21,7 +22,7 @@ import com.jme3.scene.Spatial;
  */
 public class PenguinControlTest {
 	private static final float BALL_RADIUS = 0.5f;
-	private static final String BALL_NAME = "ball";
+	private static final String BALL_NAME = PenguinFactory.STANDARD_PENGUIN_NAME;
 	private static final String CURVE_NAME = "curve";
 	
 	//Moving fast, not affected by prePhysicsTick (x > 1)

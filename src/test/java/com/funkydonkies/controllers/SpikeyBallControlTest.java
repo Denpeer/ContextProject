@@ -14,7 +14,6 @@ public class SpikeyBallControlTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

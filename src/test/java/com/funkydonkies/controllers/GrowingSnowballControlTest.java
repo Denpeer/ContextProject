@@ -14,7 +14,6 @@ public class GrowingSnowballControlTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

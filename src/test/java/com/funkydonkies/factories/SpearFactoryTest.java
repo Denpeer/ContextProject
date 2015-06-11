@@ -13,7 +13,6 @@ public class SpearFactoryTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

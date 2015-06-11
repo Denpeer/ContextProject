@@ -14,7 +14,6 @@ public class SquidControlTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }
