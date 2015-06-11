@@ -5,6 +5,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
+
 /**
  * Game is run through this class.
  *
@@ -12,9 +13,12 @@ import com.jme3.scene.Node;
 public class App extends SimpleApplication {
 	private PlayState playState;
 	private Node penguinNode;
+
 	/**
 	 * Main method. Instantiates the app and starts its execution.
-	 * @param args run arguments
+	 * 
+	 * @param args
+	 *            run arguments
 	 */
 	public static void main(final String[] args) {
 		final App app = new App();
@@ -25,16 +29,21 @@ public class App extends SimpleApplication {
 	public void simpleInitApp() {
 		playState = new PlayState();
 		stateManager.attach(playState);
-		
-		penguinNode = new Node("penguins");//*********
+
+		penguinNode = new Node("penguins");// *********
 		rootNode.attachChild(penguinNode);
-		
-		rootNode.setUserData("default text", new BitmapText(
-				assetManager.loadFont("Interface/Fonts/Default.fnt"), false));
+
+		setRootNodeUserData();
+	}
+
+	public void setRootNodeUserData() {
+		rootNode.setUserData("default text",
+				new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"), false));
 	}
 
 	/**
 	 * Returns the penguin node, containing all the penguins.
+	 * 
 	 * @return penguinNode Node
 	 */
 	public Node getPenguinNode() {
