@@ -34,6 +34,7 @@ public class FishFactory implements FactoryInterface {
 	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a fish object
 	 */
+	@Override
 	public Geometry makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;

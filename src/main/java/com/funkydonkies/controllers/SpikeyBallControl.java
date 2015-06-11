@@ -75,6 +75,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 		super.setPhysicsSpace(space);
 		space.addTickListener(this);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 	/**

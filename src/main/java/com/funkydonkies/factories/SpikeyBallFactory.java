@@ -37,7 +37,6 @@ public class SpikeyBallFactory implements FactoryInterface {
 				new SphereCollisionShape(DEFAULT_RADIUS), sManager, 10f);
 		spikeyBall.addControl(pc);
 		pc.setRestitution(1);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(pc);
 		return spikeyBall;
 	}
 
