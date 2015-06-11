@@ -6,9 +6,11 @@ import static org.mockito.Matchers.startsWith;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +51,7 @@ public class ComboTest {
 		combo = new Combo(app);
 		comboSpy = spy(combo);
 		
+		doReturn(text).when(comboSpy).createText(app);
 	}
 
 	/**
@@ -78,6 +81,9 @@ public class ComboTest {
 	@Test
 	public void updateTextTest() {
 		reset(text);
+		comboSpy.createHighestComboText(app);
+		comboSpy.createCurrentComboText(app);
+
 		comboSpy.updateText();
 		verify(text).setText(startsWith("Current combo: "));
 		verify(text).setText(startsWith("Highest combo: "));
@@ -101,15 +107,4 @@ public class ComboTest {
 		Vector3f highestloc = Combo.COUNTER_LOCATION;
 		verify(text).setLocalTranslation(highestloc.setX(any(Float.class)));
 	}
-	
-	/**
-	 * Tests the currect displaying of the combo.
-	 */
-	@Test
-	public void testDisplay() {
-		reset(guiNode);
-		combo.display();
-		verify(guiNode, times(2)).attachChild(any(BitmapText.class));
-	}
-
 }

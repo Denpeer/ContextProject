@@ -29,6 +29,10 @@ public class App extends SimpleApplication {
 		penguinNode = new Node("penguins");//*********
 		rootNode.attachChild(penguinNode);
 		
+		setRootNodeUserData();
+	}
+	
+	public void setRootNodeUserData() {
 		rootNode.setUserData("default text", new BitmapText(
 				assetManager.loadFont("Interface/Fonts/Default.fnt"), false));
 	}

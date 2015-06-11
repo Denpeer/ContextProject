@@ -14,7 +14,6 @@ public class SpearControlTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

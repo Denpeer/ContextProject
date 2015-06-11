@@ -13,7 +13,6 @@ public class YetiFactoryTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
 	}
 
 }

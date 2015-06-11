@@ -30,26 +30,29 @@ public class Combo extends Observable {
 		currentCombo = 0;
 		highestCombo = 0;
 		guiNode = app.getGuiNode();
-		createHighestComboText(app);
-		createCurrentComboText(app);
 		updateText();
-		display();
 	}
 	
 	public void createCurrentComboText(App app) {
-		comboText = app.getRootNode().getUserData("default text");
+		comboText = createText(app);
 		comboText.setSize(TEXT_SIZE);
 		comboText.setColor(ColorRGBA.Red);
 		COUNTER_LOCATION.y = comboText.getLineHeight();
 		comboText.setLocalTranslation(COUNTER_LOCATION);
+		guiNode.attachChild(comboText);
 	}
 	
 	public void createHighestComboText(App app) {
-		highestComboText = app.getRootNode().getUserData("default text");
+		highestComboText = createText(app);
 		highestComboText.setSize(TEXT_SIZE);
 		highestComboText.setColor(ColorRGBA.Yellow);
 		COUNTER_LOCATION.y = highestComboText.getLineHeight();
 		highestComboText.setLocalTranslation(COUNTER_LOCATION.setX(500));
+		guiNode.attachChild(highestComboText);
+}
+	
+	public BitmapText createText(App app) {
+		return new BitmapText(app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"), false);
 	}
 	
 	/**
@@ -89,14 +92,5 @@ public class Combo extends Observable {
 				highestComboText.setText("Highest combo: " + (currentCombo));
 			}
 		}
-	}
-	
-	/**
-	 * Displays the combo by attaching the bitmaptext to the guiNode that was received when the 
-	 * Combo was created.
-	 */
-	public void display() {
-		guiNode.attachChild(comboText);
-		guiNode.attachChild(highestComboText);
 	}
 }
