@@ -4,18 +4,17 @@ import com.funkydonkies.factories.FishFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 /**
  * Control class for the fish. Takes care of collisions between the fish and the penguins.
  */
-public class FishControl extends GhostControl implements PhysicsCollisionListener {
+public class FishControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	private DifficultyState diffState;
@@ -31,21 +30,8 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 		diffState = sm.getState(DifficultyState.class);
 	}
 	
-	/** 
-	 * This Method calls initialization which should occur after the control has been added to the
-	 * spatial. setSpatial(spatial) is called by addControl(control) in Spatial.
-	 * @param spatial spatial this control should control
-	 */
 	@Override
-	public void setSpatial(final Spatial spatial) {
-		super.setSpatial(spatial);
-		initLocation();
-	}
-	
-	/**
-	 * An initialize method for the controller.
-	 */
-	public void initLocation() {
+	public void init() {
 		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
 	}
@@ -76,33 +62,6 @@ public class FishControl extends GhostControl implements PhysicsCollisionListene
 			diffState.incDiff();
 		}
 
-	}
-	
-	/** 
-	 * Checks collision on an event between two Spatials c1 and c2.
-	 * @param e PhysicsCollisionEvent to get the node names from
-	 * @param c1 collidee 1
-	 * @param c2 collidee 2
-	 * @return result of collision check
-	 */
-	public boolean checkCollision(final PhysicsCollisionEvent e, final String c1, final String c2) {
-		if (checkNull(e)) {
-			return false;
-		}
-		
-		final String nameA = e.getNodeA().getName();
-		final String nameB = e.getNodeB().getName();
-		
-		return (c1.equals(nameA) && c2.equals(nameB)
-				|| c2.equals(nameA) && c1.equals(nameB));
-	}
-
-	/** Checks whether the event has/is null.
-	 * @param e event to check
-	 * @return true when e has/iss null
-	 */
-	public boolean checkNull(final PhysicsCollisionEvent e) {
-		return e == null || e.getNodeA() == null || e.getNodeB() == null;
 	}
 
 	/**

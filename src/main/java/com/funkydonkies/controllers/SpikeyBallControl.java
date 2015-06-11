@@ -1,60 +1,65 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
+import com.funkydonkies.factories.PenguinFactory;
+import com.funkydonkies.factories.SpikeyBallFactory;
 import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.interfaces.MyAbstractRigidBodyControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 /**
  * Control class for the spikey ball. Takes care of collisions between the fish and the penguins.
  */
-public class SpikeyBallControl extends RigidBodyControl implements
-		PhysicsTickListener, PhysicsCollisionListener {
+public class SpikeyBallControl extends MyAbstractRigidBodyControl implements PhysicsTickListener,
+		PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	private static final String SPIKEY_BALL_NAME = "spikeyBall";
-	private static final String PENGUIN_NAME = "standardPenguin";
 	private Vector3f initialSpawn;
 	private Vector3f initialSpeed = new Vector3f(0, 0, 0);
-	private final AppStateManager sm;
+	private final AppStateManager stateManager;
 
 	/**
 	 * Constructor for ball physics controller.
-	 * @param sphereCollisionShape Collision shape used by the physics
-	 * @param f mass of the sphere
-	 * @param stateManager the AppStateManager
+	 * 
+	 * @param sphereCollisionShape
+	 *            Collision shape used by the physics
+	 * @param sManager
+	 *            the AppStateManager
+	 * @param mass
+	 *            mass of the sphere
 	 */
 	public SpikeyBallControl(final SphereCollisionShape sphereCollisionShape,
-			final AppStateManager stateManager, final float f) {
-		super(sphereCollisionShape, f);
-		this.sm = stateManager;
+			final AppStateManager sManager, final float mass) {
+		super(sphereCollisionShape, mass);
+		this.stateManager = sManager;
 	}
 
-	/** 
+	/**
 	 * This Method calls initialization which should occur after the control has been added to the
 	 * spatial. setSpatial(spatial) is called by addControl(control) in Spatial.
-	 * @param spatial spatial this control should control
+	 * 
+	 * @param spatial
+	 *            spatial this control should control
 	 */
 	@Override
 	public void setSpatial(final Spatial spatial) {
 		super.setSpatial(spatial);
 		init();
 	}
-	
+
 	/**
 	 * The initialize method for the control.
 	 */
 	public void init() {
 		final int yOffSet = 50, xOffSet = 100;
-		initialSpawn = new Vector3f(xOffSet,
-				CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
+		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		setLocation(initialSpawn);
 		setSpeed(initialSpeed);
 	}
@@ -78,21 +83,21 @@ public class SpikeyBallControl extends RigidBodyControl implements
 	 * @param space
 	 *            The physics space
 	 * @param tpf
-	 *            time per frame in seconds (time since last frame) for
-	 *            normalizing in faster computers
+	 *            time per frame in seconds (time since last frame) for normalizing in faster
+	 *            computers
 	 */
 	public void physicsTick(final PhysicsSpace space, final float tpf) {
 	}
 
 	/**
-	 * Performed before each physics tick. Sets the z location to 0 to restrict
-	 * the object from moving on the z-axis.
+	 * Performed before each physics tick. Sets the z location to 0 to restrict the object from
+	 * moving on the z-axis.
 	 * 
 	 * @param space
 	 *            The physics space
 	 * @param tpf
-	 *            time per frame in seconds (time since last frame) for
-	 *            normalizing in faster computers
+	 *            time per frame in seconds (time since last frame) for normalizing in faster
+	 *            computers
 	 */
 	public void prePhysicsTick(final PhysicsSpace space, final float tpf) {
 		final Vector3f loc = getPhysicsLocation();
@@ -130,29 +135,17 @@ public class SpikeyBallControl extends RigidBodyControl implements
 	}
 
 	/**
-	 * Listens for collisions. If the spikeyball collides (touches) with the
-	 * penguin balls then remove the penguin balls
+	 * Listens for collisions. If the spikeyball collides (touches) with the penguin balls then
+	 * remove the penguin balls
 	 * 
 	 * @param event
-	 *            a PhysicsCollisionEvent which stores information about the
-	 *            collision
+	 *            a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (event.getNodeA() != null && event.getNodeB() != null) {
-			if (SPIKEY_BALL_NAME.equals(event.getNodeA().getName())
-					&& PENGUIN_NAME.equals(event.getNodeB().getName())) {
-				sm.getState(DifficultyState.class).resetDiff();
-				event.getNodeB().removeFromParent();
-				((RigidBodyControl) event.getNodeB().getControl(PenguinControl.class))
-						.setEnabled(false);
-			}
-			if (PENGUIN_NAME.equals(event.getNodeA().getName())
-					&& SPIKEY_BALL_NAME.equals(event.getNodeB().getName())) {
-				sm.getState(DifficultyState.class).resetDiff();
-				event.getNodeA().removeFromParent();
-				((RigidBodyControl) event.getNodeA().getControl(PenguinControl.class))
-						.setEnabled(false);
-			}
+		if (checkCollision(event, SpikeyBallFactory.SPIKEYBALL_NAME,
+				PenguinFactory.STANDARD_PENGUIN_NAME)) {
+			stateManager.getState(DifficultyState.class).resetDiff();
+			destroy(event, PenguinFactory.STANDARD_PENGUIN_NAME);
 		}
 	}
 }

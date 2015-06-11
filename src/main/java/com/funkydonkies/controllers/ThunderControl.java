@@ -159,8 +159,7 @@ public class ThunderControl extends GhostControl implements PhysicsCollisionList
 		}
 
 		if (time > ttl) {
-			detach();
-			spatial.removeControl(this);
+			spatial.removeFromParent();
 			setEnabled(false);
 		}
 
