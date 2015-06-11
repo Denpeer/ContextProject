@@ -120,6 +120,12 @@ public class DifficultyState extends AbstractAppState implements Observer {
 		combo.incCombo();
 	}
 	
+	public void incDiff(final int times) {
+		for (int i = 0; i < times; i++) {
+			incDiff();
+		}
+	}
+	
 	public void resetDiff(){
 		combo.resetCombo();
 	}

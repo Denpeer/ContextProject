@@ -7,7 +7,8 @@ import com.funkydonkies.controllers.WarningLineControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
@@ -19,64 +20,98 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
+/**
+ *	Creates a Killer Whale and a Warning line for where it will spawn.
+ */
 public class KillerWhaleFactory implements FactoryInterface {
 	
-
+	public static final String WHALE_NAME = "killerWhale";
+	public static final String WARNING_NAME = "warning line";
 	
-	/** This method does not attach the spatial to the rootNode. Initializes whale obstacles.
-	 * @see com.funkydonkies.interfaces.FactoryInterface
-	 * #makeObst(com.jme3.asset.AssetManager)
-	 */
-	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication app) {	
-		final Random rand = new Random();
-		final float xCoord = rand.nextInt(320);
-		final float yCoord = -100;
-		final float whaleYCoord = -500;
+	private static final String COLOR = "Color";
+	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	
+	private static final float WARNING_LINE_ALPHA = 0.2f;
+	
+	private static final float WHALE_WIDTH = 50;
+	private static final float WHALE_HEIGHT = 100; 
+	private static final float WHALE_DEPTH = 1;
+	
+	private AppStateManager stateManager;
+	private SimpleApplication app;
+	
+	@Override
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
+		stateManager = sManager;
+		app = appl;
 		
-		final Geometry line = makeWarningLine(app, xCoord); 
-		final Geometry whale = makeKillerWhale(app, whaleYCoord, xCoord, sManager);
+		final Random rand = new Random();
+		final float x = rand.nextInt(320);
+		final float y = -500;
+		
+		final Geometry whale = makeKillerWhale(x, y);
+		final Geometry line = makeWarningLine(x); 
 
-		Node obstacleNode = new Node();
+		final Node obstacleNode = new Node();
 		obstacleNode.attachChild(whale);
 		obstacleNode.attachChild(line);
 		
 		return obstacleNode;
 	}
 	
-	public Geometry makeKillerWhale(SimpleApplication app, float yCoord, float xCoord, AppStateManager sManager){
-		final Mesh whaleMesh = new Box(50, 100, 1);
-		Geometry whale = new Geometry("killerWhale", whaleMesh);
-		whale.setMaterial(getKillerWhaleMaterial(app.getAssetManager()));
+	/** Initializes KillerWhale Geometry and its Control(s).
+	 * @param yCoord y point to spawn whale at
+	 * @param xCoord random x point
+	 * @return new Whale Geometry
+	 */
+	public Geometry makeKillerWhale(final float xCoord, final float yCoord) {
+		final Mesh whaleMesh = new Box(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH);
+		final Geometry geom = new Geometry(WHALE_NAME, whaleMesh);
+		geom.setMaterial(getKillerWhaleMaterial());
+		
+		final CollisionShape colShape = 
+				new BoxCollisionShape(new Vector3f(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH));
 		
 		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
-		final KillerWhaleControl whaleControl = new KillerWhaleControl(1f, 4, sManager, loci);
-		whale.addControl(whaleControl);
-		whaleControl.init();
+		final KillerWhaleControl whaleControl = 
+				new KillerWhaleControl(colShape, stateManager, loci);
+		geom.addControl(whaleControl);
 		
-		return whale;
+		return geom;
 	}
-	public Geometry makeWarningLine(SimpleApplication app, float xCoord){
-		final Mesh warningLineMesh = new Box(50, 50, 1);
-		Geometry geom = new Geometry("warning line", warningLineMesh);
-		geom.setMaterial(getLineMaterial(app.getAssetManager()));
+	
+	/** Initializes Warning Line Geometry and its Control(s).
+	 * @param x random x point
+	 * @return new Warning Line Geometry
+	 */
+	public Geometry makeWarningLine(final float x) {
+		final Mesh warningLineMesh = new Box(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH);
+		final Geometry geom = new Geometry(WARNING_NAME, warningLineMesh);
+		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 		
-		WarningLineControl wLC = new WarningLineControl(xCoord, 0);
-		geom.addControl(wLC);
-		wLC.init();
+		final WarningLineControl warningLineControl = new WarningLineControl(x, 0);
+		geom.addControl(warningLineControl);
+		warningLineControl.init();
 		return geom;
 	}
 
-	public Material getLineMaterial(AssetManager assetManager) {
-		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", new ColorRGBA(1, 0, 0, (float)0.2));
+	/** Loads Warning Line Material.
+	 * @return the Warning Line's material
+	 */
+	public Material getLineMaterial() {
+		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, new ColorRGBA(1, 0, 0, WARNING_LINE_ALPHA));
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
 	}
 
-	public Material getKillerWhaleMaterial(AssetManager assetManager) {
-		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Green);
+	/** Loads Whale material.
+	 * @return the Whale's material
+	 */
+	public Material getKillerWhaleMaterial() {
+		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, ColorRGBA.Green);
 		return mat;
 	}
 

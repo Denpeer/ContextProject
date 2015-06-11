@@ -7,7 +7,8 @@ import com.funkydonkies.controllers.WarningLineControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
@@ -19,63 +20,107 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
+/**
+ * This class represent the factory for the target.
+ */
 public class SpearFactory implements FactoryInterface {
 	
-
+	private static final float WARNING_WIDTH = 1000;
+	private static final float SPEAR_WIDTH = 15;
+	private static final float SPEAR_HEIGHT = 2;
+	private static final float SPEAR_DEPTH = 1;
 	
-	/** This method does not attach the spatial to the rootNode. Initializes Spear obstacles.
-	 * @see com.funkydonkies.interfaces.FactoryInterface
-	 * #makeObst(com.jme3.asset.AssetManager)
+	public static final String SPEAR_NAME = "spear";
+	
+	public static final String WARNING_NAME = "warning line";
+	
+	private static final float WARNING_LINE_ALPHA = 0.2f;
+	
+	private static final String COLOR = "Color";
+	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	
+	private AppStateManager stateManager;
+	private SimpleApplication app;
+	
+	/**
+	 * The create method for a spear object.
+	 * @param sManager jme AppStateManager for getting states
+	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
+	 * @return a spear object
 	 */
-	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication app) {	
-		final Random rand = new Random();
-		final float xCoord = 500;
-		final float yCoord = rand.nextInt(100);
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
+		app = appl;
+		stateManager = sManager;
 		
-		final Geometry line = makeWarningLine(app, yCoord); 
-		final Geometry spear = makeSpear(app, yCoord, xCoord, sManager);
+		final Random rand = new Random();
+		final float x = 500;
+		final float y = rand.nextInt(100);
+		
+		final Geometry line = makeWarningLine(y); 
+		final Geometry spear = makeSpear(y, x);
 			
-		Node obstacleNode = new Node();
+		final Node obstacleNode = new Node();
 		obstacleNode.attachChild(spear);
 		obstacleNode.attachChild(line);
 		
 		return obstacleNode;
 	}
 	
-	public Geometry makeSpear(SimpleApplication app, float yCoord, float xCoord, AppStateManager sManager){
-		final Mesh spearMesh = new Box(15, 2, 1);
-		Geometry spear = new Geometry("spear", spearMesh);
-		spear.setMaterial(getSpearMaterial(app.getAssetManager()));
+	/**
+	 * This method make and returns a spear geometry.
+	 * @param y the initial y of the spear
+	 * @param x the initial x of the spear
+	 * @return a spear geometry
+	 */
+	public Geometry makeSpear(final float y, final float x) {
 		
-		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
-		final SpearControl spearControl = new SpearControl(1f, 6, sManager, loci);
+		final Mesh spearMesh = new Box(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH);
+		final Geometry spear = new Geometry(SPEAR_NAME, spearMesh);
+		spear.setMaterial(getSpearMaterial());
+		
+		final Vector3f loci = new Vector3f(x, y, 0);
+		final CollisionShape colShape = 
+				new BoxCollisionShape(new Vector3f(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH));
+		final SpearControl spearControl = new SpearControl(colShape, stateManager, loci);
 		spear.addControl(spearControl);
-		spearControl.init();
 		
 		return spear;
 	}
-	public Geometry makeWarningLine(SimpleApplication app, float yCoord){
-		final Mesh warningLineMesh = new Box(1000, 2, 1);
-		Geometry geom = new Geometry("warning line", warningLineMesh);
-		geom.setMaterial(getLineMaterial(app.getAssetManager()));
+	/**
+	 * This method a warning line geometry.
+	 * @param y the y coordinate of the warning line
+	 * @return the warning line geometry
+	 */
+	public Geometry makeWarningLine(final float y) {
+		final Mesh warningLineMesh = new Box(WARNING_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH);
+		final Geometry geom = new Geometry(WARNING_NAME, warningLineMesh);
+		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 		
-		WarningLineControl wLC = new WarningLineControl(0, yCoord);
+		final WarningLineControl wLC = new WarningLineControl(0, y);
 		geom.addControl(wLC);
 		wLC.init();
 		return geom;
 	}
 
-	public Material getLineMaterial(AssetManager assetManager) {
-		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", new ColorRGBA(1, 0, 0, (float)0.2));
+	/**
+	 * This method gets the material for the warningline.
+	 * @return the line material
+	 */
+	public Material getLineMaterial() {
+		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, new ColorRGBA(1, 0, 0, WARNING_LINE_ALPHA));
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
 	}
 
-	public Material getSpearMaterial(AssetManager assetManager) {
-		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Green);
+	/**
+	 * This method gets the material for the spear.
+	 * @return the spear material
+	 */
+	public Material getSpearMaterial() {
+		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		mat.setColor(COLOR, ColorRGBA.Green);
 		return mat;
 	}
 

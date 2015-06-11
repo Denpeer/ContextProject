@@ -1,11 +1,9 @@
 package com.funkydonkies.factories;
 
 import com.funkydonkies.controllers.KrillControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -16,36 +14,57 @@ import com.jme3.scene.shape.Box;
 
 /**
  * This class represent the factory for the target.
+ * 
  * @author SDumasy
  *
  */
-public class KrillFactory implements FactoryInterface{
+public class KrillFactory implements FactoryInterface {
 
-	/**
-	 * The create method for a krill object.
-	 * @return a krill object
-	 */
-	public Geometry makeObject(AppStateManager sManager, SimpleApplication app) {
-		final float krillWidth = 3;
-		final float krillHeight = 3;
-		final float krillDepth = 5;
-		final Mesh mesh = new Box(krillWidth, krillHeight, krillDepth);
-		final Geometry krill = new Geometry("krill", mesh);
-		krill.setMaterial(getkrillMaterial(app.getAssetManager()));
-		final KrillControl tarCont = new KrillControl(
-				new BoxCollisionShape(new Vector3f(krillWidth, krillHeight, krillDepth)), sManager);
-		krill.addControl(tarCont);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(tarCont);
-		tarCont.init();
+	public static final String KRILL_NAME = "krill";
+
+	private static final float KRILL_WIDTH = 3;
+	private static final float KRILL_HEIGHT = 3;
+	private static final float KRILL_DEPTH = 5;
+	
+	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md"; 
+
+	private AppStateManager stateManager;
+	private SimpleApplication app;
+
+	@Override
+	public Geometry makeObject(final AppStateManager sManager, final SimpleApplication appl) {
+		stateManager = sManager;
+		app = appl;
+
+		final Geometry krill = makeKrill();
+
 		return krill;
 	}
-	
-	
+
+	/**
+	 * Instantiates krill geometry and adds its Control(s).
+	 * 
+	 * @return newly created Krill geometry
+	 */
+	public Geometry makeKrill() {
+		final Mesh mesh = new Box(KRILL_WIDTH, KRILL_HEIGHT, KRILL_DEPTH);
+		final Geometry geom = new Geometry(KRILL_NAME, mesh);
+		geom.setMaterial(getkrillMaterial());
+
+		final KrillControl tarCont = new KrillControl(new BoxCollisionShape(new Vector3f(
+				KRILL_WIDTH, KRILL_HEIGHT, KRILL_DEPTH)), stateManager);
+		geom.addControl(tarCont);
+
+		return geom;
+	}
+
 	/**
 	 * This method makes all the required materials.
+	 * 
+	 * @return loaded material
 	 */
-	public Material getkrillMaterial(AssetManager assetManager) {
-		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+	public Material getkrillMaterial() {
+		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
 		mat.setColor("Color", ColorRGBA.Magenta);
 		return mat;
 	}

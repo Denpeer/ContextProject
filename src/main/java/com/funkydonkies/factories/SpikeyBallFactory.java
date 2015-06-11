@@ -15,44 +15,36 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 
 /**
- * This class represent the factory for penguins.
- * 
- * @author SDumasy
- *
+ * This class represent the factory for the target.
  */
 public class SpikeyBallFactory implements FactoryInterface {
 	private static final int SAMPLES = 20;
 	private static final float DEFAULT_RADIUS = 10f;
+	public static final String SPIKEYBALL_NAME = "spikeyball";
 
 	/**
-	 * The create method to make standard penguins.
-	 * 
-	 * @param sManager
-	 *            the stateManager
-	 * @param app
-	 *            the application
-	 * @return a standard penguin object
+	 * The create method for a spikey ball object.
+	 * @param sManager jme AppStateManager for getting states
+	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
+	 * @return a spikey ball object
 	 */
 	public Spatial makeObject(final AppStateManager sManager,
-			final SimpleApplication app) {
+			final SimpleApplication appl) {
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
 		final Geometry spikeyBall = new Geometry("spikeyBall", mesh);
-		spikeyBall.setMaterial(getSpikeyBallMaterial(app.getAssetManager()));
+		spikeyBall.setMaterial(getSpikeyBallMaterial(appl.getAssetManager()));
 		final SpikeyBallControl pc = new SpikeyBallControl(
 				new SphereCollisionShape(DEFAULT_RADIUS), sManager, 10f);
 		spikeyBall.addControl(pc);
 		pc.setRestitution(1);
 		sManager.getState(PlayState.class).getPhysicsSpace().add(pc);
-		pc.init();
 		return spikeyBall;
 	}
 
 	/**
-	 * This method makes all the required materials.
-	 * 
-	 * @param assetManager
-	 *            the AssetManager
-	 * @return the material
+	 * This method gets the material for the spikey ball.
+	 * @param assetManager jme AssetManager for loading models
+	 * @return the spikey ball material
 	 */
 	public Material getSpikeyBallMaterial(final AssetManager assetManager) {
 		final Material mat = new Material(assetManager,
