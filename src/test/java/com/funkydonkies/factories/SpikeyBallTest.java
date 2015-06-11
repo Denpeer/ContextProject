@@ -32,7 +32,7 @@ public class SpikeyBallTest {
 		app = mock(SimpleApplication.class);
 		assManager = new AppStateManager(app);
 		mockFactory = spy(SpikeyBallFactory.class);
-	    doReturn(mock(Material.class)).when(mockFactory).getSpikeyBallMaterial(any(AssetManager.class));
+	    doReturn(mock(Material.class)).when(mockFactory).getSpikeyBallMaterial();
 
 	}
 

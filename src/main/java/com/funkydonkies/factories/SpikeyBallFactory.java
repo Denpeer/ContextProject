@@ -21,6 +21,7 @@ public class SpikeyBallFactory implements FactoryInterface {
 	private static final int SAMPLES = 20;
 	private static final float DEFAULT_RADIUS = 10f;
 	public static final String SPIKEYBALL_NAME = "spikeyball";
+	private SimpleApplication app;
 
 	/**
 	 * The create method for a spikey ball object.
@@ -30,9 +31,10 @@ public class SpikeyBallFactory implements FactoryInterface {
 	 */
 	public Spatial makeObject(final AppStateManager sManager,
 			final SimpleApplication appl) {
+		app = appl;
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
 		final Geometry spikeyBall = new Geometry("spikeyBall", mesh);
-		spikeyBall.setMaterial(getSpikeyBallMaterial(appl.getAssetManager()));
+		spikeyBall.setMaterial(getSpikeyBallMaterial());
 		final SpikeyBallControl pc = new SpikeyBallControl(
 				new SphereCollisionShape(DEFAULT_RADIUS), sManager, 10f);
 		spikeyBall.addControl(pc);
@@ -45,8 +47,8 @@ public class SpikeyBallFactory implements FactoryInterface {
 	 * @param assetManager jme AssetManager for loading models
 	 * @return the spikey ball material
 	 */
-	public Material getSpikeyBallMaterial(final AssetManager assetManager) {
-		final Material mat = new Material(assetManager,
+	public Material getSpikeyBallMaterial() {
+		final Material mat = new Material(app.getAssetManager(),
 				"Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Gray);
 		return mat;

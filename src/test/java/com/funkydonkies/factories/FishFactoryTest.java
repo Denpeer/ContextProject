@@ -35,7 +35,7 @@ public class FishFactoryTest {
 		app = mock(SimpleApplication.class);
 		assManager = new AppStateManager(app);
 		mockFactory = spy(FishFactory.class);
-	    doReturn(mock(Material.class)).when(mockFactory).getFishMaterial(any(AssetManager.class));
+	    doReturn(mock(Material.class)).when(mockFactory).getFishMaterial();
 
 	}
 
