@@ -39,12 +39,21 @@ public class FishFactoryTest {
 	}
 
 	/**
-	 * tests if the fish is succesfully created.
+	 * tests if the fishcontrol is enabled.
 	 */
 	@Test
 	public void testMakeObject() {
 		final Geometry fish = mockFactory.makeObject(assManager, app);
-		assertTrue(fish != null);
+		assertTrue(((FishControl) (fish).getControl(0)).isEnabled());
+	}
+	
+	/**
+	 * tests if the control is attached.
+	 */
+	@Test
+	public void testControlAttached() {
+		final Geometry fish = mockFactory.makeObject(assManager, app);
+		assertTrue(((FishControl) (fish).getControl(0)) != null);
 	}
 	
 	/**

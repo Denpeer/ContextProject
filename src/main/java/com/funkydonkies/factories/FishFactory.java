@@ -53,7 +53,6 @@ public class FishFactory implements FactoryInterface {
 		geom.setMaterial(getFishMaterial(app.getAssetManager()));
 		final FishControl control = makeFishControl();
 		geom.addControl(control);
-		
 		return geom;
 	}
 	
