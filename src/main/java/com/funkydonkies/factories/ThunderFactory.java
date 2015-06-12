@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.funkydonkies.controllers.ThunderControl;
 import com.funkydonkies.controllers.ThunderWarningLineControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -90,7 +89,6 @@ public class ThunderFactory implements FactoryInterface {
 
 		final ThunderControl control = new ThunderControl(colShape, stateManager, xCoord);
 		geom.addControl(control);
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(control);
 		return geom;
 	}
 
@@ -108,12 +106,9 @@ public class ThunderFactory implements FactoryInterface {
 		geom.setMaterial(getWarningLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(WARNING_LINE_WIDTH,
-				WARNING_LINE_HEIGHT, WARNING_LINE_DEPTH));
-
-		final ThunderWarningLineControl wLC = new ThunderWarningLineControl(stateManager, xCoord, 0);
-		geom.addControl(wLC);
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(wLC);
+		final ThunderWarningLineControl warningLineControl = new ThunderWarningLineControl(stateManager, xCoord, 0);
+		geom.addControl(warningLineControl);
+		
 		return geom;
 	}
 

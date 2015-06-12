@@ -1,7 +1,6 @@
 package com.funkydonkies.factories;
 
 import com.funkydonkies.controllers.YetiControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -50,13 +49,13 @@ public class YetiFactory implements FactoryInterface {
 	 */
 	public Geometry makeYetiSnowBall() {
 		final Sphere mesh = new Sphere(YETI_WIDTH, YETI_HEIGHT, YETI_DEPTH);
-		final Geometry snowBall = new Geometry(YETI_NAME, mesh);
-		snowBall.setMaterial(getYetiSnowBallMaterial());
+		final Geometry geom = new Geometry(YETI_NAME, mesh);
+		geom.setMaterial(getYetiSnowBallMaterial());
 
 		final YetiControl control = new YetiControl(stateManager);
-		snowBall.addControl(control);
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(control);
-		return snowBall;
+		geom.addControl(control);
+		
+		return geom;
 	}
 
 	/**

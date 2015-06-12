@@ -1,20 +1,16 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.gamestates.CurveState;
+import com.funkydonkies.interfaces.MyAbstractControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.control.AbstractControl;
 
 /**
  * Control class for the warning line that warns for thunder.
  * 
- * @author Olivier Dikken
- *
  */
-public class ThunderWarningLineControl extends AbstractControl {
+public class ThunderWarningLineControl extends MyAbstractControl {
 	private float time = 0;
 
 	private Vector3f initialSpawn;
@@ -41,20 +37,15 @@ public class ThunderWarningLineControl extends AbstractControl {
 	 * This Method calls initialization which should occur after the control has
 	 * been added to the spatial. setSpatial(spatial) is called by
 	 * addControl(control) in Spatial.
-	 * 
-	 * @param spatial
-	 *            spatial this control should control
 	 */
 	@Override
 	public void setSpatial(final Spatial spatial) {
 		super.setSpatial(spatial);
-		initLocation();
+		init();
 	}
 
-	/**
-	 * An initialize method for the controller.
-	 */
-	public void initLocation() {
+	@Override
+	public void init() {
 		spatial.setLocalTranslation(initialSpawn);
 	}
 
@@ -68,8 +59,8 @@ public class ThunderWarningLineControl extends AbstractControl {
 		}
 
 		if (time > 1) {
-			detach();
-			spatial.removeControl(this);
+			spatial.removeFromParent();
+			setEnabled(false);
 		}
 	}
 
@@ -84,16 +75,4 @@ public class ThunderWarningLineControl extends AbstractControl {
 				spatial.getLocalTranslation().z);
 	}
 
-	/**
-	 * Detaches spatial from scene.
-	 */
-	public void detach() {
-		spatial.getParent().detachChild(spatial);
-	}
-
-	@Override
-	protected void controlRender(final RenderManager rm, final ViewPort vp) {
-		// TODO Auto-generated method stub
-
-	}
 }

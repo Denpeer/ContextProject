@@ -97,9 +97,8 @@ public class SpearFactory implements FactoryInterface {
 		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 		
-		final WarningLineControl wLC = new WarningLineControl(0, y);
-		geom.addControl(wLC);
-		wLC.init();
+		final WarningLineControl warningLineControl = new WarningLineControl(0, y);
+		geom.addControl(warningLineControl);
 		return geom;
 	}
 

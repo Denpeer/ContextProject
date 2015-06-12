@@ -22,7 +22,7 @@ import com.jme3.scene.Spatial;
  */
 public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 5;
-	public static final float OBSTACLE_SPAWN_TIME = 15;
+	public static final float OBSTACLE_SPAWN_TIME = 5;
 	public static final float SPECIAL_FISH_SPAWN_TIME = 30;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
@@ -118,30 +118,32 @@ public class SpawnState extends AbstractAppState {
 			}
 		}
 		if (time > OBSTACLE_SPAWN_TIME) {
+			
 			time = 0;
-			int i = rand.nextInt(6);
-			switch (i) {
-				case 0:
-					spawn(spear);
-					break;
-				case 1:
-					spawn(killerWhale);
-					break;
-				case 2:
-					spawn(yeti);
-					break;
-				case 3:
-					spawn(spikeyBall);
-					break;
-				case 4:
-					spawn(polarBear);
-					break;
-				case 5:
-					spawn(thunder);
-					break;
-				default:
-					break;
-			}
+			spawn(polarBear);
+//			int i = rand.nextInt(6);
+//			switch (i) {
+//				case 0:
+//					spawn(spear);
+//					break;
+//				case 1:
+//					spawn(killerWhale);
+//					break;
+//				case 2:
+//					spawn(yeti);
+//					break;
+//				case 3:
+//					spawn(spikeyBall);
+//					break;
+//				case 4:
+//					spawn(polarBear);
+//					break;
+//				case 5:
+//					spawn(thunder);
+//					break;
+//				default:
+//					break;
+//			}
 		}
 	}
 	

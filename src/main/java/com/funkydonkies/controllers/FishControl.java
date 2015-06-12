@@ -4,6 +4,7 @@ import com.funkydonkies.factories.FishFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -15,24 +16,25 @@ import com.jme3.math.Vector3f;
  * Control class for the fish. Takes care of collisions between the fish and the penguins.
  */
 public class FishControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
+	
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
+	
 	private DifficultyState diffState;
-	private boolean initialized = false;
 
 	/**
 	 * Constructor method for fish control.
 	 * @param shape Collisionshape for the fish
 	 * @param sm jme AppStateManager to get AppStates
 	 */
-	public FishControl(final CollisionShape shape, final AppStateManager sm) {
+	public FishControl(final CollisionShape shape, final AppStateManager sManager) {
 		super(shape);
-		diffState = sm.getState(DifficultyState.class);
+		diffState = sManager.getState(DifficultyState.class);
+		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	@Override
 	public void init() {
-		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
 	}
 	
@@ -43,11 +45,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
-		if (!initialized) {
-			space.addCollisionListener(this);
-			initialized = true;
-		}
-		
+		space.addCollisionListener(this);
 	}
 
 	/**
@@ -57,7 +55,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		
-		if (checkCollision(event, FishFactory.FISH_NAME, PenguinFactory.STANDARD_PENGUIN_NAME)) {
+		if (checkCollision(event, FishFactory.FISH_NAME, PenguinFactory.PENGUIN_NAME)) {
 			respawn();
 			diffState.incDiff();
 		}
@@ -74,7 +72,6 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 		
 		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
-		setPhysicsLocation(respawnlocation);
 		spatial.setLocalTranslation(respawnlocation);
 	}
 }

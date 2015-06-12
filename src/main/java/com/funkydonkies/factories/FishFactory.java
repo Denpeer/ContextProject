@@ -1,11 +1,9 @@
 package com.funkydonkies.factories;
 
 import com.funkydonkies.controllers.FishControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
@@ -49,6 +47,7 @@ public class FishFactory implements FactoryInterface {
 		final Mesh mesh = new Box(FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH);
 		final Geometry geom = makeGeometry(mesh);
 		geom.setMaterial(getFishMaterial());
+		
 		final FishControl control = makeFishControl();
 		geom.addControl(control);
 		return geom;

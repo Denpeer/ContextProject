@@ -3,6 +3,7 @@ package com.funkydonkies.controllers;
 import com.funkydonkies.factories.KillerWhaleFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -15,13 +16,14 @@ import com.jme3.math.Vector3f;
  * This is a control to move floating spatials along the x- and y axis with a constant speed.
  */
 public class KillerWhaleControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
-	private AppStateManager stateManager;
 
 	private Vector3f initialLoc;
 
-	private float time;
+	private float time = 0;;
 
 	private boolean moveUp = true;
+
+	private DifficultyState diffState;
 
 	private static final float SPEED = 4;;
 	private static final float STOP_HEIGHT = -30;
@@ -41,10 +43,23 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	public KillerWhaleControl(final CollisionShape colShape, final AppStateManager sManager,
 			final Vector3f iLoc) {
 		super(colShape);
-		stateManager = sManager;
 		initialLoc = iLoc;
-		time = 0;
+		diffState = sManager.getState(DifficultyState.class);
+		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
+	
+	/**
+	 * Set the physics space and add this controller as tick listener.
+	 * 
+	 * @param space
+	 *            takes a pre-defined jme3 physicsSpace
+	 */
+	@Override
+	public void setPhysicsSpace(final PhysicsSpace space) {
+		super.setPhysicsSpace(space);
+		space.addCollisionListener(this);
+	}
+
 
 	/**
 	 * An initialize method for the controller.
@@ -99,19 +114,6 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	}
 
 	/**
-	 * Set the physics space and add this controller as tick listener.
-	 * 
-	 * @param space
-	 *            takes a pre-defined jme3 physicsSpace
-	 */
-	@Override
-	public void setPhysicsSpace(final PhysicsSpace space) {
-		super.setPhysicsSpace(space);
-		space.addCollisionListener(this);
-		space.add(this);
-	}
-
-	/**
 	 * Handles a collision between penguin and killer whale. Destroys the penguin on collision.
 	 * 
 	 * @param event
@@ -119,9 +121,9 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, KillerWhaleFactory.WHALE_NAME,
-				PenguinFactory.STANDARD_PENGUIN_NAME)) {
-			stateManager.getState(DifficultyState.class).resetDiff();
-			destroy(event, PenguinFactory.STANDARD_PENGUIN_NAME);
+				PenguinFactory.PENGUIN_NAME)) {
+			diffState.resetDiff();
+			destroy(event, PenguinFactory.PENGUIN_NAME);
 		}
 	}
 

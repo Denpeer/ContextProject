@@ -18,6 +18,7 @@ import com.jme3.scene.Spatial;
  */
 public class GrowingSnowballControl extends PenguinControl implements PhysicsCollisionListener,
 		PhysicsTickListener {
+
 	private static final String SNOW_BALL_NAME = "snowball";
 	private static final float SCALE_UP_FACTOR = 0.3f;
 	private static final float THRESHOLD = 0.5f;
@@ -35,7 +36,6 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	 */
 	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape, final float mass) {
 		super(sphereCollisionShape, mass);
-
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 
 	@Override
 	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, PenguinFactory.STANDARD_PENGUIN_NAME, SplineCurve.CURVE_NAME)) {
+		if (checkCollision(event, PenguinFactory.PENGUIN_NAME, SplineCurve.CURVE_NAME)) {
 			if (canScale) {
 				canScale = false;
 			}

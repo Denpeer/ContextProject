@@ -22,7 +22,7 @@ import com.jme3.scene.Spatial;
  */
 public class PenguinControlTest {
 	private static final float BALL_RADIUS = 0.5f;
-	private static final String BALL_NAME = PenguinFactory.STANDARD_PENGUIN_NAME;
+	private static final String BALL_NAME = PenguinFactory.PENGUIN_NAME;
 	private static final String CURVE_NAME = "curve";
 	
 	//Moving fast, not affected by prePhysicsTick (x > 1)

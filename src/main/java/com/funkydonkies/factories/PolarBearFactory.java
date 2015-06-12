@@ -30,6 +30,7 @@ public class PolarBearFactory implements FactoryInterface {
 	private static final int MAX_HEIGHT = 20;
 	private static final int MAX_STOP = 280;
 
+	public static final String COLOR = "Color";
 	public static final String POLAR_BEAR_NAME = "polar bear";
 	public static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
@@ -125,7 +126,7 @@ public class PolarBearFactory implements FactoryInterface {
 	 */
 	public Material getPolarBearMaterial() {
 		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		mat.setColor("Color", ColorRGBA.Green);
+		mat.setColor(COLOR, ColorRGBA.Green);
 		return mat;
 	}
 

@@ -24,7 +24,7 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		super.setSpatial(spatial);
 		init();
 	}
-	
+
 	/**
 	 * Called when the control has been added.
 	 */
@@ -69,7 +69,7 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		
 		if (toDestroy != null) {
 			toDestroy.removeFromParent();
-			disableControls(toDestroy);
+			disablePhysicsControls(toDestroy);
 			return true;
 		}
 		return false;
@@ -79,7 +79,7 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 	 * Disables all the PhysicsControllers on the given spatial.
 	 * @param s spatial to disable controls on
 	 */
-	public void disableControls(final Spatial s) {
+	public void disablePhysicsControls(final Spatial s) {
 		final int controlsAmount = s.getNumControls();
 		
 		for (int i = 0; i < controlsAmount; i++) {

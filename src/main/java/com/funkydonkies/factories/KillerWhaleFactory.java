@@ -92,7 +92,6 @@ public class KillerWhaleFactory implements FactoryInterface {
 		
 		final WarningLineControl warningLineControl = new WarningLineControl(x, 0);
 		geom.addControl(warningLineControl);
-		warningLineControl.init();
 		return geom;
 	}
 

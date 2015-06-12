@@ -19,7 +19,7 @@ import com.jme3.scene.shape.Sphere;
  * This class represent the factory for the target.
  */
 public class PenguinFactory implements FactoryInterface {
-	public static final String STANDARD_PENGUIN_NAME = "penguin";
+	public static final String PENGUIN_NAME = "penguin";
 	public static final float DEFAULT_RADIUS = 4f;
 
 	private static final String COLOR = "Color";
@@ -55,14 +55,15 @@ public class PenguinFactory implements FactoryInterface {
 	 * @return newly created penguin node
 	 */
 	public Node makeNode() {
-		final Node node = new Node(STANDARD_PENGUIN_NAME);
+		final Node node = new Node(PENGUIN_NAME);
 		
 		final PenguinControl penguinControl = new PenguinControl(new SphereCollisionShape(
 				DEFAULT_RADIUS), 1f);
 		penguinControl.setRestitution(1);
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(penguinControl);
 		
 		node.addControl(penguinControl);
+
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(penguinControl);
 		
 		return node;
 	}
@@ -73,7 +74,7 @@ public class PenguinFactory implements FactoryInterface {
 	 */
 	public Geometry makePenguin() {
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final Geometry geom = new Geometry(STANDARD_PENGUIN_NAME, mesh);
+		final Geometry geom = new Geometry(PENGUIN_NAME, mesh);
 		geom.setMaterial(getPenguinMaterial());
 
 		return geom;
