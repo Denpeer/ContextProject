@@ -29,17 +29,21 @@ public class Mat2Image implements Bridge {
 	private byte[] dat;
 	private Mat bg = new Mat();
 	private Mat res = new Mat();
-    private Boolean bgSet = false;
+	private Boolean bgSet = false;
 	private float[] interestPoints;
+	private float[] previousInterestPoints;
+	private float[] prevPreviousInterestPoints;
 	private static final int DEFAULT_XDIST = 20;
-	private static final int MEDBLUR = 5;
+	private static final int MEDBLUR = 3;
 	private static final int MAXCOL = 255;
-	private static final int THRESHBLOCKSIZE = 71;
-	private static final int IGNORESIZE = 7;
+	private static final int THRESHBLOCKSIZE = 41;
+	private static final int IGNORESIZE = 5;
 	private static final int CIRCLEDIAM = 5;
 	private static final int NUMCHANNELS = 3;
+	private static final int MAX_JUMP_DIST = 10;
+	private static final int CONNECTED_PIXEL_BLOCK_SIZE = 5;
 
-    private int  xDist = DEFAULT_XDIST;
+	private int xDist = DEFAULT_XDIST;
 
 	private int numPoints = 0;
 
@@ -96,9 +100,8 @@ public class Mat2Image implements Bridge {
 															// grayscale for
 															// processign
 		Imgproc.medianBlur(res, res, MEDBLUR);
-		Imgproc.adaptiveThreshold(res, res, MAXCOL,
-				Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,
-				THRESHBLOCKSIZE, IGNORESIZE);
+		Imgproc.adaptiveThreshold(res, res, MAXCOL, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,
+				Imgproc.THRESH_BINARY, THRESHBLOCKSIZE, IGNORESIZE);
 		return res;
 	}
 
@@ -115,17 +118,107 @@ public class Mat2Image implements Bridge {
 		final double tempdiv = im.size().width / xDist;
 		numPoints = (int) Math.floor(tempdiv);
 		interestPoints = new float[numPoints];
+		resetPrevIPArray(im);
 		Arrays.fill(interestPoints, (float) im.size().height);
 		for (int i = 0; i < numPoints; i++) { // for every chosen x find the
 												// highest pixel value equal to
 												// 0
-			for (int j = 0; j < im.size().height; j++) {
+			 for (int j = 0; j < im.size().height; j++) {
 				final double val = im.get(j, i * xDist)[0];
 				if (val == 0.0) {
-					interestPoints[i] = j;
-					break;
+					if (isConnected(im, CONNECTED_PIXEL_BLOCK_SIZE, i * xDist, j)) {
+						if (heightDiffPass(prevPreviousInterestPoints[i], j)) {
+							interestPoints[i] = j;
+						} else { // take the lowest of the two (ex: y:480 is
+									// bottom
+									// and y:0 is top)
+							interestPoints[i] = Math.max(prevPreviousInterestPoints[i], j);
+						}
+						prevPreviousInterestPoints[i] = previousInterestPoints[i];
+						previousInterestPoints[i] = j;
+						break;
+					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Checks if the concerned pixel is the center of a block of connected
+	 * pixels. (i.e. not a single pixel)
+	 * 
+	 * @param im
+	 *            the mat of the current image being processed
+	 * @param blockSize
+	 *            is minimum size the connected pixel block has to be for it to
+	 *            pass. Should be uneven.
+	 * @return true if the pixel is the center of a block of detected pixels.
+	 */
+	public boolean isConnected(final Mat im, final int blockSize, int pixelX, int pixelY) {
+		int halfBlock;
+		if (blockSize % 2 != 0) {
+			halfBlock = (blockSize - 1) / 2;
+		} else {
+			halfBlock = blockSize / 2;
+		}
+		if (pixelX <= halfBlock) {
+			pixelX += halfBlock;
+		}
+		if (pixelX >= im.size().width - halfBlock) {
+			pixelX -= halfBlock;
+		}
+		if (pixelY <= halfBlock) {
+			pixelY += halfBlock;
+		}
+		if (pixelY >= im.size().height - halfBlock) {
+			pixelY -= halfBlock;
+		}
+		final Mat subim = im.submat(pixelY - halfBlock, pixelY + halfBlock, pixelX - halfBlock, pixelX
+				+ halfBlock);
+		final double sum = Core.sumElems(subim).val[0] / MAXCOL;
+		if (sum == 0.0) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * checks whether the interest points have not made a big jump since the
+	 * last frame. it is supposed to take care of flickering spots detected by
+	 * the camera.
+	 * 
+	 * @param prev
+	 *            the previous interest point height
+	 * @param height
+	 *            the current interest point height
+	 * @return whether the diff is less than the threshold
+	 */
+	public boolean heightDiffPass(final float prev, final float height) {
+		if (Math.abs(prev - height) < MAX_JUMP_DIST) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * reset the previousInterestPoints Array and prevPreviousInterestPoints
+	 * Array and fill with the default value.
+	 * 
+	 * @param im
+	 *            the mat of the image currently being processed
+	 */
+	public void resetPrevIPArray(final Mat im) {
+		if (prevPreviousInterestPoints == null) {
+			prevPreviousInterestPoints = new float[numPoints];
+			Arrays.fill(prevPreviousInterestPoints, (float) im.size().height);
+		}
+		if (previousInterestPoints == null) {
+			previousInterestPoints = new float[numPoints];
+			Arrays.fill(previousInterestPoints, (float) im.size().height);
+		}
+		if (interestPoints.length != previousInterestPoints.length) {
+			previousInterestPoints = new float[numPoints];
+			Arrays.fill(previousInterestPoints, (float) im.size().height);
 		}
 	}
 
@@ -145,8 +238,7 @@ public class Mat2Image implements Bridge {
 		// convert back to bgr to draw interest points for visual feedback
 		Imgproc.cvtColor(matMatrix, im, Imgproc.COLOR_GRAY2BGR);
 		for (int i = 0; i < iP.length; i++) {
-			Core.circle(im, new Point(i * xDist, iP[i]), CIRCLEDIAM,
-					new Scalar(MAXCOL), 0, 0, 2);
+			Core.circle(im, new Point(i * xDist, iP[i]), CIRCLEDIAM, new Scalar(MAXCOL), 0, 0, 2);
 		}
 		return im;
 	}
@@ -183,8 +275,9 @@ public class Mat2Image implements Bridge {
 		if (bgSet) { // if bg is set then subtract foreground from background
 			res = threshIt(mat, bg);
 			updateIP(res);
-			//convert to color image and draw red dots at the interest point locations
-			res = drawInterestPoints(res, interestPoints); 
+			// convert to color image and draw red dots at the interest point
+			// locations
+			res = drawInterestPoints(res, interestPoints);
 			prepareSpace(res);
 		} else {
 			this.res = mat;
@@ -209,8 +302,8 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Method comes from implementing the bridge interface. It is used by classes
-	 * outside of camdetect package to access the control points.
+	 * Method comes from implementing the bridge interface. It is used by
+	 * classes outside of camdetect package to access the control points.
 	 * 
 	 * @return float array containing the control points
 	 */
@@ -241,11 +334,8 @@ public class Mat2Image implements Bridge {
 		if (newXDist > 0 && newXDist < mat.width()) {
 			xDist = newXDist;
 		} else {
-			System.out
-					.println(newDist
-							+ newXDist
-							+ " is and invalid xDist. newXDist must be inbetween: 0 and "
-							+ mat.width());
+			System.out.println(newDist + newXDist
+					+ " is and invalid xDist. newXDist must be inbetween: 0 and " + mat.width());
 		}
 	}
 
@@ -266,9 +356,10 @@ public class Mat2Image implements Bridge {
 	public int getImageWidth() {
 		return mat.width();
 	}
-	
+
 	/**
 	 * Returns whether the background had been set or not.
+	 * 
 	 * @return boolean state of background setting
 	 */
 	public boolean isBgSet() {
