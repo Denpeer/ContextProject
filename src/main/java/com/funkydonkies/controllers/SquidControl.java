@@ -50,6 +50,7 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 	}
 	
 	@Override
@@ -68,11 +69,14 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 			final Vector3f loc = new Vector3f((float) (vec.getX() - STEP_SIZE), vec.getY(),
 					vec.getZ());
 			spatial.setLocalTranslation(loc);
+			setPhysicsLocation(loc);
+
 		} else {
 			final Vector3f vec = spatial.getLocalTranslation();
 			final Vector3f loc = new Vector3f((float) (vec.getX() + STEP_SIZE), vec.getY(),
 					vec.getZ());
 			spatial.setLocalTranslation(loc);
+			setPhysicsLocation(loc);
 		}
 	}
 

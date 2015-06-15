@@ -38,6 +38,7 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 	}
 
 	@Override
