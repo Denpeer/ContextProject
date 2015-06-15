@@ -30,7 +30,6 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 		super(shape);
 		diffState = sManager.getState(DifficultyState.class);
 		stateManager = sManager;
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	@Override
