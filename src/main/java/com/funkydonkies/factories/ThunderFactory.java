@@ -81,7 +81,7 @@ public class ThunderFactory implements FactoryInterface {
 	 */
 	public Geometry makeThunder(final float xCoord) {
 		final Box mesh = new Box(THUNDER_WIDTH, THUNDER_HEIGHT, THUNDER_DEPTH);
-		final Geometry geom = new Geometry(THUNDER_NAME, mesh);
+		final Geometry geom = makeGeometry(mesh);
 		geom.setMaterial(getThunderMaterial());
 
 		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(THUNDER_WIDTH,
@@ -136,6 +136,15 @@ public class ThunderFactory implements FactoryInterface {
 		warningLineMaterial.setColor(color, new ColorRGBA(1, 0, 0, (float) colorAlpha));
 		warningLineMaterial.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return warningLineMaterial;
+	}
+	
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the thunder
+	 * @return a thunder geometry
+	 */
+	public Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(THUNDER_NAME, mesh);
 	}
 
 }

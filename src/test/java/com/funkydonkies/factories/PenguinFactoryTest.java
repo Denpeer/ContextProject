@@ -1,13 +1,16 @@
 //package com.funkydonkies.factories;
 //
 //import static org.junit.Assert.assertTrue;
+//import static org.mockito.Matchers.any;
 //import static org.mockito.Mockito.doReturn;
 //import static org.mockito.Mockito.mock;
 //import static org.mockito.Mockito.spy;
+//import static org.mockito.Mockito.verify;
 //
 //import org.junit.Before;
 //import org.junit.Test;
 //
+//import com.funkydonkies.controllers.FishControl;
 //import com.funkydonkies.controllers.PenguinControl;
 //import com.jme3.app.SimpleApplication;
 //import com.jme3.app.state.AppStateManager;
@@ -35,12 +38,12 @@
 //	}
 //
 //	/**
-//	 * tests if the fishcontrol is enabled.
+//	 * tests if the control is attached.
 //	 */
 //	@Test
-//	public void testMakeObject() {
-//		final Spatial penguin = mockFactory.makeObject(assManager, app);
-//		assertTrue(((PenguinControl) (penguin).getControl(0)).isEnabled());
+//	public void testControlAttached() {
+//		mockFactory.makeObject(assManager, app);
+//		verify(geom).addControl(any(FishControl.class));
 //	}
 //	
 //	/**

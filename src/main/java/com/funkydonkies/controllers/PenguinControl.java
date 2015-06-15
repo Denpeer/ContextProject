@@ -2,7 +2,9 @@ package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
 import com.funkydonkies.factories.PenguinFactory;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractRigidBodyControl;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -20,7 +22,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 
 	private static final String CURVE_NAME = "curve";
 	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
-
+	private AppStateManager stateManager;
 	private Vector3f initialSpawn;
 
 	/**
@@ -30,9 +32,12 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	 *            Collision shape used by the physics
 	 * @param mass
 	 *            desired mass of the sphere
+	 * @param sManager the AppStateManager of the game
 	 */
-	public PenguinControl(final SphereCollisionShape sphereCollisionShape, final float mass) {
+	public PenguinControl(final SphereCollisionShape sphereCollisionShape, final float mass,
+			final AppStateManager sManager) {
 		super(sphereCollisionShape, mass);
+		stateManager = sManager;
 	}
 
 	/**
@@ -41,6 +46,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	public void init() {
 		final int yOffSet = 5, xOffSet = -20;
 		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 		setPhysicsLocation(initialSpawn);
 		setLinearVelocity(INITIAL_SPEED);
 	}
@@ -56,8 +62,6 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		super.setPhysicsSpace(space);
 		space.addTickListener(this);
 		space.addCollisionListener(this);
-
-		
 	}
 
 	@Override

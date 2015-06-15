@@ -1,6 +1,7 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.geometrys.penguins.Snowball;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
@@ -31,8 +32,9 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	 * @param mass
 	 *            the Snow Ball's desired mass
 	 */
-	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape, final float mass) {
-		super(sphereCollisionShape, mass);
+	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape,
+			final float mass, final AppStateManager sManager) {
+		super(sphereCollisionShape, mass, sManager);
 	}
 
 	@Override

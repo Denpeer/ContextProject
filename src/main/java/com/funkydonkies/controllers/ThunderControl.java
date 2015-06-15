@@ -6,6 +6,7 @@ import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -27,7 +28,7 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 	private DifficultyState diffState;
 
 	private CurveState curveState;
-
+	private AppStateManager stateManager;
 	/**
 	 * Constructor method for ThunderControl.
 	 * 
@@ -44,12 +45,14 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 		new Vector3f(xCoord, 0, 0);
 		diffState = sManager.getState(DifficultyState.class);
 		curveState = sManager.getState(CurveState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		stateManager = sManager;
 	}
 
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
+
 	}
 
 	@Override

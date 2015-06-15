@@ -53,7 +53,7 @@ public class SquidFactory implements FactoryInterface {
 	 */
 	public Geometry makeSquid() {
 		final Mesh mesh = new Box(SQUID_WIDTH, SQUID_HEIGHT, SQUID_DEPTH);
-		final Geometry geom = new Geometry(SQUID_NAME, mesh);
+		final Geometry geom = makeGeometry(mesh);
 		geom.setMaterial(getSquidMaterial());
 		
 		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(SQUID_WIDTH,
@@ -67,14 +67,20 @@ public class SquidFactory implements FactoryInterface {
 
 	/**
 	 * This method makes all the required materials.
-	 * 
-	 * @param assetManager
-	 *            jme AssetManager for loading models
 	 * @return a Material object
 	 */
 	public Material getSquidMaterial() {
 		final Material mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Yellow);
 		return mat;
+	}
+	
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the krill
+	 * @return a krill geometry
+	 */
+	public Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(SQUID_NAME, mesh);
 	}
 }

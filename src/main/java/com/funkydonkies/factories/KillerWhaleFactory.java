@@ -68,16 +68,22 @@ public class KillerWhaleFactory implements FactoryInterface {
 		final Mesh whaleMesh = new Box(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH);
 		final Geometry geom = makeGeometry(whaleMesh);
 		geom.setMaterial(getKillerWhaleMaterial());
-		
+	
+		geom.addControl(makeWhaleControl(xCoord, yCoord));
+		return geom;
+	}
+	
+	/**
+	 * This method makes the whale control.
+	 * @param xCoord the initial xCoord of the whale
+	 * @param yCoord the initial yCoord of the whale
+	 * @return a whale control object
+	 */
+	public KillerWhaleControl makeWhaleControl(final float xCoord, final float yCoord) {
 		final CollisionShape colShape = 
 				new BoxCollisionShape(new Vector3f(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH));
-		
 		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
-		final KillerWhaleControl whaleControl = 
-				new KillerWhaleControl(colShape, stateManager, loci);
-		geom.addControl(whaleControl);
-		
-		return geom;
+		return new KillerWhaleControl(colShape, stateManager, loci);
 	}
 	
 	/** Initializes Warning Line Geometry and its Control(s).
@@ -98,7 +104,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 	/**
 	 * This method makes a geometry.
 	 * @param mesh the mesh of the whale
-	 * @return a fish geometry
+	 * @return a whale geometry
 	 */
 	public Geometry makeGeometry(final Mesh mesh) {
 		return new Geometry(WHALE_NAME, mesh);

@@ -62,26 +62,39 @@ public class PolarBearFactory implements FactoryInterface {
 	 */
 	public Geometry makePolarBear() {
 		final Mesh mesh = new Box(BEAR_WIDTH, BEAR_HEIGHT, BEAR_DEPTH);
-		final Geometry geom = new Geometry(POLAR_BEAR_NAME, mesh);
+		final Geometry geom = makeGeometry(mesh);
 		geom.setMaterial(getPolarBearMaterial());
-
-		final float x = getFloatSide(new Random());
-		final float y = getFloatHeight(new Random());
-		final Vector3f initialLoc = new Vector3f(x, y, 0);
-
-		final float stopX = getStopCoord(new Random());
-
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(BEAR_WIDTH, BEAR_HEIGHT,
-				BEAR_DEPTH));
-
-		final PolarBearControl polarBearControl = new PolarBearControl(colShape, stateManager,
-				stopX, initialLoc);
-
-		geom.addControl(polarBearControl);
+		geom.addControl(makePolarBearControl());
 
 		return geom;
 	}
+	
+	/**
+	 * This method makes a polar bear control.
+	 * @return a polar bear control
+	 */
+	public PolarBearControl makePolarBearControl() {
+		final Random rand = new Random();
+		final int leftRight = rand.nextInt(2);
+		final float x = getFloatSide(leftRight);
+		final float y = getFloatHeight(rand);
+		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(BEAR_WIDTH, 
+				BEAR_HEIGHT, BEAR_DEPTH));
+		final Vector3f initialLoc = new Vector3f(x, y, 0);
 
+		final float stopX = getStopCoord(new Random());
+		return new PolarBearControl(colShape, stateManager, stopX, initialLoc);
+	}
+
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the polar bear
+	 * @return a polar bear geometry
+	 */
+	public Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(POLAR_BEAR_NAME, mesh);
+	}
+	
 	/**
 	 * This method get the stop coordinate op the polear bear.
 	 * 
@@ -106,13 +119,11 @@ public class PolarBearFactory implements FactoryInterface {
 
 	/**
 	 * This method decides fro which side the polar bear floats in.
-	 * 
-	 * @param rand
-	 *            a random object.
+	 * @param i the integer to check if the bear floats left or right.
 	 * @return the side from which the bear floats in
 	 */
-	public float getFloatSide(final Random rand) {
-		if (rand.nextInt(2) == 1) {
+	public float getFloatSide(final int i) {
+		if (i == 1) {
 			return START_RIGHT;
 		} else {
 			return START_LEFT;
