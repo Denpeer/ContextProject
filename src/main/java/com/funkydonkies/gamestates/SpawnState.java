@@ -120,30 +120,29 @@ public class SpawnState extends AbstractAppState {
 		if (time > OBSTACLE_SPAWN_TIME) {
 			
 			time = 0;
-			spawn(polarBear);
-//			int i = rand.nextInt(6);
-//			switch (i) {
-//				case 0:
-//					spawn(spear);
-//					break;
-//				case 1:
-//					spawn(killerWhale);
-//					break;
-//				case 2:
-//					spawn(yeti);
-//					break;
-//				case 3:
-//					spawn(spikeyBall);
-//					break;
-//				case 4:
-//					spawn(polarBear);
-//					break;
-//				case 5:
-//					spawn(thunder);
-//					break;
-//				default:
-//					break;
-//			}
+			int i = rand.nextInt(6);
+			switch (i) {
+				case 0:
+					spawn(spear);
+					break;
+				case 1:
+					spawn(killerWhale);
+					break;
+				case 2:
+					spawn(yeti);
+					break;
+				case 3:
+					spawn(spikeyBall);
+					break;
+				case 4:
+					spawn(polarBear);
+					break;
+				case 5:
+					spawn(thunder);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 	
