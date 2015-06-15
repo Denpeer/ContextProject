@@ -45,7 +45,6 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 		super(colShape);
 		initialLoc = iLoc;
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	/**
@@ -58,6 +57,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 
