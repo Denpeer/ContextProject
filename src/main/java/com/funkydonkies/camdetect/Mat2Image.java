@@ -40,7 +40,7 @@ public class Mat2Image implements Bridge {
 	private static final int IGNORESIZE = 5;
 	private static final int CIRCLEDIAM = 5;
 	private static final int NUMCHANNELS = 3;
-	private static final int MAX_JUMP_DIST = 10;
+	private static final float MAX_JUMP_DIST = 10.0f;
 	private static final int CONNECTED_PIXEL_BLOCK_SIZE = 5;
 
 	private int xDist = DEFAULT_XDIST;
@@ -152,28 +152,32 @@ public class Mat2Image implements Bridge {
 	 * @param blockSize
 	 *            is minimum size the connected pixel block has to be for it to
 	 *            pass. Should be uneven.
+	 * @param pixelX the x of the pixel being checked
+	 * @param pixelY the y of the pixel being checked           
 	 * @return true if the pixel is the center of a block of detected pixels.
 	 */
-	public boolean isConnected(final Mat im, final int blockSize, int pixelX, int pixelY) {
+	public boolean isConnected(final Mat im, final int blockSize, final int pixelX, final int pixelY) {
 		int halfBlock;
+		int newPixelX = pixelX;
+		int newPixelY = pixelY;
 		if (blockSize % 2 != 0) {
 			halfBlock = (blockSize - 1) / 2;
 		} else {
 			halfBlock = blockSize / 2;
 		}
 		if (pixelX <= halfBlock) {
-			pixelX += halfBlock;
+			newPixelX += halfBlock;
 		}
 		if (pixelX >= im.size().width - halfBlock) {
-			pixelX -= halfBlock;
+			newPixelX -= halfBlock;
 		}
 		if (pixelY <= halfBlock) {
-			pixelY += halfBlock;
+			newPixelY += halfBlock;
 		}
 		if (pixelY >= im.size().height - halfBlock) {
-			pixelY -= halfBlock;
+			newPixelY -= halfBlock;
 		}
-		final Mat subim = im.submat(pixelY - halfBlock, pixelY + halfBlock, pixelX - halfBlock, pixelX
+		final Mat subim = im.submat(newPixelY - halfBlock, newPixelY + halfBlock, newPixelX - halfBlock, newPixelX
 				+ halfBlock);
 		final double sum = Core.sumElems(subim).val[0] / MAXCOL;
 		if (sum == 0.0) {
