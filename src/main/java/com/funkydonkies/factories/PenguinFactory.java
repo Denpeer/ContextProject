@@ -62,8 +62,6 @@ public class PenguinFactory implements FactoryInterface {
 		penguinControl.setRestitution(1);
 		
 		node.addControl(penguinControl);
-
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(penguinControl);
 		
 		return node;
 	}

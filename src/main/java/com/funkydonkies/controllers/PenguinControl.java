@@ -56,6 +56,8 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		super.setPhysicsSpace(space);
 		space.addTickListener(this);
 		space.addCollisionListener(this);
+
+		
 	}
 
 	@Override

@@ -21,6 +21,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
 	
 	private DifficultyState diffState;
+	private AppStateManager stateManager;
 
 	/**
 	 * Constructor method for fish control.
@@ -30,11 +31,13 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	public FishControl(final CollisionShape shape, final AppStateManager sManager) {
 		super(shape);
 		diffState = sManager.getState(DifficultyState.class);
+		stateManager = sManager;
 	}
 	
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	/**
@@ -45,7 +48,6 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 	/**
