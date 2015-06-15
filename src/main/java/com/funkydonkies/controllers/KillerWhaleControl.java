@@ -45,7 +45,6 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 		super(colShape);
 		initialLoc = iLoc;
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	/**
@@ -58,6 +57,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 
@@ -66,6 +66,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	 */
 	public final void init() {
 		spatial.setLocalTranslation(initialLoc);
+		setPhysicsLocation(initialLoc);
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	private void moveSpatial() {
 		Vector3f loc;
 
-		if (spatial != null && time > 1) {
+		if (spatial != null && time > 2) {
 			final Vector3f vec = spatial.getLocalTranslation();
 			if (vec.getY() > STOP_HEIGHT) {
 				moveUp = false;
@@ -105,9 +106,11 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 			if (moveUp) {
 				loc = new Vector3f(vec.getX(), (float) (vec.getY() + SPEED), vec.getZ());
 				spatial.setLocalTranslation(loc);
+				setPhysicsLocation(loc);
 			} else {
 				loc = new Vector3f(vec.getX(), (float) (vec.getY() - SPEED), vec.getZ());
 				spatial.setLocalTranslation(loc);
+				setPhysicsLocation(loc);
 			}
 		}
 

@@ -33,7 +33,7 @@ public class SpikeyBallFactory implements FactoryInterface {
 			final SimpleApplication appl) {
 		app = appl;
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final Geometry spikeyBall = new Geometry("spikeyBall", mesh);
+		final Geometry spikeyBall = new Geometry(SPIKEYBALL_NAME, mesh);
 		spikeyBall.setMaterial(getSpikeyBallMaterial());
 		final SpikeyBallControl pc = new SpikeyBallControl(
 				new SphereCollisionShape(DEFAULT_RADIUS), sManager, 10f);

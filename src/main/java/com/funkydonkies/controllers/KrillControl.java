@@ -32,18 +32,19 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	public KrillControl(final CollisionShape colShape, final AppStateManager sManager) {
 		super(colShape);
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
 	}
 
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 	/**
