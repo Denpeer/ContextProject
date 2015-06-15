@@ -20,7 +20,7 @@ public class WarningLineControl extends MyAbstractControl {
 	protected void controlUpdate(final float tpf) {
 		time += tpf;
 
-		if (time > 1) {
+		if (time > 2) {
 			spatial.removeFromParent();
 			setEnabled(false);
 		}

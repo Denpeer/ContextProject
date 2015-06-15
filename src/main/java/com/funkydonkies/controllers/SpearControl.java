@@ -60,6 +60,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	public final void init() {
 		spatial.setLocalTranslation(initialLoc);
+		setPhysicsLocation(initialLoc);
 	}
 
 	/**
@@ -84,10 +85,11 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	private void move() {
 		Vector3f loc;
-		if (spatial != null && time > 1) {
+		if (spatial != null && time > 2) {
 			final Vector3f vec = spatial.getLocalTranslation();
 			loc = new Vector3f((float) (vec.getX() - SPEED), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
+			setPhysicsLocation(loc);
 		}
 
 	}

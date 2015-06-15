@@ -98,7 +98,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	private void moveSpatial() {
 		Vector3f loc;
 
-		if (spatial != null && time > 1) {
+		if (spatial != null && time > 2) {
 			final Vector3f vec = spatial.getLocalTranslation();
 			if (vec.getY() > STOP_HEIGHT) {
 				moveUp = false;
