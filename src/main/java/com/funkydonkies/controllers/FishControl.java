@@ -6,6 +6,7 @@ import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
+import com.funkydonkies.powerups.SnowballPowerup;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -18,8 +19,6 @@ import com.jme3.math.Vector3f;
 public class FishControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 	
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
-	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
-	
 	private DifficultyState diffState;
 
 	/**
@@ -30,6 +29,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	public FishControl(final CollisionShape shape, final AppStateManager sManager) {
 		super(shape);
 		diffState = sManager.getState(DifficultyState.class);
+		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	@Override
@@ -45,7 +45,6 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 	/**
@@ -58,19 +57,10 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 			respawn();
 			diffState.incDiff();
 		}
+		if (checkCollision(event, FishFactory.FISH_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
+			respawn();
+			diffState.incDiff();
+		}
 
-	}
-
-	/**
-	 * Respawn the fish at a reachable location.
-	 * TODO make sure its reachable
-	 */
-	public void respawn() {
-		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
-				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
-		
-		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
-		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
-		spatial.setLocalTranslation(respawnlocation);
 	}
 }

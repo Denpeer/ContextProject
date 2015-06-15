@@ -1,15 +1,11 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.curve.SplineCurve;
-import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.geometrys.penguins.Snowball;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
-import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -24,9 +20,8 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	private static final float SCALE_UP_FACTOR = 0.15f;
 	private static final float SCALE_TIME = 0.25f;
 	private static final float MAX_RADIUS = 10f;
-	private static final float SCALE_OFFSET = 0.5f;
+	private static final float SCALE_OFFSET = 0.5f; //Dont touch, should be 1/2
 	private float timer = 0;
-	private boolean canScale = false;
 
 	/**
 	 * Constructor for GrowingSnowBallControl.
@@ -51,6 +46,11 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	public void update(final float tpf) {
 		super.update(tpf);
 		scaleSnowBall(tpf);
+	}
+	
+	@Override
+	public void init() {
+		//do nothing
 	}
 
 	/**

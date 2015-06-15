@@ -25,6 +25,7 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 	private AppStateManager sManager;
 	
 	private boolean enablePowerupNextCycle = false;
+	public static final String SNOW_PENGUIN_NAME = "snowBallPenguin";
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application appl) {
@@ -73,7 +74,7 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 				penguin.addControl(snowBallControl);
 				sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
 				snowBallControl.setLinearVelocity(speed);
-				penguin.setName("snowBallPenguin");
+				penguin.setName(SNOW_PENGUIN_NAME);
 			} else {
 				SBControl.setEnabled(true);
 				SBControl.scaleBack();
