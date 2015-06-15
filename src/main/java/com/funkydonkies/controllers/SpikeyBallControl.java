@@ -39,7 +39,6 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 			final AppStateManager sManager, final float mass) {
 		super(sphereCollisionShape, mass);
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	@Override
@@ -47,6 +46,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 		super.setPhysicsSpace(space);
 		space.addTickListener(this);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 	@Override

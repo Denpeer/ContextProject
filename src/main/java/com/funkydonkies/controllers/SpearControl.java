@@ -40,7 +40,6 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 		super(shape);
 		initialLoc = iLoc;
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	/**
@@ -53,6 +52,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 	/**

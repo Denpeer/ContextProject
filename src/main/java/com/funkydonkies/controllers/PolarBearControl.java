@@ -50,7 +50,6 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		initialLoc = iLoc;
 		stopCoord = stopX;
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	/**
@@ -60,6 +59,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
+		space.add(this);
 	}
 
 	@Override
