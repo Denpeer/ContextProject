@@ -55,7 +55,7 @@ public class PenguinFactory implements FactoryInterface {
 	 * @return newly created penguin node
 	 */
 	public Node makeNode() {
-		final Node node = new Node(PENGUIN_NAME);
+		final Node node = makePengNode();
 
 		final PenguinControl penguinControl = new PenguinControl(new SphereCollisionShape(
 				DEFAULT_RADIUS), 1f, stateManager);
@@ -76,6 +76,14 @@ public class PenguinFactory implements FactoryInterface {
 		geom.setMaterial(getPenguinMaterial());
 
 		return geom;
+	}
+	
+	/**
+	 * This method makes a node.
+	 * @return a penguin node
+	 */
+	public Node makePengNode() {
+		return new Node(PENGUIN_NAME);
 	}
 
 	/**
