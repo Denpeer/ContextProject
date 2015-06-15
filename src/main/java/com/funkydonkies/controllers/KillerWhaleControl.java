@@ -66,6 +66,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	 */
 	public final void init() {
 		spatial.setLocalTranslation(initialLoc);
+		setPhysicsLocation(initialLoc);
 	}
 
 	/**
@@ -105,9 +106,11 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 			if (moveUp) {
 				loc = new Vector3f(vec.getX(), (float) (vec.getY() + SPEED), vec.getZ());
 				spatial.setLocalTranslation(loc);
+				setPhysicsLocation(loc);
 			} else {
 				loc = new Vector3f(vec.getX(), (float) (vec.getY() - SPEED), vec.getZ());
 				spatial.setLocalTranslation(loc);
+				setPhysicsLocation(loc);
 			}
 		}
 

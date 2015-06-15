@@ -120,7 +120,7 @@ public class SpawnState extends AbstractAppState {
 		if (time > OBSTACLE_SPAWN_TIME) {
 			
 			time = 0;
-			spawn(polarBear);
+			spawn(killerWhale);
 //			int i = rand.nextInt(6);
 //			switch (i) {
 //				case 0:
