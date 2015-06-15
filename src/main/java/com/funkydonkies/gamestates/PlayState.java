@@ -47,7 +47,7 @@ public class PlayState extends AbstractAppState {
 		}
 		stateManage = stateManager;
 
-		app.getFlyByCamera().setEnabled(false);
+		app.getFlyByCamera().setEnabled(true);
 		app.getCamera().setLocation(CAM_LOCATION);
 
 		handleBulletAppState();

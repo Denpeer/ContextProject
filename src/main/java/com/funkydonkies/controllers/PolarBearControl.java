@@ -65,6 +65,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(initialLoc);
+		setPhysicsLocation(initialLoc);
 	}
 
 	/**
@@ -93,10 +94,11 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		if (spatial != null && initialLoc.getX() < stopCoord && vec.getX() < stopCoord) {
 			loc = new Vector3f((float) (vec.getX() + SPEED), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
-
+			setPhysicsLocation(loc);
 		} else if (spatial != null && initialLoc.getX() >= stopCoord && vec.getX() >= stopCoord) {
 			loc = new Vector3f((float) (vec.getX() - SPEED), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
+			setPhysicsLocation(loc);
 		} else {
 			doneMoving = true;
 		}
@@ -115,6 +117,8 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 			if (checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME,
 					PenguinFactory.PENGUIN_NAME)) {
 				diffState.resetDiff();
+				destroy(event, PenguinFactory.PENGUIN_NAME);
+
 			}
 		}
 
