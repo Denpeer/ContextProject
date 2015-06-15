@@ -25,7 +25,6 @@ public class YetiControl extends MyAbstractGhostControl implements PhysicsCollis
 	private static final int SPHERE_SIZE = 20;
 	private static final int SNOW_BALL_Z_SPEED = 70;
 	private Vector3f loc;
-	private AppStateManager stateManager;
 	private DifficultyState diffState;
 
 	/**
@@ -39,7 +38,7 @@ public class YetiControl extends MyAbstractGhostControl implements PhysicsCollis
 		final Random rand = new Random();
 
 		loc = new Vector3f(rand.nextInt(RAND_X_MAX), rand.nextInt(RAND_Y_MAX), DEFAULT_DEPTH);
-		diffState = stateManager.getState(DifficultyState.class);
+		diffState = sManager.getState(DifficultyState.class);
 		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
