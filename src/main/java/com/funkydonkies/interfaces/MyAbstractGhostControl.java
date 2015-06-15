@@ -1,9 +1,11 @@
 package com.funkydonkies.interfaces;
 
+import com.funkydonkies.gamestates.CurveState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.PhysicsControl;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 
@@ -11,7 +13,8 @@ import com.jme3.scene.control.Control;
  * Abstract class for custom GhostControl methods.
  */
 public abstract class MyAbstractGhostControl extends GhostControl {
-	
+	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
+
 	/** Constructor for the AbstractGhostControl, takes a desired collision shape.
 	 * @param colShape desired collision shape
 	 */
@@ -88,6 +91,20 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 				((PhysicsControl) tmp).setEnabled(false);
 			}
 		}
+	}
+	
+	/**
+	 * Respawn the fish at a reachable location.
+	 * TODO make sure its reachable
+	 */
+	public void respawn() {
+		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
+				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
+		
+		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
+		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
+		spatial.setLocalTranslation(respawnlocation);
+		setPhysicsLocation(respawnlocation);
 	}
 
 	/** 

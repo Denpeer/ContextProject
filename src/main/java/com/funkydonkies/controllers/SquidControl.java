@@ -1,10 +1,12 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.factories.FishFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.SquidFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
+import com.funkydonkies.powerups.SnowballPowerup;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -49,8 +51,7 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 
 	@Override
 	public void init() {
-		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
-		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
+		respawn();
 	}
 	
 	@Override
@@ -90,6 +91,11 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, SquidFactory.SQUID_NAME, PenguinFactory.PENGUIN_NAME)) {
+			diffState.incDiff();
+			diffState.activateSnowBallPowerup();
+			destroy(event, SquidFactory.SQUID_NAME);
+		}
+		if (checkCollision(event, SquidFactory.SQUID_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
 			diffState.incDiff();
 			diffState.activateSnowBallPowerup();
 			destroy(event, SquidFactory.SQUID_NAME);
