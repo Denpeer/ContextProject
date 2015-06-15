@@ -54,7 +54,6 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	 * @param event PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		
 		if (checkCollision(event, FishFactory.FISH_NAME, PenguinFactory.PENGUIN_NAME)) {
 			respawn();
 			diffState.incDiff();
