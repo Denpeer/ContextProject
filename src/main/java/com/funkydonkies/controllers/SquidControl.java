@@ -1,6 +1,5 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.factories.FishFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.SquidFactory;
 import com.funkydonkies.gamestates.DifficultyState;
@@ -23,7 +22,6 @@ import com.jme3.math.Vector3f;
  */
 public class SquidControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 	
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(250f, 10f, 1f);
 	private static final float TIME_TO_MOVE_IN_ONE_DIRECTION = 4;
 	private static final float STEP_SIZE = 0.5f;
 	private AppStateManager stateManager;

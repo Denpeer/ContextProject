@@ -1,6 +1,5 @@
 package com.funkydonkies.powerups;
 
-
 import java.awt.Color;
 import java.util.List;
 
@@ -20,70 +19,78 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
+/**
+ * Makes Penguin invincible.
+ */
 public class SnowballPowerup extends DisabledState implements PhysicsCollisionListener {
 	private App app;
 	private AppStateManager sManager;
-	
+
 	private boolean enablePowerupNextCycle = false;
 	public static final String SNOW_PENGUIN_NAME = "snowBallPenguin";
 
 	@Override
-	public void initialize(AppStateManager stateManager, Application appl) {
+	public void initialize(final AppStateManager stateManager, final Application appl) {
 		super.initialize(stateManager, app);
 		if (appl instanceof App) {
 			app = (App) appl;
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		
+
 		sManager = stateManager;
-		
+
 	}
-	
+
 	@Override
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		enablePowerupNextCycle = true;
 	}
-	
+
 	@Override
-	public void update(float tpf) {
+	public void update(final float tpf) {
 		super.update(tpf);
 		if (enablePowerupNextCycle) {
 			activate();
 			enablePowerupNextCycle = false;
-		} 
+		}
 	}
-	
+
+	/**
+	 * Activates this power-up.
+	 */
 	public void activate() {
-		Node penguinNode = app.getPenguinNode();
-		List<Spatial> penguins = penguinNode.getChildren();
+		// TODO clean...
+		final Node penguinNode = app.getPenguinNode();
+		final List<Spatial> penguins = penguinNode.getChildren();
 		for (Spatial penguin : penguins) {
-			Vector3f speed = ((Node) penguin).getControl(PenguinControl.class).getLinearVelocity();
+			final Vector3f speed = ((Node) penguin).getControl(PenguinControl.class).getLinearVelocity();
 			((Node) penguin).getControl(PenguinControl.class).setEnabled(false);
-			
-			GrowingSnowballControl SBControl = penguin.getControl(GrowingSnowballControl.class);
-			//Check if the penguin already has a snowballcontrol
-			if (SBControl == null) {
-				Snowball sball = new Snowball(app.getAssetManager(), 10
-						, 0,Color.white,0,Color.white,360);
+
+			final GrowingSnowballControl sBControl = penguin
+					.getControl(GrowingSnowballControl.class);
+			// Check if the penguin already has a snowballcontrol
+			if (sBControl == null) {
+				final Snowball sball = new Snowball(app.getAssetManager(), 10, 0, Color.white, 0,
+						Color.white, 360);
 				sball.setLocalTranslation(-5, -5, 0);
 				((Node) penguin).attachChild(sball);
-				GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
+				final GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
 						new SphereCollisionShape(5), 1f, sManager);
 				penguin.addControl(snowBallControl);
 				sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
 				snowBallControl.setLinearVelocity(speed);
 				penguin.setName(SNOW_PENGUIN_NAME);
 			} else {
-				SBControl.setEnabled(true);
-				SBControl.scaleBack();
+				sBControl.setEnabled(true);
+				sBControl.scaleBack();
 			}
 		}
 	}
-	
+
 	@Override
-	public void collision(PhysicsCollisionEvent event) {
+	public void collision(final PhysicsCollisionEvent event) {
 
 	}
 

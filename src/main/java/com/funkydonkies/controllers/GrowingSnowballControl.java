@@ -21,7 +21,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	private static final float SCALE_UP_FACTOR = 0.15f;
 	private static final float SCALE_TIME = 0.25f;
 	private static final float MAX_RADIUS = 10f;
-	private static final float SCALE_OFFSET = 0.5f; //Dont touch, should be 1/2
+	private static final float SCALE_OFFSET = 0.5f; // Dont touch, should be 1/2
 	private float timer = 0;
 
 	/**
@@ -31,6 +31,8 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	 *            the Snow Ball's collisionShape (should be based on the mesh)
 	 * @param mass
 	 *            the Snow Ball's desired mass
+	 * @param sManager
+	 *            jme AppStateManager for getting states
 	 */
 	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape,
 			final float mass, final AppStateManager sManager) {
@@ -49,10 +51,10 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 		super.update(tpf);
 		scaleSnowBall(tpf);
 	}
-	
+
 	@Override
 	public void init() {
-		//do nothing
+		// do nothing
 	}
 
 	/**
@@ -69,12 +71,13 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 			timer = 0;
 			if (radius < MAX_RADIUS) {
 				final Spatial snowBall = ((Node) spatial).getChild(SNOW_BALL_NAME);
-				((Snowball) snowBall).setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
-				
+				((Snowball) snowBall)
+						.setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
+
 				final Vector3f loc = snowBall.getLocalTranslation();
 				loc.x = loc.x - SCALE_OFFSET * SCALE_UP_FACTOR;
 				loc.y = loc.y - SCALE_OFFSET * SCALE_UP_FACTOR;
-				
+
 				setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * SCALE_OFFSET));
 				snowBall.setLocalTranslation(loc);
 			}

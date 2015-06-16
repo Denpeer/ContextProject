@@ -6,7 +6,6 @@ import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.powerups.SnowballPowerup;
-import com.funkydonkies.sounds.ObstacleSpawnSound;
 import com.funkydonkies.sounds.SoundState;
 import com.funkydonkies.sounds.TargetCollisionSound;
 import com.funkydonkies.sounds.TargetSpawnSound;

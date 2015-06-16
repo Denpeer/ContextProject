@@ -19,7 +19,6 @@ import com.jme3.scene.Spatial;
  */
 public class SuperSizePowerup extends DisabledState {
 	private static final float STANDARD_SCALEUP = 2f;
-	private AppStateManager stateManager;
 	private App app;
 	
 	/**
@@ -36,8 +35,6 @@ public class SuperSizePowerup extends DisabledState {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		
-		stateManager = sManager;
 		
 	}
 	

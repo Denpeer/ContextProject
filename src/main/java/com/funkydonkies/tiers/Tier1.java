@@ -2,15 +2,17 @@ package com.funkydonkies.tiers;
 
 import com.funkydonkies.gamestates.DisabledState;
 import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
-import com.funkydonkies.powerups.SuperSizePowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
+/**
+ * Tier 1 defines powerups to be enabled.
+ */
 public class Tier1 extends DisabledState {
 	private IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
 	
 	@Override
-	public void initialize(AppStateManager stateManager, Application app) {
+	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
 		
 		increaseSpawnSpeed = new IncreaseSpawnSpeedPowerup(1);
@@ -23,9 +25,7 @@ public class Tier1 extends DisabledState {
 		if (enabled) {
 			enableIncreasedSpawnSpeed();
 			
-		} else {
-			
-		}
+		} 
 	}
 	
 	@Override
@@ -34,6 +34,9 @@ public class Tier1 extends DisabledState {
 	}
 	
 	
+	/**
+	 * Enables incresed speed.
+	 */
 	public void enableIncreasedSpawnSpeed() {
 		increaseSpawnSpeed.setEnabled(true);
 	}
