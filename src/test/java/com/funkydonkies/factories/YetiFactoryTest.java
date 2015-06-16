@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 import com.funkydonkies.controllers.SquidControl;
 import com.funkydonkies.controllers.YetiControl;
 import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.Sound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetKey;
@@ -39,7 +41,8 @@ public class YetiFactoryTest {
 	private Node rootNodeMock;
 	private Material matMock;
 	private RenderState renderStateMock;
-
+	private SoundState soundState;
+	
 	/**
 	 * setup for tests. Mock all that is needed.
 	 * @throws Exception exception
@@ -59,6 +62,8 @@ public class YetiFactoryTest {
 		rootNodeMock = Mockito.mock(Node.class);
 		matMock = Mockito.mock(Material.class);
 		renderStateMock = Mockito.mock(RenderState.class);
+		soundState = Mockito.mock(SoundState.class);
+		
 		Mockito.when(saMock.getAssetManager()).thenReturn(amMock);
 		Mockito.when(amMock.loadAsset(Mockito.any(AssetKey.class))).thenReturn(mdMock);
 		Mockito.when(mdMock.getMaterialParam(Mockito.any(String.class))).thenReturn(mpMock);
@@ -69,6 +74,9 @@ public class YetiFactoryTest {
 		Mockito.when(rootNodeMock.getUserData(Mockito.any(String.class))).thenReturn(matMock);
 		Mockito.when(matMock.clone()).thenReturn(matMock);
 		Mockito.when(matMock.getAdditionalRenderState()).thenReturn(renderStateMock);
+		Mockito.doReturn(soundState).when(asmMock).getState(SoundState.class);
+		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
+
 	}
 
 	/**

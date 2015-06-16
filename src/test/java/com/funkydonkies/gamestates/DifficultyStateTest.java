@@ -11,11 +11,14 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.funkydonkies.combo.ComboDisplay;
 import com.funkydonkies.core.App;
 import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
+import com.funkydonkies.sounds.Sound;
+import com.funkydonkies.sounds.SoundState;
 import com.funkydonkies.tiers.Tier1;
 import com.funkydonkies.tiers.Tier2;
 import com.jme3.app.state.AppStateManager;
@@ -30,6 +33,7 @@ public class DifficultyStateTest {
 	private ComboDisplay combo;
 	private SnowballPowerup snowBall;
 	private InvertControlsPowerup invertControls;
+	private SoundState soundState;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -40,6 +44,7 @@ public class DifficultyStateTest {
 		combo = mock(ComboDisplay.class);
 		snowBall = mock(SnowballPowerup.class);
 		invertControls = mock(InvertControlsPowerup.class);
+		soundState = mock(SoundState.class);
 		
 		diffState = new DifficultyState();
 		diffSpy = spy(diffState);
@@ -48,6 +53,8 @@ public class DifficultyStateTest {
 		doReturn(tier2).when(diffSpy).makeTier2();
 		doReturn(snowBall).when(diffSpy).makeSnowBallPowerup();
 		doReturn(invertControls).when(diffSpy).makeInvertControlsPowerup();
+		doReturn(soundState).when(sManager).getState(SoundState.class);
+		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
 	}
 
 	@Test
@@ -111,6 +118,7 @@ public class DifficultyStateTest {
 		diffSpy.incDiff();
 		assertTrue(diffSpy.getCombo() == 1);
 		assertTrue(diffSpy.getMaxCombo() == 1);
+//		verify(soundState).queueSound(any(Sound.class));
 	}
 
 	@Test
@@ -122,6 +130,7 @@ public class DifficultyStateTest {
 		diffSpy.resetDiff();
 		assertTrue(diffSpy.getCombo() == 0);
 		assertTrue(diffSpy.getMaxCombo() == 1);
+//		verify(soundState).queueSound(any(Sound.class));
 	}
 	
 	@Test

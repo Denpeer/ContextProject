@@ -9,7 +9,6 @@ import org.reflections.Reflections;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.interfaces.FactoryInterface;
-import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
