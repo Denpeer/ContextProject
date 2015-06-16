@@ -1,5 +1,6 @@
 package com.funkydonkies.factories;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -10,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.funkydonkies.controllers.FishControl;
 import com.funkydonkies.controllers.KrillControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -23,6 +25,8 @@ import com.jme3.scene.shape.Box;
  */
 public class KrillFactoryTest {
 	private KrillFactory mockFactory;
+	private KrillFactory fac;
+	private Geometry geom;
 	private AppStateManager assManager;
 	private SimpleApplication app;
 
@@ -34,18 +38,11 @@ public class KrillFactoryTest {
 	public void setUp() {
 		app = mock(SimpleApplication.class);
 		assManager = new AppStateManager(app);
+		geom = mock(Geometry.class);
 		mockFactory = spy(KrillFactory.class);
+		fac = new KrillFactory();
 	    doReturn(mock(Material.class)).when(mockFactory).getkrillMaterial();
-
-	}
-
-	/**
-	 * tests if the Krillcontrol is enabled.
-	 */
-	@Test
-	public void testMakeObject() {
-		final Geometry Krill = mockFactory.makeObject(assManager, app);
-		assertTrue(((KrillControl) (Krill).getControl(0)).isEnabled());
+	    doReturn(geom).when(mockFactory).makeGeometry(any(Box.class));
 	}
 	
 	/**
@@ -53,8 +50,8 @@ public class KrillFactoryTest {
 	 */
 	@Test
 	public void testControlAttached() {
-		final Geometry Krill = mockFactory.makeObject(assManager, app);
-		assertTrue(((KrillControl) (Krill).getControl(0)) != null);
+		mockFactory.makeObject(assManager, app);
+		verify(geom).addControl(any(FishControl.class));
 	}
 	
 	/**
@@ -63,8 +60,16 @@ public class KrillFactoryTest {
 	@Test
 	public void methodsCalled() {
 		@SuppressWarnings("unused")
-		final Geometry Krill = mockFactory.makeObject(assManager, app);
+		final Geometry krill = mockFactory.makeObject(assManager, app);
 		verify(mockFactory).makeKrill();
+	}
+	
+	/**
+	 * tests the makeGeometry method.
+	 */
+	@Test
+	public void testMakeGeometry() {
+		assertFalse(fac.makeGeometry(new Box(1, 1, 1)) == null);
 	}
 
 }

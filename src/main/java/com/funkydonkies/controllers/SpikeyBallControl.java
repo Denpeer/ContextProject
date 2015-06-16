@@ -21,6 +21,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 		PhysicsCollisionListener {
 	private static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	private static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
+	private AppStateManager stateManager;
 	private Vector3f initialSpawn;
 	private Vector3f initialSpeed = new Vector3f(0, 0, 0);
 	private final DifficultyState diffState;
@@ -39,6 +40,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 			final AppStateManager sManager, final float mass) {
 		super(sphereCollisionShape, mass);
 		diffState = sManager.getState(DifficultyState.class);
+		stateManager = sManager;
 	}
 	
 	@Override
@@ -46,7 +48,6 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 		super.setPhysicsSpace(space);
 		space.addTickListener(this);
 		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 	@Override
@@ -55,6 +56,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		setPhysicsLocation(initialSpawn);
 		setLinearVelocity(initialSpeed);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
 	/**

@@ -2,7 +2,6 @@ package com.funkydonkies.controllers;
 
 import com.funkydonkies.factories.FishFactory;
 import com.funkydonkies.factories.PenguinFactory;
-import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
@@ -20,21 +19,23 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
 	private DifficultyState diffState;
+	private AppStateManager stateManager;
 
 	/**
 	 * Constructor method for fish control.
 	 * @param shape Collisionshape for the fish
-	 * @param sm jme AppStateManager to get AppStates
+	 * @param sManager jme AppStateManager to get AppStates
 	 */
 	public FishControl(final CollisionShape shape, final AppStateManager sManager) {
 		super(shape);
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		stateManager = sManager;
 	}
 	
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	/**

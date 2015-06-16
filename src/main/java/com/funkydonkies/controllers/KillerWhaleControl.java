@@ -28,6 +28,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	private static final float SPEED = 4;;
 	private static final float STOP_HEIGHT = -30;
 	private static final float DESTROY_HEIGHT = -500;
+	private AppStateManager stateManager;
 
 	/**
 	 * The constructor of the control.
@@ -44,6 +45,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 			final Vector3f iLoc) {
 		super(colShape);
 		initialLoc = iLoc;
+		stateManager = sManager;
 		diffState = sManager.getState(DifficultyState.class);
 	}
 	
@@ -57,7 +59,6 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 
@@ -67,6 +68,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	public final void init() {
 		spatial.setLocalTranslation(initialLoc);
 		setPhysicsLocation(initialLoc);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
 	/**
