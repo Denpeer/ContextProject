@@ -219,15 +219,17 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testIsConnected() {
-		final Mat2Image m2i = new Mat2Image();
-		final int blockSize = 3;
-		final int x1 = 256;
-		final int y1 = 423;
-		assertTrue(m2i.isConnected(im2Mat(imageThreshed), blockSize, x1, y1));
-		final int x2 = 200;
-		final int y2 = 300;
-		assertFalse(m2i.isConnected(im2Mat(imageThreshed), blockSize, x2, y2));
-		assertFalse(m2i.isConnected(im2Mat(imageThreshed), 2, 1, 1));
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final int blockSize = 3;
+			final int x1 = 256;
+			final int y1 = 423;
+			assertTrue(m2i.isConnected(im2Mat(imageThreshed), blockSize, x1, y1));
+			final int x2 = 200;
+			final int y2 = 300;
+			assertFalse(m2i.isConnected(im2Mat(imageThreshed), blockSize, x2, y2));
+			assertFalse(m2i.isConnected(im2Mat(imageThreshed), 2, 1, 1));
+		}
 	}
 
 	/**
@@ -236,12 +238,14 @@ public class Mat2ImageTest {
 	 */
 	@Test
 	public void testHeightDiffPass() {
-		final Mat2Image m2i = new Mat2Image();
-		final float f10 = 10.0f;
-		final float f99 = 9.9f;
-		assertTrue(m2i.heightDiffPass(0.0f, 0.0f));
-		assertTrue(m2i.heightDiffPass(0.0f, f99));
-		assertFalse(m2i.heightDiffPass(0.0f, f10));
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final float f10 = 10.0f;
+			final float f99 = 9.9f;
+			assertTrue(m2i.heightDiffPass(0.0f, 0.0f));
+			assertTrue(m2i.heightDiffPass(0.0f, f99));
+			assertFalse(m2i.heightDiffPass(0.0f, f10));
+		}
 	}
 
 	/**
@@ -355,39 +359,45 @@ public class Mat2ImageTest {
 			assertEquals(expected, length);
 		}
 	}
-	
+
 	/**
 	 * test for setxdist().
 	 */
 	@Test
 	public void testSetxdist() {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		im2Mat(imageProcessed2).copyTo(matty);
-		final int xd = m2i.getxdist();
-		m2i.setxdist(xd * 2);
-		assertEquals(xd * 2, m2i.getxdist());
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageProcessed2).copyTo(matty);
+			final int xd = m2i.getxdist();
+			m2i.setxdist(xd * 2);
+			assertEquals(xd * 2, m2i.getxdist());
+		}
 	}
-	
+
 	/**
 	 * test for getImageHeight().
 	 */
 	@Test
 	public void testGetImageHeight() {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		im2Mat(imageProcessed2).copyTo(matty);
-		assertEquals(m2i.getImageHeight(), imageProcessed2.getHeight());
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageProcessed2).copyTo(matty);
+			assertEquals(m2i.getImageHeight(), imageProcessed2.getHeight());
+		}
 	}
-	
+
 	/**
 	 * test for getImageWidth.
 	 */
 	@Test
 	public void testGetImageWidth() {
-		final Mat2Image m2i = new Mat2Image();
-		final Mat matty = m2i.getMat();
-		im2Mat(imageProcessed2).copyTo(matty);
-		assertEquals(m2i.getImageWidth(), imageProcessed2.getWidth());
+		if (runTest) {
+			final Mat2Image m2i = new Mat2Image();
+			final Mat matty = m2i.getMat();
+			im2Mat(imageProcessed2).copyTo(matty);
+			assertEquals(m2i.getImageWidth(), imageProcessed2.getWidth());
+		}
 	}
 }
