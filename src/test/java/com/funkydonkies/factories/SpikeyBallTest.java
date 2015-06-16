@@ -1,7 +1,6 @@
 package com.funkydonkies.factories;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -10,9 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.controllers.SpikeyBallControl;
+import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.scene.Spatial;
 /**
@@ -20,7 +20,8 @@ import com.jme3.scene.Spatial;
  */
 public class SpikeyBallTest {
 	private SpikeyBallFactory mockFactory;
-	private AppStateManager assManager;
+	private AppStateManager mockSManager;
+	private PlayState mockPlayState;
 	private SimpleApplication app;
 
 	/**
@@ -30,8 +31,11 @@ public class SpikeyBallTest {
 	@Before
 	public void setUp() {
 		app = mock(SimpleApplication.class);
-		assManager = new AppStateManager(app);
+		mockSManager = mock(AppStateManager.class);
+		mockPlayState = mock(PlayState.class);
 		mockFactory = spy(SpikeyBallFactory.class);
+		doReturn(mockPlayState).when(mockSManager).getState(PlayState.class);
+		doReturn(mock(PhysicsSpace.class)).when(mockPlayState).getPhysicsSpace();
 	    doReturn(mock(Material.class)).when(mockFactory).getSpikeyBallMaterial();
 
 	}
@@ -41,7 +45,7 @@ public class SpikeyBallTest {
 	 */
 	@Test
 	public void testMakeObject() {
-		final Spatial ball = mockFactory.makeObject(assManager, app);
+		final Spatial ball = mockFactory.makeObject(mockSManager, app);
 		assertTrue(((SpikeyBallControl) (ball).getControl(0)).isEnabled());
 	}
 	
@@ -50,7 +54,7 @@ public class SpikeyBallTest {
 	 */
 	@Test
 	public void testControlAttached() {
-		final Spatial ball = mockFactory.makeObject(assManager, app);
+		final Spatial ball = mockFactory.makeObject(mockSManager, app);
 		assertTrue(((SpikeyBallControl) (ball).getControl(0)) != null);
 	}
 
