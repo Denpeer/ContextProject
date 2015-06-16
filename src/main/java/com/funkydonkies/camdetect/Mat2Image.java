@@ -1,5 +1,6 @@
 package com.funkydonkies.camdetect;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
@@ -42,6 +43,11 @@ public class Mat2Image implements Bridge {
 	private static final int NUMCHANNELS = 3;
 	private static final float MAX_JUMP_DIST = 10.0f;
 	private static final int CONNECTED_PIXEL_BLOCK_SIZE = 5;
+	private static final int DEFAULT_HEIGHT = 480;
+	private static final int DEFAULT_MIN_HEIGHT = 30;
+	private static final int BOUND_MOVE_AMOUNT = 10;
+	private int upperBound = DEFAULT_MIN_HEIGHT;
+	private int lowerBound = DEFAULT_HEIGHT - 1;
 
 	private int xDist = DEFAULT_XDIST;
 
@@ -62,6 +68,7 @@ public class Mat2Image implements Bridge {
 	 *            matrix of image
 	 */
 	public Mat2Image(final Mat imMatrix) {
+		lowerBound = imMatrix.height();
 		getSpace(imMatrix);
 	}
 
@@ -119,11 +126,11 @@ public class Mat2Image implements Bridge {
 		numPoints = (int) Math.floor(tempdiv);
 		interestPoints = new float[numPoints];
 		resetPrevIPArray(im);
-		Arrays.fill(interestPoints, (float) im.size().height);
+		Arrays.fill(interestPoints, (float) lowerBound);
 		for (int i = 0; i < numPoints; i++) { // for every chosen x find the
 												// highest pixel value equal to
 												// 0
-			 for (int j = 0; j < im.size().height; j++) {
+			for (int j = upperBound; j < lowerBound; j++) {
 				final double val = im.get(j, i * xDist)[0];
 				if (val == 0.0) {
 					if (isConnected(im, CONNECTED_PIXEL_BLOCK_SIZE, i * xDist, j)) {
@@ -152,8 +159,10 @@ public class Mat2Image implements Bridge {
 	 * @param blockSize
 	 *            is minimum size the connected pixel block has to be for it to
 	 *            pass. Should be uneven.
-	 * @param pixelX the x of the pixel being checked
-	 * @param pixelY the y of the pixel being checked           
+	 * @param pixelX
+	 *            the x of the pixel being checked
+	 * @param pixelY
+	 *            the y of the pixel being checked
 	 * @return true if the pixel is the center of a block of detected pixels.
 	 */
 	public boolean isConnected(final Mat im, final int blockSize, final int pixelX, final int pixelY) {
@@ -177,8 +186,8 @@ public class Mat2Image implements Bridge {
 		if (pixelY >= im.size().height - halfBlock) {
 			newPixelY -= halfBlock;
 		}
-		final Mat subim = im.submat(newPixelY - halfBlock, newPixelY + halfBlock, newPixelX - halfBlock, newPixelX
-				+ halfBlock);
+		final Mat subim = im.submat(newPixelY - halfBlock, newPixelY + halfBlock, newPixelX
+				- halfBlock, newPixelX + halfBlock);
 		final double sum = Core.sumElems(subim).val[0] / MAXCOL;
 		if (sum == 0.0) {
 			return true;
@@ -248,6 +257,22 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
+	 * draw red horizontal lines at the beginning and end of the influence zone.
+	 * 
+	 * @param matMatrix
+	 *            the image to which the delimiting lines need to be added
+	 * @return the image with the lines added
+	 */
+	public Mat drawInfluenceZoneDelimiters(final Mat matMatrix) {
+		final Mat im = matMatrix.clone();
+		Core.line(im, new Point(0, lowerBound), new Point(im.width(), lowerBound), new Scalar(0, 0,
+				MAXCOL));
+		Core.line(im, new Point(0, upperBound), new Point(im.width(), upperBound), new Scalar(0, 0,
+				MAXCOL));
+		return im;
+	}
+
+	/**
 	 * Make sure the byte and bufferedimage are of right size and 'color'
 	 * settings.
 	 * 
@@ -282,6 +307,7 @@ public class Mat2Image implements Bridge {
 			// convert to color image and draw red dots at the interest point
 			// locations
 			res = drawInterestPoints(res, interestPoints);
+			res = drawInfluenceZoneDelimiters(res);
 			prepareSpace(res);
 		} else {
 			this.res = mat;
@@ -308,11 +334,19 @@ public class Mat2Image implements Bridge {
 	/**
 	 * Method comes from implementing the bridge interface. It is used by
 	 * classes outside of camdetect package to access the control points.
+	 * Normalize the control points between 0 and 1 with 0 being lowest and 1
+	 * highest along the vertical axis.
 	 * 
 	 * @return float array containing the control points
 	 */
 	public float[] getControlPoints() {
-		return Arrays.copyOf(interestPoints, numPoints);
+		final float[] normCP = Arrays.copyOf(interestPoints, numPoints);
+		for (int i = 0; i < normCP.length; i++) {
+			normCP[i] = normCP[i] - upperBound;
+			normCP[i] = Math.abs(normCP[i] - lowerBound);
+			normCP[i] = normCP[i] / (lowerBound - upperBound);
+		}
+		return normCP;
 	}
 
 	/**
@@ -369,5 +403,41 @@ public class Mat2Image implements Bridge {
 	public boolean isBgSet() {
 		return bgSet;
 	}
-
+	
+	/**
+	 * increment the upper bound.
+	 */
+	public void upInc() {
+		if (upperBound > DEFAULT_MIN_HEIGHT) {
+			upperBound -= BOUND_MOVE_AMOUNT;
+		}
+	}
+	
+	/**
+	 * decrement the upper bound.
+	 */
+	public void upDec() {
+		if (upperBound < (lowerBound - BOUND_MOVE_AMOUNT)) {
+			upperBound += BOUND_MOVE_AMOUNT;
+			System.out.println(upperBound);
+		}
+	}
+	
+	/**
+	 * increment the lower bound.
+	 */
+	public void lowInc() {
+		if (lowerBound > (upperBound + BOUND_MOVE_AMOUNT)) {
+			lowerBound -= BOUND_MOVE_AMOUNT;
+		}
+	}
+	
+	/**
+	 * decrement the lower bound.
+	 */
+	public void lowDec() {
+		if (lowerBound < mat.height() - 1) {
+			lowerBound += BOUND_MOVE_AMOUNT;
+		}
+	}
 }

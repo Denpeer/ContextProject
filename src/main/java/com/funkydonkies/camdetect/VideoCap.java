@@ -136,4 +136,17 @@ public class VideoCap {
 	public void releaseCap() {
 		cap.release();
 	}
+	
+	public void upInc() {
+		mat2Img.upInc();
+	}
+	public void upDec() {
+		mat2Img.upDec();
+	}
+	public void lowInc() {
+		mat2Img.lowInc();
+	}
+	public void lowDec() {
+		mat2Img.lowDec();
+	}
 }

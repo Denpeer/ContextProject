@@ -49,6 +49,11 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	private JButton refreshButton;
 	private JPanel upperblock;
 	private JTextArea label;
+	private static final int CONTROL_TEXT_X = 10;
+	private static final int CONTROL_TEXT_Y = 470;
+	private static final int CONTROL_TEXT_BOX_YDIFF = -15;
+	private static final int CONTROL_TEXT_BOX_WIDTH = 370;
+	private static final int CONTROL_TEXT_BOX_HEIGHT = 20;
 	
 
 	// the video capture object handles camera input
@@ -157,6 +162,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		contentPane = new JPanel();
 		initBgSetKey();
 		initXDAmountSetKey();
+		initMoveBoundSetKey();
 		final int top = 5, left = 5, bottom = 5, right = 5;
 		contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
 		final int rows = 5, cols = 1;
@@ -217,8 +223,6 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		contentPane.getActionMap().put(callSetTheBg, setTheBg);
 		contentPane.getActionMap().put(callStartVid, startVid);
 		contentPane.getActionMap().put(callBack, goBack);
-		
-		
 	}
 
 	/**
@@ -240,13 +244,65 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 				videoCap.decXD();
 			}
 		};
-		// add keypress 'b' sets current frame as background
 		final String callIncXD = "incXD";
 		contentPane.getInputMap().put(KeyStroke.getKeyStroke('+'), callIncXD);
 		contentPane.getActionMap().put(callIncXD, incXD);
 		final String callDecXD = "decXD";
 		contentPane.getInputMap().put(KeyStroke.getKeyStroke('-'), callDecXD);
 		contentPane.getActionMap().put(callDecXD, decXD);
+	}
+	
+	/**
+	 * set the keys to move the bounds within which the camera detection works.
+	 */
+	public void initMoveBoundSetKey() {
+		Action upInc = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.upInc();
+			}
+		};
+		Action upDec = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.upDec();
+			}
+		};
+		Action lowInc = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.lowInc();
+			}
+		};
+		Action lowDec = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.lowDec();
+			}
+		};
+		final String callUpInc = "upInc";
+		final String callUpDec = "upDec";
+		final String callLowInc = "lowInc";
+		final String callLowDec = "lowDec";
+		
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('u'), callUpInc);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('i'), callUpDec);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('j'), callLowInc);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('k'), callLowDec);
+		
+		contentPane.getActionMap().put(callUpInc, upInc);
+		contentPane.getActionMap().put(callUpDec, upDec);
+		contentPane.getActionMap().put(callLowInc, lowInc);
+		contentPane.getActionMap().put(callLowDec, lowDec);
+		
 	}
 
 	/**
@@ -260,6 +316,10 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 			if (videoCap != null) {
 				contentPane.removeAll();
 				g.drawImage(videoCap.getOneFrame(), 0, 0, this);
+				g.setColor(Color.GRAY);
+				g.fillRect(CONTROL_TEXT_X, CONTROL_TEXT_Y  + CONTROL_TEXT_BOX_YDIFF, CONTROL_TEXT_BOX_WIDTH, CONTROL_TEXT_BOX_HEIGHT);
+				g.setColor(Color.GREEN);
+				g.drawString("Controls: -b setBg(), -u upInc(), -i upDec(), -j lowInc(), -k lowDec()", CONTROL_TEXT_X, CONTROL_TEXT_Y);
 			}
 		} catch (final CameraNotOnException e) {
 			contentPane.removeAll();
@@ -277,7 +337,6 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 				contentPane.add(jButton);
 			}
 			setContentPane(contentPane);
-			
 		}
 	}
 	
