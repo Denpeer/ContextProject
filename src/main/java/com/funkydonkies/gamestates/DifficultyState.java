@@ -38,8 +38,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	
 	private SoundState soundState;
 	
-	@SuppressWarnings("rawtypes")
-	private Vector obs = new Vector();
+	private Vector<Observer> obs = new Vector<Observer>();
 
 	/**
 	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager, com.jme3.app.Application)
@@ -73,7 +72,6 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * Adds an observer to the observers vector, so that they can be updated.
 	 * @param o Observer observer to be added.
 	 */
-	@SuppressWarnings("unchecked")
 	public void addObserver(final Observer o) {
 		if (o == null) {
 			throw new NullPointerException();
@@ -94,8 +92,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * Returns the observers vector containing all the observers.
 	 * @return obs Vector
 	 */
-	@SuppressWarnings("rawtypes")
-	public Vector getObservers() {
+	public Vector<Observer> getObservers() {
 		return obs;
 	}
 

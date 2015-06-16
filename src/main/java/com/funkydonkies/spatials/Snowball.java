@@ -1,4 +1,4 @@
-package com.funkydonkies.geometrys.penguins;
+package com.funkydonkies.spatials;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -16,6 +16,11 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.jme3.texture.plugins.AWTLoader;
 
+/**
+ * Spatial that uses java awt graphics to draw a circle on the screen.
+ * Code taken from http://hub.jmonkeyengine.org/t/drawing-simple-circle-using-java-2d/25885
+ * @see http://hub.jmonkeyengine.org/t/drawing-simple-circle-using-java-2d/25885
+ */
 public class Snowball extends Node {
 	private float radius = 5;
 	private int angle = 360;
@@ -64,14 +69,24 @@ public class Snowball extends Node {
 	    this.attachChild(geometry);
 	}
 
+	/**
+	 * Updates the geometrys scale when the radius is modified.
+	 */
 	private void updateSpatial() {
 	    geometry.setLocalScale(radius / 10f, radius / 10f, radius / 10f);
 	}
 	
+	/**
+	 * Returns the circles radius.
+	 * @return
+	 */
 	public float getRadius() {
 		return radius;
 	}
 
+	/**
+	 * Uses java 2D graphics to draw the circle.
+	 */
 	public void generateImage() {
 	    BufferedImage image = new BufferedImage(widthResolution, heightResolution, BufferedImage.TYPE_INT_ARGB);
 	    Graphics2D g = image.createGraphics();
@@ -90,23 +105,44 @@ public class Snowball extends Node {
 	}
 
 
+	/**
+	 * Sets the circles radius.
+	 * @param radius float the radius
+	 */
 	public void setRadius(float radius) {
 	    this.radius = radius;
 	    updateSpatial();
 	}
 
+	/**
+	 * Sets the fill color of the circle.
+	 * @param fillColor Color the color.
+	 */
 	public void setFillColor(Color fillColor) {
 	    this.fillColor = fillColor;
 	}
 
+	/**
+	 * Setsthe border color of the circle.
+	 * @param color Color
+	 */
 	public void setColor(Color color) {
 	    this.color = color;
 	}
 
+	
+	/**
+	 * Sets the border with.
+	 * @param borderWidth float.
+	 */
 	public void setBorderWidth(float borderWidth) {
 	    this.borderWidth = borderWidth;
 	}
 
+	/**
+	 * Sets the resolution.
+	 * @param resolution int.
+	 */
 	public void setResolution(int resolution) {
 	    this.heightResolution = resolution;
 	    this.widthResolution = resolution;

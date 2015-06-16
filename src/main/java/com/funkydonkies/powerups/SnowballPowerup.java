@@ -9,7 +9,7 @@ import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.gamestates.DisabledState;
 import com.funkydonkies.gamestates.PlayState;
-import com.funkydonkies.geometrys.penguins.Snowball;
+import com.funkydonkies.spatials.Snowball;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
