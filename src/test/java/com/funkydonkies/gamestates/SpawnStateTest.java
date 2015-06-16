@@ -18,6 +18,8 @@ import com.jme3.scene.Node;
 public class SpawnStateTest {
 	private SpawnState spawnState;
 	private SpawnState spy;
+	private PlayState spy2;
+	private PhysicsSpace ps;
 	private App app;
 	private AppStateManager sManager;
 	
