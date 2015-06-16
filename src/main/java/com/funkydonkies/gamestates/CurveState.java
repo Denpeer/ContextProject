@@ -2,10 +2,10 @@ package com.funkydonkies.gamestates;
 
 import java.util.Arrays;
 
+import com.funkydonkies.core.App;
+import com.funkydonkies.curve.SplineCurve;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.Bridge;
-import com.funkydonkies.w4v3.curve.SplineCurve;
+import com.funkydonkies.interfaces.Bridge;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -38,9 +38,12 @@ public class CurveState extends AbstractAppState {
 	private Bridge bridge;
 	private App app;
 	private SplineCurve splineCurve;
+	
+	private float[] updatedXPoints = null;
 
 	private boolean cameraEnabled = false;
 	private boolean updateEnabled = false;
+	private boolean invertControlPoints = false;
 
 	private RigidBodyControl oldRigi;
 	private RigidBodyControl rigi;
@@ -61,7 +64,7 @@ public class CurveState extends AbstractAppState {
 
 		bridge = sManager.getState(CameraState.class).getBridge();
 		curveMaterial = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMaterial.setColor(COLOR, ColorRGBA.randomColor());
+		curveMaterial.setColor(COLOR, ColorRGBA.White);
 		oldRigi = new RigidBodyControl(0f);
 		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
 	}
@@ -118,7 +121,21 @@ public class CurveState extends AbstractAppState {
 		maxHeightDifference = (float) (bridge.getxdist() * Math
 				.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
 	}
-
+	
+	public void setInvertControlPoints(boolean b) {
+		invertControlPoints = b;
+	}
+	
+	public float[] reverse(float[] points) {
+		for(int i = 0; i < points.length / 2; i++)
+		{
+		    float temp = points[i];
+		    points[i] = points[points.length - i - 1];
+		    points[points.length - i - 1] = temp;
+		}
+		return points;
+	}
+	
 	@Override
 	public final void update(final float tpf) {
 		float[] points;
@@ -141,6 +158,9 @@ public class CurveState extends AbstractAppState {
 				points[i] = i * scale;
 			}
 		}
+		if (invertControlPoints) {
+//			points = reverse(points);
+		}
 
 		if (updateEnabled) {
 			if (bridge != null && bridge.isBgSet()) {
@@ -148,6 +168,7 @@ public class CurveState extends AbstractAppState {
 			} else {
 				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
 			}
+			updatedXPoints = points;
 			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
@@ -157,7 +178,7 @@ public class CurveState extends AbstractAppState {
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
-		splineCurve.drawCurve(curveMaterial, PlayState.getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class).getPhysicsSpace(), rigi, app.getRootNode());
 		splineCurve.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 	}
@@ -229,7 +250,9 @@ public class CurveState extends AbstractAppState {
 	private void scaleValues(final float[] points, final int screenHeight) {
 		for (int i = 0; i < points.length; i++) {
 			float point = points[i];
-			point = screenHeight - point;
+			if (!invertControlPoints) {
+				point = screenHeight - point;
+			}
 			point = point / screenHeight;
 			point = point * POINTS_HEIGHT;
 			points[i] = point;
@@ -246,7 +269,7 @@ public class CurveState extends AbstractAppState {
 		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
-			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
+			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 15, 0));
 		}
 
 		return points;
@@ -303,5 +326,25 @@ public class CurveState extends AbstractAppState {
 	 */
 	public SplineCurve getSplineCurve() {
 		return splineCurve;
+	}
+	
+	/** Loops over the curvepoints and gets the x location of the highest controlpoint. 
+	 * @return the x location of the highest controlpoint
+	 */
+	public float getHighestPointX() {
+		float highest = 0;
+		int highestIndex = -1;
+		
+		if (updatedXPoints != null) {
+			for (int i = 0; i < updatedXPoints.length; i++) {
+				final float tmp = updatedXPoints[i];
+				if (tmp > highest) {
+					highest = tmp;
+					highestIndex = i;
+				}
+			}
+		}
+		
+		return highestIndex * POINT_DISTANCE;
 	}
 }

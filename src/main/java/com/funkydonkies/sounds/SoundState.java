@@ -3,8 +3,8 @@ package com.funkydonkies.sounds;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.w4v3.App;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
