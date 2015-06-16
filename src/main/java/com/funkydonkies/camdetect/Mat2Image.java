@@ -419,7 +419,6 @@ public class Mat2Image implements Bridge {
 	public void upDec() {
 		if (upperBound < (lowerBound - BOUND_MOVE_AMOUNT)) {
 			upperBound += BOUND_MOVE_AMOUNT;
-			System.out.println(upperBound);
 		}
 	}
 	
