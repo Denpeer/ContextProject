@@ -9,6 +9,7 @@ import org.reflections.Reflections;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.interfaces.FactoryInterface;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -30,7 +31,7 @@ public class SpawnState extends AbstractAppState {
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
 
-	private AppStateManager stManager;
+	private AppStateManager stateManager;
 	private float spawnBallTime;
 
 	private FactoryInterface penguin;
@@ -68,7 +69,7 @@ public class SpawnState extends AbstractAppState {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		stManager = sManager;
+		stateManager = sManager;
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
 		setSpawnAbleObjects();
@@ -112,9 +113,10 @@ public class SpawnState extends AbstractAppState {
 			timeCount = 0;
 			spawn(penguin, app.getPenguinNode());
 		}
-		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
+		if (specialFishTimer > 2) {
 			specialFishTimer = 0;
 			int i = rand.nextInt(2);
+			i=1;
 			switch (i) {
 			case 0:
 				spawn(krill, app.getRootNode());
@@ -154,9 +156,9 @@ public class SpawnState extends AbstractAppState {
 	}
 
 	public void spawn(FactoryInterface obstacleFactory, Node nodeToAttach) {
-		final Spatial obstacle = obstacleFactory.makeObject(stManager, app);
+		final Spatial obstacle = obstacleFactory.makeObject(stateManager, app);
 		if (obstacle != null) {
-			app.getRootNode().attachChild(obstacle);
+			nodeToAttach.attachChild(obstacle);
 		}
 	}
 
