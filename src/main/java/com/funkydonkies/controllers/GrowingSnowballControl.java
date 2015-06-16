@@ -1,11 +1,9 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.curve.SplineCurve;
-import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.geometrys.penguins.Snowball;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
-import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -18,12 +16,13 @@ import com.jme3.scene.Spatial;
  */
 public class GrowingSnowballControl extends PenguinControl implements PhysicsCollisionListener,
 		PhysicsTickListener {
-	private static final String SNOW_BALL_NAME = "snowball";
-	private static final float SCALE_UP_FACTOR = 0.3f;
-	private static final float THRESHOLD = 0.5f;
-	private static final float SCALE_OFFSET = 0.5f;
+
+	public static final String SNOW_BALL_NAME = "snowball";
+	private static final float SCALE_UP_FACTOR = 0.15f;
+	private static final float SCALE_TIME = 0.25f;
+	private static final float MAX_RADIUS = 10f;
+	private static final float SCALE_OFFSET = 0.5f; //Dont touch, should be 1/2
 	private float timer = 0;
-	private boolean canScale = false;
 
 	/**
 	 * Constructor for GrowingSnowBallControl.
@@ -33,9 +32,9 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	 * @param mass
 	 *            the Snow Ball's desired mass
 	 */
-	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape, final float mass) {
-		super(sphereCollisionShape, mass);
-
+	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape,
+			final float mass, final AppStateManager sManager) {
+		super(sphereCollisionShape, mass, sManager);
 	}
 
 	@Override
@@ -50,6 +49,11 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 		super.update(tpf);
 		scaleSnowBall(tpf);
 	}
+	
+	@Override
+	public void init() {
+		//do nothing
+	}
 
 	/**
 	 * Scales Snow Ball every THRESHOLD seconds.
@@ -59,20 +63,21 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	 */
 	public void scaleSnowBall(final float tpf) {
 		timer += tpf;
-		if (timer > THRESHOLD) {
-			timer = 0;
-			canScale = true;
-			final Spatial snowBall = ((Node) spatial).getChild(SNOW_BALL_NAME);
-			((Snowball) snowBall).setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
-
-			final Vector3f loc = snowBall.getLocalTranslation();
-			loc.x = loc.x - SCALE_OFFSET * SCALE_UP_FACTOR;
-			loc.y = loc.y - SCALE_OFFSET * SCALE_UP_FACTOR;
-
+		if (timer > SCALE_TIME) {
 			final CollisionShape s = getCollisionShape();
 			final float radius = ((SphereCollisionShape) s).getRadius();
-			setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * SCALE_OFFSET));
-			snowBall.setLocalTranslation(loc);
+			timer = 0;
+			if (radius < MAX_RADIUS) {
+				final Spatial snowBall = ((Node) spatial).getChild(SNOW_BALL_NAME);
+				((Snowball) snowBall).setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
+				
+				final Vector3f loc = snowBall.getLocalTranslation();
+				loc.x = loc.x - SCALE_OFFSET * SCALE_UP_FACTOR;
+				loc.y = loc.y - SCALE_OFFSET * SCALE_UP_FACTOR;
+				
+				setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * SCALE_OFFSET));
+				snowBall.setLocalTranslation(loc);
+			}
 		}
 	}
 
@@ -100,19 +105,5 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	 */
 	public void prePhysicsTick(final PhysicsSpace space, final float tpf) {
 		super.prePhysicsTick(space, tpf);
-		final Vector3f a = getAngularVelocity();
-		a.x = 0;
-		a.y = 0;
-		setAngularVelocity(a);
 	}
-
-	@Override
-	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, PenguinFactory.STANDARD_PENGUIN_NAME, SplineCurve.CURVE_NAME)) {
-			if (canScale) {
-				canScale = false;
-			}
-		}
-	}
-
 }

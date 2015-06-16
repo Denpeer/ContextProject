@@ -3,6 +3,7 @@ package com.funkydonkies.controllers;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.PolarBearFactory;
 import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -10,8 +11,6 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
 
 /**
  * Control class for the polar bear. Takes care of collisions between the polar bear and the
@@ -21,7 +20,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	private Vector3f initialLoc;
 
-	private final int destroyTime = 3;
+	private static final int DESTROY_TIME = 3;
 
 	private boolean doneMoving = false;
 
@@ -29,7 +28,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	private float time = 0;
 	private float stopCoord;
-
+	private AppStateManager stateManager;
 	private DifficultyState diffState;
 
 	/**
@@ -51,18 +50,27 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		initialLoc = iLoc;
 		stopCoord = stopX;
 		diffState = sManager.getState(DifficultyState.class);
+		stateManager = sManager;
+	}
+	
+	/**
+	 * Set the physics space and add this controller as tick listener.
+	 */
+	@Override
+	public void setPhysicsSpace(final PhysicsSpace space) {
+		super.setPhysicsSpace(space);
+		space.addCollisionListener(this);
 	}
 
 	@Override
 	public void init() {
 		spatial.setLocalTranslation(initialLoc);
+		setPhysicsLocation(initialLoc);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
 	/**
 	 * The update method for the contoller.
-	 * 
-	 * @param tpf
-	 *            is the time per frame
 	 */
 	@Override
 	public void update(final float tpf) {
@@ -70,26 +78,12 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 		if (doneMoving) {
 			time += tpf;
-			if (time > destroyTime) {
-				spatial.getParent().detachChild(spatial);
-				this.setEnabled(false);
-				spatial.removeControl(this);
+			if (time > DESTROY_TIME) {
+				spatial.removeFromParent();
+				setEnabled(false);
 				doneMoving = false;
 			}
 		}
-	}
-
-	/**
-	 * Set the physics space and add this controller as tick listener.
-	 * 
-	 * @param space
-	 *            takes a pre-defined jme3 physicsSpace
-	 */
-	@Override
-	public void setPhysicsSpace(final PhysicsSpace space) {
-		super.setPhysicsSpace(space);
-		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 	/**
@@ -101,25 +95,14 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		if (spatial != null && initialLoc.getX() < stopCoord && vec.getX() < stopCoord) {
 			loc = new Vector3f((float) (vec.getX() + SPEED), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
-
+			setPhysicsLocation(loc);
 		} else if (spatial != null && initialLoc.getX() >= stopCoord && vec.getX() >= stopCoord) {
 			loc = new Vector3f((float) (vec.getX() - SPEED), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
+			setPhysicsLocation(loc);
 		} else {
 			doneMoving = true;
 		}
-
-	}
-
-	/**
-	 * The renderer for the control.
-	 * 
-	 * @param rm
-	 *            the renderManager
-	 * @param vp
-	 *            the viewPort
-	 */
-	protected void controlRender(final RenderManager rm, final ViewPort vp) {
 
 	}
 
@@ -133,8 +116,10 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	public void collision(final PhysicsCollisionEvent event) {
 		if (doneMoving) {
 			if (checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME,
-					PenguinFactory.STANDARD_PENGUIN_NAME)) {
+					PenguinFactory.PENGUIN_NAME)) {
 				diffState.resetDiff();
+				destroy(event, PenguinFactory.PENGUIN_NAME);
+
 			}
 		}
 

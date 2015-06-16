@@ -1,5 +1,6 @@
 package com.funkydonkies.factories;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -23,8 +24,10 @@ import com.jme3.scene.shape.Box;
  */
 public class FishFactoryTest {
 	private FishFactory mockFactory;
+	private FishFactory fac;
 	private AppStateManager assManager;
 	private SimpleApplication app;
+	private Geometry geom;
 
 	/**
 	 * Do this before executing tests.
@@ -32,20 +35,13 @@ public class FishFactoryTest {
 	 */
 	@Before
 	public void setUp() {
+		geom = mock(Geometry.class);
 		app = mock(SimpleApplication.class);
 		assManager = new AppStateManager(app);
 		mockFactory = spy(FishFactory.class);
-	    doReturn(mock(Material.class)).when(mockFactory).getFishMaterial(any(AssetManager.class));
-
-	}
-
-	/**
-	 * tests if the fishcontrol is enabled.
-	 */
-	@Test
-	public void testMakeObject() {
-		final Geometry fish = mockFactory.makeObject(assManager, app);
-		assertTrue(((FishControl) (fish).getControl(0)).isEnabled());
+		fac = new FishFactory();
+	    doReturn(mock(Material.class)).when(mockFactory).getFishMaterial();
+	    doReturn(geom).when(mockFactory).makeGeometry(any(Box.class));
 	}
 	
 	/**
@@ -53,8 +49,16 @@ public class FishFactoryTest {
 	 */
 	@Test
 	public void testControlAttached() {
-		final Geometry fish = mockFactory.makeObject(assManager, app);
-		assertTrue(((FishControl) (fish).getControl(0)) != null);
+		mockFactory.makeObject(assManager, app);
+		verify(geom).addControl(any(FishControl.class));
+	}
+	
+	/**
+	 * Test the make geometry method.
+	 */
+	@Test
+	public void testMakeGeometry() {
+		assertFalse(fac.makeGeometry(new Box(1, 1, 1)) == null);
 	}
 	
 	/**

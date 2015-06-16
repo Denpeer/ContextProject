@@ -1,11 +1,9 @@
 package com.funkydonkies.factories;
 
 import com.funkydonkies.controllers.FishControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
@@ -34,13 +32,10 @@ public class FishFactory implements FactoryInterface {
 	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a fish object
 	 */
-	@Override
 	public Geometry makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
-		
 		final Geometry fish = makeFish();
-		
 		return fish;
 	}
 	
@@ -51,7 +46,8 @@ public class FishFactory implements FactoryInterface {
 	public Geometry makeFish() {
 		final Mesh mesh = new Box(FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH);
 		final Geometry geom = makeGeometry(mesh);
-		geom.setMaterial(getFishMaterial(app.getAssetManager()));
+		geom.setMaterial(getFishMaterial());
+		
 		final FishControl control = makeFishControl();
 		geom.addControl(control);
 		return geom;
@@ -78,11 +74,10 @@ public class FishFactory implements FactoryInterface {
 	
 	/**
 	 * This method makes all the required materials.
-	 * @param assetManager jme AssetManager for loading models
 	 * @return a Material object
 	 */
-	public Material getFishMaterial(final AssetManager assetManager) {
-		final Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+	public Material getFishMaterial() {
+		final Material mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Green);
 		return mat;
 	}

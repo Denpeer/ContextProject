@@ -75,16 +75,25 @@ public class SpearFactory implements FactoryInterface {
 	public Geometry makeSpear(final float y, final float x) {
 		
 		final Mesh spearMesh = new Box(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH);
-		final Geometry spear = new Geometry(SPEAR_NAME, spearMesh);
+		final Geometry spear = makeGeometry(spearMesh);
 		spear.setMaterial(getSpearMaterial());
+
+		spear.addControl(makeSpearControl(x, y));
+		
+		return spear;
+	}
+	/**
+	 * This method makes the control for the spear.
+	 * @param x the initial x coordinate of the spear
+	 * @param y the initial y coordinate of the spear
+	 * @return a spear control   
+	 */
+	public SpearControl makeSpearControl(final float x, final float y) {
 		
 		final Vector3f loci = new Vector3f(x, y, 0);
 		final CollisionShape colShape = 
 				new BoxCollisionShape(new Vector3f(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH));
-		final SpearControl spearControl = new SpearControl(colShape, stateManager, loci);
-		spear.addControl(spearControl);
-		
-		return spear;
+		return new SpearControl(colShape, stateManager, loci);
 	}
 	/**
 	 * This method a warning line geometry.
@@ -97,9 +106,8 @@ public class SpearFactory implements FactoryInterface {
 		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 		
-		final WarningLineControl wLC = new WarningLineControl(0, y);
-		geom.addControl(wLC);
-		wLC.init();
+		final WarningLineControl warningLineControl = new WarningLineControl(0, y);
+		geom.addControl(warningLineControl);
 		return geom;
 	}
 
@@ -124,4 +132,12 @@ public class SpearFactory implements FactoryInterface {
 		return mat;
 	}
 
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the spear
+	 * @return a spear geometry
+	 */
+	public Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(SPEAR_NAME, mesh);
+	}
 }

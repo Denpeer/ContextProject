@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.funkydonkies.controllers.ThunderControl;
 import com.funkydonkies.controllers.ThunderWarningLineControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -82,7 +81,7 @@ public class ThunderFactory implements FactoryInterface {
 	 */
 	public Geometry makeThunder(final float xCoord) {
 		final Box mesh = new Box(THUNDER_WIDTH, THUNDER_HEIGHT, THUNDER_DEPTH);
-		final Geometry geom = new Geometry(THUNDER_NAME, mesh);
+		final Geometry geom = makeGeometry(mesh);
 		geom.setMaterial(getThunderMaterial());
 
 		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(THUNDER_WIDTH,
@@ -90,7 +89,6 @@ public class ThunderFactory implements FactoryInterface {
 
 		final ThunderControl control = new ThunderControl(colShape, stateManager, xCoord);
 		geom.addControl(control);
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(control);
 		return geom;
 	}
 
@@ -108,12 +106,9 @@ public class ThunderFactory implements FactoryInterface {
 		geom.setMaterial(getWarningLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(WARNING_LINE_WIDTH,
-				WARNING_LINE_HEIGHT, WARNING_LINE_DEPTH));
-
-		final ThunderWarningLineControl wLC = new ThunderWarningLineControl(stateManager, xCoord, 0);
-		geom.addControl(wLC);
-//		stateManager.getState(PlayState.class).getPhysicsSpace().add(wLC);
+		final ThunderWarningLineControl warningLineControl = new ThunderWarningLineControl(stateManager, xCoord, 0);
+		geom.addControl(warningLineControl);
+		
 		return geom;
 	}
 
@@ -141,6 +136,15 @@ public class ThunderFactory implements FactoryInterface {
 		warningLineMaterial.setColor(color, new ColorRGBA(1, 0, 0, (float) colorAlpha));
 		warningLineMaterial.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return warningLineMaterial;
+	}
+	
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the thunder
+	 * @return a thunder geometry
+	 */
+	public Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(THUNDER_NAME, mesh);
 	}
 
 }
