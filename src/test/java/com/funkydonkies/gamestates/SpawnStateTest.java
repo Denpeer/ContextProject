@@ -1,9 +1,9 @@
 package com.funkydonkies.gamestates;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
@@ -13,13 +13,12 @@ import com.funkydonkies.core.App;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.scene.Node;
 
 public class SpawnStateTest {
 	private SpawnState spawnState;
 	private SpawnState spy;
-	private PlayState spy2;
 	private App app;
-	private PhysicsSpace ps;
 	private AppStateManager sManager;
 	
 	
@@ -32,9 +31,7 @@ public class SpawnStateTest {
 		sManager = new AppStateManager(app);
 		spawnState = new SpawnState();
 		spy = spy(spawnState);
-		spy2 = spy(new PlayState());
-		ps = mock(PhysicsSpace.class);
-		doNothing().when(spy).spawn(any(FactoryInterface.class));
+		doNothing().when(spy).spawn(any(FactoryInterface.class), any(Node.class));
 		doNothing().when(spy).initRootNodeMat(app);
 	}
 	
@@ -44,7 +41,7 @@ public class SpawnStateTest {
 		
 		verify(spy).initFactories();
 		verify(spy).setSpawnAbleObjects();
-		verify(spy).spawn(any(FactoryInterface.class));
+		verify(spy).spawn(any(FactoryInterface.class), any(Node.class));
 		verify(spy).initRootNodeMat(app);
 	}
 }

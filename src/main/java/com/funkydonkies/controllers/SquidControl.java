@@ -7,6 +7,9 @@ import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.powerups.SnowballPowerup;
+import com.funkydonkies.sounds.SoundState;
+import com.funkydonkies.sounds.TargetCollisionSound;
+import com.funkydonkies.sounds.TargetSpawnSound;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -51,6 +54,7 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 
 	@Override
 	public void init() {
+		stateManager.getState(SoundState.class).queueSound(new TargetSpawnSound());
 		respawn();
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
@@ -72,7 +76,6 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 					vec.getZ());
 			spatial.setLocalTranslation(loc);
 			setPhysicsLocation(loc);
-
 		} else {
 			final Vector3f vec = spatial.getLocalTranslation();
 			final Vector3f loc = new Vector3f((float) (vec.getX() + STEP_SIZE), vec.getY(),
@@ -92,11 +95,13 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, SquidFactory.SQUID_NAME, PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
 			diffState.incDiff();
 			diffState.activateSnowBallPowerup();
 			destroy(event, SquidFactory.SQUID_NAME);
 		}
 		if (checkCollision(event, SquidFactory.SQUID_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
 			diffState.incDiff();
 			diffState.activateSnowBallPowerup();
 			destroy(event, SquidFactory.SQUID_NAME);

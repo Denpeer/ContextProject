@@ -10,6 +10,8 @@ import com.funkydonkies.interfaces.Observer;
 import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
 import com.funkydonkies.powerups.SuperSizePowerup;
+import com.funkydonkies.sounds.ComboLostSound;
+import com.funkydonkies.sounds.SoundState;
 import com.funkydonkies.tiers.Tier1;
 import com.funkydonkies.tiers.Tier2;
 import com.jme3.app.Application;
@@ -22,22 +24,6 @@ import com.jme3.app.state.AppStateManager;
  * This Class uses the observer pattern, it is an observable that notifies it observers when the 
  * combo count changes, so that GUI/HUD elements can be updated accordingly.
  * 
- */
-/**
- * @author Jonathan
- *
- */
-/**
- * @author Jonathan
- *
- */
-/**
- * @author Jonathan
- *
- */
-/**
- * @author Jonathan
- *
  */
 public class DifficultyState extends AbstractAppState implements Observable {
 	private static final float TIER_ONE_ACTIVATION = 1;
@@ -56,7 +42,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	private InvertControlsPowerup invertControls;
 	private SnowballPowerup snowBallPowerup;
-
+	
+	private SoundState soundState;
 	private Vector obs = new Vector();;
 
 	/**
@@ -81,6 +68,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 		snowBallPowerup = makeSnowBallPowerup();
 		sManager.attach(snowBallPowerup);
+		
+		soundState = sManager.getState(SoundState.class);
 
 		combo = initComboDisplay();
 	}
@@ -104,6 +93,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		changed = true;
 	}
 	
+	/**
+	 * Returns the observers vector containing all the observers.
+	 * @return obs Vector
+	 */
 	public Vector getObservers() {
 		return obs;
 	}
@@ -135,10 +128,18 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		return new Tier2();
 	}
 
+	/**
+	 * Returns a new InvertControlsPowerup, called in initialize
+	 * @return new InvertControlsPowerup
+	 */
 	public InvertControlsPowerup makeInvertControlsPowerup() {
 		return new InvertControlsPowerup();
 	}
 
+	/**
+	 * Returns a new SnowballPowerup, called in initialize
+	 * @return new SnowballPowerup
+	 */
 	public SnowballPowerup makeSnowBallPowerup() {
 		return new SnowballPowerup();
 	}
@@ -216,6 +217,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * Resets the current combo and notifies the observers of the change.
 	 */
 	public void resetDiff() {
+		soundState.queueSound(new ComboLostSound());
 		currCombo = 0;
 		setChanged();
 		notifyObservers(null);

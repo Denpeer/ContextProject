@@ -6,6 +6,9 @@ import com.funkydonkies.factories.SpikeyBallFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractRigidBodyControl;
+import com.funkydonkies.sounds.ObstacleCollisionSound;
+import com.funkydonkies.sounds.ObstacleSpawnSound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -52,6 +55,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 
 	@Override
 	public void init() {
+		stateManager.getState(SoundState.class).queueSound(new ObstacleSpawnSound());
 		final int yOffSet = 50, xOffSet = 100;
 		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		setPhysicsLocation(initialSpawn);
@@ -106,6 +110,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, SpikeyBallFactory.SPIKEYBALL_NAME,
 				PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);
 		}
