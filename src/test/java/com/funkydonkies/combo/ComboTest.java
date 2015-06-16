@@ -24,8 +24,8 @@ import com.jme3.scene.Node;
 
 
 public class ComboTest {
-	private static Combo combo;
-	private Combo comboSpy;
+	private static ComboDisplay combo;
+	private ComboDisplay comboSpy;
 	private BitmapText text;
 	private Node rootNode;
 	private Node guiNode;
@@ -48,7 +48,7 @@ public class ComboTest {
 		when(app.getGuiNode()).thenReturn(guiNode);
 		when(rootNode.getUserData("default text")).thenReturn(text);
 		
-		combo = new Combo(app);
+		combo = new ComboDisplay(app);
 		comboSpy = spy(combo);
 		
 		doReturn(text).when(comboSpy).createText(app);
@@ -93,18 +93,18 @@ public class ComboTest {
 	public void createCurrentComboTextTest() {
 		reset(text);
 		comboSpy.createCurrentComboText(app);
-		verify(text).setSize(Combo.TEXT_SIZE);
+		verify(text).setSize(ComboDisplay.TEXT_SIZE);
 		verify(text).setColor(any(ColorRGBA.class));
-		verify(text).setLocalTranslation(Combo.COUNTER_LOCATION);
+		verify(text).setLocalTranslation(ComboDisplay.COUNTER_LOCATION);
 	}
 	
 	@Test
 	public void createHighestComboTextTest() {
 		reset(text);
 		comboSpy.createHighestComboText(app);
-		verify(text).setSize(Combo.TEXT_SIZE);
+		verify(text).setSize(ComboDisplay.TEXT_SIZE);
 		verify(text).setColor(any(ColorRGBA.class));
-		Vector3f highestloc = Combo.COUNTER_LOCATION;
+		Vector3f highestloc = ComboDisplay.COUNTER_LOCATION;
 		verify(text).setLocalTranslation(highestloc.setX(any(Float.class)));
 	}
 }

@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.combo.Combo;
+import com.funkydonkies.combo.ComboDisplay;
 import com.funkydonkies.core.App;
 import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
@@ -26,7 +26,7 @@ public class DifficultyStateTest {
 	private DifficultyState diffSpy;
 	private Tier1 tier1;
 	private Tier2 tier2;
-	private Combo combo;
+	private ComboDisplay combo;
 	private SnowballPowerup snowBall;
 	private InvertControlsPowerup invertControls;
 	
@@ -36,7 +36,7 @@ public class DifficultyStateTest {
 		sManager = mock(AppStateManager.class);
 		tier1 = mock(Tier1.class);
 		tier2 = mock(Tier2.class);
-		combo = mock(Combo.class);
+		combo = mock(ComboDisplay.class);
 		snowBall = mock(SnowballPowerup.class);
 		invertControls = mock(InvertControlsPowerup.class);
 		
