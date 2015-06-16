@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import com.funkydonkies.controllers.SquidControl;
 import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.Sound;
 import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -34,6 +35,7 @@ public class SquidFactoryTest {
 	private MatParam mpMock;
 	private PlayState psMock;
 	private PhysicsSpace physMock;
+	private SoundState soundState;
 	
 	private final int numThree = 3;
 
@@ -53,13 +55,15 @@ public class SquidFactoryTest {
 		mpMock = Mockito.mock(MatParam.class);
 		psMock = Mockito.mock(PlayState.class);
 		physMock = Mockito.mock(PhysicsSpace.class);
+		soundState = Mockito.mock(SoundState.class);
 		Mockito.when(saMock.getAssetManager()).thenReturn(amMock);
 		Mockito.when(amMock.loadAsset(Mockito.any(AssetKey.class))).thenReturn(mdMock);
 		Mockito.when(mdMock.getMaterialParam(Mockito.any(String.class))).thenReturn(mpMock);
 		Mockito.when(asmMock.getState(PlayState.class)).thenReturn(psMock);
 		Mockito.when(psMock.getPhysicsSpace()).thenReturn(physMock);
 		Mockito.doNothing().when(physMock).add(Mockito.any(SquidControl.class));
-		Mockito.doReturn(Mockito.mock(SoundState.class)).when(asmMock).getState(SoundState.class);
+		Mockito.doReturn(soundState).when(asmMock).getState(SoundState.class);
+		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
 	}
 
 	/**

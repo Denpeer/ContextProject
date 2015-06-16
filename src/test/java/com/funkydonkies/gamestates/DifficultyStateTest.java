@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.funkydonkies.combo.ComboDisplay;
 import com.funkydonkies.core.App;
@@ -53,6 +54,7 @@ public class DifficultyStateTest {
 		doReturn(snowBall).when(diffSpy).makeSnowBallPowerup();
 		doReturn(invertControls).when(diffSpy).makeInvertControlsPowerup();
 		doReturn(soundState).when(sManager).getState(SoundState.class);
+		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
 	}
 
 	@Test

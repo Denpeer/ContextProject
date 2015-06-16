@@ -10,6 +10,7 @@ import com.funkydonkies.controllers.SquidControl;
 import com.funkydonkies.controllers.ThunderControl;
 import com.funkydonkies.controllers.ThunderWarningLineControl;
 import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.Sound;
 import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -42,7 +43,8 @@ public class ThunderFactoryTest {
 	private Material matMock;
 	private RenderState renderStateMock;
 	private final int numThree = 3;
-
+	private SoundState soundState;
+	
 	/**
 	 * setup for tests. Mock all that is needed.
 	 * @throws Exception exception
@@ -62,6 +64,7 @@ public class ThunderFactoryTest {
 		rootNodeMock = Mockito.mock(Node.class);
 		matMock = Mockito.mock(Material.class);
 		renderStateMock = Mockito.mock(RenderState.class);
+		soundState = Mockito.mock(SoundState.class);
 		Mockito.when(saMock.getAssetManager()).thenReturn(amMock);
 		Mockito.when(amMock.loadAsset(Mockito.any(AssetKey.class))).thenReturn(mdMock);
 		Mockito.when(mdMock.getMaterialParam(Mockito.any(String.class))).thenReturn(mpMock);
@@ -72,7 +75,9 @@ public class ThunderFactoryTest {
 		Mockito.when(rootNodeMock.getUserData(Mockito.any(String.class))).thenReturn(matMock);
 		Mockito.when(matMock.clone()).thenReturn(matMock);
 		Mockito.when(matMock.getAdditionalRenderState()).thenReturn(renderStateMock);
-		Mockito.doReturn(Mockito.mock(SoundState.class)).when(asmMock).getState(SoundState.class);
+		Mockito.doReturn(soundState).when(asmMock).getState(SoundState.class);
+		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
+
 	}
 
 	/**
