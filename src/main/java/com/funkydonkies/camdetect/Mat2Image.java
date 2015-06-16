@@ -343,7 +343,7 @@ public class Mat2Image implements Bridge {
 		final float[] normCP = Arrays.copyOf(interestPoints, numPoints);
 		for (int i = 0; i < normCP.length; i++) {
 			normCP[i] = normCP[i] - upperBound;
-			normCP[i] = Math.abs(normCP[i] - lowerBound);
+			normCP[i] = Math.abs(normCP[i] - (lowerBound - upperBound));
 			normCP[i] = normCP[i] / (lowerBound - upperBound);
 		}
 		return normCP;
