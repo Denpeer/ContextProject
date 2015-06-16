@@ -1,13 +1,13 @@
 package com.funkydonkies.factories;
 
 import com.funkydonkies.controllers.YetiControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Sphere;
 
 /**
@@ -50,13 +50,13 @@ public class YetiFactory implements FactoryInterface {
 	 */
 	public Geometry makeYetiSnowBall() {
 		final Sphere mesh = new Sphere(YETI_WIDTH, YETI_HEIGHT, YETI_DEPTH);
-		final Geometry snowBall = new Geometry(YETI_NAME, mesh);
-		snowBall.setMaterial(getYetiSnowBallMaterial());
+		final Geometry geom = makeGeometry(mesh);
+		geom.setMaterial(getYetiSnowBallMaterial());
 
 		final YetiControl control = new YetiControl(stateManager);
-		snowBall.addControl(control);
-		stateManager.getState(PlayState.class).getPhysicsSpace().add(control);
-		return snowBall;
+		geom.addControl(control);
+		
+		return geom;
 	}
 
 	/**
@@ -70,4 +70,14 @@ public class YetiFactory implements FactoryInterface {
 		snowMaterial.setColor("Color", ColorRGBA.White);
 		return snowMaterial;
 	}
+	
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the krill
+	 * @return a krill geometry
+	 */
+	public Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(YETI_NAME, mesh);
+	}
+
 }

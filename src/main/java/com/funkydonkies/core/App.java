@@ -3,7 +3,6 @@ package com.funkydonkies.core;
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
-import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
 
 /**

@@ -2,6 +2,7 @@ package com.funkydonkies.gamestates;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -24,11 +25,13 @@ public class PlayState extends AbstractAppState {
 	private GameInputState gameInputState;
 	private CurveState curveState;
 	private CameraState cameraState;
-	private SceneState sceneState;
+	private SoundState soundState;
 	private GameBackgroundMusicState gameSoundState;
 	private SpawnState spawnState;
 	private DifficultyState difficultyState;
 	private AppStateManager stateManage;
+	private SceneState sceneState;
+	
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -47,7 +50,7 @@ public class PlayState extends AbstractAppState {
 		}
 		stateManage = stateManager;
 
-		app.getFlyByCamera().setEnabled(false);
+		app.getFlyByCamera().setEnabled(true);
 		app.getCamera().setLocation(CAM_LOCATION);
 
 		handleBulletAppState();
@@ -65,6 +68,9 @@ public class PlayState extends AbstractAppState {
 		
 		curveState = new CurveState();
 		stateManage.attach(curveState);
+		
+		soundState = new SoundState();
+		stateManage.attach(soundState);
 		
 		sceneState = new SceneState();
 		stateManage.attach(sceneState);
@@ -86,7 +92,7 @@ public class PlayState extends AbstractAppState {
 	public void handleBulletAppState() {
 		bulletAppState = makeBulletAppState();
 		stateManage.attach(bulletAppState);
-//		bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	

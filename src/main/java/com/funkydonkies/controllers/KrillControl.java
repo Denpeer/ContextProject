@@ -3,7 +3,9 @@ package com.funkydonkies.controllers;
 import com.funkydonkies.factories.KrillFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.DifficultyState;
+import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
+import com.funkydonkies.powerups.SnowballPowerup;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -15,10 +17,9 @@ import com.jme3.math.Vector3f;
  * Control class for the target. Takes care of collisions between the ball and target.
  */
 public class KrillControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
-	
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(130f, 90f, 1f);
-	
+
 	private DifficultyState diffState;
+	private AppStateManager stateManager;
 
 	/**
 	 * Constructor method for target control.
@@ -31,25 +32,19 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	public KrillControl(final CollisionShape colShape, final AppStateManager sManager) {
 		super(colShape);
 		diffState = sManager.getState(DifficultyState.class);
+		stateManager = sManager;
 	}
 
 	@Override
 	public void init() {
-		setPhysicsLocation(INITIAL_SPAWN_LOCATION);
-		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		respawn();
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
-	/**
-	 * Set the physics space and add this controller as tick listener.
-	 * 
-	 * @param space
-	 *            takes a pre-defined jme3 physicsSpace
-	 */
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 	/**
@@ -60,12 +55,15 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	 *            PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, KrillFactory.KRILL_NAME, PenguinFactory.STANDARD_PENGUIN_NAME)) {
+		if (checkCollision(event, KrillFactory.KRILL_NAME, PenguinFactory.PENGUIN_NAME)) {
 			diffState.incDiff(2);
-			destroy(event, PenguinFactory.STANDARD_PENGUIN_NAME);
 			diffState.activateInvertControls();
+			destroy(event, PenguinFactory.PENGUIN_NAME);
 		}
-
+		if (checkCollision(event, KrillFactory.KRILL_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
+			diffState.incDiff(2);
+			diffState.activateInvertControls();
+			destroy(event, PenguinFactory.PENGUIN_NAME);
+		}
 	}
-
 }

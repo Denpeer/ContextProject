@@ -48,7 +48,7 @@ public class KrillFactory implements FactoryInterface {
 	 */
 	public Geometry makeKrill() {
 		final Mesh mesh = new Box(KRILL_WIDTH, KRILL_HEIGHT, KRILL_DEPTH);
-		final Geometry geom = new Geometry(KRILL_NAME, mesh);
+		final Geometry geom = makeGeometry(mesh);
 		geom.setMaterial(getkrillMaterial());
 
 		final KrillControl tarCont = new KrillControl(new BoxCollisionShape(new Vector3f(
@@ -57,6 +57,16 @@ public class KrillFactory implements FactoryInterface {
 
 		return geom;
 	}
+	
+	/**
+	 * This method makes a geometry.
+	 * @param mesh the mesh of the krill
+	 * @return a krill geometry
+	 */
+	public Geometry makeGeometry(final Mesh mesh) {
+		return new Geometry(KRILL_NAME, mesh);
+	}
+
 
 	/**
 	 * This method makes all the required materials.
