@@ -13,6 +13,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.material.Material;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 /**
@@ -67,7 +68,7 @@ public class SpawnState extends AbstractAppState {
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
 		setSpawnAbleObjects();
-		spawn(fish);
+		spawn(fish, app.getRootNode());
 		initRootNodeMat(app);
 		rand = new Random();
 	}
@@ -103,17 +104,17 @@ public class SpawnState extends AbstractAppState {
 		specialFishTimer += tpf;
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
-			spawnPenguin(penguin);
+			spawn(penguin, app.getPenguinNode());
 		}
 		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME){
 			specialFishTimer = 0;
 			int i = rand.nextInt(2);
 			switch (i) {
 				case 0:
-					spawn(krill);
+					spawn(krill, app.getRootNode());
 					break;
 				case 1: 
-					spawn(squid);
+					spawn(squid, app.getRootNode());
 					break;
 			}
 		}
@@ -123,22 +124,22 @@ public class SpawnState extends AbstractAppState {
 			int i = rand.nextInt(6);
 			switch (i) {
 				case 0:
-					spawn(spear);
+					spawn(spear, app.getRootNode());
 					break;
 				case 1:
-					spawn(killerWhale);
+					spawn(killerWhale, app.getRootNode());
 					break;
 				case 2:
-					spawn(yeti);
+					spawn(yeti, app.getRootNode());
 					break;
 				case 3:
-					spawn(spikeyBall);
+					spawn(spikeyBall, app.getRootNode());
 					break;
 				case 4:
-					spawn(polarBear);
+					spawn(polarBear, app.getRootNode());
 					break;
 				case 5:
-					spawn(thunder);
+					spawn(thunder, app.getRootNode());
 					break;
 				default:
 					break;
@@ -146,14 +147,7 @@ public class SpawnState extends AbstractAppState {
 		}
 	}
 	
-	private void spawnPenguin(FactoryInterface penguinFactory) {
-		final Spatial penguin = penguinFactory.makeObject(stManager, app);
-		if (penguin != null) {
-			app.getPenguinNode().attachChild(penguin);
-		}
-	}
-	
-	public void spawn(FactoryInterface obstacleFactory) {
+	public void spawn(FactoryInterface obstacleFactory, Node nodeToAttach) {
 		final Spatial obstacle = obstacleFactory.makeObject(stManager, app);
 		if (obstacle != null) {
 			app.getRootNode().attachChild(obstacle);
