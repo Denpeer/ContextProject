@@ -6,6 +6,9 @@ import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
+import com.funkydonkies.sounds.ObstacleCollisionSound;
+import com.funkydonkies.sounds.ObstacleSpawnSound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -50,6 +53,7 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 
 	@Override
 	public void init() {
+		stateManager.getState(SoundState.class).queueSound(new ObstacleSpawnSound());
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 
@@ -99,6 +103,7 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 	public void collision(final PhysicsCollisionEvent event) {
 
 		if (checkCollision(event, ThunderFactory.THUNDER_NAME, PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);
 		}

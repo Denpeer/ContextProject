@@ -6,6 +6,10 @@ import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.powerups.SnowballPowerup;
+import com.funkydonkies.sounds.ObstacleSpawnSound;
+import com.funkydonkies.sounds.SoundState;
+import com.funkydonkies.sounds.TargetCollisionSound;
+import com.funkydonkies.sounds.TargetSpawnSound;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -34,6 +38,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	
 	@Override
 	public void init() {
+		stateManager.getState(SoundState.class).queueSound(new TargetSpawnSound());
 		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
@@ -55,10 +60,12 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, FishFactory.FISH_NAME, PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
 			respawn();
 			diffState.incDiff();
 		}
 		if (checkCollision(event, FishFactory.FISH_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
 			respawn();
 			diffState.incDiff();
 		}
