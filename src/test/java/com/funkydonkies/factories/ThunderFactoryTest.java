@@ -10,6 +10,7 @@ import com.funkydonkies.controllers.SquidControl;
 import com.funkydonkies.controllers.ThunderControl;
 import com.funkydonkies.controllers.ThunderWarningLineControl;
 import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetKey;
@@ -71,6 +72,7 @@ public class ThunderFactoryTest {
 		Mockito.when(rootNodeMock.getUserData(Mockito.any(String.class))).thenReturn(matMock);
 		Mockito.when(matMock.clone()).thenReturn(matMock);
 		Mockito.when(matMock.getAdditionalRenderState()).thenReturn(renderStateMock);
+		Mockito.doReturn(Mockito.mock(SoundState.class)).when(asmMock).getState(SoundState.class);
 	}
 
 	/**

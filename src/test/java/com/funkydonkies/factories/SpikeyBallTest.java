@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.funkydonkies.controllers.SpikeyBallControl;
 import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -23,7 +24,8 @@ public class SpikeyBallTest {
 	private AppStateManager mockSManager;
 	private PlayState mockPlayState;
 	private SimpleApplication app;
-
+	private SoundState soundstate;
+	
 	/**
 	 * Do this before executing tests.
 	 * @throws Exception
@@ -34,7 +36,10 @@ public class SpikeyBallTest {
 		mockSManager = mock(AppStateManager.class);
 		mockPlayState = mock(PlayState.class);
 		mockFactory = spy(SpikeyBallFactory.class);
+		soundstate = mock(SoundState.class);
+		
 		doReturn(mockPlayState).when(mockSManager).getState(PlayState.class);
+		doReturn(soundstate).when(mockSManager).getState(SoundState.class);
 		doReturn(mock(PhysicsSpace.class)).when(mockPlayState).getPhysicsSpace();
 	    doReturn(mock(Material.class)).when(mockFactory).getSpikeyBallMaterial();
 
