@@ -119,7 +119,8 @@ public class SpawnState extends AbstractAppState {
 			}
 		}
 		if (time > OBSTACLE_SPAWN_TIME) {
-			
+			spawn(killerWhale);
+		
 			time = 0;
 			int i = rand.nextInt(6);
 			switch (i) {

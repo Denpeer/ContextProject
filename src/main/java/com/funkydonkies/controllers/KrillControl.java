@@ -2,7 +2,6 @@ package com.funkydonkies.controllers;
 
 import com.funkydonkies.factories.KrillFactory;
 import com.funkydonkies.factories.PenguinFactory;
-import com.funkydonkies.factories.SquidFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
@@ -19,9 +18,8 @@ import com.jme3.math.Vector3f;
  */
 public class KrillControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(130f, 90f, 1f);
-
 	private DifficultyState diffState;
+	private AppStateManager stateManager;
 
 	/**
 	 * Constructor method for target control.
@@ -34,18 +32,19 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	public KrillControl(final CollisionShape colShape, final AppStateManager sManager) {
 		super(colShape);
 		diffState = sManager.getState(DifficultyState.class);
+		stateManager = sManager;
 	}
 
 	@Override
 	public void init() {
 		respawn();
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 	/**

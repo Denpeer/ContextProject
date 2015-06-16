@@ -23,7 +23,7 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(250f, 10f, 1f);
 	private static final float TIME_TO_MOVE_IN_ONE_DIRECTION = 4;
 	private static final float STEP_SIZE = 0.5f;
-	
+	private AppStateManager stateManager;
 	private DifficultyState diffState;
 
 	private boolean moveRight = true;
@@ -34,13 +34,13 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	 * 
 	 * @param shape
 	 *            CollisionShape for the target
-	 * @param sm
+	 * @param sManager
 	 *            jme AppstateManager to get AppStates
 	 */
 	public SquidControl(final CollisionShape shape, final AppStateManager sManager) {
 		super(shape);
 		diffState = sManager.getState(DifficultyState.class);
-		sManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		stateManager = sManager;
 	}
 	
 	@Override
@@ -52,6 +52,7 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	@Override
 	public void init() {
 		respawn();
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 	
 	@Override

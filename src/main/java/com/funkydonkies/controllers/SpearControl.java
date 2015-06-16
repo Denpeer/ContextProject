@@ -20,7 +20,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	private float time = 0;
 
 	private final float destroyXCoordinate = -100;
-
+	private AppStateManager stateManager;
 	private Vector3f initialLoc;
 
 	private DifficultyState diffState;
@@ -39,6 +39,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 			final Vector3f iLoc) {
 		super(shape);
 		initialLoc = iLoc;
+		stateManager = sManager;
 		diffState = sManager.getState(DifficultyState.class);
 	}
 	
@@ -52,7 +53,6 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
-		space.add(this);
 	}
 
 	/**
@@ -61,6 +61,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	public final void init() {
 		spatial.setLocalTranslation(initialLoc);
 		setPhysicsLocation(initialLoc);
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
 	/**
