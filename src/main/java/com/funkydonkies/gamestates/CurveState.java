@@ -99,7 +99,7 @@ public class CurveState extends AbstractAppState {
 			} else {
 				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
 			}
-			
+			updatedXPoints = points;
 			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
@@ -419,7 +419,7 @@ public class CurveState extends AbstractAppState {
 				}
 			}
 		}
-		
+		System.out.println(highestIndex);
 		return highestIndex * POINT_DISTANCE;
 	}
 }
