@@ -1,5 +1,6 @@
 package com.funkydonkies.gamestates;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -11,7 +12,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.funkydonkies.combo.Combo;
+import com.funkydonkies.combo.ComboDisplay;
 import com.funkydonkies.core.App;
 import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
@@ -26,7 +27,7 @@ public class DifficultyStateTest {
 	private DifficultyState diffSpy;
 	private Tier1 tier1;
 	private Tier2 tier2;
-	private Combo combo;
+	private ComboDisplay combo;
 	private SnowballPowerup snowBall;
 	private InvertControlsPowerup invertControls;
 	
@@ -36,7 +37,7 @@ public class DifficultyStateTest {
 		sManager = mock(AppStateManager.class);
 		tier1 = mock(Tier1.class);
 		tier2 = mock(Tier2.class);
-		combo = mock(Combo.class);
+		combo = mock(ComboDisplay.class);
 		snowBall = mock(SnowballPowerup.class);
 		invertControls = mock(InvertControlsPowerup.class);
 		
@@ -54,7 +55,7 @@ public class DifficultyStateTest {
 		diffSpy.initialize(sManager, app);
 		
 		verify(sManager, times(4)).attach(any(DisabledState.class));
-		verify(diffSpy).initCombo();
+		verify(diffSpy).initComboDisplay();
 	}
 	
 	@Test
@@ -104,27 +105,23 @@ public class DifficultyStateTest {
 	}
 
 	@Test
-	public void testUpdateObservable() {
-		diffSpy.initialize(sManager, app);
-		
-		diffSpy.update(combo, null);
-		verify(combo).getCombo();
-	}
-
-	@Test
 	public void testIncDiff() {
 		diffSpy.initialize(sManager, app);
-		
+		assertTrue(diffSpy.getCombo() == 0);
 		diffSpy.incDiff();
-		verify(combo).incCombo();
+		assertTrue(diffSpy.getCombo() == 1);
+		assertTrue(diffSpy.getMaxCombo() == 1);
 	}
 
 	@Test
 	public void testResetDiff() {
 		diffSpy.initialize(sManager, app);
-		
+		diffSpy.incDiff();
+		assertTrue(diffSpy.getCombo() == 1);
+		assertTrue(diffSpy.getMaxCombo() == 1);
 		diffSpy.resetDiff();
-		verify(combo).resetCombo();
+		assertTrue(diffSpy.getCombo() == 0);
+		assertTrue(diffSpy.getMaxCombo() == 1);
 	}
 	
 	@Test
@@ -146,10 +143,29 @@ public class DifficultyStateTest {
 	@Test
 	public void testInitCombo() {
 		diffSpy.initialize(sManager, app);
-
-		verify(combo).createCurrentComboText(app);
-		verify(combo).createHighestComboText(app);
-		verify(combo).addObserver(diffSpy);
-		verify(combo).updateText();
+		
+		verify(diffSpy).initComboDisplay();
+	}
+	
+	@Test
+	public void addObserverTest() {
+		assertTrue(diffSpy.getObservers().size() == 0);
+		diffSpy.addObserver(combo);
+		assertTrue(diffSpy.getObservers().size() == 1);
+		diffSpy.addObserver(combo);
+		assertTrue(diffSpy.getObservers().size() == 1);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void addObserverTestFail() {
+		diffSpy.addObserver(null);
+	}
+	
+	@Test
+	public void testNotifyObservers() {
+		diffSpy.addObserver(combo);
+		diffSpy.setChanged();
+		diffSpy.notifyObservers(null);
+		verify(combo).update(diffSpy, null);
 	}
 }

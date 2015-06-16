@@ -32,7 +32,6 @@ public class SpawnState extends AbstractAppState {
 	private HashMap<String, FactoryInterface> facHm;
 
 	private AppStateManager stateManager;
-	private SoundState soundState;
 	private float spawnBallTime;
 
 	private FactoryInterface penguin;
@@ -71,7 +70,6 @@ public class SpawnState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		stateManager = sManager;
-		soundState = stateManager.getState(SoundState.class);
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		initFactories();
 		setSpawnAbleObjects();
@@ -115,9 +113,10 @@ public class SpawnState extends AbstractAppState {
 			timeCount = 0;
 			spawn(penguin, app.getPenguinNode());
 		}
-		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
+		if (specialFishTimer > 2) {
 			specialFishTimer = 0;
 			int i = rand.nextInt(2);
+			i=1;
 			switch (i) {
 			case 0:
 				spawn(krill, app.getRootNode());
@@ -130,6 +129,7 @@ public class SpawnState extends AbstractAppState {
 		if (time > OBSTACLE_SPAWN_TIME) {
 			time = 0;
 			int i = rand.nextInt(6);
+			i = 5;
 			switch (i) {
 			case 0:
 				spawn(spear, app.getRootNode());
@@ -158,7 +158,7 @@ public class SpawnState extends AbstractAppState {
 	public void spawn(FactoryInterface obstacleFactory, Node nodeToAttach) {
 		final Spatial obstacle = obstacleFactory.makeObject(stateManager, app);
 		if (obstacle != null) {
-			app.getRootNode().attachChild(obstacle);
+			nodeToAttach.attachChild(obstacle);
 		}
 	}
 
