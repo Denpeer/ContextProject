@@ -51,6 +51,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	private ComboDisplay combo;
 	private int currCombo = 0;
+	private int highestCombo = 0;
 	private boolean changed;
 
 	private InvertControlsPowerup invertControls;
@@ -101,6 +102,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 */
 	public void setChanged() {
 		changed = true;
+	}
+	
+	public Vector getObservers() {
+		return obs;
 	}
 
 	/**
@@ -190,6 +195,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 */
 	public void incDiff() {
 		currCombo++;
+		if (currCombo > highestCombo) {
+			highestCombo = currCombo;
+		}
 		setChanged();
 		notifyObservers(null);
 	}
@@ -219,6 +227,14 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 */
 	public int getCombo() {
 		return currCombo;
+	}
+	
+	/**
+	 * Returns the current combo amount.
+	 * @return currCombo the current combo;
+	 */
+	public int getMaxCombo() {
+		return highestCombo;
 	}
 
 	/**

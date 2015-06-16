@@ -16,8 +16,6 @@ import com.jme3.scene.Node;
 public class ComboDisplay implements Observer {
 	public static final Vector3f COUNTER_LOCATION = new Vector3f(250, 100, 0);
 	public static final int TEXT_SIZE = 30;
-	private int currentCombo;
-	private int highestCombo;
 	private BitmapText comboText;
 	private BitmapText highestComboText;
 	private Node guiNode;
@@ -33,8 +31,6 @@ public class ComboDisplay implements Observer {
 	 *            BitMapText, to store the HUD text
 	 */
 	public ComboDisplay(final App appl) {
-		currentCombo = 0;
-		highestCombo = 0;
 		this.app = appl;
 		guiNode = app.getGuiNode();
 		diffState = app.getStateManager().getState(DifficultyState.class);
@@ -85,8 +81,7 @@ public class ComboDisplay implements Observer {
 	public void updateText() {
 		if (comboText != null && highestComboText != null) {
 			comboText.setText("Current combo: " + diffState.getCombo());
-			if (currentCombo >= highestCombo) {
-				highestCombo = currentCombo;
+			if (diffState.getCombo() >= diffState.getMaxCombo()) {
 				highestComboText.setText("Highest combo: " + diffState.getCombo());
 			}
 		}

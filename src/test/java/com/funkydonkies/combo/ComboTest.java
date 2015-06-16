@@ -1,22 +1,20 @@
 package com.funkydonkies.combo;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.startsWith;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.core.App;
-import com.jme3.asset.AssetManager;
+import com.funkydonkies.gamestates.DifficultyState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -30,7 +28,8 @@ public class ComboTest {
 	private Node rootNode;
 	private Node guiNode;
 	private App app;
-	private AssetManager sManager;
+	private AppStateManager sManager;
+	private DifficultyState diffState;
 	
 	/**
 	 * Instantiates objects.
@@ -41,48 +40,28 @@ public class ComboTest {
 		rootNode = mock(Node.class);
 		text = mock(BitmapText.class);
 		app = mock(App.class);
-		sManager = mock(AssetManager.class);
+		sManager = mock(AppStateManager.class);
 		guiNode =mock(Node.class);
+		diffState = mock(DifficultyState.class);
 		
 		when(app.getRootNode()).thenReturn(rootNode);
 		when(app.getGuiNode()).thenReturn(guiNode);
 		when(rootNode.getUserData("default text")).thenReturn(text);
 		
+		doReturn(sManager).when(app).getStateManager();
+		doReturn(diffState).when(sManager).getState(DifficultyState.class);
+		
 		combo = new ComboDisplay(app);
 		comboSpy = spy(combo);
 		
-		doReturn(text).when(comboSpy).createText(app);
+		doReturn(text).when(comboSpy).createText();
 	}
 
-	/**
-	 * Tests the increasing of the combo.
-	 */
-	@Test
-	public void testIncCombo() {
-		assertEquals(comboSpy.getCombo(), 0);
-		comboSpy.incCombo();
-		assertEquals(comboSpy.getCombo(), 1);
-		verify(comboSpy).updateText();
-	}
-
-	/**
-	 * Tests the combo reset.
-	 */
-	@Test
-	public void testResetCombo() {
-		assertEquals(comboSpy.getCombo(), 0);
-		comboSpy.incCombo();
-		assertEquals(comboSpy.getCombo(), 1);
-		comboSpy.resetCombo();
-		assertEquals(comboSpy.getCombo(), 0);
-		verify(comboSpy, times(2)).updateText();
-	}
 
 	@Test
 	public void updateTextTest() {
+		comboSpy.init();
 		reset(text);
-		comboSpy.createHighestComboText(app);
-		comboSpy.createCurrentComboText(app);
 
 		comboSpy.updateText();
 		verify(text).setText(startsWith("Current combo: "));
@@ -90,9 +69,16 @@ public class ComboTest {
 	}
 	
 	@Test
+	public void updateTest() {
+		comboSpy.update(diffState, null);
+		
+		verify(comboSpy).updateText();
+	}
+	
+	@Test
 	public void createCurrentComboTextTest() {
 		reset(text);
-		comboSpy.createCurrentComboText(app);
+		comboSpy.createCurrentComboText();
 		verify(text).setSize(ComboDisplay.TEXT_SIZE);
 		verify(text).setColor(any(ColorRGBA.class));
 		verify(text).setLocalTranslation(ComboDisplay.COUNTER_LOCATION);
@@ -101,7 +87,7 @@ public class ComboTest {
 	@Test
 	public void createHighestComboTextTest() {
 		reset(text);
-		comboSpy.createHighestComboText(app);
+		comboSpy.createHighestComboText();
 		verify(text).setSize(ComboDisplay.TEXT_SIZE);
 		verify(text).setColor(any(ColorRGBA.class));
 		Vector3f highestloc = ComboDisplay.COUNTER_LOCATION;
