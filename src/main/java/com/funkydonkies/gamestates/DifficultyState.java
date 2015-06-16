@@ -34,6 +34,8 @@ public class DifficultyState extends AbstractAppState implements Observer {
 	private InvertControlsPowerup invertControls;
 	private SnowballPowerup snowBallPowerup;
 	
+	private SoundState soundState;
+	
 	@Override
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
@@ -54,6 +56,8 @@ public class DifficultyState extends AbstractAppState implements Observer {
 		
 		snowBallPowerup = makeSnowBallPowerup();
 		sManager.attach(snowBallPowerup);
+		
+		soundState = sManager.getState(SoundState.class);
 		
 		combo = initCombo();
 	}

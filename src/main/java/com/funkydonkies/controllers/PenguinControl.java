@@ -4,6 +4,8 @@ import com.funkydonkies.curve.CustomCurveMesh;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractRigidBodyControl;
+import com.funkydonkies.sounds.PenguinSpawnSound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -47,6 +49,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		final int yOffSet = 5, xOffSet = -20;
 		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		stateManager.getState(SoundState.class).queueSound(new PenguinSpawnSound());
 		setPhysicsLocation(initialSpawn);
 		setLinearVelocity(INITIAL_SPEED);
 	}
