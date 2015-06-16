@@ -127,6 +127,16 @@ public class GameInputStateTest {
 	}
 
 	@Test
+	public void toggleCurveUpdateTest2() {
+		gameInputState.initialize(stateManager, app);
+		gameInputState.update(0.01f);
+		ActionListener listener = gameInputState.getActionListener();
+		
+		listener.onAction("Toggle Curve Update", true, 0.01f);
+		verifyNoMoreInteractions(splineController);
+	}
+	
+	@Test
 	public void enableCameraDetectionTest() {
 		gameInputState.initialize(stateManager, app);
 		gameInputState.update(0.01f);
@@ -135,17 +145,29 @@ public class GameInputStateTest {
 		listener.onAction("Start Camera", false, 0.01f);
 		verify(cameraState).toggleEnabled();
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 4782edbc0871799d80ff0889a1b346158cb4fc19
 	@Test
 	public void enableCameraDetectionTest2() {
 		gameInputState.initialize(stateManager, app);
 		gameInputState.update(0.01f);
 		ActionListener listener = gameInputState.getActionListener();
+<<<<<<< HEAD
 
 		listener.onAction("Start Camera", true, 0.01f);
 		verifyNoMoreInteractions(cameraState);
 	}
 
+=======
+		
+		listener.onAction("Start Camera", true, 0.01f);
+		verifyNoMoreInteractions(cameraState);
+	}
+	
+>>>>>>> 4782edbc0871799d80ff0889a1b346158cb4fc19
 	@Test
 	public void toggleCameraTest() {
 		gameInputState.initialize(stateManager, app);
@@ -161,11 +183,19 @@ public class GameInputStateTest {
 		gameInputState.initialize(stateManager, app);
 		gameInputState.update(0.01f);
 		ActionListener listener = gameInputState.getActionListener();
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> 4782edbc0871799d80ff0889a1b346158cb4fc19
 		when(cameraState.cameraOpened()).thenReturn(new Boolean(true));
 		when(splineController.getCameraEnabled()).thenReturn(new Boolean(true));
 		listener.onAction("Toggle Camera", false, 0.01f);
 		verify(splineController).toggleCameraEnabled();
 		verify(splineController).setUpdateEnabled(true);
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4782edbc0871799d80ff0889a1b346158cb4fc19

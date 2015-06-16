@@ -65,7 +65,7 @@ public class PlayStateTest {
 	public void testInitStates() {
 		playSpy.initialize(sManager, app);
 		
-		verify(sManager, times(8)).attach(any(DisabledState.class));
+		verify(sManager, times(9)).attach(any(DisabledState.class));
 	}
 
 	@Test

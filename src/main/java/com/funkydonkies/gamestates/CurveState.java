@@ -16,7 +16,7 @@ import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 
 /**
- *	Controls the creation and refreshing of the curve.
+ * Controls the creation and refreshing of the curve.
  */
 public class CurveState extends AbstractAppState {
 	public static final int POINT_DISTANCE = 10;
@@ -29,16 +29,15 @@ public class CurveState extends AbstractAppState {
 	private static final float SPEED_MULTIPLIER = 1.5f;
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String COLOR = "Color";
-	private static final float DEFAULT_IMAGE_HEIGHT = 480;
 
 	// set to 32 as default this is what we currently use to test the program.
 	private int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
-	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE; 
+	private float maxHeightDifference = DEFAULT_MAX_HEIGHT_DIFFERENCE;
 
 	private Bridge bridge;
 	private App app;
 	private SplineCurve splineCurve;
-	
+
 	private float[] updatedXPoints = null;
 
 	private boolean cameraEnabled = false;
@@ -67,47 +66,53 @@ public class CurveState extends AbstractAppState {
 		oldRigi = new RigidBodyControl(0f);
 		splineCurve = initializeSplineCurve();
 	}
-	
+
 	/**
 	 * Returns a new SplineCurve.
+	 * 
 	 * @return SplineCurve.
 	 */
 	public SplineCurve initializeSplineCurve() {
 		return new SplineCurve(SplineType.CatmullRom, true);
 	}
+
 	/**
 	 * Initializes the curve's material, called from the initialize method.
+	 * 
 	 * @return curveMaterial Material, the material to be used for the curve.
 	 */
 	public Material initializeMaterial() {
 		final Material curveMat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMat.setColor(COLOR, ColorRGBA.randomColor());	
+		curveMat.setColor(COLOR, ColorRGBA.randomColor());
 		return curveMat;
 	}
-	
+
 	@Override
 	public final void update(final float tpf) {
 		if (bridge == null) {
 			bridge = stateManager.getState(CameraState.class).getBridge();
 		}
-		
+
 		final float[] points = initPoints();
-		
+
 		if (updateEnabled) {
 			if (bridge != null && bridge.isBgSet()) {
-				scaleValues(points, bridge.getImageHeight());
+				scaleValues(points);
+				System.out.println(Arrays.toString(points));
 			} else {
-				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
+				scaleValues(points);
 			}
 			updatedXPoints = points;
 			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
 		}
-		
+
 		updateCurve();
 	}
 
-	/** Initializes controlPoints array by camera (if enabled) or debug.
+	/**
+	 * Initializes controlPoints array by camera (if enabled) or debug.
+	 * 
 	 * @return initialized controlPoints array
 	 */
 	private float[] initPoints() {
@@ -130,7 +135,8 @@ public class CurveState extends AbstractAppState {
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
-		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class).getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class)
+				.getPhysicsSpace(), rigi, app.getRootNode());
 		splineCurve.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 	}
@@ -182,14 +188,16 @@ public class CurveState extends AbstractAppState {
 	public void setInvertControlPoints(boolean b) {
 		invertControlPoints = b;
 	}
-	
-	/** Returns debug control points with a bit of a curve.
+
+	/**
+	 * Returns debug control points with a bit of a curve.
+	 * 
 	 * @return debug control points with a bit of a curve in the middle
 	 */
 	private float[] getDebugPoints() {
 		final float[] points = new float[controlPointsCount];
-	
-		Arrays.fill(points, DEFAULT_IMAGE_HEIGHT);
+
+		Arrays.fill(points, 1);
 		final int bottomX = 10;
 		final int topX = 15;
 		for (int i = bottomX; i < topX; i++) { // TESTING CODE
@@ -199,21 +207,23 @@ public class CurveState extends AbstractAppState {
 		return points;
 	}
 
-	/** Calls on Camera data for the controlPoints to use to manipulate the curve.
+	/**
+	 * Calls on Camera data for the controlPoints to use to manipulate the curve.
+	 * 
 	 * @return most recent camera data
 	 */
 	public float[] getCameraPointData() {
 		final float[] points;
-		
+
 		updateControlPointsCounts();
-		
+
 		points = bridge.getControlPoints();
-		
+
 		updateMaxHeightDiff();
-		
+
 		return points;
 	}
-	
+
 	/**
 	 * Communicates with interface to retrieve latest image variables.
 	 */
@@ -229,9 +239,10 @@ public class CurveState extends AbstractAppState {
 		maxHeightDifference = (float) (bridge.getxdist() * Math
 				.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
 	}
-	
+
 	/**
 	 * Returns a new RigidBodyControl with mass 0.
+	 * 
 	 * @return new RigidBodyControl
 	 */
 	public RigidBodyControl makeRigidBodyControl() {
@@ -241,14 +252,17 @@ public class CurveState extends AbstractAppState {
 	/**
 	 * Method generates Vector3f[] representation of controlpoints, using the POINT_DISTANCE to
 	 * define the distance between points on the x-axis.
-	 * @param points controlpoints array received from camera, already processed and flipped by 
-	 * scaleValues() method
-	 * @param tpf time per frame received from update
+	 * 
+	 * @param points
+	 *            controlpoints array received from camera, already processed and flipped by
+	 *            scaleValues() method
+	 * @param tpf
+	 *            time per frame received from update
 	 * @return Vector3f[] representation of controlpoints
 	 */
 	private Vector3f[] createVecArray(final float[] points, final float tpf) {
 		final Vector3f[] res = new Vector3f[points.length];
-		
+
 		final Vector3f[] currentPoints = splineCurve.getCurvePoints();
 
 		if ((currentPoints.length != res.length)) {
@@ -263,9 +277,13 @@ public class CurveState extends AbstractAppState {
 		return res;
 	}
 
-	/** Copies from 1st argument array into second.
-	 * @param currentPoints copy from
-	 * @param res to
+	/**
+	 * Copies from 1st argument array into second.
+	 * 
+	 * @param currentPoints
+	 *            copy from
+	 * @param res
+	 *            to
 	 */
 	private void copy(final Vector3f[] currentPoints, final Vector3f[] res) {
 		for (int i = 0; i < currentPoints.length; i++) {
@@ -304,29 +322,27 @@ public class CurveState extends AbstractAppState {
 	/**
 	 * Scales the values given by the camera.
 	 * 
-	 * @param points 
-	 * 			  camera points
-	 * @param screenHeight
-	 *            the y-axis resolution of the camera
+	 * @param points
+	 *            camera points
 	 * @return scaled Values
 	 */
-	private float[] scaleValues(final float[] points, final int screenHeight) {
+	private float[] scaleValues(final float[] points) {
 		for (int i = 0; i < points.length; i++) {
 			float point = points[i];
-			if (!invertControlPoints) {
-				point = screenHeight - point;
+			if (invertControlPoints) {
+				point = 1 - point;
 			}
-			point = point / screenHeight;
 			point = point * POINTS_HEIGHT;
 			points[i] = point;
 		}
 		return points;
 	}
-	
+
 	/**
 	 * Used to initialize points for the curve when the camera has more points than the curve.
 	 * 
-	 * @param points Correctly sized vector3f array to be initialized
+	 * @param points
+	 *            Correctly sized vector3f array to be initialized
 	 */
 	public void initPoints(final Vector3f[] points) {
 		for (int i = 0; i < points.length; i++) {
@@ -349,7 +365,7 @@ public class CurveState extends AbstractAppState {
 
 		return points;
 	}
-	
+
 	/**
 	 * Toggle the updating of the dataset points through the camera input.
 	 */
@@ -402,14 +418,16 @@ public class CurveState extends AbstractAppState {
 	public SplineCurve getSplineCurve() {
 		return splineCurve;
 	}
-	
-	/** Loops over the curvepoints and gets the x location of the highest controlpoint. 
+
+	/**
+	 * Loops over the curvepoints and gets the x location of the highest controlpoint.
+	 * 
 	 * @return the x location of the highest controlpoint
 	 */
 	public float getHighestPointX() {
 		float highest = 0;
 		int highestIndex = -1;
-		
+
 		if (updatedXPoints != null) {
 			for (int i = 0; i < updatedXPoints.length; i++) {
 				final float tmp = updatedXPoints[i];
@@ -419,7 +437,6 @@ public class CurveState extends AbstractAppState {
 				}
 			}
 		}
-		System.out.println(highestIndex);
 		return highestIndex * POINT_DISTANCE;
 	}
 }

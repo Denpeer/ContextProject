@@ -33,8 +33,6 @@ public class SpawnStateTest {
 		sManager = new AppStateManager(app);
 		spawnState = new SpawnState();
 		spy = spy(spawnState);
-		spy2 = spy(new PlayState());
-		ps = mock(PhysicsSpace.class);
 		doNothing().when(spy).spawn(any(FactoryInterface.class), any(Node.class));
 		doNothing().when(spy).initRootNodeMat(app);
 	}

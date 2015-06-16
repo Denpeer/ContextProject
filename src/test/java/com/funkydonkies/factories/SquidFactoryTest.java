@@ -1,71 +1,101 @@
 package com.funkydonkies.factories;
 
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.funkydonkies.controllers.SquidControl;
+import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.Sound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.material.Material;
+import com.jme3.asset.AssetKey;
+import com.jme3.asset.AssetManager;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.material.MatParam;
+import com.jme3.material.MaterialDef;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
+
 /**
- * This class tests the Squid factory class.
+ * Test the squidfactory.
+ * @author Olivier Dikken
+ *
  */
 public class SquidFactoryTest {
-	private SquidFactory mockFactory;
-	private SquidFactory fac;
-	private Geometry geom;
-	private AppStateManager assManager;
-	private SimpleApplication app;
+
+	private AppStateManager asmMock;
+	private SimpleApplication saMock;
+	private AssetManager amMock;
+	private SquidFactory sf;
+	private SquidFactory sfMock;
+	private MaterialDef mdMock;
+	private MatParam mpMock;
+	private PlayState psMock;
+	private PhysicsSpace physMock;
+	private SoundState soundState;
+	
+	private final int numThree = 3;
 
 	/**
-	 * Do this before executing tests.
-	 * @throws Exception
+	 * setup for tests. Mock all that is needed.
+	 * @throws Exception exception
 	 */
+	@SuppressWarnings("unchecked")
 	@Before
-	public void setUp() {
-		app = mock(SimpleApplication.class);
-		assManager = new AppStateManager(app);
-		geom = mock(Geometry.class);
-		mockFactory = spy(SquidFactory.class);
-		fac = new SquidFactory();
-	    doReturn(mock(Material.class)).when(mockFactory).getSquidMaterial();
-	    doReturn(geom).when(mockFactory).makeGeometry(any(Box.class));
+	public void setUp() throws Exception {
+		asmMock = Mockito.mock(AppStateManager.class);
+		saMock = Mockito.mock(SimpleApplication.class);
+		sf = new SquidFactory();
+		sfMock = Mockito.mock(SquidFactory.class);
+		amMock = Mockito.mock(AssetManager.class);
+		mdMock = Mockito.mock(MaterialDef.class);
+		mpMock = Mockito.mock(MatParam.class);
+		psMock = Mockito.mock(PlayState.class);
+		physMock = Mockito.mock(PhysicsSpace.class);
+		soundState = Mockito.mock(SoundState.class);
+		Mockito.when(saMock.getAssetManager()).thenReturn(amMock);
+		Mockito.when(amMock.loadAsset(Mockito.any(AssetKey.class))).thenReturn(mdMock);
+		Mockito.when(mdMock.getMaterialParam(Mockito.any(String.class))).thenReturn(mpMock);
+		Mockito.when(asmMock.getState(PlayState.class)).thenReturn(psMock);
+		Mockito.when(psMock.getPhysicsSpace()).thenReturn(physMock);
+		Mockito.doNothing().when(physMock).add(Mockito.any(SquidControl.class));
+		Mockito.doReturn(soundState).when(asmMock).getState(SoundState.class);
+		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
 	}
-	
+
 	/**
-	 * tests if the control is attached.
+	 * test make object.
 	 */
 	@Test
-	public void testControlAttached() {
-		mockFactory.makeObject(assManager, app);
-		verify(geom).addControl(any(SquidControl.class));
+	public void testMakeObject() {
+		assertTrue(sf.makeObject(asmMock, saMock) instanceof Geometry);
+		assertTrue(sf.makeObject(asmMock, saMock).getControl(0) instanceof SquidControl);
 	}
-	
+
 	/**
-	 * This method tests if every method is called.
+	 * test make squid.
 	 */
 	@Test
-	public void methodsCalled() {
-		@SuppressWarnings("unused")
-		final Geometry Squid = mockFactory.makeObject(assManager, app);
-		verify(mockFactory).makeSquid();
+	public void testMakeSquid() {
+		Mockito.reset(saMock);
+		Mockito.when(saMock.getAssetManager()).thenReturn(amMock);
+		sf.makeObject(asmMock, saMock);
+		assertTrue(sf.makeSquid() instanceof Geometry);
+		assertTrue(sf.makeSquid().getControl(0) instanceof SquidControl);
+		sfMock.makeSquid();
+		Mockito.verify(saMock, Mockito.times(numThree)).getAssetManager();
 	}
-	
+
 	/**
-	 * tests the makeGeometry method.
+	 * test get squid material.
 	 */
 	@Test
-	public void testMakeGeometry() {
-		assertFalse(fac.makeGeometry(new Box(1, 1, 1)) == null);
+	public void testGetSquidMaterial() {
+//		final Object mat = sf.getSquidMaterial();
+//		assertTrue(mat instanceof Material);
 	}
 
 }

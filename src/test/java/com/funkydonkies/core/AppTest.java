@@ -17,7 +17,7 @@ public class AppTest {
 
 	private App app;
 	private App appSpy;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		app = new App();

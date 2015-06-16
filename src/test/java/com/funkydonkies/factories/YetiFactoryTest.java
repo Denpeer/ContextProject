@@ -1,63 +1,110 @@
 package com.funkydonkies.factories;
 
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import com.funkydonkies.controllers.FishControl;
+import com.funkydonkies.controllers.SquidControl;
+import com.funkydonkies.controllers.YetiControl;
+import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.Sound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetKey;
+import com.jme3.asset.AssetManager;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.material.MatParam;
 import com.jme3.material.Material;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
+import com.jme3.material.MaterialDef;
+import com.jme3.material.RenderState;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+
 /**
- * This class tests the fish factory class.
+ * Testing the yetifactory class.
+ * @author Olivier Dikken
+ *
  */
 public class YetiFactoryTest {
-	private YetiFactory mockFactory;
-	private YetiFactory fac;
-	private AppStateManager assManager;
-	private SimpleApplication app;
-	private Geometry geom;
 
+	private AppStateManager asmMock;
+	private SimpleApplication saMock;
+	private AssetManager amMock;
+	private YetiFactory yf;
+	private MaterialDef mdMock;
+	private MatParam mpMock;
+	private PlayState psMock;
+	private PhysicsSpace physMock;
+	private Node rootNodeMock;
+	private Material matMock;
+	private RenderState renderStateMock;
+	private SoundState soundState;
+	
 	/**
-	 * Do this before executing tests.
-	 * @throws Exception
+	 * setup for tests. Mock all that is needed.
+	 * @throws Exception exception
 	 */
+	@SuppressWarnings("unchecked")
 	@Before
-	public void setUp() {
-		geom = mock(Geometry.class);
-		app = mock(SimpleApplication.class);
-		assManager = new AppStateManager(app);
-		mockFactory = spy(YetiFactory.class);
-		fac = new YetiFactory();
-	    doReturn(mock(Material.class)).when(mockFactory).getYetiSnowBallMaterial();
-	    doReturn(geom).when(mockFactory).makeGeometry(any(Box.class));
+	public void setUp() throws Exception {
+		asmMock = Mockito.mock(AppStateManager.class);
+		saMock = Mockito.mock(SimpleApplication.class);
+		yf = new YetiFactory();
+		Mockito.mock(YetiFactory.class);
+		amMock = Mockito.mock(AssetManager.class);
+		mdMock = Mockito.mock(MaterialDef.class);
+		mpMock = Mockito.mock(MatParam.class);
+		psMock = Mockito.mock(PlayState.class);
+		physMock = Mockito.mock(PhysicsSpace.class);
+		rootNodeMock = Mockito.mock(Node.class);
+		matMock = Mockito.mock(Material.class);
+		renderStateMock = Mockito.mock(RenderState.class);
+		soundState = Mockito.mock(SoundState.class);
+		
+		Mockito.when(saMock.getAssetManager()).thenReturn(amMock);
+		Mockito.when(amMock.loadAsset(Mockito.any(AssetKey.class))).thenReturn(mdMock);
+		Mockito.when(mdMock.getMaterialParam(Mockito.any(String.class))).thenReturn(mpMock);
+		Mockito.when(asmMock.getState(PlayState.class)).thenReturn(psMock);
+		Mockito.when(psMock.getPhysicsSpace()).thenReturn(physMock);
+		Mockito.doNothing().when(physMock).add(Mockito.any(SquidControl.class));
+		Mockito.when(saMock.getRootNode()).thenReturn(rootNodeMock);
+		Mockito.when(rootNodeMock.getUserData(Mockito.any(String.class))).thenReturn(matMock);
+		Mockito.when(matMock.clone()).thenReturn(matMock);
+		Mockito.when(matMock.getAdditionalRenderState()).thenReturn(renderStateMock);
+		Mockito.doReturn(soundState).when(asmMock).getState(SoundState.class);
+		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
 
 	}
 
 	/**
-	 * tests if the fishcontrol is enabled.
+	 * testing makeObject().
 	 */
 	@Test
-	public void testControlAttached() {
-		mockFactory.makeObject(assManager, app);
-		verify(geom).addControl(any(FishControl.class));
+	public void testMakeObject() {
+		assertTrue(yf.makeObject(asmMock, saMock) instanceof Spatial);
 	}
 	
 	/**
-	 * tests the makeGeometry method.
+	 * testing makeYetiSnowBall().
 	 */
 	@Test
-	public void testMakeGeometry() {
-		assertFalse(fac.makeGeometry(new Box(1, 1, 1)) == null);
+	public void testMakeYetiSnowBall() {
+		yf.makeObject(asmMock, saMock);
+		assertTrue(yf.makeYetiSnowBall().getControl(0) instanceof YetiControl);
 	}
 	
+	/**
+	 * testing getyetiSnowBallMaterial().
+	 */
+	@Test
+	public void testGetYetiSnowBallMaterial() {
+		yf.makeObject(asmMock, saMock);
+		final Object mat = yf.getYetiSnowBallMaterial();
+		assertTrue(mat instanceof Material);
+		Mockito.verify(saMock, Mockito.times(2)).getRootNode();
+	}
 
 }

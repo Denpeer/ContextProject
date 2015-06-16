@@ -113,10 +113,9 @@ public class SpawnState extends AbstractAppState {
 			timeCount = 0;
 			spawn(penguin, app.getPenguinNode());
 		}
-		if (specialFishTimer > 2) {
+		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
 			specialFishTimer = 0;
 			int i = rand.nextInt(2);
-			i=1;
 			switch (i) {
 			case 0:
 				spawn(krill, app.getRootNode());
