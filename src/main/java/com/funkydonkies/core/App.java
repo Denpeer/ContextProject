@@ -33,6 +33,7 @@ public class App extends SimpleApplication {
 		rootNode.attachChild(penguinNode);
 
 		setRootNodeUserData();
+		setPauseOnLostFocus(false);
 	}
 
 	public void setRootNodeUserData() {
