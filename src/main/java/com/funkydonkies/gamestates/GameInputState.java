@@ -2,6 +2,9 @@ package com.funkydonkies.gamestates;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.sounds.PenguinSpawnSound;
+import com.funkydonkies.sounds.SoundPlayer;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -41,6 +44,9 @@ public class GameInputState extends AbstractAppState {
 	private CameraState cameraState;
 	private CurveState curveState;
 	
+	private SoundState soundState;
+	private PenguinSpawnSound penguinSpawnSound;
+
 	@Override
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
@@ -53,6 +59,8 @@ public class GameInputState extends AbstractAppState {
 		}
 		this.inputManager = this.app.getInputManager();
 		this.stateManager = sManager;
+		this.soundState = stateManager.getState(SoundState.class);
+		this.penguinSpawnSound = new PenguinSpawnSound();
 		initKeys();
 		cameraState = stateManager.getState(CameraState.class);
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
