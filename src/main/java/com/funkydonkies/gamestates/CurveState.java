@@ -2,10 +2,10 @@ package com.funkydonkies.gamestates;
 
 import java.util.Arrays;
 
+import com.funkydonkies.core.App;
+import com.funkydonkies.curve.SplineCurve;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.Bridge;
-import com.funkydonkies.w4v3.curve.SplineCurve;
+import com.funkydonkies.interfaces.Bridge;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -38,9 +38,12 @@ public class CurveState extends AbstractAppState {
 	private Bridge bridge;
 	private App app;
 	private SplineCurve splineCurve;
+	
+	private float[] updatedXPoints = null;
 
 	private boolean cameraEnabled = false;
 	private boolean updateEnabled = false;
+	private boolean invertControlPoints = false;
 
 	private RigidBodyControl oldRigi;
 	private RigidBodyControl rigi;
@@ -60,10 +63,76 @@ public class CurveState extends AbstractAppState {
 		}
 
 		bridge = sManager.getState(CameraState.class).getBridge();
-		curveMaterial = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMaterial.setColor(COLOR, ColorRGBA.randomColor());
+		curveMaterial = initializeMaterial();
 		oldRigi = new RigidBodyControl(0f);
-		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
+		splineCurve = initializeSplineCurve();
+	}
+	
+	/**
+	 * Returns a new SplineCurve.
+	 * @return SplineCurve.
+	 */
+	public SplineCurve initializeSplineCurve() {
+		return new SplineCurve(SplineType.CatmullRom, true);
+	}
+	/**
+	 * Initializes the curve's material, called from the initialize method.
+	 * @return curveMaterial Material, the material to be used for the curve.
+	 */
+	public Material initializeMaterial() {
+		final Material curveMat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		curveMat.setColor(COLOR, ColorRGBA.randomColor());	
+		return curveMat;
+	}
+	
+	@Override
+	public final void update(final float tpf) {
+		if (bridge == null) {
+			bridge = stateManager.getState(CameraState.class).getBridge();
+		}
+		
+		final float[] points = initPoints();
+		
+		if (updateEnabled) {
+			if (bridge != null && bridge.isBgSet()) {
+				scaleValues(points, bridge.getImageHeight());
+			} else {
+				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
+			}
+			updatedXPoints = points;
+			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
+			splineCurve.setCurvePoints(updatedPoints);
+		}
+		
+		updateCurve();
+	}
+
+	/** Initializes controlPoints array by camera (if enabled) or debug.
+	 * @return initialized controlPoints array
+	 */
+	private float[] initPoints() {
+		float[] points;
+		if (cameraEnabled && bridge.isBgSet()) {
+			points = getCameraPointData();
+			points = removeLargeHeightDifferences(points);
+		} else {
+			points = getDebugPoints();
+		}
+		return points;
+	}
+
+	/**
+	 * Updates the in-game representation of the curve, along with the collision body.
+	 */
+	private void updateCurve() {
+		app.getRootNode().detachChildNamed("curve");
+		if (rigi != null) {
+			oldRigi = rigi;
+		}
+		rigi = new RigidBodyControl(0f);
+		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class).getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.getGeometry().removeControl(oldRigi);
+		oldRigi.setEnabled(false);
 	}
 
 	/**
@@ -110,60 +179,67 @@ public class CurveState extends AbstractAppState {
 		return cp;
 	}
 
+	public void setInvertControlPoints(boolean b) {
+		invertControlPoints = b;
+	}
+	
+	/** Returns debug control points with a bit of a curve.
+	 * @return debug control points with a bit of a curve in the middle
+	 */
+	private float[] getDebugPoints() {
+		final float[] points = new float[controlPointsCount];
+	
+		Arrays.fill(points, DEFAULT_IMAGE_HEIGHT);
+		final int bottomX = 10;
+		final int topX = 15;
+		for (int i = bottomX; i < topX; i++) { // TESTING CODE
+			final int scale = 10;
+			points[i] = i * scale;
+		}
+		return points;
+	}
+
+	/** Calls on Camera data for the controlPoints to use to manipulate the curve.
+	 * @return most recent camera data
+	 */
+	public float[] getCameraPointData() {
+		final float[] points;
+		
+		updateControlPointsCounts();
+		
+		points = bridge.getControlPoints();
+		
+		updateMaxHeightDiff();
+		
+		return points;
+	}
+	
+	/**
+	 * Communicates with interface to retrieve latest image variables.
+	 */
+	private void updateControlPointsCounts() {
+		controlPointsCount = getNumberOfControlPoints(bridge.getImageWidth(), bridge.getxdist());
+	}
+
 	/**
 	 * sets the mHD variable by calculating the 'opposite' edge of the triangle using the 'adjacent'
 	 * edge and the angle.
 	 */
-	private void setMaxHeightDiff() {
+	private void updateMaxHeightDiff() {
 		maxHeightDifference = (float) (bridge.getxdist() * Math
 				.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
 	}
-
-	@Override
-	public final void update(final float tpf) {
-		float[] points;
-		if (bridge == null) {
-			bridge = stateManager.getState(CameraState.class).getBridge();
-		}
-
-		if (cameraEnabled && bridge.isBgSet()) {
-			controlPointsCount = getNumberOfControlPoints(bridge.getImageWidth(), bridge.getxdist());
-			points = bridge.getControlPoints();
-			setMaxHeightDiff();
-			points = removeLargeHeightDifferences(points);
-		} else {
-			points = new float[controlPointsCount];
-			Arrays.fill(points, DEFAULT_IMAGE_HEIGHT);
-			final int bottomX = 10;
-			final int topX = 15;
-			for (int i = bottomX; i < topX; i++) { // TESTING CODE
-				final int scale = 10;
-				points[i] = i * scale;
-			}
-		}
-
-		if (updateEnabled) {
-			if (bridge != null && bridge.isBgSet()) {
-				scaleValues(points, bridge.getImageHeight());
-			} else {
-				scaleValues(points, (int) DEFAULT_IMAGE_HEIGHT);
-			}
-			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
-			splineCurve.setCurvePoints(updatedPoints);
-		}
-
-		app.getRootNode().detachChildNamed("curve");
-		if (rigi != null) {
-			oldRigi = rigi;
-		}
-		rigi = new RigidBodyControl(0f);
-		splineCurve.drawCurve(curveMaterial, PlayState.getPhysicsSpace(), rigi, app.getRootNode());
-		splineCurve.getGeometry().removeControl(oldRigi);
-		oldRigi.setEnabled(false);
+	
+	/**
+	 * Returns a new RigidBodyControl with mass 0.
+	 * @return new RigidBodyControl
+	 */
+	public RigidBodyControl makeRigidBodyControl() {
+		return new RigidBodyControl(0f);
 	}
 
 	/**
-	 * Method generates Vector3f[] represenation of controlpoints, using the POINT_DISTANCE to
+	 * Method generates Vector3f[] representation of controlpoints, using the POINT_DISTANCE to
 	 * define the distance between points on the x-axis.
 	 * @param points controlpoints array received from camera, already processed and flipped by 
 	 * scaleValues() method
@@ -171,87 +247,109 @@ public class CurveState extends AbstractAppState {
 	 * @return Vector3f[] representation of controlpoints
 	 */
 	private Vector3f[] createVecArray(final float[] points, final float tpf) {
-		Vector3f[] res = new Vector3f[points.length];
-		boolean filled = false;
+		final Vector3f[] res = new Vector3f[points.length];
+		
+		final Vector3f[] currentPoints = splineCurve.getCurvePoints();
 
-		final Vector3f[] tmp = splineCurve.getCurvePoints();
-		if (tmp.length == points.length) {
-			res = tmp;
-			filled = true;
-		}
-
-		// create from scratch
-		if (!filled) {
-			for (int i = 0; i < points.length; i++) {
-				final Vector3f temp = new Vector3f(POINT_DISTANCE * i, 0, 0);
-				temp.y = points[i];
-				res[i] = temp;
-			}
-		} else { // use existing
-			for (int i = 0; i < points.length; i++) {
-				final Vector3f temp = res[i];
-
-				final float current = temp.y;
-				final float desired = points[i];
-				float heightChange = 0;
-				float changeSpeed = 0;
-				final float offset = 0.5f;
-				final float delta = Math.abs(current - desired);
-
-				changeSpeed = delta / POINTS_HEIGHT + offset; // offset by 0.5 so range (0.5, 1.5)
-
-				if (delta < CHANGE_THRESHOLD) {
-					continue;
-				}
-				if (current <= desired) {
-					heightChange = Math.min(delta, BASE_CHANGE_SPEED);
-				} else {
-					heightChange = Math.max(-delta, -BASE_CHANGE_SPEED);
-				}
-
-				heightChange = heightChange * changeSpeed * tpf;
-				temp.y = current + heightChange;
-				res[i] = temp;
-			}
+		if ((currentPoints.length != res.length)) {
+			// create from scratch
+			initPoints(res);
+		} else {
+			// use existing
+			copy(currentPoints, res);
+			updatePoints(res, points, tpf);
 		}
 
 		return res;
 	}
 
+	/** Copies from 1st argument array into second.
+	 * @param currentPoints copy from
+	 * @param res to
+	 */
+	private void copy(final Vector3f[] currentPoints, final Vector3f[] res) {
+		for (int i = 0; i < currentPoints.length; i++) {
+			res[i] = currentPoints[i];
+		}
+	}
+
+	private void updatePoints(Vector3f[] res, float[] points, final float tpf) {
+		for (int i = 0; i < points.length; i++) {
+			final Vector3f temp = res[i];
+
+			final float current = temp.y;
+			final float desired = points[i];
+			float heightChange = 0;
+			float changeSpeed = 0;
+			final float offset = 0.5f;
+			final float delta = Math.abs(current - desired);
+
+			changeSpeed = delta / POINTS_HEIGHT + offset; // offset by 0.5 so range (0.5, 1.5)
+
+			if (delta < CHANGE_THRESHOLD) {
+				continue;
+			}
+			if (current <= desired) {
+				heightChange = Math.min(delta, BASE_CHANGE_SPEED);
+			} else {
+				heightChange = Math.max(-delta, -BASE_CHANGE_SPEED);
+			}
+
+			heightChange = heightChange * changeSpeed * tpf;
+			temp.y = current + heightChange;
+			res[i] = temp;
+		}
+	}
+
 	/**
 	 * Scales the values given by the camera.
 	 * 
-	 * @param points
-	 *            list of control points
+	 * @param points 
+	 * 			  camera points
 	 * @param screenHeight
-	 *            the
+	 *            the y-axis resolution of the camera
+	 * @return scaled Values
 	 */
-	private void scaleValues(final float[] points, final int screenHeight) {
+	private float[] scaleValues(final float[] points, final int screenHeight) {
 		for (int i = 0; i < points.length; i++) {
 			float point = points[i];
-			point = screenHeight - point;
+			if (!invertControlPoints) {
+				point = screenHeight - point;
+			}
 			point = point / screenHeight;
 			point = point * POINTS_HEIGHT;
 			points[i] = point;
 		}
+		return points;
+	}
+	
+	/**
+	 * Used to initialize points for the curve when the camera has more points than the curve.
+	 * 
+	 * @param points Correctly sized vector3f array to be initialized
+	 */
+	public void initPoints(final Vector3f[] points) {
+		for (int i = 0; i < points.length; i++) {
+			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
+		}
 	}
 
 	/**
-	 * Used to generate testPoints for the curve.
+	 * Used to generate startingPoints for the curve.
 	 * 
 	 * @return A variable length Vector3f array
 	 */
-	public static Vector3f[] testPoints() {
+	public static Vector3f[] getStartingPoints() {
 
 		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
-			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2, 0));
+			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 15 /* 2 */, 0));
 		}
 
 		return points;
 	}
-
+	
 	/**
 	 * Toggle the updating of the dataset points through the camera input.
 	 */
@@ -303,5 +401,25 @@ public class CurveState extends AbstractAppState {
 	 */
 	public SplineCurve getSplineCurve() {
 		return splineCurve;
+	}
+	
+	/** Loops over the curvepoints and gets the x location of the highest controlpoint. 
+	 * @return the x location of the highest controlpoint
+	 */
+	public float getHighestPointX() {
+		float highest = 0;
+		int highestIndex = -1;
+		
+		if (updatedXPoints != null) {
+			for (int i = 0; i < updatedXPoints.length; i++) {
+				final float tmp = updatedXPoints[i];
+				if (tmp > highest) {
+					highest = tmp;
+					highestIndex = i;
+				}
+			}
+		}
+		System.out.println(highestIndex);
+		return highestIndex * POINT_DISTANCE;
 	}
 }

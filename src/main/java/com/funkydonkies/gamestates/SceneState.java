@@ -1,10 +1,7 @@
 package com.funkydonkies.gamestates;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
+import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.w4v3.App;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -43,7 +40,7 @@ public class SceneState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.assetManager = this.app.getAssetManager();
-		initScene();
+//		initScene();
 	}
 
 	/**
