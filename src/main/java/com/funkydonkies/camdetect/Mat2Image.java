@@ -1,6 +1,5 @@
 package com.funkydonkies.camdetect;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
@@ -403,7 +402,7 @@ public class Mat2Image implements Bridge {
 	public boolean isBgSet() {
 		return bgSet;
 	}
-	
+
 	/**
 	 * increment the upper bound.
 	 */
@@ -412,7 +411,7 @@ public class Mat2Image implements Bridge {
 			upperBound -= BOUND_MOVE_AMOUNT;
 		}
 	}
-	
+
 	/**
 	 * decrement the upper bound.
 	 */
@@ -421,7 +420,7 @@ public class Mat2Image implements Bridge {
 			upperBound += BOUND_MOVE_AMOUNT;
 		}
 	}
-	
+
 	/**
 	 * increment the lower bound.
 	 */
@@ -430,7 +429,7 @@ public class Mat2Image implements Bridge {
 			lowerBound -= BOUND_MOVE_AMOUNT;
 		}
 	}
-	
+
 	/**
 	 * decrement the lower bound.
 	 */
