@@ -69,11 +69,15 @@ public class GameBackgroundMusicState extends AbstractAppState {
 	public void initBackgroundMusic(final Path bgMusicPath) {
 		final String pathString = bgMusicPath.toString().replace("\\", "/");
 		// set bg music, streaming set to true
-		bgMusic = new AudioNode(assetManager, pathString, true);
+		bgMusic = createAudioNode(pathString);
 		bgMusic.setPositional(false);
 		bgMusic.setVolume(1);
 		app.getRootNode().attachChild(bgMusic);
 		bgMusic.play();
+	}
+	
+	public AudioNode createAudioNode(String path) {
+		return new AudioNode(assetManager, path, true);
 	}
 
 	/**
