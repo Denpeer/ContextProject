@@ -1,5 +1,7 @@
 package com.funkydonkies.factories;
 
+import java.util.Iterator;
+
 import com.funkydonkies.controllers.PenguinControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
@@ -21,6 +23,8 @@ public class PenguinFactory implements FactoryInterface {
 	private static final String COLOR = "Color";
 	private static final String MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 	private static final String MODEL_PATH = "Models/PENGUIN.j3o";
+	
+//	private static final String[] PenguinGeometry
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -69,7 +73,6 @@ public class PenguinFactory implements FactoryInterface {
 	 */
 	public Spatial makePenguin() {
 		final Spatial penguin = app.getAssetManager().loadModel(MODEL_PATH);
-		penguin.setMaterial(getPenguinMaterial());
 		penguin.setName(PENGUIN_NAME);
 		return penguin;
 	}
@@ -81,21 +84,6 @@ public class PenguinFactory implements FactoryInterface {
 	 */
 	public Node makePengNode() {
 		return new Node(PENGUIN_NAME);
-	}
-
-	/**
-	 * This method gets the material for the penguin.
-	 * 
-	 * @return the penguin material
-	 */
-	public Material getPenguinMaterial() {
-		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Orange);
-		mat.setBoolean("UseMaterialColors", true);
-//		mat.setColor("Diffuse", ColorRGBA.White);
-//		mat.setColor("Specular", ColorRGBA.White);
-//		mat.setFloat("Shininess", 64f); // [0,128]
-		return mat;
 	}
 
 	/**
