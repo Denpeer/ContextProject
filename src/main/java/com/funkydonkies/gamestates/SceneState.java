@@ -7,7 +7,9 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.water.SimpleWaterProcessor;
 
 /**
  * Loads the scene.
@@ -19,6 +21,7 @@ public class SceneState extends AbstractAppState {
 
 	private App app;
 	private AssetManager assetManager;
+	private Node sceneNode = new Node();
 
 	// path to the scene to be loaded on start up
 	private static final String SCENE_PATH = "/Scenes/main.j3o";
@@ -27,7 +30,11 @@ public class SceneState extends AbstractAppState {
 	private static final int SCENE_SCALE = 1;
 	// default scene translation, defines the translation of the scene to be
 	// loaded by 'initScene()'
-	private static final Vector3f SCENE_TRANSLATION = new Vector3f(50, 0, 0);
+	private static final Vector3f SCENE_TRANSLATION = new Vector3f(0, 0, 0);
+	
+	private static final Vector3f WATER_LOCATION = new Vector3f(-400, 5, 200);
+	
+	private static final int WATER_SCALE = 60;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -40,7 +47,7 @@ public class SceneState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.assetManager = this.app.getAssetManager();
-//		initScene();
+		initScene();
 	}
 
 	/**
@@ -65,6 +72,20 @@ public class SceneState extends AbstractAppState {
 		System.out.println("=> loading " + SCENE_PATH + " Spatial ...");
 		loadScene(scale, translation);
 		System.out.println("... DONE loading .scene Spatial <=");
+		
+		//create processor
+        final SimpleWaterProcessor waterProcessor = new SimpleWaterProcessor(assetManager);
+        waterProcessor.setReflectionScene(app.getRootNode());
+        waterProcessor.setDebug(false);
+        app.getViewPort().addProcessor(waterProcessor);
+
+        //create water quad
+        final Spatial waterPlane = waterProcessor.createWaterGeometry(100, 100);
+        waterPlane.setMaterial(waterProcessor.getMaterial());
+        waterPlane.setLocalScale(WATER_SCALE);
+        waterPlane.setLocalTranslation(WATER_LOCATION);
+
+        sceneNode.attachChild(waterPlane);
 	}
 
 	/**
@@ -80,7 +101,8 @@ public class SceneState extends AbstractAppState {
 		final Spatial gameLevel = assetManager.loadModel(SCENE_PATH);
 		gameLevel.setLocalTranslation(trans);
 		gameLevel.setLocalScale(scale);
-		app.getRootNode().attachChild(gameLevel);
+		sceneNode.attachChild(gameLevel);
+		app.getRootNode().attachChild(sceneNode);
 		final int x = 100;
 		gameLevel.move(x, 0, 0);
 	}

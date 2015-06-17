@@ -83,7 +83,7 @@ public class CurveState extends AbstractAppState {
 	 */
 	public Material initializeMaterial() {
 		final Material curveMat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMat.setColor(COLOR, ColorRGBA.randomColor());
+		curveMat.setColor(COLOR, ColorRGBA.White);
 		return curveMat;
 	}
 
@@ -98,7 +98,6 @@ public class CurveState extends AbstractAppState {
 		if (updateEnabled) {
 			if (bridge != null && bridge.isBgSet()) {
 				scaleValues(points);
-				System.out.println(Arrays.toString(points));
 			} else {
 				scaleValues(points);
 			}
