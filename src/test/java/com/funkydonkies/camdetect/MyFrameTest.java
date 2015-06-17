@@ -23,10 +23,10 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MyFrameTest {
-	
+
 	private MyFrame frame;
 	private boolean runTest = false;
-	
+
 	/**
 	 * Initialize vars, make sure opencv is not run on travis.
 	 */
@@ -39,7 +39,7 @@ public class MyFrameTest {
 			runTest = false;
 		}
 	}
-	
+
 	/**
 	 * Runs after every test, kills frame thread.
 	 */
@@ -49,7 +49,7 @@ public class MyFrameTest {
 			frame.dispose();
 		}
 	}
-	
+
 	/**
 	 * Get videocap objects and compare.
 	 */
@@ -90,7 +90,13 @@ public class MyFrameTest {
 			frame = new MyFrame();
 			frame.initBgSetKey();
 			testpanel = (JPanel) frame.getContentPane();
-			assertEquals(testpanel.getInputMap().allKeys()[0].getKeyChar(), 'b');
+			boolean keyFound = false;
+			for (int i = 0; i < testpanel.getInputMap().allKeys().length; i++) {
+				if (testpanel.getInputMap().allKeys()[i].getKeyChar() == 'b') {
+					keyFound = true;
+				}
+			}
+			assertTrue(keyFound);
 		}
 	}
 
@@ -113,7 +119,7 @@ public class MyFrameTest {
 		if (runTest) {
 			frame = new MyFrame();
 			new Thread(frame).start();
-			
+
 		}
 	}
 

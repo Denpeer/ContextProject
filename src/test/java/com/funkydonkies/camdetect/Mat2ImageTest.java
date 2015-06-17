@@ -339,6 +339,7 @@ public class Mat2ImageTest {
 			final BufferedReader br = new BufferedReader(new FileReader(
 					CONTROL_POINTS_TEXT_FILE_PATH));
 			final String testPoints = br.readLine();
+			System.out.println(Arrays.toString(ip));
 			assertEquals(testPoints, Arrays.toString(ip));
 			br.close();
 		}
