@@ -27,7 +27,7 @@ public class SpawnState extends AbstractAppState {
 	public static final float OBSTACLE_SPAWN_TIME = 5;
 	public static final float SPECIAL_FISH_SPAWN_TIME = 30;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
 
 	private AppStateManager stateManager;
@@ -190,7 +190,7 @@ public class SpawnState extends AbstractAppState {
 	}
 
 	public void initRootNodeMat(final App appl) {
-		final Material mat = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(appl.getAssetManager(), MATERIAL_PATH);
 		appl.getRootNode().setUserData("default material", mat);
 	}
 }

@@ -32,9 +32,13 @@ public class SceneState extends AbstractAppState {
 	// loaded by 'initScene()'
 	private static final Vector3f SCENE_TRANSLATION = new Vector3f(0, 0, 0);
 	
-	private static final Vector3f WATER_LOCATION = new Vector3f(-400, 5, 200);
+	private static final Vector3f WATER_LOCATION = new Vector3f(-400, 2, 200);
 	
 	private static final int WATER_SCALE = 60;
+	private static final int WATER_DEPTH = 20;
+	
+	private static final float WATER_WAVE_SPEED = 0.01f;
+	private static final float WATER_WAVE_DISTORTION = 20f;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -77,6 +81,11 @@ public class SceneState extends AbstractAppState {
         final SimpleWaterProcessor waterProcessor = new SimpleWaterProcessor(assetManager);
         waterProcessor.setReflectionScene(app.getRootNode());
         waterProcessor.setDebug(false);
+        
+        waterProcessor.setWaterDepth(WATER_DEPTH);         // transparency of water
+        waterProcessor.setDistortionScale(WATER_WAVE_DISTORTION); // strength of waves
+        waterProcessor.setWaveSpeed(WATER_WAVE_SPEED);       // speed of waves
+        
         app.getViewPort().addProcessor(waterProcessor);
 
         //create water quad
