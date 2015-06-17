@@ -34,6 +34,8 @@ public class ThunderFactory implements FactoryInterface {
 	private static final float WARNING_LINE_WIDTH = 5;
 	private static final float WARNING_LINE_HEIGHT = 200;
 	private static final float WARNING_LINE_DEPTH = 1;
+	
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -120,7 +122,9 @@ public class ThunderFactory implements FactoryInterface {
 	public Material getThunderMaterial() {
 		Material thunderMaterial;
 		thunderMaterial = ((Material) app.getRootNode().getUserData(defaultMaterial)).clone();
-		thunderMaterial.setColor(color, ColorRGBA.Pink);
+		thunderMaterial.setColor("Diffuse", ColorRGBA.White);
+	    thunderMaterial.setColor("Specular", ColorRGBA.White);
+	    thunderMaterial.setColor("GlowColor", ColorRGBA.White);
 		return thunderMaterial;
 	}
 
@@ -131,8 +135,8 @@ public class ThunderFactory implements FactoryInterface {
 	 */
 	public Material getWarningLineMaterial() {
 		Material warningLineMaterial;
-		final float colorAlpha = 0.2f;
-		warningLineMaterial = ((Material) app.getRootNode().getUserData(defaultMaterial)).clone();
+		final float colorAlpha = 0.4f;
+		warningLineMaterial = new Material(app.getAssetManager(), MATERIAL_PATH);
 		warningLineMaterial.setColor(color, new ColorRGBA(1, 0, 0, (float) colorAlpha));
 		warningLineMaterial.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return warningLineMaterial;

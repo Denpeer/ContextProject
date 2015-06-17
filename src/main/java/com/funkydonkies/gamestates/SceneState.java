@@ -6,7 +6,9 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -36,10 +38,8 @@ public class SceneState extends AbstractAppState {
 	private static final Vector3f WATER_LOCATION = new Vector3f(-400, 2, 200);
 	
 	private static final int WATER_SCALE = 60;
-	private static final int WATER_DEPTH = 20;
 	
-	private static final float WATER_WAVE_SPEED = 0.01f;
-	private static final float WATER_WAVE_DISTORTION = 20f;
+	private static final float AMBIENT_MUL = 10f;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -83,10 +83,6 @@ public class SceneState extends AbstractAppState {
         waterProcessor.setReflectionScene(app.getRootNode());
         waterProcessor.setDebug(false);
         
-        waterProcessor.setWaterDepth(WATER_DEPTH);         // transparency of water
-        waterProcessor.setDistortionScale(WATER_WAVE_DISTORTION); // strength of waves
-        waterProcessor.setWaveSpeed(WATER_WAVE_SPEED);       // speed of waves
-        
         app.getViewPort().addProcessor(waterProcessor);
 
         //create water quad
@@ -100,6 +96,11 @@ public class SceneState extends AbstractAppState {
         final DirectionalLight light = new DirectionalLight();
         final Vector3f dir = new Vector3f(0, -1, 0);
         light.setDirection(dir);
+        
+        final AmbientLight aLight = new AmbientLight();
+        aLight.setColor(ColorRGBA.White.mult(AMBIENT_MUL));
+        
+        app.getRootNode().addLight(aLight);
         app.getRootNode().addLight(light);
 	}
 
