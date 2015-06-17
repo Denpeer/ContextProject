@@ -49,8 +49,6 @@ public class DifficultyStateTest {
 		diffState = new DifficultyState();
 		diffSpy = spy(diffState);
 		doReturn(combo).when(diffSpy).makeCombo();
-		doReturn(tier1).when(diffSpy).makeTier1();
-		doReturn(tier2).when(diffSpy).makeTier2();
 		doReturn(snowBall).when(diffSpy).makeSnowBallPowerup();
 		doReturn(invertControls).when(diffSpy).makeInvertControlsPowerup();
 		doReturn(soundState).when(sManager).getState(SoundState.class);
@@ -64,52 +62,7 @@ public class DifficultyStateTest {
 		verify(sManager, times(4)).attach(any(DisabledState.class));
 		verify(diffSpy).initComboDisplay();
 	}
-	
-	@Test
-	public void testUpdate() {
-		//TODO test update method here
-	}
 
-	@Test
-	public void testSetTier1() {
-		diffSpy.initialize(sManager, app);
-		
-		verify(tier1, times(0)).setEnabled(true);
-		verify(tier2, times(0)).setEnabled(true);
-
-		diffSpy.setTier1();
-		
-		verify(tier1).setEnabled(true);
-		verify(tier2, times(0)).setEnabled(true);
-	}
-
-	@Test
-	public void testSetTier2() {
-		diffSpy.initialize(sManager, app);
-		
-		verify(tier1, times(0)).setEnabled(true);
-		verify(tier2, times(0)).setEnabled(true);
-
-		diffSpy.setTier2();
-		
-		verify(tier2).setEnabled(true);
-		verify(tier1, times(0)).setEnabled(true);
-	}
-	
-	@Test
-	public void testSetTier2_2() {
-		diffSpy.initialize(sManager, app);
-		
-		verify(tier1, times(0)).setEnabled(true);
-		verify(tier2, times(0)).setEnabled(true);
-		
-		when(tier1.isEnabled()).thenReturn(true);
-		diffSpy.setTier1();
-		diffSpy.setTier2();
-		
-		verify(tier2).setEnabled(true);
-		verify(tier1, times(1)).setEnabled(false);
-	}
 
 	@Test
 	public void testIncDiff() {

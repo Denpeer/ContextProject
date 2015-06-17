@@ -40,9 +40,6 @@ public class SpawnStateTest {
 	@Test
 	public void initializeTest(){
 		spy.initialize(sManager, app);
-		
-		verify(spy).initFactories();
-		verify(spy).setSpawnAbleObjects();
 		verify(spy).spawn(any(FactoryInterface.class), any(Node.class));
 		verify(spy).initRootNodeMat(app);
 	}
