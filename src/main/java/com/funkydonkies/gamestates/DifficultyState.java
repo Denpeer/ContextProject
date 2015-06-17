@@ -85,6 +85,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void checkTierenabling() {
 		final int enabledTier =  currCombo / tierBorder;
 		final Iterator<String> it = tierMap.keySet().iterator();
+		System.out.println(enabledTier);
 		while (it.hasNext()) {
 			final String name = it.next();
 			if (enabledTier == 0) {
@@ -102,10 +103,11 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void enableTier(final String name) {
 		final Iterator<Tier> it = tierMap.values().iterator();
 		while (it.hasNext()) {
-			final DisabledState tier = it.next();
-			tier.setEnabled(false);
-			if (tier.equals(tierMap.get(name))) {
+			final Tier tier = it.next();	
+			if (tier.equals(tierMap.get(name)) && !tier.isEnabled()) {
 				tier.setEnabled(true);
+			} else if (!tier.equals(tierMap.get(name))) {
+				tier.setEnabled(false);
 			}
 		}
 	}
