@@ -31,7 +31,7 @@ public class SpawnState extends AbstractAppState {
 	public static final float SPECIAL_FISH_SPAWN_TIME = 30;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String TIER_PACKAGE = "com.funkydonkies.tiers";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
 	private HashMap<String, Tier> tierMap;
 
@@ -41,7 +41,6 @@ public class SpawnState extends AbstractAppState {
 
 	private App app;
 	private float timeCount = 0;
-	private float time = 0;
 	private float specialFishTimer = 0;
 	private float obstacleTimer = 0;
 
@@ -82,7 +81,6 @@ public class SpawnState extends AbstractAppState {
 	@Override
 	public final void update(final float tpf) {
 		timeCount += tpf;
-		time += tpf;
 		specialFishTimer += tpf;
 		obstacleTimer += tpf;
 		
