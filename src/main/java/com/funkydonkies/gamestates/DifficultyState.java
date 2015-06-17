@@ -21,7 +21,7 @@ import com.jme3.app.state.AppStateManager;
 /**
  * This class controls the activation and deactivation of the different power ups.
  * 
- * This Class uses the observer pattern, it is an observable that notifies it observers when the 
+ * This Class uses the observer pattern, it is an observable that notifies it observers when the
  * combo count changes, so that GUI/HUD elements can be updated accordingly.
  * 
  */
@@ -36,15 +36,16 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	private InvertControlsPowerup invertControls;
 	private SnowballPowerup snowBallPowerup;
-	
+
 	private SoundState soundState;
 	private HashMap<String, Tier> tierMap;
-	
+
 	private Vector<Observer> obs = new Vector<Observer>();
 	private AppStateManager stateManager;
 
 	/**
-	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager, com.jme3.app.Application)
+	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager,
+	 *      com.jme3.app.Application)
 	 */
 	@Override
 	public final void initialize(final AppStateManager sManager, final Application appl) {
@@ -56,18 +57,18 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		}
 		stateManager = sManager;
 		attachTiers();
-		
+
 		invertControls = makeInvertControlsPowerup();
 		sManager.attach(invertControls);
 
 		snowBallPowerup = makeSnowBallPowerup();
 		sManager.attach(snowBallPowerup);
-		
+
 		soundState = sManager.getState(SoundState.class);
 
 		initComboDisplay();
 	}
-	
+
 	/**
 	 * This method attaches all the tiers to the state manager.
 	 */
@@ -78,12 +79,12 @@ public class DifficultyState extends AbstractAppState implements Observable {
 			stateManager.attach(it.next());
 		}
 	}
-	
+
 	/**
 	 * This method check if another tier needs to be enabled.
 	 */
 	public void checkTierenabling() {
-		final int enabledTier =  currCombo / tierBorder;
+		final int enabledTier = currCombo / tierBorder;
 		final Iterator<String> it = tierMap.keySet().iterator();
 		System.out.println(enabledTier);
 		while (it.hasNext()) {
@@ -96,9 +97,12 @@ public class DifficultyState extends AbstractAppState implements Observable {
 			}
 		}
 	}
+
 	/**
 	 * This method enables a tier and disables the other tiers.
-	 * @param name the name of the tier
+	 * 
+	 * @param name
+	 *            the name of the tier
 	 */
 	public void enableTier(final String name) {
 		final Iterator<Tier> it = tierMap.values().iterator();
@@ -114,12 +118,14 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Adds an observer to the observers vector, so that they can be updated.
-	 * @param o Observer observer to be added.
+	 * 
+	 * @param o
+	 *            Observer observer to be added.
 	 */
 	public void addObserver(final Observer o) {
 		if (o == null) {
-			throw new NullPointerException();	
-		}	
+			throw new NullPointerException();
+		}
 		if (!obs.contains(o)) {
 			obs.addElement(o);
 		}
@@ -131,9 +137,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void setChanged() {
 		changed = true;
 	}
-	
+
 	/**
 	 * Returns the observers vector containing all the observers.
+	 * 
 	 * @return obs Vector
 	 */
 	public Vector<Observer> getObservers() {
@@ -142,8 +149,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Notifies all observers.
+	 * 
 	 * @see com.funkydonkies.interfaces.Observable#notifyObservers(java.lang.Object)
-	 * @param arg the object
+	 * @param arg
+	 *            the object
 	 */
 	@Override
 	public void notifyObservers(final Object arg) {
@@ -152,8 +161,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		if (!changed) {
 			return;
 		}
-			
-		
+
 		synchronized (this) {
 			arrLocal = obs.toArray();
 		}
@@ -164,10 +172,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		}
 	}
 
-
-
 	/**
 	 * Returns a new InvertControlsPowerup, called in initialize.
+	 * 
 	 * @return new InvertControlsPowerup
 	 */
 	public InvertControlsPowerup makeInvertControlsPowerup() {
@@ -176,6 +183,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Returns a new SnowballPowerup, called in initialize.
+	 * 
 	 * @return new SnowballPowerup
 	 */
 	public SnowballPowerup makeSnowBallPowerup() {
@@ -184,6 +192,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Makes the combo display and calls its initialize method.
+	 * 
 	 * @return combo ComboDisplay the instantiated combodisplay class.
 	 */
 	public ComboDisplay initComboDisplay() {
@@ -192,9 +201,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		return comb;
 	}
 
-	
 	/**
 	 * Instantiates the comboDisplay class.
+	 * 
 	 * @return new ComboDisplay
 	 */
 	public ComboDisplay makeCombo() {
@@ -229,7 +238,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Calls the incDiff method multiple times it increase the combo multiple times in one call.
-	 * @param times int amount of combo to add.
+	 * 
+	 * @param times
+	 *            int amount of combo to add.
 	 */
 	public void incDiff(final int times) {
 		for (int i = 0; i < times; i++) {
@@ -246,17 +257,19 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		setChanged();
 		notifyObservers(null);
 	}
-	
+
 	/**
 	 * Returns the current combo amount.
+	 * 
 	 * @return currCombo the current combo;
 	 */
 	public int getCombo() {
 		return currCombo;
 	}
-	
+
 	/**
 	 * Returns the current combo amount.
+	 * 
 	 * @return currCombo the current combo;
 	 */
 	public int getMaxCombo() {

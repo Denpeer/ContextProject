@@ -41,7 +41,6 @@ public class SpawnState extends AbstractAppState {
 
 	private App app;
 	private float timeCount = 0;
-	private float time = 0;
 	private float specialFishTimer = 0;
 	private float obstacleTimer = 0;
 
@@ -82,7 +81,6 @@ public class SpawnState extends AbstractAppState {
 	@Override
 	public final void update(final float tpf) {
 		timeCount += tpf;
-		time += tpf;
 		specialFishTimer += tpf;
 		obstacleTimer += tpf;
 		
