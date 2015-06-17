@@ -8,8 +8,12 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import com.funkydonkies.curve.CustomCurveMesh;
 import com.funkydonkies.factories.PenguinFactory;
+import com.funkydonkies.gamestates.PlayState;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -35,14 +39,20 @@ public class PenguinControlTest {
 	// Low speed, is affected by prePhysicstTick (x <= 1)
 	private static final Vector3f SPEED_LOW = new Vector3f(1f, 1f, 1f);
 
-	// Normal speed, this is the speed after the x value was modified by prePhysicsTick
+	// Normal speed, this is the speed after the x value was modified by
+	// prePhysicsTick
 	private static final Vector3f SPEED_NORMAL = new Vector3f(2f, 1f, 1f);
+	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
 
 	private static PenguinControl contr;
 	private static PhysicsCollisionEvent eventMock;
 	private static Spatial ballSpatialMock;
 	private static Spatial curveSpatialMock;
 	private static AppStateManager appStateMock;
+	private static PlayState plays;
+	private static PhysicsSpace ps;
+	private static SoundState ss;
+	private static Vector3f vec;
 
 	/**
 	 * Initialize test variables once.
@@ -58,8 +68,15 @@ public class PenguinControlTest {
 		eventMock = mock(PhysicsCollisionEvent.class);
 		ballSpatialMock = mock(Spatial.class);
 		curveSpatialMock = mock(Spatial.class);
+		plays = mock(PlayState.class);
+		ps = mock(PhysicsSpace.class);
+		ss = mock(SoundState.class);
+		vec = new Vector3f(1.0f, 0.0f, 0.0f);
 		when(eventMock.getNodeA()).thenReturn(ballSpatialMock);
 		when(eventMock.getNodeB()).thenReturn(curveSpatialMock);
+		when(appStateMock.getState(PlayState.class)).thenReturn(plays);
+		when(appStateMock.getState(SoundState.class)).thenReturn(ss);
+		when(plays.getPhysicsSpace()).thenReturn(ps);
 	}
 
 	/**
@@ -72,7 +89,33 @@ public class PenguinControlTest {
 	}
 
 	/**
-	 * Test ? TODO
+	 * test init.
+	 */
+	@Test
+	public void testInit() {
+		contr.init();
+		final int yOffSet = 5, xOffSet = -20;
+		final Vector3f initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight()
+				+ yOffSet, 0);
+		assertEquals(contr.getPhysicsLocation(), initialSpawn);
+		assertEquals(contr.getLinearVelocity(), INITIAL_SPEED);
+		Mockito.verify(appStateMock).getState(PlayState.class);
+		Mockito.verify(appStateMock).getState(SoundState.class);
+	}
+
+	/**
+	 * testing the MAX_ROTATIONAL_DEVIANCE condition of the prePhysicsTick.
+	 */
+	@Test
+	public void testPrePhyTickMaxRotDev() {
+		contr.setAngularVelocity(vec);
+		contr.prePhysicsTick(new PhysicsSpace(), 1);
+		assertEquals(contr.getAngularVelocity(), new Vector3f(0, 0, 0));
+	}
+
+	/**
+	 * Tests prePhysicsTick for if loc.z > MAX_DEVIANCE_ON_Z to make sure the
+	 * objects only move along a 2d plane.
 	 */
 	@Test
 	public void resetZTest() {
@@ -84,7 +127,8 @@ public class PenguinControlTest {
 	}
 
 	/**
-	 * Test ? TODO
+	 * Tests prePhysicsTick for if loc.z > MAX_DEVIANCE_ON_Z to make sure the
+	 * objects only move along a 2d plane.
 	 */
 	@Test
 	public void resetNegativeZtest() {
@@ -96,7 +140,7 @@ public class PenguinControlTest {
 	}
 
 	/**
-	 * Test ? TODO
+	 * Test collision on still ball.
 	 */
 	@Test
 	public void collisionTestOnStillBall() {
@@ -108,7 +152,7 @@ public class PenguinControlTest {
 	}
 
 	/**
-	 * Test ? TODO
+	 * Test collision on moving ball.
 	 */
 	@Test
 	public void collisionTestOn1fBall() {
@@ -120,7 +164,7 @@ public class PenguinControlTest {
 	}
 
 	/**
-	 * Test ? TODO
+	 * Test collision on quickly moving ball.
 	 */
 	@Test
 	public void collisionTestOnNotAffectedBall() {
@@ -132,7 +176,7 @@ public class PenguinControlTest {
 	}
 
 	/**
-	 * Test ? TODO
+	 * Test collision for still ball and not-curve.
 	 */
 	@Test
 	public void collisionTestOnBallNotCollidingWithCurve() {
@@ -145,7 +189,7 @@ public class PenguinControlTest {
 	}
 
 	/**
-	 * Test ? TODO
+	 * Test setPhysicsSpace.
 	 */
 	@Test
 	public void testSetPhysicsSpace() {

@@ -1,5 +1,7 @@
 package com.funkydonkies.gamestates;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 import com.funkydonkies.combo.ComboDisplay;
@@ -11,8 +13,7 @@ import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
 import com.funkydonkies.sounds.ComboLostSound;
 import com.funkydonkies.sounds.SoundState;
-import com.funkydonkies.tiers.Tier1;
-import com.funkydonkies.tiers.Tier2;
+import com.funkydonkies.tiers.Tier;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -20,28 +21,31 @@ import com.jme3.app.state.AppStateManager;
 /**
  * This class controls the activation and deactivation of the different power ups.
  * 
- * This Class uses the observer pattern, it is an observable that notifies it observers when the 
+ * This Class uses the observer pattern, it is an observable that notifies it observers when the
  * combo count changes, so that GUI/HUD elements can be updated accordingly.
  * 
  */
 public class DifficultyState extends AbstractAppState implements Observable {
-	private Tier1 tier1;
-	private Tier2 tier2;
+	private final int tierBorder = 3;
 	private App app;
 
+	private ComboDisplay combo;
 	private int currCombo = 0;
 	private int highestCombo = 0;
 	private boolean changed;
 
 	private InvertControlsPowerup invertControls;
 	private SnowballPowerup snowBallPowerup;
-	
+
 	private SoundState soundState;
-	
+	private HashMap<String, Tier> tierMap;
+
 	private Vector<Observer> obs = new Vector<Observer>();
+	private AppStateManager stateManager;
 
 	/**
-	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager, com.jme3.app.Application)
+	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager,
+	 *      com.jme3.app.Application)
 	 */
 	@Override
 	public final void initialize(final AppStateManager sManager, final Application appl) {
@@ -51,26 +55,70 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-
-		tier1 = makeTier1();
-		sManager.attach(tier1);
-		tier2 = makeTier2();
-		sManager.attach(tier2);
+		stateManager = sManager;
+		attachTiers();
 
 		invertControls = makeInvertControlsPowerup();
 		sManager.attach(invertControls);
 
 		snowBallPowerup = makeSnowBallPowerup();
 		sManager.attach(snowBallPowerup);
-		
+
 		soundState = sManager.getState(SoundState.class);
 
 		initComboDisplay();
 	}
 
 	/**
+	 * This method attaches all the tiers to the state manager.
+	 */
+	public void attachTiers() {
+		tierMap = stateManager.getState(SpawnState.class).getTiers();
+		final Iterator<Tier> it = tierMap.values().iterator();
+		while (it.hasNext()) {
+			stateManager.attach(it.next());
+		}
+	}
+
+	/**
+	 * This method check if another tier needs to be enabled.
+	 */
+	public void checkTierenabling() {
+		final int enabledTier = currCombo / tierBorder;
+		final Iterator<String> it = tierMap.keySet().iterator();
+		while (it.hasNext()) {
+			final String name = it.next();
+			if (enabledTier == 0) {
+				enableTier(null);
+			}
+			if (Character.getNumericValue(name.charAt(name.length() - 1)) == enabledTier) {
+				enableTier(name);
+			}
+		}
+	}
+
+	/**
+	 * This method enables a tier and disables the other tiers.
+	 * 
+	 * @param name
+	 *            the name of the tier
+	 */
+	public void enableTier(final String name) {
+		final Iterator<Tier> it = tierMap.values().iterator();
+		while (it.hasNext()) {
+			final DisabledState tier = it.next();
+			tier.setEnabled(false);
+			if (tier.equals(tierMap.get(name))) {
+				tier.setEnabled(true);
+			}
+		}
+	}
+
+	/**
 	 * Adds an observer to the observers vector, so that they can be updated.
-	 * @param o Observer observer to be added.
+	 * 
+	 * @param o
+	 *            Observer observer to be added.
 	 */
 	public void addObserver(final Observer o) {
 		if (o == null) {
@@ -87,9 +135,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void setChanged() {
 		changed = true;
 	}
-	
+
 	/**
 	 * Returns the observers vector containing all the observers.
+	 * 
 	 * @return obs Vector
 	 */
 	public Vector<Observer> getObservers() {
@@ -98,6 +147,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Notifies all observers.
+	 * 
+	 * @see com.funkydonkies.interfaces.Observable#notifyObservers(java.lang.Object)
+	 * @param arg
+	 *            the object
 	 */
 	@Override
 	public void notifyObservers(final Object arg) {
@@ -106,7 +159,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		if (!changed) {
 			return;
 		}
-		
+
 		synchronized (this) {
 			arrLocal = obs.toArray();
 		}
@@ -118,21 +171,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * @return a new tier1 object
-	 */
-	public Tier1 makeTier1() {
-		return new Tier1();
-	}
-
-	/**
-	 * @return a new tier2 object
-	 */
-	public Tier2 makeTier2() {
-		return new Tier2();
-	}
-
-	/**
 	 * Returns a new InvertControlsPowerup, called in initialize.
+	 * 
 	 * @return new InvertControlsPowerup
 	 */
 	public InvertControlsPowerup makeInvertControlsPowerup() {
@@ -141,6 +181,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Returns a new SnowballPowerup, called in initialize.
+	 * 
 	 * @return new SnowballPowerup
 	 */
 	public SnowballPowerup makeSnowBallPowerup() {
@@ -149,17 +190,18 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Makes the combo display and calls its initialize method.
+	 * 
 	 * @return combo ComboDisplay the instantiated combodisplay class.
 	 */
 	public ComboDisplay initComboDisplay() {
-		final ComboDisplay c = makeCombo();
-		c.init();
-		return c;
+		final ComboDisplay comb = makeCombo();
+		comb.init();
+		return comb;
 	}
 
-	
 	/**
 	 * Instantiates the comboDisplay class.
+	 * 
 	 * @return new ComboDisplay
 	 */
 	public ComboDisplay makeCombo() {
@@ -172,26 +214,12 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	@Override
 	public void update(final float tpf) {
 		super.update(tpf);
+		checkTierenabling();
 		// time += tpf;
 		// if (time > 8) {
 		// time = 0;
 		// setTier2();
 		// }
-	}
-	
-	public void setTier1() {
-		if (!tier1.isEnabled()) {
-			tier1.setEnabled(true);
-		}
-	}
-
-	public void setTier2() {
-		if (tier1.isEnabled()) {
-			tier1.setEnabled(false);
-		}
-		if (!tier2.isEnabled()) {
-			tier2.setEnabled(true);
-		}
 	}
 
 	/**
@@ -208,7 +236,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	/**
 	 * Calls the incDiff method multiple times it increase the combo multiple times in one call.
-	 * @param times int amount of combo to add.
+	 * 
+	 * @param times
+	 *            int amount of combo to add.
 	 */
 	public void incDiff(final int times) {
 		for (int i = 0; i < times; i++) {
@@ -225,17 +255,19 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		setChanged();
 		notifyObservers(null);
 	}
-	
+
 	/**
 	 * Returns the current combo amount.
+	 * 
 	 * @return currCombo the current combo;
 	 */
 	public int getCombo() {
 		return currCombo;
 	}
-	
+
 	/**
 	 * Returns the current combo amount.
+	 * 
 	 * @return currCombo the current combo;
 	 */
 	public int getMaxCombo() {
