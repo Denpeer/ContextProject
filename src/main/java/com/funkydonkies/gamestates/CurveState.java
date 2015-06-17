@@ -185,7 +185,11 @@ public class CurveState extends AbstractAppState {
 		return cp;
 	}
 
-	public void setInvertControlPoints(boolean b) {
+	/** 
+	 * Use to invert the controls on the camera detection.
+	 * @param b invert state of the control points
+	 */
+	public void setInvertControlPoints(final boolean b) {
 		invertControlPoints = b;
 	}
 
@@ -291,7 +295,14 @@ public class CurveState extends AbstractAppState {
 		}
 	}
 
-	private void updatePoints(Vector3f[] res, float[] points, final float tpf) {
+	/**
+	 * Updates the vector array with the values from the point array.
+	 * 
+	 * @param res final vector used by SplineCurve
+	 * @param points values to create vector with
+	 * @param tpf time per frame
+	 */
+	private void updatePoints(final Vector3f[] res, final float[] points, final float tpf) {
 		for (int i = 0; i < points.length; i++) {
 			final Vector3f temp = res[i];
 
@@ -360,7 +371,7 @@ public class CurveState extends AbstractAppState {
 		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
-			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 15 /* 2 */, 0));
+			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2 * 2 * 2 * 2, 0));
 		}
 
 		return points;

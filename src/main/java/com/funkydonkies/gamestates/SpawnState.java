@@ -9,7 +9,6 @@ import org.reflections.Reflections;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.interfaces.FactoryInterface;
-import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -46,7 +45,6 @@ public class SpawnState extends AbstractAppState {
 	private FactoryInterface thunder;
 
 	private App app;
-	boolean bool = true;
 	private float timeCount = 0;
 	private float time = 0;
 	private float specialFishTimer = 0;
@@ -116,6 +114,7 @@ public class SpawnState extends AbstractAppState {
 		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
 			specialFishTimer = 0;
 			int i = rand.nextInt(2);
+			
 			switch (i) {
 			case 0:
 				spawn(krill, app.getRootNode());
@@ -154,13 +153,22 @@ public class SpawnState extends AbstractAppState {
 		}
 	}
 
-	public void spawn(FactoryInterface obstacleFactory, Node nodeToAttach) {
+	/**
+	 * Uses the specified ObstacleFactory to spawn an obstacle and attach it to the specified node.
+	 * @param obstacleFactory desired factory to spawn obstacle from
+	 * @param nodeToAttach desired node to spawn obstacle in
+	 */
+	public void spawn(final FactoryInterface obstacleFactory, final Node nodeToAttach) {
 		final Spatial obstacle = obstacleFactory.makeObject(stateManager, app);
 		if (obstacle != null) {
 			nodeToAttach.attachChild(obstacle);
 		}
 	}
 
+	/**
+	 * 
+	 */
+	@SuppressWarnings("rawtypes")
 	public void fillObstacleFactoriesMap() {
 		facHm = new HashMap<String, FactoryInterface>();
 		final Reflections reflections = new Reflections(FACTORY_PACKAGE);

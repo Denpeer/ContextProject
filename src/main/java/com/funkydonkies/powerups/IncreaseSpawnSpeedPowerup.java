@@ -15,7 +15,10 @@ public class IncreaseSpawnSpeedPowerup extends DisabledState {
 	private AppStateManager sManager;
 	private SpawnState spawnState;
 	
-	public IncreaseSpawnSpeedPowerup(float multiplier) {
+	/**
+	 * @param multiplier change speed multiplier
+	 */
+	public IncreaseSpawnSpeedPowerup(final float multiplier) {
 		speedMultiplier = multiplier;
 	}
 	

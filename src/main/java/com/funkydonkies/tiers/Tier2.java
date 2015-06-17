@@ -1,18 +1,19 @@
 package com.funkydonkies.tiers;
 
 import com.funkydonkies.gamestates.DisabledState;
-import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
+/**
+ * Tier 2 defines powerups to be enabled.
+ */
 public class Tier2 extends DisabledState {
-	private static float INVERT_TIME = 5;
 	
 	private SnowballPowerup snowBall;
 	
 	@Override
-	public void initialize(AppStateManager stateManager, Application app) {
+	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
 		
 		snowBall = new SnowballPowerup();
@@ -20,7 +21,7 @@ public class Tier2 extends DisabledState {
 	}
 	
 	@Override
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
 			//invertControls.setEnabled(true);
@@ -31,7 +32,7 @@ public class Tier2 extends DisabledState {
 	}
 	
 	@Override
-	public void update(float tpf) {
+	public void update(final float tpf) {
 		super.update(tpf);
 	}
 	

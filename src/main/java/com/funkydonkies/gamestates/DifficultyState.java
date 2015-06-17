@@ -9,7 +9,6 @@ import com.funkydonkies.interfaces.Observable;
 import com.funkydonkies.interfaces.Observer;
 import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
-import com.funkydonkies.powerups.SuperSizePowerup;
 import com.funkydonkies.sounds.ComboLostSound;
 import com.funkydonkies.sounds.SoundState;
 import com.funkydonkies.tiers.Tier1;
@@ -26,16 +25,10 @@ import com.jme3.app.state.AppStateManager;
  * 
  */
 public class DifficultyState extends AbstractAppState implements Observable {
-	private static final float TIER_ONE_ACTIVATION = 1;
-
-	private float time = 0;
-	private SuperSizePowerup superSize = null;
-	private DisabledState activatedTier;
 	private Tier1 tier1;
 	private Tier2 tier2;
 	private App app;
 
-	private ComboDisplay combo;
 	private int currCombo = 0;
 	private int highestCombo = 0;
 	private boolean changed;
@@ -44,7 +37,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private SnowballPowerup snowBallPowerup;
 	
 	private SoundState soundState;
-	private Vector obs = new Vector();;
+	
+	private Vector<Observer> obs = new Vector<Observer>();
 
 	/**
 	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager, com.jme3.app.Application)
@@ -71,23 +65,24 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		
 		soundState = sManager.getState(SoundState.class);
 
-		combo = initComboDisplay();
+		initComboDisplay();
 	}
 
 	/**
 	 * Adds an observer to the observers vector, so that they can be updated.
 	 * @param o Observer observer to be added.
 	 */
-	public void addObserver(Observer o) {
-		if (o == null)
+	public void addObserver(final Observer o) {
+		if (o == null) {
 			throw new NullPointerException();
+		}
 		if (!obs.contains(o)) {
 			obs.addElement(o);
 		}
 	}
 
 	/**
-	 * Sets the changed boolean
+	 * Sets the changed boolean.
 	 */
 	public void setChanged() {
 		changed = true;
@@ -97,39 +92,47 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * Returns the observers vector containing all the observers.
 	 * @return obs Vector
 	 */
-	public Vector getObservers() {
+	public Vector<Observer> getObservers() {
 		return obs;
 	}
 
 	/**
-	 * Notifies all observers
-	 * @see com.funkydonkies.interfaces.Observable#notifyObservers(java.lang.Object)
+	 * Notifies all observers.
 	 */
-	public void notifyObservers(Object arg) {
+	@Override
+	public void notifyObservers(final Object arg) {
 		Object[] arrLocal;
 
-		if (!changed)
+		if (!changed) {
 			return;
+		}
 		
 		synchronized (this) {
 			arrLocal = obs.toArray();
 		}
 		changed = false;
 
-		for (int i = arrLocal.length - 1; i >= 0; i--)
+		for (int i = arrLocal.length - 1; i >= 0; i--) {
 			((Observer) arrLocal[i]).update((Observable) this, arg);
+		}
 	}
 
+	/**
+	 * @return a new tier1 object
+	 */
 	public Tier1 makeTier1() {
 		return new Tier1();
 	}
 
+	/**
+	 * @return a new tier2 object
+	 */
 	public Tier2 makeTier2() {
 		return new Tier2();
 	}
 
 	/**
-	 * Returns a new InvertControlsPowerup, called in initialize
+	 * Returns a new InvertControlsPowerup, called in initialize.
 	 * @return new InvertControlsPowerup
 	 */
 	public InvertControlsPowerup makeInvertControlsPowerup() {
@@ -137,7 +140,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * Returns a new SnowballPowerup, called in initialize
+	 * Returns a new SnowballPowerup, called in initialize.
 	 * @return new SnowballPowerup
 	 */
 	public SnowballPowerup makeSnowBallPowerup() {
@@ -149,9 +152,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * @return combo ComboDisplay the instantiated combodisplay class.
 	 */
 	public ComboDisplay initComboDisplay() {
-		ComboDisplay combo = makeCombo();
-		combo.init();
-		return combo;
+		final ComboDisplay c = makeCombo();
+		c.init();
+		return c;
 	}
 
 	
@@ -247,7 +250,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * Activates the snowBallPowerup
+	 * Activates the snowBallPowerup.
 	 */
 	public void activateSnowBallPowerup() {
 		snowBallPowerup.setEnabled(true);

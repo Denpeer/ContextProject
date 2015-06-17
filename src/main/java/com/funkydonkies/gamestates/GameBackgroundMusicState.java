@@ -36,7 +36,6 @@ public class GameBackgroundMusicState extends AbstractAppState {
 
 	private App app;
 	private AssetManager assetManager;
-	private AppStateManager stateManager;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -49,7 +48,6 @@ public class GameBackgroundMusicState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.assetManager = this.app.getAssetManager();
-		this.stateManager = sManager;
 		
 		initBgMusic();
 	}
