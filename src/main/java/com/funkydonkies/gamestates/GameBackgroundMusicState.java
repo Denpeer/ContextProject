@@ -36,7 +36,6 @@ public class GameBackgroundMusicState extends AbstractAppState {
 
 	private App app;
 	private AssetManager assetManager;
-	private AppStateManager stateManager;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -49,7 +48,6 @@ public class GameBackgroundMusicState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.assetManager = this.app.getAssetManager();
-		this.stateManager = sManager;
 		
 		initBgMusic();
 	}
@@ -71,11 +69,15 @@ public class GameBackgroundMusicState extends AbstractAppState {
 	public void initBackgroundMusic(final Path bgMusicPath) {
 		final String pathString = bgMusicPath.toString().replace("\\", "/");
 		// set bg music, streaming set to true
-		bgMusic = new AudioNode(assetManager, pathString, true);
+		bgMusic = createAudioNode(pathString);
 		bgMusic.setPositional(false);
 		bgMusic.setVolume(1);
 		app.getRootNode().attachChild(bgMusic);
 		bgMusic.play();
+	}
+	
+	public AudioNode createAudioNode(String path) {
+		return new AudioNode(assetManager, path, true);
 	}
 
 	/**

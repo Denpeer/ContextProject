@@ -97,9 +97,14 @@ public class PlayState extends AbstractAppState {
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	
+	/**
+	 * Instantiates the BulletAppState.
+	 * @return new BulletAppState
+	 */
 	public BulletAppState makeBulletAppState() {
 		return new BulletAppState();
 	}
+	
 	/**
 	 * Returns the physicsSpace of the application, taken from bulletAppState.
 	 * @return PhysicsSpace

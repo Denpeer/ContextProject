@@ -29,7 +29,7 @@ public class App extends SimpleApplication {
 		playState = new PlayState();
 		stateManager.attach(playState);
 
-		penguinNode = new Node("penguins");// *********
+		penguinNode = new Node("penguins");
 		rootNode.attachChild(penguinNode);
 
 		setRootNodeUserData();
@@ -39,6 +39,9 @@ public class App extends SimpleApplication {
 		setDisplayStatView(false);
 	}
 
+	/**
+	 * Initializes default materials and sets them as User Data in the root node.
+	 */
 	public void setRootNodeUserData() {
 		rootNode.setUserData("default text",
 				new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"), false));
