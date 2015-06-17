@@ -1,7 +1,6 @@
 package com.funkydonkies.factories;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -14,11 +13,9 @@ import org.junit.Test;
 import com.funkydonkies.controllers.FishControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.shape.Box;
+import com.jme3.scene.Spatial;
 /**
  * This class tests the fish factory class.
  */
@@ -41,7 +38,7 @@ public class FishFactoryTest {
 		mockFactory = spy(FishFactory.class);
 		fac = new FishFactory();
 	    doReturn(mock(Material.class)).when(mockFactory).getFishMaterial();
-	    doReturn(geom).when(mockFactory).makeGeometry(any(Box.class));
+	    doReturn(geom).when(mockFactory).makeSpatial();
 	}
 	
 	/**
@@ -54,22 +51,14 @@ public class FishFactoryTest {
 	}
 	
 	/**
-	 * Test the make geometry method.
-	 */
-	@Test
-	public void testMakeGeometry() {
-		assertFalse(fac.makeGeometry(new Box(1, 1, 1)) == null);
-	}
-	
-	/**
 	 * This method tests if every method is called.
 	 */
 	@Test
 	public void methodsCalled() {
 		@SuppressWarnings("unused")
-		final Geometry fish = mockFactory.makeObject(assManager, app);
+		final Spatial fish = mockFactory.makeObject(assManager, app);
 		verify(mockFactory).makeFish();
-		verify(mockFactory).makeGeometry(any(Box.class));
+		verify(mockFactory).makeSpatial();
 	}
 
 }

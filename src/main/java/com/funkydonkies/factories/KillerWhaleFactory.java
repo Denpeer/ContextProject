@@ -7,8 +7,8 @@ import com.funkydonkies.controllers.WarningLineControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
@@ -30,7 +30,8 @@ public class KillerWhaleFactory implements FactoryInterface {
 	
 	private static final String COLOR = "Color";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
-	
+	private static final String MODEL_PATH = "Models/ORCA.j3o";
+
 	private static final float WARNING_LINE_ALPHA = 0.2f;
 	
 	private static final float WHALE_WIDTH = 50;
@@ -49,7 +50,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 		final float x = rand.nextInt(320);
 		final float y = -500;
 		
-		final Geometry whale = makeKillerWhale(x, y);
+		final Spatial whale = makeKillerWhale(x, y);
 		final Geometry line = makeWarningLine(x); 
 
 		final Node obstacleNode = new Node();
@@ -64,13 +65,11 @@ public class KillerWhaleFactory implements FactoryInterface {
 	 * @param xCoord random x point
 	 * @return new Whale Geometry
 	 */
-	public Geometry makeKillerWhale(final float xCoord, final float yCoord) {
-		final Mesh whaleMesh = new Box(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH);
-		final Geometry geom = makeGeometry(whaleMesh);
-		geom.setMaterial(getKillerWhaleMaterial());
-	
-		geom.addControl(makeWhaleControl(xCoord, yCoord));
-		return geom;
+	public Spatial makeKillerWhale(final float xCoord, final float yCoord) {
+		final Spatial whale = makeSpatial();
+		whale.setMaterial(getKillerWhaleMaterial());
+		whale.addControl(makeWhaleControl(xCoord, yCoord, whale));
+		return whale;
 	}
 	
 	/**
@@ -79,9 +78,9 @@ public class KillerWhaleFactory implements FactoryInterface {
 	 * @param yCoord the initial yCoord of the whale
 	 * @return a whale control object
 	 */
-	public KillerWhaleControl makeWhaleControl(final float xCoord, final float yCoord) {
-		final CollisionShape colShape = 
-				new BoxCollisionShape(new Vector3f(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH));
+	public KillerWhaleControl makeWhaleControl(final float xCoord, final float yCoord, 
+			Spatial spatial) {
+		final CollisionShape colShape = CollisionShapeFactory.createMeshShape(spatial);
 		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
 		return new KillerWhaleControl(colShape, stateManager, loci);
 	}
@@ -106,8 +105,10 @@ public class KillerWhaleFactory implements FactoryInterface {
 	 * @param mesh the mesh of the whale
 	 * @return a whale geometry
 	 */
-	public Geometry makeGeometry(final Mesh mesh) {
-		return new Geometry(WHALE_NAME, mesh);
+	public Spatial makeSpatial() {
+		Spatial whale = app.getAssetManager().loadModel(MODEL_PATH);
+		whale.setName(WHALE_NAME);
+		return whale;
 	}
 
 	/** Loads Warning Line Material.
