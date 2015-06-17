@@ -8,11 +8,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
 
 /**
  * This class represent the factory for the target.
@@ -22,9 +19,9 @@ public class PenguinFactory implements FactoryInterface {
 	public static final float DEFAULT_RADIUS = 4f;
 
 	private static final String COLOR = "Color";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 	private static final String MODEL_PATH = "Models/PENGUIN.j3o";
-	
+
 	private AppStateManager stateManager;
 	private SimpleApplication app;
 
@@ -76,9 +73,10 @@ public class PenguinFactory implements FactoryInterface {
 		penguin.setName(PENGUIN_NAME);
 		return penguin;
 	}
-	
+
 	/**
 	 * This method makes a node.
+	 * 
 	 * @return a penguin node
 	 */
 	public Node makePengNode() {
@@ -87,12 +85,16 @@ public class PenguinFactory implements FactoryInterface {
 
 	/**
 	 * This method gets the material for the penguin.
+	 * 
 	 * @return the penguin material
 	 */
 	public Material getPenguinMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Orange);
-		
+		mat.setBoolean("UseMaterialColors", true);
+//		mat.setColor("Diffuse", ColorRGBA.White);
+//		mat.setColor("Specular", ColorRGBA.White);
+//		mat.setFloat("Shininess", 64f); // [0,128]
 		return mat;
 	}
 
@@ -104,7 +106,7 @@ public class PenguinFactory implements FactoryInterface {
 	 * @return the snowball material
 	 */
 	public Material getSnowballMaterial(final AssetManager assetManager) {
-		final Material snowBallMaterial = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		final Material snowBallMaterial = new Material(assetManager, MATERIAL_PATH);
 		snowBallMaterial.setColor(COLOR, ColorRGBA.White);
 		return snowBallMaterial;
 	}

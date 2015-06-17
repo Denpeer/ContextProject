@@ -34,6 +34,9 @@ public class App extends SimpleApplication {
 
 		setRootNodeUserData();
 		setPauseOnLostFocus(false);
+		
+		setDisplayFps(false);
+		setDisplayStatView(false);
 	}
 
 	/**

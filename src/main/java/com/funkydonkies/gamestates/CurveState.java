@@ -27,7 +27,7 @@ public class CurveState extends AbstractAppState {
 	private static final float MAX_SLOPE_ANGLE = 70f;
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
 	private static final float SPEED_MULTIPLIER = 1.5f;
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String COLOR = "Color";
 
 	// set to 32 as default this is what we currently use to test the program.
@@ -82,8 +82,8 @@ public class CurveState extends AbstractAppState {
 	 * @return curveMaterial Material, the material to be used for the curve.
 	 */
 	public Material initializeMaterial() {
-		final Material curveMat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMat.setColor(COLOR, ColorRGBA.randomColor());
+		final Material curveMat = new Material(app.getAssetManager(), MATERIAL_PATH);
+		curveMat.setColor(COLOR, ColorRGBA.White);
 		return curveMat;
 	}
 
@@ -98,7 +98,6 @@ public class CurveState extends AbstractAppState {
 		if (updateEnabled) {
 			if (bridge != null && bridge.isBgSet()) {
 				scaleValues(points);
-				System.out.println(Arrays.toString(points));
 			} else {
 				scaleValues(points);
 			}

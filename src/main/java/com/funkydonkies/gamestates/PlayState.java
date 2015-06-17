@@ -8,6 +8,8 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 /**
@@ -16,7 +18,7 @@ import com.jme3.math.Vector3f;
  */
 public class PlayState extends AbstractAppState {
 	public static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
-	public static final Vector3f CAM_LOCATION = new Vector3f(160, 70, 190);
+	public static final Vector3f CAM_LOCATION = new Vector3f(135, 25, 235);
 
 	private App app;
 
@@ -31,7 +33,6 @@ public class PlayState extends AbstractAppState {
 	private DifficultyState difficultyState;
 	private AppStateManager stateManage;
 	private SceneState sceneState;
-	
 	
 	/**
 	 * Initializes the basic components of the game.
@@ -50,9 +51,9 @@ public class PlayState extends AbstractAppState {
 		}
 		stateManage = stateManager;
 
-		app.getFlyByCamera().setEnabled(false);
+		app.getFlyByCamera().setEnabled(true);
 		app.getCamera().setLocation(CAM_LOCATION);
-
+		
 		handleBulletAppState();
 		initStates();
 	}
@@ -92,7 +93,7 @@ public class PlayState extends AbstractAppState {
 	public void handleBulletAppState() {
 		bulletAppState = makeBulletAppState();
 		stateManage.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(false);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	
