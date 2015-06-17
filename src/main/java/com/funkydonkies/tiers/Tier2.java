@@ -1,39 +1,55 @@
 package com.funkydonkies.tiers;
 
-import com.funkydonkies.gamestates.DisabledState;
-import com.funkydonkies.powerups.SnowballPowerup;
+import java.util.ArrayList;
+
+import com.funkydonkies.gamestates.SpawnState;
+import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
 /**
- * Tier 2 defines powerups to be enabled.
+ * This class represents the first difficulty tier.
  */
-public class Tier2 extends DisabledState {
-	
-	private SnowballPowerup snowBall;
-	
+public class Tier2 extends Tier {
+	private SpawnState spawnState;
+	private ArrayList<FactoryInterface> obstacleArray;
+
+	/**
+	 * The initialize method.
+	 */
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
-		
-		snowBall = new SnowballPowerup();
-		stateManager.attach(snowBall);
+		spawnState = stateManager.getState(SpawnState.class);
+		obstacleArray = new ArrayList<FactoryInterface>();
+		addObstacleArray();
 	}
 	
+	/**
+	 * This method is performed when this class is enabled.
+	 * @param enabled boolean for enabling / disabling
+	 */
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			//invertControls.setEnabled(true);
-			snowBall.setEnabled(true);
-		} else {
-			snowBall.setEnabled(false);
-		}
+			setText("Tier 2: Activated!");
+		} 
 	}
-	
+
+	/**
+	 * Add obstacles to the spawn array.
+	 */
+	public void addObstacleArray() {
+		obstacleArray.add(spawnState.getObstacles().get("YetiFactory"));
+	}
+
+	/**
+	 * The getter for the obstacle array.
+	 */
 	@Override
-	public void update(final float tpf) {
-		super.update(tpf);
+	public ArrayList<FactoryInterface> getObstacleArray() {
+		return obstacleArray;
 	}
-	
+
 }

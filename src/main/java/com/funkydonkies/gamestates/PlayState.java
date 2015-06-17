@@ -79,11 +79,12 @@ public class PlayState extends AbstractAppState {
 		gameSoundState = new GameBackgroundMusicState();
 		stateManage.attach(gameSoundState);
 		
-		difficultyState = new DifficultyState();
-		stateManage.attach(difficultyState);
-		
 		spawnState = new SpawnState();
 		stateManage.attach(spawnState);
+		
+		difficultyState = new DifficultyState();
+		stateManage.attach(difficultyState);
+
 		
 	}
 	

@@ -4,7 +4,6 @@ import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.scene.Node;
-
 /**
  * Game is run through this class.
  *
@@ -12,8 +11,7 @@ import com.jme3.scene.Node;
 public class App extends SimpleApplication {
 	private PlayState playState;
 	private Node penguinNode;
-
-	/**
+	/**		
 	 * Main method. Instantiates the app and starts its execution.
 	 * 
 	 * @param args
@@ -28,28 +26,27 @@ public class App extends SimpleApplication {
 	public void simpleInitApp() {
 		playState = new PlayState();
 		stateManager.attach(playState);
-
+		
 		penguinNode = new Node("penguins");
 		rootNode.attachChild(penguinNode);
-
+		
 		setRootNodeUserData();
 		setPauseOnLostFocus(false);
 		
 		setDisplayFps(false);
 		setDisplayStatView(false);
 	}
-
+	
 	/**
 	 * Initializes default materials and sets them as User Data in the root node.
 	 */
 	public void setRootNodeUserData() {
-		rootNode.setUserData("default text",
-				new BitmapText(assetManager.loadFont("Interface/Fonts/Default.fnt"), false));
+		rootNode.setUserData("default text", new BitmapText(
+				assetManager.loadFont("Interface/Fonts/Default.fnt"), false));
 	}
 
 	/**
 	 * Returns the penguin node, containing all the penguins.
-	 * 
 	 * @return penguinNode Node
 	 */
 	public Node getPenguinNode() {
