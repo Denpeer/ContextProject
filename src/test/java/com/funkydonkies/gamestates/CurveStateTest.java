@@ -148,9 +148,6 @@ public class CurveStateTest {
 		spyCurveState.update(0.1f);
 
 		Vector3f[] points = splineCurve.getCurvePoints();
-		for (Vector3f point : points) {
-			System.out.println(point);
-		}
 		/* TODO check scaleValues and the curvepoints, but they're NaN?? */
 	}
 

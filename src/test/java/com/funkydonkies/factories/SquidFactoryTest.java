@@ -94,8 +94,6 @@ public class SquidFactoryTest {
 	 */
 	@Test
 	public void testGetSquidMaterial() {
-//		final Object mat = sf.getSquidMaterial();
-//		assertTrue(mat instanceof Material);
+		//null pointer at app.getAssetManager => difficult to mock & test
 	}
-
 }

@@ -25,10 +25,8 @@ public class ComboDisplay implements Observer {
 	/**
 	 * Constructor for Combo.
 	 * 
-	 * @param node
-	 *            guiNode, to attach the HUD counter
-	 * @param text
-	 *            BitMapText, to store the HUD text
+	 * @param app
+	 *            App to get nodes, sManager, etc
 	 */
 	public ComboDisplay(final App appl) {
 		this.app = appl;

@@ -11,7 +11,7 @@ import com.jme3.app.state.AppStateManager;
 /**
  * This class represents the first difficulty tier.
  */
-public class Tier1 extends Tier {
+public class Tier5 extends Tier {
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
 
@@ -25,6 +25,7 @@ public class Tier1 extends Tier {
 		obstacleArray = new ArrayList<FactoryInterface>();
 		addObstacleArray();
 	}
+	
 	/**
 	 * This method is performed when this class is enabled.
 	 * @param enabled boolean for enabling / disabling
@@ -33,7 +34,7 @@ public class Tier1 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			setText("Tier 1: Activated!");
+			setText("Tier 5: Activated!");
 		} 
 	}
 
@@ -41,8 +42,7 @@ public class Tier1 extends Tier {
 	 * Add obstacles to the spawn array.
 	 */
 	public void addObstacleArray() {
-		obstacleArray.add(spawnState.getObstacles().get("SpearFactory"));
-		obstacleArray.add(spawnState.getObstacles().get("PolarBearFactory"));
+		obstacleArray.add(spawnState.getObstacles().get("SpikeyBallFactory"));
 	}
 
 	/**
@@ -52,7 +52,5 @@ public class Tier1 extends Tier {
 	public ArrayList<FactoryInterface> getObstacleArray() {
 		return obstacleArray;
 	}
-	
-	
 
 }

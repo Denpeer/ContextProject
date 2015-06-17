@@ -57,7 +57,7 @@ public class PlayStateTest {
 		
 		verify(playSpy).handleBulletAppState();
 		verify(playSpy).initStates();
-		verify(flyCam).setEnabled(false);
+//		verify(flyCam).setEnabled(false);
 		verify(cam).setLocation(PlayState.CAM_LOCATION);
 	}
 
