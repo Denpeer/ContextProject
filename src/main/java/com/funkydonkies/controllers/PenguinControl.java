@@ -91,8 +91,16 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 			angularvel.x = 0;
 			this.setAngularVelocity(angularvel);
 		}
+		
 	}
 
+	@Override
+	public void update(float tpf) {
+		super.update(tpf);
+		final Vector3f direction = getLinearVelocity();
+		spatial.lookAt(direction, new Vector3f(0, 1, 0));
+	}
+	
 	/**
 	 * Listens for collisions. If the ball collides (touches) with the curve and its speed is too
 	 * low, increase it so that the ball can move uphill

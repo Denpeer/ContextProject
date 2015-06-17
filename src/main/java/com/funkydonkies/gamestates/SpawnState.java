@@ -127,7 +127,6 @@ public class SpawnState extends AbstractAppState {
 		if (time > OBSTACLE_SPAWN_TIME) {
 			time = 0;
 			int i = rand.nextInt(6);
-			i = 1;
 			switch (i) {
 			case 0:
 				spawn(spear, app.getRootNode());

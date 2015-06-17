@@ -23,8 +23,8 @@ public class PenguinFactory implements FactoryInterface {
 
 	private static final String COLOR = "Color";
 	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
-	private static final int SAMPLES = 20;
-
+	private static final String MODEL_PATH = "Models/PENGUIN.j3o";
+	
 	private AppStateManager stateManager;
 	private SimpleApplication app;
 
@@ -42,7 +42,7 @@ public class PenguinFactory implements FactoryInterface {
 		app = appl;
 
 		final Node node = makeNode();
-		final Geometry penguin = makePenguin();
+		final Spatial penguin = makePenguin();
 
 		node.attachChild(penguin);
 
@@ -70,12 +70,11 @@ public class PenguinFactory implements FactoryInterface {
 	 * 
 	 * @return newly created Penguin
 	 */
-	public Geometry makePenguin() {
-		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final Geometry geom = new Geometry(PENGUIN_NAME, mesh);
-		geom.setMaterial(getPenguinMaterial());
-
-		return geom;
+	public Spatial makePenguin() {
+		final Spatial penguin = app.getAssetManager().loadModel(MODEL_PATH);
+		penguin.setMaterial(getPenguinMaterial());
+		penguin.setName(PENGUIN_NAME);
+		return penguin;
 	}
 	
 	/**
@@ -93,6 +92,7 @@ public class PenguinFactory implements FactoryInterface {
 	public Material getPenguinMaterial() {
 		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Orange);
+		
 		return mat;
 	}
 
