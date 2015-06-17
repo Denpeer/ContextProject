@@ -60,7 +60,6 @@ public class PolarBearFactory implements FactoryInterface {
 	 */
 	public Spatial makePolarBear() {
 		final Spatial geom = makeSpatial();
-		geom.setMaterial(getPolarBearMaterial());
 		geom.addControl(makePolarBearControl());
 
 		return geom;
@@ -85,11 +84,10 @@ public class PolarBearFactory implements FactoryInterface {
 
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the polar bear
 	 * @return a polar bear geometry
 	 */
 	public Spatial makeSpatial() {
-		Spatial bear = app.getAssetManager().loadModel(MODEL_PATH);
+		final Spatial bear = app.getAssetManager().loadModel(MODEL_PATH);
 		bear.setName(POLAR_BEAR_NAME);
 		return bear;
 	}
@@ -127,17 +125,6 @@ public class PolarBearFactory implements FactoryInterface {
 		} else {
 			return START_LEFT;
 		}
-	}
-
-	/**
-	 * This method gets the polar bear material.
-	 * 
-	 * @return the polar bear material
-	 */
-	public Material getPolarBearMaterial() {
-		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Green);
-		return mat;
 	}
 
 }

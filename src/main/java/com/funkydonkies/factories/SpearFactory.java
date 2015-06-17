@@ -77,7 +77,6 @@ public class SpearFactory implements FactoryInterface {
 	public Spatial makeSpear(final float y, final float x) {
 		
 		final Spatial spear = makeSpatial();
-		spear.setMaterial(getSpearMaterial());
 
 		spear.addControl(makeSpearControl(x, y));
 		
@@ -124,22 +123,11 @@ public class SpearFactory implements FactoryInterface {
 	}
 
 	/**
-	 * This method gets the material for the spear.
-	 * @return the spear material
-	 */
-	public Material getSpearMaterial() {
-		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Green);
-		return mat;
-	}
-
-	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the spear
 	 * @return a spear geometry
 	 */
 	public Spatial makeSpatial() {
-		Spatial spear = app.getAssetManager().loadModel(MODEL_PATH);
+		final Spatial spear = app.getAssetManager().loadModel(MODEL_PATH);
 		spear.setName(SPEAR_NAME);
 		spear.scale(SPEAR_SCALE);
 		return spear;
