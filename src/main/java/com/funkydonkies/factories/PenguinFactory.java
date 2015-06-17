@@ -1,7 +1,5 @@
 package com.funkydonkies.factories;
 
-import java.util.Iterator;
-
 import com.funkydonkies.controllers.PenguinControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;

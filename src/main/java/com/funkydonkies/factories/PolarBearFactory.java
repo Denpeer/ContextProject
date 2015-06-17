@@ -11,19 +11,16 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 
 /**
  * This class represent the factory for the target.
  */
 public class PolarBearFactory implements FactoryInterface {
 
-	private static final float BEAR_WIDTH = 12;
-	private static final float BEAR_HEIGHT = 20;
-	private static final float BEAR_DEPTH = 20;
+	private static final float BEAR_WIDTH = 11;
+	private static final float BEAR_HEIGHT = 18;
+	private static final float BEAR_DEPTH = 18;
 
 	private static final float START_RIGHT = 500;
 	private static final float START_LEFT = -200;
