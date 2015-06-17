@@ -13,7 +13,9 @@ public class App extends SimpleApplication {
 	private Node penguinNode;
 	/**		
 	 * Main method. Instantiates the app and starts its execution.
-	 * @param args run arguments
+	 * 
+	 * @param args
+	 *            run arguments
 	 */
 	public static void main(final String[] args) {
 		final App app = new App();
@@ -25,12 +27,19 @@ public class App extends SimpleApplication {
 		playState = new PlayState();
 		stateManager.attach(playState);
 		
-		penguinNode = new Node("penguins");//*********
+		penguinNode = new Node("penguins");
 		rootNode.attachChild(penguinNode);
 		
 		setRootNodeUserData();
+		setPauseOnLostFocus(false);
+		
+		setDisplayFps(false);
+		setDisplayStatView(false);
 	}
 	
+	/**
+	 * Initializes default materials and sets them as User Data in the root node.
+	 */
 	public void setRootNodeUserData() {
 		rootNode.setUserData("default text", new BitmapText(
 				assetManager.loadFont("Interface/Fonts/Default.fnt"), false));

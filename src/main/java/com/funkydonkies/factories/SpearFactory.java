@@ -37,7 +37,7 @@ public class SpearFactory implements FactoryInterface {
 	private static final float WARNING_LINE_ALPHA = 0.2f;
 	
 	private static final String COLOR = "Color";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -116,7 +116,7 @@ public class SpearFactory implements FactoryInterface {
 	 * @return the line material
 	 */
 	public Material getLineMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor(COLOR, new ColorRGBA(1, 0, 0, WARNING_LINE_ALPHA));
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
@@ -127,7 +127,7 @@ public class SpearFactory implements FactoryInterface {
 	 * @return the spear material
 	 */
 	public Material getSpearMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Green);
 		return mat;
 	}

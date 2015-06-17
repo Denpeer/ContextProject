@@ -22,7 +22,7 @@ public class PenguinFactory implements FactoryInterface {
 	public static final float DEFAULT_RADIUS = 4f;
 
 	private static final String COLOR = "Color";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final int SAMPLES = 20;
 
 	private AppStateManager stateManager;
@@ -91,7 +91,7 @@ public class PenguinFactory implements FactoryInterface {
 	 * @return the penguin material
 	 */
 	public Material getPenguinMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Orange);
 		return mat;
 	}
@@ -104,7 +104,7 @@ public class PenguinFactory implements FactoryInterface {
 	 * @return the snowball material
 	 */
 	public Material getSnowballMaterial(final AssetManager assetManager) {
-		final Material snowBallMaterial = new Material(assetManager, UNSHADED_MATERIAL_PATH);
+		final Material snowBallMaterial = new Material(assetManager, MATERIAL_PATH);
 		snowBallMaterial.setColor(COLOR, ColorRGBA.White);
 		return snowBallMaterial;
 	}

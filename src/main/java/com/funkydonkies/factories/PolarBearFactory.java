@@ -32,7 +32,7 @@ public class PolarBearFactory implements FactoryInterface {
 
 	public static final String COLOR = "Color";
 	public static final String POLAR_BEAR_NAME = "polar bear";
-	public static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	public static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -136,7 +136,7 @@ public class PolarBearFactory implements FactoryInterface {
 	 * @return the polar bear material
 	 */
 	public Material getPolarBearMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Green);
 		return mat;
 	}

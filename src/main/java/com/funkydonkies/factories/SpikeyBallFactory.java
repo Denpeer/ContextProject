@@ -1,11 +1,9 @@
 package com.funkydonkies.factories;
 
 import com.funkydonkies.controllers.SpikeyBallControl;
-import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;

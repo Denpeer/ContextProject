@@ -27,7 +27,7 @@ public class CurveState extends AbstractAppState {
 	private static final float MAX_SLOPE_ANGLE = 70f;
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
 	private static final float SPEED_MULTIPLIER = 1.5f;
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String COLOR = "Color";
 
 	// set to 32 as default this is what we currently use to test the program.
@@ -82,8 +82,8 @@ public class CurveState extends AbstractAppState {
 	 * @return curveMaterial Material, the material to be used for the curve.
 	 */
 	public Material initializeMaterial() {
-		final Material curveMat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		curveMat.setColor(COLOR, ColorRGBA.randomColor());
+		final Material curveMat = new Material(app.getAssetManager(), MATERIAL_PATH);
+		curveMat.setColor(COLOR, ColorRGBA.White);
 		return curveMat;
 	}
 
@@ -98,7 +98,6 @@ public class CurveState extends AbstractAppState {
 		if (updateEnabled) {
 			if (bridge != null && bridge.isBgSet()) {
 				scaleValues(points);
-				System.out.println(Arrays.toString(points));
 			} else {
 				scaleValues(points);
 			}
@@ -185,7 +184,11 @@ public class CurveState extends AbstractAppState {
 		return cp;
 	}
 
-	public void setInvertControlPoints(boolean b) {
+	/** 
+	 * Use to invert the controls on the camera detection.
+	 * @param b invert state of the control points
+	 */
+	public void setInvertControlPoints(final boolean b) {
 		invertControlPoints = b;
 	}
 
@@ -291,7 +294,14 @@ public class CurveState extends AbstractAppState {
 		}
 	}
 
-	private void updatePoints(Vector3f[] res, float[] points, final float tpf) {
+	/**
+	 * Updates the vector array with the values from the point array.
+	 * 
+	 * @param res final vector used by SplineCurve
+	 * @param points values to create vector with
+	 * @param tpf time per frame
+	 */
+	private void updatePoints(final Vector3f[] res, final float[] points, final float tpf) {
 		for (int i = 0; i < points.length; i++) {
 			final Vector3f temp = res[i];
 
@@ -360,7 +370,7 @@ public class CurveState extends AbstractAppState {
 		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
-			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 15 /* 2 */, 0));
+			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2 * 2 * 2 * 2, 0));
 		}
 
 		return points;

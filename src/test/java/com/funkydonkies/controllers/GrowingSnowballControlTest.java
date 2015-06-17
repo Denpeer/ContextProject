@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.funkydonkies.geometrys.penguins.Snowball;
+import com.funkydonkies.spatials.Snowball;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;

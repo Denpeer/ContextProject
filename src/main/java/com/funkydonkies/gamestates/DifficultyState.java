@@ -11,7 +11,6 @@ import com.funkydonkies.interfaces.Observable;
 import com.funkydonkies.interfaces.Observer;
 import com.funkydonkies.powerups.InvertControlsPowerup;
 import com.funkydonkies.powerups.SnowballPowerup;
-import com.funkydonkies.powerups.SuperSizePowerup;
 import com.funkydonkies.sounds.ComboLostSound;
 import com.funkydonkies.sounds.SoundState;
 import com.funkydonkies.tiers.Tier;
@@ -27,7 +26,6 @@ import com.jme3.app.state.AppStateManager;
  * 
  */
 public class DifficultyState extends AbstractAppState implements Observable {
-
 	private final int tierBorder = 3;
 	private App app;
 
@@ -41,7 +39,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	
 	private SoundState soundState;
 	private HashMap<String, Tier> tierMap;
-	private Vector obs = new Vector();
+	
+	private Vector<Observer> obs = new Vector<Observer>();
 	private AppStateManager stateManager;
 
 	/**
@@ -66,7 +65,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		
 		soundState = sManager.getState(SoundState.class);
 
-		combo = initComboDisplay();
+		initComboDisplay();
 	}
 	
 	/**
@@ -135,7 +134,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * Returns the observers vector containing all the observers.
 	 * @return obs Vector
 	 */
-	public Vector getObservers() {
+	public Vector<Observer> getObservers() {
 		return obs;
 	}
 
@@ -144,6 +143,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * @see com.funkydonkies.interfaces.Observable#notifyObservers(java.lang.Object)
 	 * @param arg the object
 	 */
+	@Override
 	public void notifyObservers(final Object arg) {
 		Object[] arrLocal;
 
@@ -160,8 +160,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		for (int i = arrLocal.length - 1; i >= 0; i--) {
 			((Observer) arrLocal[i]).update((Observable) this, arg);
 		}
-			
 	}
+
+
 
 	/**
 	 * Returns a new InvertControlsPowerup, called in initialize.

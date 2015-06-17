@@ -13,40 +13,50 @@ import com.jme3.renderer.RenderManager;
  */
 public abstract class DisabledState implements AppState {
 	
-	protected boolean initialized = false;
+	private boolean initialized = false;
     private boolean enabled = false;
     
-    public void initialize(AppStateManager stateManager, Application app) {
+    @Override
+    public void initialize(final AppStateManager stateManager, final Application app) {
         initialized = true;
     }
-
+    
+    @Override
     public boolean isInitialized() {
         return initialized;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    @Override
+    public void setEnabled(final boolean e) {
+        this.enabled = e;
     }
     
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
 
-    public void stateAttached(AppStateManager stateManager) {
+    @Override
+    public void stateAttached(final AppStateManager stateManager) {
     }
 
-    public void stateDetached(AppStateManager stateManager) {
+    @Override
+    public void stateDetached(final AppStateManager stateManager) {
     }
 
-    public void update(float tpf) {
+    @Override
+    public void update(final float tpf) {
     }
 
-    public void render(RenderManager rm) {
+    @Override
+    public void render(final RenderManager rm) {
     }
 
-    public void postRender(){
+    @Override
+    public void postRender() {
     }
 
+    @Override
     public void cleanup() {
         initialized = false;
     }

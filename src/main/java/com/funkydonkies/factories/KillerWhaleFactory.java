@@ -29,7 +29,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 	public static final String WARNING_NAME = "warning line";
 	
 	private static final String COLOR = "Color";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	
 	private static final float WARNING_LINE_ALPHA = 0.2f;
 	
@@ -114,7 +114,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 	 * @return the Warning Line's material
 	 */
 	public Material getLineMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor(COLOR, new ColorRGBA(1, 0, 0, WARNING_LINE_ALPHA));
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
@@ -124,7 +124,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 	 * @return the Whale's material
 	 */
 	public Material getKillerWhaleMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor(COLOR, ColorRGBA.Green);
 		return mat;
 	}

@@ -26,7 +26,7 @@ public class KrillFactory implements FactoryInterface {
 	private static final float KRILL_HEIGHT = 3;
 	private static final float KRILL_DEPTH = 5;
 	
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md"; 
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md"; 
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -74,7 +74,7 @@ public class KrillFactory implements FactoryInterface {
 	 * @return loaded material
 	 */
 	public Material getkrillMaterial() {
-		final Material mat = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor("Color", ColorRGBA.Magenta);
 		return mat;
 	}

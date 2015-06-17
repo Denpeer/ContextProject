@@ -98,6 +98,7 @@ public class SpawnState extends AbstractAppState {
 		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
 			specialFishTimer = 0;
 			chooseTargetToSpawn();
+			
 		}
 	}
 	/**
@@ -208,7 +209,7 @@ public class SpawnState extends AbstractAppState {
 	 * @param appl the simple application
 	 */
 	public void initRootNodeMat(final App appl) {
-		final Material mat = new Material(appl.getAssetManager(), UNSHADED_MATERIAL_PATH);
+		final Material mat = new Material(appl.getAssetManager(), MATERIAL_PATH);
 		appl.getRootNode().setUserData("default material", mat);
 	}
 	
