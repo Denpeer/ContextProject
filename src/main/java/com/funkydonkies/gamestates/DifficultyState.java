@@ -1,5 +1,7 @@
 package com.funkydonkies.gamestates;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 import com.funkydonkies.combo.ComboDisplay;
@@ -12,8 +14,7 @@ import com.funkydonkies.powerups.SnowballPowerup;
 import com.funkydonkies.powerups.SuperSizePowerup;
 import com.funkydonkies.sounds.ComboLostSound;
 import com.funkydonkies.sounds.SoundState;
-import com.funkydonkies.tiers.Tier1;
-import com.funkydonkies.tiers.Tier2;
+import com.funkydonkies.tiers.Tier;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -26,13 +27,8 @@ import com.jme3.app.state.AppStateManager;
  * 
  */
 public class DifficultyState extends AbstractAppState implements Observable {
-	private static final float TIER_ONE_ACTIVATION = 1;
 
-	private float time = 0;
-	private SuperSizePowerup superSize = null;
-	private DisabledState activatedTier;
-	private Tier1 tier1;
-	private Tier2 tier2;
+	private final int tierBorder = 3;
 	private App app;
 
 	private ComboDisplay combo;
@@ -44,7 +40,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private SnowballPowerup snowBallPowerup;
 	
 	private SoundState soundState;
-	private Vector obs = new Vector();;
+	private HashMap<String, Tier> tierMap;
+	private Vector obs = new Vector();
+	private AppStateManager stateManager;
 
 	/**
 	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager, com.jme3.app.Application)
@@ -57,12 +55,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-
-		tier1 = makeTier1();
-		sManager.attach(tier1);
-		tier2 = makeTier2();
-		sManager.attach(tier2);
-
+		stateManager = sManager;
+		attachTiers();
+		
 		invertControls = makeInvertControlsPowerup();
 		sManager.attach(invertControls);
 
@@ -73,21 +68,64 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 		combo = initComboDisplay();
 	}
+	
+	/**
+	 * This method attaches all the tiers to the state manager.
+	 */
+	public void attachTiers() {
+		tierMap = stateManager.getState(SpawnState.class).getTiers();
+		final Iterator<Tier> it = tierMap.values().iterator();
+		while (it.hasNext()) {
+			stateManager.attach(it.next());
+		}
+	}
+	
+	/**
+	 * This method check if another tier needs to be enabled.
+	 */
+	public void checkTierenabling() {
+		final int enabledTier =  currCombo / tierBorder;
+		final Iterator<String> it = tierMap.keySet().iterator();
+		while (it.hasNext()) {
+			final String name = it.next();
+			if (enabledTier == 0) {
+				enableTier(null);
+			}
+			if (Character.getNumericValue(name.charAt(name.length() - 1)) == enabledTier) {
+				enableTier(name);
+			}
+		}
+	}
+	/**
+	 * This method enables a tier and disables the other tiers.
+	 * @param name the name of the tier
+	 */
+	public void enableTier(final String name) {
+		final Iterator<Tier> it = tierMap.values().iterator();
+		while (it.hasNext()) {
+			final DisabledState tier = it.next();
+			tier.setEnabled(false);
+			if (tier.equals(tierMap.get(name))) {
+				tier.setEnabled(true);
+			}
+		}
+	}
 
 	/**
 	 * Adds an observer to the observers vector, so that they can be updated.
 	 * @param o Observer observer to be added.
 	 */
-	public void addObserver(Observer o) {
-		if (o == null)
-			throw new NullPointerException();
+	public void addObserver(final Observer o) {
+		if (o == null) {
+			throw new NullPointerException();	
+		}	
 		if (!obs.contains(o)) {
 			obs.addElement(o);
 		}
 	}
 
 	/**
-	 * Sets the changed boolean
+	 * Sets the changed boolean.
 	 */
 	public void setChanged() {
 		changed = true;
@@ -102,34 +140,31 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * Notifies all observers
+	 * Notifies all observers.
 	 * @see com.funkydonkies.interfaces.Observable#notifyObservers(java.lang.Object)
+	 * @param arg the object
 	 */
-	public void notifyObservers(Object arg) {
+	public void notifyObservers(final Object arg) {
 		Object[] arrLocal;
 
-		if (!changed)
+		if (!changed) {
 			return;
+		}
+			
 		
 		synchronized (this) {
 			arrLocal = obs.toArray();
 		}
 		changed = false;
 
-		for (int i = arrLocal.length - 1; i >= 0; i--)
+		for (int i = arrLocal.length - 1; i >= 0; i--) {
 			((Observer) arrLocal[i]).update((Observable) this, arg);
-	}
-
-	public Tier1 makeTier1() {
-		return new Tier1();
-	}
-
-	public Tier2 makeTier2() {
-		return new Tier2();
+		}
+			
 	}
 
 	/**
-	 * Returns a new InvertControlsPowerup, called in initialize
+	 * Returns a new InvertControlsPowerup, called in initialize.
 	 * @return new InvertControlsPowerup
 	 */
 	public InvertControlsPowerup makeInvertControlsPowerup() {
@@ -137,7 +172,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * Returns a new SnowballPowerup, called in initialize
+	 * Returns a new SnowballPowerup, called in initialize.
 	 * @return new SnowballPowerup
 	 */
 	public SnowballPowerup makeSnowBallPowerup() {
@@ -149,9 +184,9 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * @return combo ComboDisplay the instantiated combodisplay class.
 	 */
 	public ComboDisplay initComboDisplay() {
-		ComboDisplay combo = makeCombo();
-		combo.init();
-		return combo;
+		final ComboDisplay comb = makeCombo();
+		comb.init();
+		return comb;
 	}
 
 	
@@ -169,26 +204,12 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	@Override
 	public void update(final float tpf) {
 		super.update(tpf);
+		checkTierenabling();
 		// time += tpf;
 		// if (time > 8) {
 		// time = 0;
 		// setTier2();
 		// }
-	}
-	
-	public void setTier1() {
-		if (!tier1.isEnabled()) {
-			tier1.setEnabled(true);
-		}
-	}
-
-	public void setTier2() {
-		if (tier1.isEnabled()) {
-			tier1.setEnabled(false);
-		}
-		if (!tier2.isEnabled()) {
-			tier2.setEnabled(true);
-		}
 	}
 
 	/**
@@ -247,7 +268,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * Activates the snowBallPowerup
+	 * Activates the snowBallPowerup.
 	 */
 	public void activateSnowBallPowerup() {
 		snowBallPowerup.setEnabled(true);
