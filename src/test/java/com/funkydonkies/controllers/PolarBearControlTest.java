@@ -19,6 +19,11 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
+/**
+ * tests for the PolarBearClass.
+ * @author Olivier Dikken
+ *
+ */
 public class PolarBearControlTest {
 
 	private static final float SPEED = 1;
@@ -39,6 +44,10 @@ public class PolarBearControlTest {
 	private Vector3f iLoc = new Vector3f(0, 0, 0);
 	private Vector3f iLocStop = new Vector3f(stopX, 0, 0);
 
+	/**
+	 * prepare the mocks.
+	 * @throws Exception catch exception.
+	 */
 	@Before
 	public void setUp() throws Exception {
 		shape = Mockito.mock(CollisionShape.class);
@@ -100,7 +109,7 @@ public class PolarBearControlTest {
 		final PolarBearControl pc = new PolarBearControl(shape, sManager, stopX, iLoc);
 		pc.setPhysicsSpace(ps);
 		assertEquals(pc.getPhysicsSpace(), ps);
-		Mockito.verify(ps).addCollisionListener(Mockito.any(FishControl.class));
+		Mockito.verify(ps).addCollisionListener(pc);
 	}
 
 	/**
@@ -117,6 +126,9 @@ public class PolarBearControlTest {
 		pc.update(TPF);
 	}
 	
+	/**
+	 * test if movement works as expected.
+	 */
 	@Test
 	public void testMoveSpatial() {
 		final PolarBearControl pc = new PolarBearControl(shape, sManager, stopX, iLoc);
@@ -130,8 +142,7 @@ public class PolarBearControlTest {
 		pc2.setSpatial(spatial2);
 		pc2.init();
 		pc2.update(TPF);
-		final Vector3f vec2 = spatial2.getLocalTranslation();
-		final Vector3f loc2 = new Vector3f((float) (vec2.getX() - SPEED), vec2.getY(), vec2.getZ());
+		assertEquals(pc.getPhysicsLocation(), loc);
 	}
 
 	/**

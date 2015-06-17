@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.funkydonkies.factories.FishFactory;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.SquidFactory;
 import com.funkydonkies.gamestates.DifficultyState;
