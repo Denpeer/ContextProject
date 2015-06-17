@@ -1,7 +1,7 @@
 package com.funkydonkies.gamestates;
 
 import com.funkydonkies.camdetect.MyFrame;
-import com.funkydonkies.w4v3.Bridge;
+import com.funkydonkies.interfaces.Bridge;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -56,7 +56,6 @@ public class CameraState extends AbstractAppState {
 	public void update(final float tpf) {
 		super.update(tpf);
 		if (cameraFrame.getVideoCap() != null && !cameraOpened) {
-			System.out.println("CameraState: openedCamera");
 			openCamera();
 		}
 	}
