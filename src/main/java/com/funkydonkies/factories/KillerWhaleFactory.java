@@ -67,7 +67,6 @@ public class KillerWhaleFactory implements FactoryInterface {
 	 */
 	public Spatial makeKillerWhale(final float xCoord, final float yCoord) {
 		final Spatial whale = makeSpatial();
-		whale.setMaterial(getKillerWhaleMaterial());
 		whale.addControl(makeWhaleControl(xCoord, yCoord, whale));
 		return whale;
 	}
@@ -120,14 +119,4 @@ public class KillerWhaleFactory implements FactoryInterface {
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return mat;
 	}
-
-	/** Loads Whale material.
-	 * @return the Whale's material
-	 */
-	public Material getKillerWhaleMaterial() {
-		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Green);
-		return mat;
-	}
-
 }

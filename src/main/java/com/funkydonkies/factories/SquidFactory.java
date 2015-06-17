@@ -9,10 +9,7 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 
 /**
  * This class represent the factory for the target.
@@ -22,8 +19,8 @@ import com.jme3.scene.shape.Box;
  */
 public class SquidFactory implements FactoryInterface {
 
-	private static final float SQUID_WIDTH = 7;
-	private static final float SQUID_HEIGHT = 7;
+	private static final float SQUID_WIDTH = 12;
+	private static final float SQUID_HEIGHT = 12;
 	private static final float SQUID_DEPTH = 5;
 	public static final String SQUID_NAME = "squid";
 	public static final String MODEL_PATH = "Models/SQUID.j3o";
@@ -54,10 +51,8 @@ public class SquidFactory implements FactoryInterface {
 	 * @return new squid geometry instance
 	 */
 	public Spatial makeSquid() {
-		final Mesh mesh = new Box(SQUID_WIDTH, SQUID_HEIGHT, SQUID_DEPTH);
 		final Spatial squid = makeSpatial();
 		squid.setMaterial(getSquidMaterial());
-		
 		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(SQUID_WIDTH,
 				SQUID_HEIGHT, SQUID_DEPTH));
 		
