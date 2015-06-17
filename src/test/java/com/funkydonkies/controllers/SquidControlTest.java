@@ -129,6 +129,7 @@ public class SquidControlTest {
 		sc.update(TIME_TO_MOVE_IN_ONE_DIRECTION);
 		final Vector3f loc2 = new Vector3f((float) (tf.getX() + STEP_SIZE), tf.getY(), tf.getZ());
 		assertEquals(sc.getPhysicsLocation(), loc2);
+		sc.update(TIME_TO_MOVE_IN_ONE_DIRECTION + TPF);
 	}
 	
 	/**
