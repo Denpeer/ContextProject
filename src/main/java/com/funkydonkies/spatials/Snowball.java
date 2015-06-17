@@ -20,7 +20,6 @@ import com.jme3.texture.plugins.AWTLoader;
  * Spatial that uses java awt graphics to draw a circle on the screen. Code taken from
  * http://hub.jmonkeyengine.org/t/drawing-simple-circle-using-java-2d/25885
  * 
- * @see http://hub.jmonkeyengine.org/t/drawing-simple-circle-using-java-2d/25885
  */
 public class Snowball extends Node {
 	private float radius = 5;
@@ -107,7 +106,7 @@ public class Snowball extends Node {
 	/**
 	 * Returns the circles radius.
 	 * 
-	 * @return
+	 * @return radius float.
 	 */
 	public float getRadius() {
 		return radius;
