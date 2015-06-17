@@ -26,18 +26,20 @@ import com.jme3.scene.shape.Box;
 public class SpearFactory implements FactoryInterface {
 	
 	private static final float WARNING_WIDTH = 1000;
-	private static final float SPEAR_WIDTH = 15;
-	private static final float SPEAR_HEIGHT = 2;
+	private static final float SPEAR_WIDTH = 45;
+	private static final float SPEAR_HEIGHT = 1;
 	private static final float SPEAR_DEPTH = 1;
 	
 	public static final String SPEAR_NAME = "spear";
-	
 	public static final String WARNING_NAME = "warning line";
-	
-	private static final float WARNING_LINE_ALPHA = 0.2f;
-	
 	private static final String COLOR = "Color";
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MODEL_PATH = "Models/SPEAR.j3o";
+	private static final float WARNING_LINE_ALPHA = 0.2f;
+	
+	private static final float SPEAR_SCALE = 0.4f;
+	private static final int SPEAR_X_TRANSLATION = 45;
+
 	
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -57,11 +59,11 @@ public class SpearFactory implements FactoryInterface {
 		final float y = rand.nextInt(100);
 		
 		final Geometry line = makeWarningLine(y); 
-		final Geometry spear = makeSpear(y, x);
-			
+		final Spatial spear = makeSpear(y, x);
 		final Node obstacleNode = new Node();
 		obstacleNode.attachChild(spear);
 		obstacleNode.attachChild(line);
+		obstacleNode.setLocalTranslation(SPEAR_X_TRANSLATION, 0, 0);
 		
 		return obstacleNode;
 	}
@@ -72,10 +74,9 @@ public class SpearFactory implements FactoryInterface {
 	 * @param x the initial x of the spear
 	 * @return a spear geometry
 	 */
-	public Geometry makeSpear(final float y, final float x) {
+	public Spatial makeSpear(final float y, final float x) {
 		
-		final Mesh spearMesh = new Box(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH);
-		final Geometry spear = makeGeometry(spearMesh);
+		final Spatial spear = makeSpatial();
 		spear.setMaterial(getSpearMaterial());
 
 		spear.addControl(makeSpearControl(x, y));
@@ -92,7 +93,7 @@ public class SpearFactory implements FactoryInterface {
 		
 		final Vector3f loci = new Vector3f(x, y, 0);
 		final CollisionShape colShape = 
-				new BoxCollisionShape(new Vector3f(SPEAR_WIDTH, SPEAR_HEIGHT, SPEAR_DEPTH));
+				new BoxCollisionShape(new Vector3f(SPEAR_HEIGHT, SPEAR_WIDTH, SPEAR_DEPTH));
 		return new SpearControl(colShape, stateManager, loci);
 	}
 	/**
@@ -137,7 +138,10 @@ public class SpearFactory implements FactoryInterface {
 	 * @param mesh the mesh of the spear
 	 * @return a spear geometry
 	 */
-	public Geometry makeGeometry(final Mesh mesh) {
-		return new Geometry(SPEAR_NAME, mesh);
+	public Spatial makeSpatial() {
+		Spatial spear = app.getAssetManager().loadModel(MODEL_PATH);
+		spear.setName(SPEAR_NAME);
+		spear.scale(SPEAR_SCALE);
+		return spear;
 	}
 }

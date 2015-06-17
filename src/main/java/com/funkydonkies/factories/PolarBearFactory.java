@@ -33,6 +33,7 @@ public class PolarBearFactory implements FactoryInterface {
 	public static final String COLOR = "Color";
 	public static final String POLAR_BEAR_NAME = "polar bear";
 	public static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MODEL_PATH = "Models/POLARBEAR.j3o";
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -50,7 +51,7 @@ public class PolarBearFactory implements FactoryInterface {
 		stateManager = sManager;
 		app = appl;
 
-		final Geometry polarBear = makePolarBear();
+		final Spatial polarBear = makePolarBear();
 
 		return polarBear;
 	}
@@ -60,9 +61,8 @@ public class PolarBearFactory implements FactoryInterface {
 	 * 
 	 * @return newly created Polar bear geometry
 	 */
-	public Geometry makePolarBear() {
-		final Mesh mesh = new Box(BEAR_WIDTH, BEAR_HEIGHT, BEAR_DEPTH);
-		final Geometry geom = makeGeometry(mesh);
+	public Spatial makePolarBear() {
+		final Spatial geom = makeSpatial();
 		geom.setMaterial(getPolarBearMaterial());
 		geom.addControl(makePolarBearControl());
 
@@ -91,8 +91,10 @@ public class PolarBearFactory implements FactoryInterface {
 	 * @param mesh the mesh of the polar bear
 	 * @return a polar bear geometry
 	 */
-	public Geometry makeGeometry(final Mesh mesh) {
-		return new Geometry(POLAR_BEAR_NAME, mesh);
+	public Spatial makeSpatial() {
+		Spatial bear = app.getAssetManager().loadModel(MODEL_PATH);
+		bear.setName(POLAR_BEAR_NAME);
+		return bear;
 	}
 	
 	/**
