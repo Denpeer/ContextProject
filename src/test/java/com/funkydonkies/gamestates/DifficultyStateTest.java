@@ -34,6 +34,7 @@ public class DifficultyStateTest {
 	private SnowballPowerup snowBall;
 	private InvertControlsPowerup invertControls;
 	private SoundState soundState;
+	private SpawnState spawnState;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -45,6 +46,7 @@ public class DifficultyStateTest {
 		snowBall = mock(SnowballPowerup.class);
 		invertControls = mock(InvertControlsPowerup.class);
 		soundState = mock(SoundState.class);
+		spawnState = mock(SpawnState.class);
 		
 		diffState = new DifficultyState();
 		diffSpy = spy(diffState);
@@ -52,6 +54,7 @@ public class DifficultyStateTest {
 		doReturn(snowBall).when(diffSpy).makeSnowBallPowerup();
 		doReturn(invertControls).when(diffSpy).makeInvertControlsPowerup();
 		doReturn(soundState).when(sManager).getState(SoundState.class);
+		doReturn(spawnState).when(sManager).getState(SpawnState.class);
 		Mockito.doNothing().when(soundState).queueSound(Mockito.any(Sound.class));
 	}
 
@@ -59,7 +62,7 @@ public class DifficultyStateTest {
 	public void testInitialize() {
 		diffSpy.initialize(sManager, app);
 		
-		verify(sManager, times(4)).attach(any(DisabledState.class));
+		verify(sManager, times(2)).attach(any(DisabledState.class));
 		verify(diffSpy).initComboDisplay();
 	}
 
