@@ -74,6 +74,7 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 			if (sBControl == null) {
 				final Snowball sball = new Snowball(app.getAssetManager(), 10, 0, Color.white, 0,
 						Color.white, 360);
+				sball.init();
 				sball.setLocalTranslation(-5, -5, 0);
 				((Node) penguin).attachChild(sball);
 				final GrowingSnowballControl snowBallControl = new GrowingSnowballControl(

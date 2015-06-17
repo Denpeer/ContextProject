@@ -17,8 +17,9 @@ import com.jme3.texture.Texture2D;
 import com.jme3.texture.plugins.AWTLoader;
 
 /**
- * Spatial that uses java awt graphics to draw a circle on the screen.
- * Code taken from http://hub.jmonkeyengine.org/t/drawing-simple-circle-using-java-2d/25885
+ * Spatial that uses java awt graphics to draw a circle on the screen. Code taken from
+ * http://hub.jmonkeyengine.org/t/drawing-simple-circle-using-java-2d/25885
+ * 
  * @see http://hub.jmonkeyengine.org/t/drawing-simple-circle-using-java-2d/25885
  */
 public class Snowball extends Node {
@@ -33,51 +34,79 @@ public class Snowball extends Node {
 	private int heightResolution = 64;
 	private int widthResolution = 64;
 	private Material material;
-	private Geometry geometry;	
-	
+	private Geometry geometry;
+
 	/**
 	 * 
 	 * @param assetManager
-	 * @param radius radius of the circle
-	 * @param borderWidth width of the border
-	 * @param color  fill color
-	 * @param borderAngle and of border displayed
-	 * @param fillColor filled color
-	 * @param angle and gle of the filled color
+	 *            AssetManager to create the material
+	 * @param radius
+	 *            radius of the circle
+	 * @param borderWidth
+	 *            width of the border
+	 * @param color
+	 *            fill color
+	 * @param borderAngle
+	 *            and of border displayed
+	 * @param fillColor
+	 *            filled color
+	 * @param angle
+	 *            angle of the filled color
 	 */
-	public Snowball(AssetManager assetManager, float radius, float borderWidth, Color color, int borderAngle, Color fillColor, int angle) {
-	    this.assetManager = assetManager;
-	    this.radius = radius;
-	    this.color = color;
-	    this.fillColor = fillColor;
-	    this.borderWidth = borderWidth;
-	    this.borderAngle = borderAngle;
-	    this.angle = angle;
-	    material = new Material(this.assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-	    material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-	    initSpatial();
-	    updateSpatial();
-	    setName("snowball");
+	public Snowball(AssetManager assetManager, float radius, float borderWidth, Color color,
+			int borderAngle, Color fillColor, int angle) {
+		this.assetManager = assetManager;
+		this.radius = radius;
+		this.color = color;
+		this.fillColor = fillColor;
+		this.borderWidth = borderWidth;
+		this.borderAngle = borderAngle;
+		this.angle = angle;
 	}
 
+	/**
+	 * Calls the initialization methods of the circle.
+	 */
+	public void init() {
+		material = createMaterial();
+		initSpatial();
+		updateSpatial();
+		setName("snowball");
+	}
+
+	/**
+	 * Initializes the Material.
+	 * 
+	 * @return Material.
+	 */
+	public Material createMaterial() {
+		Material mat = new Material(this.assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+		return mat;
+	}
+
+	/**
+	 * Initializes the circles geometry.
+	 */
 	private void initSpatial() {
-	    generateImage();
-	    Quad q = new Quad(10, 10);
-	    geometry = new Geometry("sball", q);
-	    geometry.rotate(0, 0, 0);
-	    geometry.setMaterial(material);
-	    this.attachChild(geometry);
+		generateImage();
+		Quad q = new Quad(10, 10);
+		geometry = new Geometry("sball", q);
+		geometry.rotate(0, 0, 0);
+		geometry.setMaterial(material);
+		this.attachChild(geometry);
 	}
 
 	/**
 	 * Updates the geometrys scale when the radius is modified.
 	 */
-	private void updateSpatial() {
-	    geometry.setLocalScale(radius / 10f, radius / 10f, radius / 10f);
+	public void updateSpatial() {
+		geometry.setLocalScale(radius / 10f, radius / 10f, radius / 10f);
 	}
-	
+
 	/**
 	 * Returns the circles radius.
+	 * 
 	 * @return
 	 */
 	public float getRadius() {
@@ -88,64 +117,93 @@ public class Snowball extends Node {
 	 * Uses java 2D graphics to draw the circle.
 	 */
 	public void generateImage() {
-	    BufferedImage image = new BufferedImage(widthResolution, heightResolution, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g = image.createGraphics();
-	    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    if (fillColor != null) {
-	        g.setColor(fillColor);
-	        g.fillArc((int) borderWidth / 2, (int) borderWidth / 2, (int) (widthResolution - 1 - borderWidth), (int) (heightResolution - borderWidth), 180+(angle/2), -angle);
-	    }
-	    g.setStroke(new BasicStroke(borderWidth));
-	    g.setColor(color);
-	    g.drawArc((int) borderWidth / 2, (int) borderWidth / 2, (int) (widthResolution - 1 - borderWidth), (int) (heightResolution - borderWidth), 180 +(borderAngle/2), -borderAngle);
+		BufferedImage image = new BufferedImage(widthResolution, heightResolution,
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = image.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if (fillColor != null) {
+			g.setColor(fillColor);
+			g.fillArc((int) borderWidth / 2, (int) borderWidth / 2,
+					(int) (widthResolution - 1 - borderWidth),
+					(int) (heightResolution - borderWidth), 180 + (angle / 2), -angle);
+		}
+		g.setStroke(new BasicStroke(borderWidth));
+		g.setColor(color);
+		g.drawArc((int) borderWidth / 2, (int) borderWidth / 2,
+				(int) (widthResolution - 1 - borderWidth), (int) (heightResolution - borderWidth),
+				180 + (borderAngle / 2), -borderAngle);
 
-	    AWTLoader awtLoader = new AWTLoader();
-	    texture.setImage(awtLoader.load(image, false));
-	    material.setTexture("ColorMap", texture);
+		AWTLoader awtLoader = new AWTLoader();
+		texture.setImage(awtLoader.load(image, false));
+		material.setTexture("ColorMap", texture);
 	}
-
 
 	/**
 	 * Sets the circles radius.
-	 * @param radius float the radius
+	 * 
+	 * @param radius
+	 *            float the radius
 	 */
 	public void setRadius(float radius) {
-	    this.radius = radius;
-	    updateSpatial();
+		this.radius = radius;
+		updateSpatial();
 	}
 
 	/**
 	 * Sets the fill color of the circle.
-	 * @param fillColor Color the color.
+	 * 
+	 * @param fillColor
+	 *            Color the color.
 	 */
 	public void setFillColor(Color fillColor) {
-	    this.fillColor = fillColor;
+		this.fillColor = fillColor;
 	}
 
 	/**
 	 * Setsthe border color of the circle.
-	 * @param color Color
+	 * 
+	 * @param color
+	 *            Color
 	 */
 	public void setColor(Color color) {
-	    this.color = color;
-	}
-
-	
-	/**
-	 * Sets the border with.
-	 * @param borderWidth float.
-	 */
-	public void setBorderWidth(float borderWidth) {
-	    this.borderWidth = borderWidth;
+		this.color = color;
 	}
 
 	/**
 	 * Sets the resolution.
-	 * @param resolution int.
+	 * 
+	 * @param resolution
+	 *            int.
 	 */
 	public void setResolution(int resolution) {
-	    this.heightResolution = resolution;
-	    this.widthResolution = resolution;
+		this.heightResolution = resolution;
+		this.widthResolution = resolution;
+	}
+
+	/**
+	 * Returns the fill color.
+	 * 
+	 * @return Color
+	 */
+	public Color getFillColor() {
+		return fillColor;
+	}
+
+	/**
+	 * Returns the border color.
+	 * 
+	 * @return Color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * Returns the circles resolution.
+	 * 
+	 * @return int
+	 */
+	public int getResulolution() {
+		return widthResolution;
 	}
 }
-
