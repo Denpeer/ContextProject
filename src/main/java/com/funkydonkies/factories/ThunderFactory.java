@@ -124,7 +124,7 @@ public class ThunderFactory implements FactoryInterface {
 		thunderMaterial = ((Material) app.getRootNode().getUserData(defaultMaterial)).clone();
 		thunderMaterial.setColor("Diffuse", ColorRGBA.White);
 	    thunderMaterial.setColor("Specular", ColorRGBA.White);
-//	    thunderMaterial.setColor("GlowColor", ColorRGBA.White);
+	    thunderMaterial.setColor("GlowColor", ColorRGBA.White);
 		return thunderMaterial;
 	}
 
@@ -135,7 +135,7 @@ public class ThunderFactory implements FactoryInterface {
 	 */
 	public Material getWarningLineMaterial() {
 		Material warningLineMaterial;
-		final float colorAlpha = 0.2f;
+		final float colorAlpha = 0.4f;
 		warningLineMaterial = new Material(app.getAssetManager(), MATERIAL_PATH);
 		warningLineMaterial.setColor(color, new ColorRGBA(1, 0, 0, (float) colorAlpha));
 		warningLineMaterial.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
