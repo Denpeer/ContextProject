@@ -63,13 +63,11 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, KrillFactory.KRILL_NAME, PenguinFactory.PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
-			diffState.incDiff(2);
 			diffState.activateInvertControls();
 			destroy(event, KrillFactory.KRILL_NAME);
 		}
 		if (checkCollision(event, KrillFactory.KRILL_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
-			diffState.incDiff(2);
 			diffState.activateInvertControls();
 			destroy(event, KrillFactory.KRILL_NAME);
 		}

@@ -94,13 +94,11 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, SquidFactory.SQUID_NAME, PenguinFactory.PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
-			diffState.incDiff();
 			diffState.activateSnowBallPowerup();
 			destroy(event, SquidFactory.SQUID_NAME);
 		}
 		if (checkCollision(event, SquidFactory.SQUID_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
-			diffState.incDiff();
 			diffState.activateSnowBallPowerup();
 			destroy(event, SquidFactory.SQUID_NAME);
 		}
