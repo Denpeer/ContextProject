@@ -77,6 +77,17 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		}
 		return false;
 	}
+	
+	/**
+	 * Destroys the object and disables control.
+	 * @see com.jme3.bullet.objects.PhysicsGhostObject#destroy()
+	 */
+	@Override
+	public void destroy() {
+		super.destroy();
+		spatial.removeFromParent();
+		this.setEnabled(false);
+	}
 
 	/**
 	 * Disables all the PhysicsControllers on the given spatial.

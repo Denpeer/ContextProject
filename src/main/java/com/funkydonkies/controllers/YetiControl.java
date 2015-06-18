@@ -27,6 +27,7 @@ public class YetiControl extends MyAbstractGhostControl implements PhysicsCollis
 	private static final int DEFAULT_DEPTH = -400;
 	private static final int SPHERE_SIZE = 20;
 	private static final int SNOW_BALL_Z_SPEED = 70;
+	private static final int Z_DESTROY_LOCATION = 250;
 	private Vector3f loc;
 	private DifficultyState diffState;
 	private AppStateManager stateManager;
@@ -62,6 +63,9 @@ public class YetiControl extends MyAbstractGhostControl implements PhysicsCollis
 	public void update(final float tpf) {
 		super.update(tpf);
 		move(tpf);
+		if (spatial.getLocalTranslation().z > Z_DESTROY_LOCATION) {
+			destroy();
+		}
 	}
 
 	/**
@@ -85,7 +89,6 @@ public class YetiControl extends MyAbstractGhostControl implements PhysicsCollis
 	 *            update time interval
 	 */
 	private void move(final float tpf) {
-		stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 		spatial.setLocalTranslation(spatial.getLocalTranslation().x,
 				spatial.getLocalTranslation().y, spatial.getLocalTranslation().z
 						+ SNOW_BALL_Z_SPEED * tpf);

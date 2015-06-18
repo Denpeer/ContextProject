@@ -107,7 +107,6 @@ public class SpawnState extends AbstractAppState {
 				if (!obstacleList.contains(tier.getObstacleArray().get(0))) {
 					obstacleList.addAll(tier.getObstacleArray());
 				}
-				
 				final int rInt = rand.nextInt(obstacleList.size());
 				spawn(obstacleList.get(rInt), app.getRootNode());
 				noTiersEnabled = false;
