@@ -44,6 +44,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
 		space.addTickListener(this);
+		space.add(this);
 	}
 
 	@Override
@@ -70,20 +71,13 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 			final CollisionShape s = getCollisionShape();
 			final float radius = ((SphereCollisionShape) s).getRadius();
 			timer = 0;
-//			if (radius < MAX_RADIUS) {
+			if (radius < MAX_RADIUS) {
 				final Spatial snowBall = ((Node) spatial).getChild(SNOW_BALL_NAME);
 //				float r = ((Sphere) ((Geometry) snowBall).getMesh()).radius;
 				((Geometry) snowBall).setMesh(new Sphere(30, 30, radius + SCALE_UP_FACTOR));
 				setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR));
-//			}
+			}
 		}
-	}
-
-	/**
-	 * Scales the Snow Balls to normal.
-	 */
-	public void scaleBack() {
-		spatial.scale(1 / spatial.getWorldScale().x);
 	}
 
 	@Override

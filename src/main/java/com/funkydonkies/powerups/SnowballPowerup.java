@@ -71,26 +71,31 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 		final List<Spatial> penguins = penguinNode.getChildren();
 		
 		for (Spatial penguin : penguins) {
-			final Vector3f speed = ((Node) penguin).getControl(PenguinControl.class).getLinearVelocity();
-			((Node) penguin).getControl(PenguinControl.class).setEnabled(false);
+			addSnowballControl(penguin);
+		}
+	}
+	
+	/**
+	 * Adds a snowballcontrol to the penguin given.
+	 * @param penguin Spatial to attach control to.
+	 */
+	public void addSnowballControl(Spatial penguin) {
+		final Vector3f speed = ((Node) penguin).getControl(PenguinControl.class).getLinearVelocity();
+		((Node) penguin).getControl(PenguinControl.class).setEnabled(false);
 
-			final GrowingSnowballControl sBControl = penguin
-					.getControl(GrowingSnowballControl.class);
-			// Check if the penguin already has a snowballcontrol
-			if (sBControl == null) {
-				((Node) penguin).attachChild(createSnowBall());
-				
-				final GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
-						new SphereCollisionShape(5), 1f, sManager);
-				snowBallControl.init();
-				penguin.addControl(snowBallControl);
-				sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
-				snowBallControl.setLinearVelocity(speed);
-				penguin.setName(SNOW_PENGUIN_NAME);
-			} else {
-				sBControl.setEnabled(true);
-				sBControl.scaleBack();
-			}
+		final GrowingSnowballControl sBControl = penguin
+				.getControl(GrowingSnowballControl.class);
+		// Check if the penguin already has a snowballcontrol
+		if (sBControl == null) {
+			((Node) penguin).attachChild(createSnowBall());
+			
+			final GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
+					new SphereCollisionShape(5), 1f, sManager);
+			snowBallControl.init();
+			penguin.addControl(snowBallControl);
+//			sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
+			snowBallControl.setLinearVelocity(speed);
+			penguin.setName(SNOW_PENGUIN_NAME);
 		}
 	}
 

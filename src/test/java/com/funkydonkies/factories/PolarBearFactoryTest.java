@@ -15,6 +15,7 @@ import com.funkydonkies.controllers.FishControl;
 import com.funkydonkies.controllers.PolarBearControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -28,7 +29,8 @@ public class PolarBearFactoryTest {
 	private AppStateManager assManager;
 	private SimpleApplication app;
 	private Geometry geom;
-
+	private AssetManager assetManager;
+	
 	/**
 	 * Do this before executing tests.
 	 * @throws Exception
@@ -36,12 +38,16 @@ public class PolarBearFactoryTest {
 	@Before
 	public void setUp() {
 		geom = mock(Geometry.class);
+		assetManager = mock(AssetManager.class);
 		app = mock(SimpleApplication.class);
 		fac = new PolarBearFactory();
 		assManager = new AppStateManager(app);
 		mockFactory = spy(PolarBearFactory.class);
-	    doReturn(mock(Material.class)).when(mockFactory).getPolarBearMaterial();
-	    doReturn(geom).when(mockFactory).makeGeometry(any(Box.class));
+//	    doReturn(mock(Material.class)).when(mockFactory).getPolarBearMaterial();
+	    doReturn(geom).when(mockFactory).makeSpatial();
+	    
+	    doReturn(assetManager).when(app).getAssetManager();
+	    doReturn(geom).when(assetManager).loadModel(any(String.class));
 	}
 	
 	/**
@@ -68,6 +74,8 @@ public class PolarBearFactoryTest {
 	 */
 	@Test
 	public void testMakeGeometry() {
-		assertFalse(fac.makeGeometry(new Box(1, 1, 1)) == null);
+		fac.makeObject(assManager, app);
+
+		verify(geom).setName(PolarBearFactory.POLAR_BEAR_NAME);
 	}
 }
