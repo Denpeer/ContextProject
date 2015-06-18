@@ -82,6 +82,7 @@ public class SpawnState extends AbstractAppState {
 		timeCount += tpf;
 		specialFishTimer += tpf;
 		obstacleTimer += tpf;
+		
 		if (obstacleTimer > OBSTACLE_SPAWN_TIME) {
 			obstacleTimer = 0;
 			chooseObstacleToSpawn();
@@ -89,10 +90,9 @@ public class SpawnState extends AbstractAppState {
 		
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
-//			spawn(facHm.get("FishFactory"), app.getRootNode());
 			spawn(facHm.get("PenguinFactory"), app.getPenguinNode());
 		}
-		if (specialFishTimer > 0.5) {
+		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
 			specialFishTimer = 0;
 			chooseTargetToSpawn();
 		}
@@ -123,17 +123,17 @@ public class SpawnState extends AbstractAppState {
 	 * This method chooses and spawns a special target.
 	 */
 	public void chooseTargetToSpawn() {
-		final int i = 0;
+		final int i = rand.nextInt(2);
 		switch (i) {
 		case 0:
-			//if (app.getRootNode().getChild(KrillFactory.KRILL_NAME) == null) {
+			if (app.getRootNode().getChild(KrillFactory.KRILL_NAME) == null) {
 			spawn(facHm.get("KrillFactory"), app.getRootNode());
-			//}
+			}
 			break;
 		case 1:
-			//if (app.getRootNode().getChild(SquidFactory.SQUID_NAME) == null) {
+			if (app.getRootNode().getChild(SquidFactory.SQUID_NAME) == null) {
 			spawn(facHm.get("SquidFactory"), app.getRootNode());
-			//}
+			}
 			break;
 		default:
 			break;
