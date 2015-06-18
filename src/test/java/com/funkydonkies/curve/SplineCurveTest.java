@@ -30,7 +30,7 @@ public class SplineCurveTest {
 		mat = mock(Material.class);
 		phys = mock(PhysicsSpace.class);
 		rigid = mock(RigidBodyControl.class);
-		sp = new SplineCurve(SplineType.CatmullRom, true);
+		sp = new SplineCurve(mat, SplineType.CatmullRom, true);
 	}
 
 	
@@ -42,7 +42,7 @@ public class SplineCurveTest {
 	@Test
 	public void drawCurvetest() {
 		Node node = new Node();
-		sp.drawCurve(mat, phys, rigid, node);
+		sp.drawCurve(phys, rigid, node);
 		assertTrue(node.getChildren().size() == 1);
 	}
 	

@@ -51,6 +51,7 @@ public class Tier extends DisabledState {
 			timer += tpf;
 			if (timer > fadeTime) {
 				guiNode.detachChild(tierText);
+				timer = 0;
 			}
 		}
 	}

@@ -52,10 +52,10 @@ public class CurveStateTest {
 		spyCurveState = spy(curveState);
 		sManager = mock(AppStateManager.class);
 		app = mock(App.class);
-		camState = mock(CameraState.class);
-		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
-		spySplineCurve = spy(splineCurve);
 		material = mock(Material.class);
+		camState = mock(CameraState.class);
+		splineCurve = new SplineCurve(material, SplineType.CatmullRom, true);
+		spySplineCurve = spy(splineCurve);
 		node = mock(Node.class);
 		physicsSpace = mock(PhysicsSpace.class);
 		control = mock(RigidBodyControl.class);
@@ -73,7 +73,7 @@ public class CurveStateTest {
 		when(bridge.getControlPoints()).thenReturn(getTestPoints());
 		doReturn(material).when(spyCurveState).initializeMaterial();
 		doNothing().when(spySplineCurve).drawCurve(
-				material, physicsSpace, control, node);
+				physicsSpace, control, node);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class CurveStateTest {
 		spyCurveState.initialize(sManager, app);
 		spyCurveState.update(0.01f);
 		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
@@ -123,7 +123,7 @@ public class CurveStateTest {
 		assertTrue(spyCurveState.getCameraEnabled());
 		spyCurveState.update(0.01f);
 		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
@@ -139,7 +139,7 @@ public class CurveStateTest {
 		spyCurveState.setUpdateEnabled(true);
 		spyCurveState.update(0.01f);
 		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);

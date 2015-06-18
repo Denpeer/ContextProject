@@ -67,7 +67,9 @@ public class YetiFactory implements FactoryInterface {
 	public Material getYetiSnowBallMaterial() {
 		Material snowMaterial;
 		snowMaterial = ((Material) app.getRootNode().getUserData("default material")).clone();
-		snowMaterial.setColor("Color", ColorRGBA.White);
+		snowMaterial.setColor("Diffuse", ColorRGBA.White);
+	    snowMaterial.setColor("Specular", ColorRGBA.White);
+	    snowMaterial.setColor("GlowColor", ColorRGBA.White);
 		return snowMaterial;
 	}
 	
