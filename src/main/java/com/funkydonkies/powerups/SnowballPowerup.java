@@ -93,7 +93,6 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 					new SphereCollisionShape(5), 1f, sManager);
 			snowBallControl.init();
 			penguin.addControl(snowBallControl);
-//			sManager.getState(PlayState.class).getPhysicsSpace().add(snowBallControl);
 			snowBallControl.setLinearVelocity(speed);
 			penguin.setName(SNOW_PENGUIN_NAME);
 		}

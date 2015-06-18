@@ -1,5 +1,6 @@
 package com.funkydonkies.controllers;
 
+import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -23,6 +24,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	private static final float MAX_RADIUS = 10f;
 	private static final float SCALE_OFFSET = 0.5f; // Dont touch, should be 1/2
 	private float timer = 0;
+	private AppStateManager stateManager;
 
 	/**
 	 * Constructor for GrowingSnowBallControl.
@@ -37,6 +39,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape,
 			final float mass, final AppStateManager sManager) {
 		super(sphereCollisionShape, mass, sManager);
+		stateManager = sManager;
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
 		space.addTickListener(this);
-		space.add(this);
+
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	@Override
 	public void init() {
 		disableMeshRotation();
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 		// do nothing
 	}
 
