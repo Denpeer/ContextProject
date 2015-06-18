@@ -16,8 +16,8 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.math.Vector3f;
 
 /**
- * Control class for the polar bear. Takes care of collisions between the polar
- * bear and the penguins.
+ * Control class for the polar bear. Takes care of collisions between the polar bear and the
+ * penguins.
  */
 public class PolarBearControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 
@@ -35,8 +35,8 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	private DifficultyState diffState;
 
 	/**
-	 * The controller for the polar bear. Takes care of the collision between
-	 * the polar bear and the penguin.
+	 * The controller for the polar bear. Takes care of the collision between the polar bear and the
+	 * penguin.
 	 * 
 	 * @param shape
 	 *            the collision shape of the polar bear
@@ -96,11 +96,11 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	private void moveSpatial() {
 		Vector3f loc;
 		final Vector3f vec = spatial.getLocalTranslation();
-		if (spatial != null && initialLoc.getX() < stopCoord && vec.getX() < stopCoord) {
+		if (initialLoc.getX() < stopCoord && vec.getX() < stopCoord) {
 			loc = new Vector3f((float) (vec.getX() + SPEED), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
 			setPhysicsLocation(loc);
-		} else if (spatial != null && initialLoc.getX() >= stopCoord && vec.getX() >= stopCoord) {
+		} else if (initialLoc.getX() >= stopCoord && vec.getX() >= stopCoord) {
 			loc = new Vector3f((float) (vec.getX() - SPEED), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
 			setPhysicsLocation(loc);
@@ -111,21 +111,19 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	}
 
 	/**
-	 * Handles a collision between ball and target. Calls methods to increase
-	 * the combo and respawn the target.
+	 * Handles a collision between ball and target. Calls methods to increase the combo and respawn
+	 * the target.
 	 * 
 	 * @param event
-	 *            PhysicsCollisionEvent containing information about the
-	 *            collision
+	 *            PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (doneMoving) {
-			if (checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME, PenguinFactory.PENGUIN_NAME)) {
-				stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
-				diffState.resetDiff();
-				destroy(event, PenguinFactory.PENGUIN_NAME);
-
-			}
+		if (doneMoving
+				&& checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME,
+						PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
+			diffState.resetDiff();
+			destroy(event, PenguinFactory.PENGUIN_NAME);
 		}
 	}
 }

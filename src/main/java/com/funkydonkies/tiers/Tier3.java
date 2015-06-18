@@ -15,7 +15,7 @@ public class Tier3 extends Tier {
 	private IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
-	private final float spawnSpeedTime = 3f;
+	private static final float NEW_SPAWN_SPEED = 3f;
 
 	/**
 	 * The initialize method.
@@ -23,7 +23,7 @@ public class Tier3 extends Tier {
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
-		increaseSpawnSpeed = new IncreaseSpawnSpeedPowerup(spawnSpeedTime);
+		increaseSpawnSpeed = new IncreaseSpawnSpeedPowerup(NEW_SPAWN_SPEED);
 		stateManager.attach(increaseSpawnSpeed);
 		spawnState = stateManager.getState(SpawnState.class);
 		obstacleArray = new ArrayList<FactoryInterface>();

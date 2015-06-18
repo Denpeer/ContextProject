@@ -158,7 +158,7 @@ public class SpawnState extends AbstractAppState {
 		final Set<Class<? extends FactoryInterface>> classes = reflections
 				.getSubTypesOf(FactoryInterface.class);
 		
-		for (Class c : classes) {
+		for (Class<? extends FactoryInterface> c : classes) {
 			try {
 				
 				facHm.put(c.getSimpleName(), (FactoryInterface) c.newInstance());
@@ -179,7 +179,7 @@ public class SpawnState extends AbstractAppState {
 		final Set<Class<? extends Tier>> classes = reflections
 				.getSubTypesOf(Tier.class);
 		
-		for (Class c : classes) {
+		for (Class<? extends Tier> c : classes) {
 			try {			
 				tierMap.put(c.getSimpleName(), (Tier) c.newInstance());
 			} catch (final InstantiationException e) {

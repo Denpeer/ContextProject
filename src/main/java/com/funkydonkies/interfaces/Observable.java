@@ -1,9 +1,9 @@
 package com.funkydonkies.interfaces;
 
 public interface Observable {
-	public void notifyObservers(final Object arg);
+	void notifyObservers(final Object arg);
 	
-	public void setChanged();
+	void setChanged();
 	
-	public void addObserver(Observer o);
+	void addObserver(Observer o);
 }

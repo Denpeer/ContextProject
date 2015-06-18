@@ -66,14 +66,14 @@ public class SoundPlayer {
 		comboNewLevelAudioNode = new AudioNode(assetManager, COMBO_NEW_LEVEL_SOUND_PATH, false);
 		comboLostAudioNode = new AudioNode(assetManager, COMBO_LOST_SOUND_PATH, false);
 
-		initSingleSound(penguinSpawnAudioNode, PENGUIN_SPAWN_SOUND_PATH);
-		initSingleSound(penguinSavedAudioNode, PENGUIN_SAVED_SOUND_PATH);
-		initSingleSound(targetSpawnAudioNode, TARGET_SPAWN_SOUND_PATH);
-		initSingleSound(obstacleSpawnAudioNode, OBSTACLE_SPAWN_SOUND_PATH);
-		initSingleSound(targetCollisionAudioNode, TARGET_COLLISION_SOUND_PATH);
-		initSingleSound(obstacleCollisionAudioNode, OBSTACLE_COLLISION_SOUND_PATH);
-		initSingleSound(comboNewLevelAudioNode, COMBO_NEW_LEVEL_SOUND_PATH);
-		initSingleSound(comboLostAudioNode, COMBO_LOST_SOUND_PATH);
+		initSingleSound(penguinSpawnAudioNode);
+		initSingleSound(penguinSavedAudioNode);
+		initSingleSound(targetSpawnAudioNode);
+		initSingleSound(obstacleSpawnAudioNode);
+		initSingleSound(targetCollisionAudioNode);
+		initSingleSound(obstacleCollisionAudioNode);
+		initSingleSound(comboNewLevelAudioNode);
+		initSingleSound(comboLostAudioNode);
 	}
 
 	/**
@@ -81,10 +81,8 @@ public class SoundPlayer {
 	 * 
 	 * @param audioNode
 	 *            name of the audionode the sound will be attached to.
-	 * @param path
-	 *            of the sound file (under assets/Sounds).
 	 */
-	private void initSingleSound(final AudioNode audioNode, final String path) {
+	private void initSingleSound(final AudioNode audioNode) {
 		audioNode.setPositional(false);
 		audioNode.setLooping(false);
 		audioNode.setVolume(1);

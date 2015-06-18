@@ -11,7 +11,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 
@@ -28,7 +27,6 @@ public class CurveState extends AbstractAppState {
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
 	private static final float SPEED_MULTIPLIER = 1.5f;
 	private static final String MATERIAL_PATH = "Materials/ice.j3m";
-	private static final String COLOR = "Color";
 
 	// set to 32 as default this is what we currently use to test the program.
 	private int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
@@ -95,11 +93,7 @@ public class CurveState extends AbstractAppState {
 		final float[] points = initPoints();
 
 		if (updateEnabled) {
-			if (bridge != null && bridge.isBgSet()) {
-				scaleValues(points);
-			} else {
-				scaleValues(points);
-			}
+			scaleValues(points);
 			updatedXPoints = points;
 			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
@@ -269,7 +263,7 @@ public class CurveState extends AbstractAppState {
 
 		final Vector3f[] currentPoints = splineCurve.getCurvePoints();
 
-		if ((currentPoints.length != res.length)) {
+		if (currentPoints.length != res.length) {
 			// create from scratch
 			initPoints(res);
 		} else {
