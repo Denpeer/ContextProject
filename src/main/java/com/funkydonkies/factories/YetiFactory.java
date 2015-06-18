@@ -5,6 +5,7 @@ import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState.FaceCullMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -70,6 +71,7 @@ public class YetiFactory implements FactoryInterface {
 		snowMaterial.setColor("Diffuse", ColorRGBA.White);
 	    snowMaterial.setColor("Specular", ColorRGBA.White);
 	    snowMaterial.setColor("GlowColor", ColorRGBA.White);
+	    snowMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
 		return snowMaterial;
 	}
 	
