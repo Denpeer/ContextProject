@@ -73,7 +73,7 @@ public class CurveState extends AbstractAppState {
 	 * @return SplineCurve.
 	 */
 	public SplineCurve initializeSplineCurve() {
-		return new SplineCurve(SplineType.CatmullRom, true);
+		return new SplineCurve(curveMaterial, SplineType.CatmullRom, true);
 	}
 
 	/**
@@ -134,8 +134,8 @@ public class CurveState extends AbstractAppState {
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
-		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class)
-				.getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.drawCurve(stateManager.getState(PlayState.class).getPhysicsSpace(), rigi,
+				app.getRootNode());
 		splineCurve.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 	}
@@ -184,9 +184,11 @@ public class CurveState extends AbstractAppState {
 		return cp;
 	}
 
-	/** 
+	/**
 	 * Use to invert the controls on the camera detection.
-	 * @param b invert state of the control points
+	 * 
+	 * @param b
+	 *            invert state of the control points
 	 */
 	public void setInvertControlPoints(final boolean b) {
 		invertControlPoints = b;
@@ -297,9 +299,12 @@ public class CurveState extends AbstractAppState {
 	/**
 	 * Updates the vector array with the values from the point array.
 	 * 
-	 * @param res final vector used by SplineCurve
-	 * @param points values to create vector with
-	 * @param tpf time per frame
+	 * @param res
+	 *            final vector used by SplineCurve
+	 * @param points
+	 *            values to create vector with
+	 * @param tpf
+	 *            time per frame
 	 */
 	private void updatePoints(final Vector3f[] res, final float[] points, final float tpf) {
 		for (int i = 0; i < points.length; i++) {
@@ -370,7 +375,8 @@ public class CurveState extends AbstractAppState {
 		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
-			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2 * 2 * 2 * 2, 0));
+			Arrays.fill(points, i, points.length,
+					new Vector3f(i * POINT_DISTANCE, 2 * 2 * 2 * 2, 0));
 		}
 
 		return points;
