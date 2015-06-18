@@ -10,6 +10,8 @@ import org.reflections.Reflections;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
+import com.funkydonkies.factories.KrillFactory;
+import com.funkydonkies.factories.SquidFactory;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.funkydonkies.tiers.Tier;
 import com.jme3.app.Application;
@@ -124,10 +126,14 @@ public class SpawnState extends AbstractAppState {
 		final int i = rand.nextInt(2);
 		switch (i) {
 		case 0:
+			if (app.getRootNode().getChild(KrillFactory.KRILL_NAME) == null) {
 			spawn(facHm.get("KrillFactory"), app.getRootNode());
+			}
 			break;
 		case 1:
+			if (app.getRootNode().getChild(SquidFactory.SQUID_NAME) == null) {
 			spawn(facHm.get("SquidFactory"), app.getRootNode());
+			}
 			break;
 		default:
 			break;
