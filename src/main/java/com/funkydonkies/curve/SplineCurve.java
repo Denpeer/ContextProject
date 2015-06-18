@@ -59,6 +59,7 @@ public class SplineCurve extends Spline {
 		final CustomCurveMesh curve = new CustomCurveMesh(getSplinePoints());
 		final Mesh mesh = curve.createMesh();
 		curveGeom.setMesh(mesh);
+		curveGeom.updateModelBound();
 		curveGeom.setMaterial(mat);
 		curveGeom.addControl(phys);
 		phys.setRestitution(RESTITUTION);
