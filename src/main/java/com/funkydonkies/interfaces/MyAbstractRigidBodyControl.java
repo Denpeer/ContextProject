@@ -51,6 +51,17 @@ public class MyAbstractRigidBodyControl extends RigidBodyControl {
 		return c1.equals(nameA) && c2.equals(nameB)
 				|| c2.equals(nameA) && c1.equals(nameB);
 	}
+	
+	/**
+	 * Destroys this object, removes it from the scene.
+	 * @see com.jme3.bullet.objects.PhysicsRigidBody#destroy()
+	 */
+	@Override
+	public void destroy() {
+		super.destroy();
+		this.setEnabled(false);
+		spatial.removeFromParent();
+	}
 
 	/** Checks whether the event has/is null.
 	 * @param e event to check

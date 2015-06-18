@@ -25,7 +25,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
 	
 	private static final float PENGUIN_SPEED = 15f;
-
+	private static final float Y_DESTROY_THRESHOLD = -10;
 	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
 	
 	private AppStateManager stateManager;
@@ -114,6 +114,10 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		if (updateMeshRotation) {
 			spatial.lookAt(direction, new Vector3f(0, 1, 0));
 		}
+		if (getPhysicsLocation().y < Y_DESTROY_THRESHOLD) {
+			destroy();
+		}
+		
 	}
 	
 	/**
