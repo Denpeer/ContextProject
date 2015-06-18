@@ -74,7 +74,11 @@ public class Tier extends DisabledState {
 		tierText.setLocalTranslation(LOCATION);	
 	}
 	
-	public void setText(String text){	
+	/**
+	 * The setter for the text.
+	 * @param text the text that needs to be set
+	 */
+	public void setText(final String text) {	
 		tierText.setText(text);
 		guiNode.attachChild(tierText);
 	}
