@@ -44,7 +44,7 @@ public class Tier3 extends Tier {
 	 * @return the increased spawn speed power up.
 	 */
 	public IncreaseSpawnSpeedPowerup getIncreasedSpawnSpeed() {
-		return new IncreaseSpawnSpeedPowerup(spawnSpeedTime);
+		return new IncreaseSpawnSpeedPowerup(NEW_SPAWN_SPEED);
 	}
 
 	/**
