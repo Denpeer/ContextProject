@@ -116,6 +116,7 @@ public class SpawnState extends AbstractAppState {
 		}
 		if (noTiersEnabled) {
 			obstacleList.clear();
+			spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		}
 	}
 	
