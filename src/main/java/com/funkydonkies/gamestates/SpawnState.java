@@ -35,7 +35,7 @@ public class SpawnState extends AbstractAppState {
 
 	private AppStateManager stateManager;
 	private float spawnBallTime;
-	ArrayList<FactoryInterface> obstacleList;
+	private ArrayList<FactoryInterface> obstacleList;
 
 	private App app;
 	private float timeCount = 0;
@@ -171,7 +171,7 @@ public class SpawnState extends AbstractAppState {
 	/**
 	 * This method creates a map containing every tier.
 	 */
-	public void fillTiersMap(){
+	public void fillTiersMap() {
 		tierMap = new HashMap<String, Tier>();
 		final Reflections reflections = new Reflections(TIER_PACKAGE);
 		final Set<Class<? extends Tier>> classes = reflections

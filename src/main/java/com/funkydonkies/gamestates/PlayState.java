@@ -53,7 +53,7 @@ public class PlayState extends AbstractAppState {
 		}
 		stateManage = stateManager;
 
-		app.getFlyByCamera().setEnabled(!false);
+		app.getFlyByCamera().setEnabled(false);
 		app.getCamera().setLocation(CAM_LOCATION);
 		
 		handleBulletAppState();
@@ -118,7 +118,8 @@ public class PlayState extends AbstractAppState {
 	}
 	
 	/**
-	 * @param appl
+	 * Adds the default material to the rootnode as user data.
+	 * @param appl App to get the assetManager.
 	 */
 	public void initRootNodeMat(final App appl) {
 		final Material mat = new Material(appl.getAssetManager(), MATERIAL_PATH);

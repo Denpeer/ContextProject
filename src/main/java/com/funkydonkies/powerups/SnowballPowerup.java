@@ -30,6 +30,8 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 
 	private boolean enablePowerupNextCycle = false;
 	public static final String SNOW_PENGUIN_NAME = "snowBallPenguin";
+	private static final int SNOWBALL_SAMPLES = 30;
+	private static final float INITIAL_SNOWBALL_RADIUS = 5;
 
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application appl) {
@@ -41,7 +43,6 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 		}
 
 		sManager = stateManager;
-
 	}
 
 	@Override
@@ -66,26 +67,28 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 		// TODO clean...
 		final Node penguinNode = app.getPenguinNode();
 		final List<Spatial> penguins = penguinNode.getChildren();
-		
+
 		for (Spatial penguin : penguins) {
 			addSnowballControl(penguin);
 		}
 	}
-	
+
 	/**
 	 * Adds a snowballcontrol to the penguin given.
-	 * @param penguin Spatial to attach control to.
+	 * 
+	 * @param penguin
+	 *            Spatial to attach control to.
 	 */
-	public void addSnowballControl(Spatial penguin) {
-		final Vector3f speed = ((Node) penguin).getControl(PenguinControl.class).getLinearVelocity();
+	public void addSnowballControl(final Spatial penguin) {
+		final Vector3f speed = ((Node) penguin).getControl(PenguinControl.class)
+				.getLinearVelocity();
 		((Node) penguin).getControl(PenguinControl.class).setEnabled(false);
 
-		final GrowingSnowballControl sBControl = penguin
-				.getControl(GrowingSnowballControl.class);
+		final GrowingSnowballControl sBControl = penguin.getControl(GrowingSnowballControl.class);
 		// Check if the penguin already has a snowballcontrol
 		if (sBControl == null) {
 			((Node) penguin).attachChild(createSnowBall());
-			
+
 			final GrowingSnowballControl snowBallControl = new GrowingSnowballControl(
 					new SphereCollisionShape(5), 1f, sManager);
 			snowBallControl.init();
@@ -99,20 +102,30 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 	public void collision(final PhysicsCollisionEvent event) {
 
 	}
-	
+
+	/**
+	 * Creates a snowball spatial and sets the material.
+	 * 
+	 * @return snowBall spatial.
+	 */
 	private Spatial createSnowBall() {
-		Sphere snowballMesh = new Sphere(30, 30, 5);
-		Geometry snowBall = new Geometry("snowball", snowballMesh);
+		final Sphere snowballMesh = new Sphere(SNOWBALL_SAMPLES, SNOWBALL_SAMPLES,
+				INITIAL_SNOWBALL_RADIUS);
+		final Geometry snowBall = new Geometry("snowball", snowballMesh);
 		snowBall.setMaterial(createSnowMaterial());
-		snowBall.setQueueBucket(Bucket.Transparent); 
+		snowBall.setQueueBucket(Bucket.Transparent);
 		return snowBall;
 	}
-	
+
+	/**
+	 * Creates the material for the snowball.
+	 * 
+	 * @return snow Material.
+	 */
 	public Material createSnowMaterial() {
-		Material snow = app.getAssetManager().loadMaterial("Materials/ice.j3m");
+		final Material snow = app.getAssetManager().loadMaterial("Materials/ice.j3m");
 		snow.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-//		snow.setColor("Ambient", ColorRGBA.White ); // with Lighting.j3md
-		snow.setBoolean("UseAlpha",true);
+		snow.setBoolean("UseAlpha", true);
 		return snow;
 	}
 

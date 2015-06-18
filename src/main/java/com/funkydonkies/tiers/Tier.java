@@ -19,14 +19,18 @@ import com.jme3.scene.Node;
 public class Tier extends DisabledState {
 	private ArrayList<FactoryInterface> obstacleArray;
 	public static final int TEXT_SIZE = 50;
-	private final Vector3f LOCATION = new Vector3f(200, 450, 0);
+	private static final Vector3f LOCATION = new Vector3f(200, 450, 0);
 	private BitmapText tierText;
 	private Node guiNode;
 	private App app;
 	private final float fadeTime = 3;
 	private float timer = 0;
+
 	/**
-	 * The initialize method.
+	 * @param stateManager
+	 *            AppStateManager
+	 * @param appl
+	 *            Application The initialize method.
 	 */
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application appl) {
@@ -41,7 +45,13 @@ public class Tier extends DisabledState {
 		createTierText();
 
 	}
+
 	/**
+	 * Update method called every cycle, detaches the combo text it it has been shown for fadeTime
+	 * seconds.
+	 * 
+	 * @param tpf
+	 *            float time since last frame.
 	 * @see com.jme3.app.state.AbstractAppState#update(float)
 	 */
 	@Override
@@ -55,15 +65,16 @@ public class Tier extends DisabledState {
 			}
 		}
 	}
-	
+
 	/**
 	 * The getter for the obstacle array.
+	 * 
 	 * @return the obstacle array
 	 */
 	public ArrayList<FactoryInterface> getObstacleArray() {
 		return obstacleArray;
 	}
-	
+
 	/**
 	 * This method creates the tier text.
 	 */
@@ -71,19 +82,20 @@ public class Tier extends DisabledState {
 		tierText = createText();
 		tierText.setSize(TEXT_SIZE);
 		tierText.setColor(ColorRGBA.Red);
-		tierText.setLocalTranslation(LOCATION);	
+		tierText.setLocalTranslation(LOCATION);
 	}
-	
+
 	/**
 	 * The setter for the text.
-	 * @param text the text that needs to be set
+	 * 
+	 * @param text
+	 *            the text that needs to be set
 	 */
-	public void setText(final String text) {	
+	public void setText(final String text) {
 		tierText.setText(text);
 		guiNode.attachChild(tierText);
 	}
-	
-	
+
 	/**
 	 * Creates and returns a new BitmapText to display the tier.
 	 * 

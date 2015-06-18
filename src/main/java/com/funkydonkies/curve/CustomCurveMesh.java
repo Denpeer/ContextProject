@@ -14,6 +14,7 @@ import com.jme3.util.BufferUtils;
 public class CustomCurveMesh {
 	private static float launchPadHeight;
 	private static final float LAUNCHPAD_WIDTH = 50f;
+	private static final int COORDS_PER_TRIANGLE = 3;
 	private Vector3f[] meshStructurePoints;
 	private int[] meshStructureTrianglesIndices;
 	private Vector3f[] splinePoints;
@@ -30,7 +31,7 @@ public class CustomCurveMesh {
 		meshStructurePoints = new Vector3f[meshStructurePointsSize];
 		meshStructureTrianglesIndices = new int[(splinePoints.length - 1) * additionalSplinePointLength + launchpadTriangleSize];
 		texCoords = new Vector2f[splinePoints.length];
-		normals = new float[meshStructurePointsSize * 3];
+		normals = new float[meshStructurePointsSize * COORDS_PER_TRIANGLE];
 	}
 	
 	/**

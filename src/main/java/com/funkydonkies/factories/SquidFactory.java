@@ -47,7 +47,6 @@ public class SquidFactory implements FactoryInterface {
 
 	/**
 	 * Makes a new squid geometry and sets its material and control(s).
-	 * 
 	 * @return new squid geometry instance
 	 */
 	public Spatial makeSquid() {
@@ -74,7 +73,6 @@ public class SquidFactory implements FactoryInterface {
 	
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the krill
 	 * @return a krill geometry
 	 */
 	public Spatial makeSpatial() {

@@ -63,6 +63,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	/**
 	 * Set the physics space and add this controller as tick listener.
+	 * @param space PhysicsSpace of the scene.
 	 */
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
@@ -70,6 +71,10 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		space.addCollisionListener(this);
 	}
 
+	/**
+	 * Initialized the control, eg. sets location and plays sound.
+	 * @see com.funkydonkies.interfaces.MyAbstractGhostControl#init()
+	 */
 	@Override
 	public void init() {
 		stateManager.getState(SoundState.class).queueSound(new ObstacleSpawnSound());
@@ -80,6 +85,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	/**
 	 * The update method for the contoller.
+	 * @param tpf float the time since last frame.
 	 */
 	@Override
 	public void update(final float tpf) {

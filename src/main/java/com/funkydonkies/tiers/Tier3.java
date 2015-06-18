@@ -19,6 +19,11 @@ public class Tier3 extends Tier {
 
 	/**
 	 * The initialize method.
+	 * 
+	 * @param stateManager
+	 *            AppStateManager
+	 * @param app
+	 *            Application The initialize method.
 	 */
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
@@ -29,18 +34,19 @@ public class Tier3 extends Tier {
 		obstacleArray = new ArrayList<FactoryInterface>();
 		addObstacleArray();
 	}
-	
+
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
 			enableIncreasedSpawnSpeed();
 			setText("Tier 3: Activated!");
-		} 
+		}
 	}
-	
+
 	/**
 	 * get the increase spawn speed powerup.
+	 * 
 	 * @return the increased spawn speed power up.
 	 */
 	public IncreaseSpawnSpeedPowerup getIncreasedSpawnSpeed() {
@@ -53,15 +59,17 @@ public class Tier3 extends Tier {
 	public void addObstacleArray() {
 		obstacleArray.add(spawnState.getObstacles().get("KillerWhaleFactory"));
 	}
-	
+
 	/**
 	 * Enable the increase spawn speed power up.
 	 */
 	public void enableIncreasedSpawnSpeed() {
 		increaseSpawnSpeed.setEnabled(true);
 	}
+
 	/**
 	 * The getter for the obstacle array.
+	 * @return obstacleArray
 	 */
 	@Override
 	public ArrayList<FactoryInterface> getObstacleArray() {

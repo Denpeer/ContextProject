@@ -43,6 +43,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private AppStateManager stateManager;
 
 	/**
+	 * @param sManager AppStateManager
+	 * @param appl Application
 	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager,
 	 *      com.jme3.app.Application)
 	 */
@@ -209,6 +211,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
+	 * @param tpf time since last frame
 	 * @see com.jme3.app.state.AbstractAppState#update(float)
 	 */
 	@Override

@@ -7,7 +7,6 @@ import com.funkydonkies.factories.YetiFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
-import com.funkydonkies.sounds.ObstacleCollisionSound;
 import com.funkydonkies.sounds.ObstacleSpawnSound;
 import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;

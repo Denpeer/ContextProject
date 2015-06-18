@@ -35,6 +35,7 @@ public class SoundState extends AbstractAppState {
 	}
 
 	/**
+	 * @param tpf float time since last frame.
 	 * plays all sounds in queue.
 	 */
 	@Override

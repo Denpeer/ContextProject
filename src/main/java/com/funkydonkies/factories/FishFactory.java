@@ -32,8 +32,7 @@ public class FishFactory implements FactoryInterface {
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
-		final Spatial fish = makeFish();
-		return fish;
+		return makeFish();
 	}
 	
 	/**
@@ -60,7 +59,6 @@ public class FishFactory implements FactoryInterface {
 	
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the fish
 	 * @return a fish geometry
 	 */
 	public Spatial makeSpatial() {

@@ -73,12 +73,13 @@ public class KillerWhaleFactory implements FactoryInterface {
 	
 	/**
 	 * This method makes the whale control.
-	 * @param xCoord the initial xCoord of the whale
-	 * @param yCoord the initial yCoord of the whale
+	 * @param xCoord the initial xCoord of the whale.
+	 * @param yCoord the initial yCoord of the whale.
+	 * @param spatial Spatial to create a custom collisionshape.
 	 * @return a whale control object
 	 */
 	public KillerWhaleControl makeWhaleControl(final float xCoord, final float yCoord, 
-			Spatial spatial) {
+			final Spatial spatial) {
 		final CollisionShape colShape = CollisionShapeFactory.createMeshShape(spatial);
 		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
 		return new KillerWhaleControl(colShape, stateManager, loci);
@@ -101,11 +102,10 @@ public class KillerWhaleFactory implements FactoryInterface {
 	
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the whale
 	 * @return a whale geometry
 	 */
 	public Spatial makeSpatial() {
-		Spatial whale = app.getAssetManager().loadModel(MODEL_PATH);
+		final Spatial whale = app.getAssetManager().loadModel(MODEL_PATH);
 		whale.setName(WHALE_NAME);
 		return whale;
 	}

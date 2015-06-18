@@ -31,6 +31,7 @@ public class IncreaseSpawnSpeedPowerup extends DisabledState {
 	
 	/**
 	 * Enables or disables the powerup by setting the ballspawntime variable on spawnstate.
+	 * @param enabled boolean to enable or disable
 	 * @see com.funkydonkies.gamestates.DisabledState#setEnabled(boolean)
 	 */
 	@Override

@@ -56,7 +56,6 @@ public class KrillFactory implements FactoryInterface {
 	
 	/**
 	 * This method makes a spatial.
-	 * @param mesh the mesh of the krill
 	 * @return a krill geometry
 	 */
 	public Spatial makeSpatial() {

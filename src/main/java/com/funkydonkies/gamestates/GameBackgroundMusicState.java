@@ -76,7 +76,12 @@ public class GameBackgroundMusicState extends AbstractAppState {
 		bgMusic.play();
 	}
 	
-	public AudioNode createAudioNode(String path) {
+	/**
+	 * Creates a new audionode with a sound file specified in the path.
+	 * @param path String path to audio file
+	 * @return new AudioNode
+	 */
+	public AudioNode createAudioNode(final String path) {
 		return new AudioNode(assetManager, path, true);
 	}
 
