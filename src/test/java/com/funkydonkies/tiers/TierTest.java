@@ -20,8 +20,6 @@ import com.jme3.math.ColorRGBA;
 
 /**
  * This class tests the tier.
- * @author SDumasy
- *
  */
 public class TierTest {
 	private Tier tier;
@@ -52,7 +50,7 @@ public class TierTest {
 	 * Test initialize with wrong methods.
 	 */
 	@Test(expected = BadDynamicTypeException.class)
-	public void TestInitFail() {
+	public void testInitFail() {
 		tier.initialize(mock(AppStateManager.class), mock(SimpleApplication.class));
 	}
 	
@@ -65,4 +63,12 @@ public class TierTest {
 		verify(tier).createTierText();
 	}
 
+	/**
+	 * Test init.
+	 */
+	@Test
+	public void getObstaclesTest() {
+		tier.initialize(mock(AppStateManager.class), mock(App.class));
+		assertTrue(tier.getObstacleArray() != null);
+	}
 }
