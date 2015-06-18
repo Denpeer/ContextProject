@@ -23,7 +23,7 @@ public class Tier3 extends Tier {
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
-		increaseSpawnSpeed = new IncreaseSpawnSpeedPowerup(NEW_SPAWN_SPEED);
+		increaseSpawnSpeed = getIncreasedSpawnSpeed();
 		stateManager.attach(increaseSpawnSpeed);
 		spawnState = stateManager.getState(SpawnState.class);
 		obstacleArray = new ArrayList<FactoryInterface>();
@@ -37,6 +37,14 @@ public class Tier3 extends Tier {
 			enableIncreasedSpawnSpeed();
 			setText("Tier 3: Activated!");
 		} 
+	}
+	
+	/**
+	 * get the increase spawn speed powerup.
+	 * @return the increased spawn speed power up.
+	 */
+	public IncreaseSpawnSpeedPowerup getIncreasedSpawnSpeed() {
+		return new IncreaseSpawnSpeedPowerup(spawnSpeedTime);
 	}
 
 	/**
