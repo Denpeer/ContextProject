@@ -14,6 +14,7 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial.CullHint;
 
 /**
  * Control class for the polar bear. Takes care of collisions between the polar
@@ -27,12 +28,16 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	private boolean doneMoving = false;
 
-	private static final float SPEED = 1;
+	private static final float BLINKING_TIME = 0.5f;
+	private static final float SPEED = 1.5f;
 
+	private float blinkTime = 0;
+	private float killTime = 0;
 	private float time = 0;
 	private float stopCoord;
 	private AppStateManager stateManager;
 	private DifficultyState diffState;
+
 
 	/**
 	 * The controller for the polar bear. Takes care of the collision between
@@ -81,12 +86,52 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		moveSpatial();
 
 		if (doneMoving) {
+			spatial.setCullHint(CullHint.Dynamic);
 			time += tpf;
 			if (time > DESTROY_TIME) {
-				spatial.removeFromParent();
-				setEnabled(false);
 				doneMoving = false;
+				killBear(tpf);
 			}
+		} else {
+			blink(tpf);
+		}
+	}
+
+	/**
+	 * Removes the bear after moving it down.
+	 * @param tpf time per frame
+	 */
+	public void killBear(final float tpf) {
+		killTime += tpf;
+		final float scale = 5;
+		spatial.move(0, -SPEED * tpf * scale, 0);
+		blink(tpf);
+		if (killTime > DESTROY_TIME + 1) {
+			spatial.removeFromParent();
+			setEnabled(false);
+		}
+	}
+
+	/**
+	 *  Makes the spatial blink.
+	 *  @param tpf time per frame
+	 */
+	public void blink(final float tpf) {
+		blinkTime += tpf;
+		if (blinkTime > BLINKING_TIME) {
+			blinkTime = 0;
+			toggleCulling();
+		}
+	}
+
+	/**
+	 * Toggles visibilty of spatial.
+	 */
+	public void toggleCulling() {
+		if (spatial.getCullHint() != CullHint.Always) {
+			spatial.setCullHint(CullHint.Always);
+		} else {
+			spatial.setCullHint(CullHint.Dynamic);
 		}
 	}
 

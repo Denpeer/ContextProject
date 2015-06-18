@@ -86,7 +86,6 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void checkTierenabling() {
 		final int enabledTier = currCombo / tierBorder;
 		final Iterator<String> it = tierMap.keySet().iterator();
-		System.out.println(enabledTier);
 		while (it.hasNext()) {
 			final String name = it.next();
 			if (enabledTier == 0) {

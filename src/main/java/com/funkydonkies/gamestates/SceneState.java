@@ -73,10 +73,7 @@ public class SceneState extends AbstractAppState {
 	 *            of the scene. default=(0,0,0)
 	 */
 	public void initScene(final int scale, final Vector3f translation) {
-		System.out.println("SCENE_PATH file found!");
-		System.out.println("=> loading " + SCENE_PATH + " Spatial ...");
 		loadScene(scale, translation);
-		System.out.println("... DONE loading .scene Spatial <=");
 		
 		//create processor
         final SimpleWaterProcessor waterProcessor = new SimpleWaterProcessor(assetManager);

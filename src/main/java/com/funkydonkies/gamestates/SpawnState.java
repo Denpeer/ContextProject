@@ -107,7 +107,6 @@ public class SpawnState extends AbstractAppState {
 				if (!obstacleList.contains(tier.getObstacleArray().get(0))) {
 					obstacleList.addAll(tier.getObstacleArray());
 				}
-				System.out.println(obstacleList.size());
 				
 				final int rInt = rand.nextInt(obstacleList.size());
 				spawn(obstacleList.get(rInt), app.getRootNode());
