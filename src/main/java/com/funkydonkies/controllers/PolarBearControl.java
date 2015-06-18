@@ -86,7 +86,9 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		moveSpatial();
 
 		if (doneMoving) {
-			spatial.setCullHint(CullHint.Dynamic);
+			if (spatial.getCullHint() == CullHint.Always) {
+				spatial.setCullHint(CullHint.Dynamic);
+			}
 			time += tpf;
 			if (time > DESTROY_TIME) {
 				doneMoving = false;

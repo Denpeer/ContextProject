@@ -48,7 +48,7 @@ public class App extends SimpleApplication {
 	public void addEffects() {
 		final FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
 		final BloomFilter bloom = new BloomFilter(BloomFilter.GlowMode.Objects);
-		final SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.92f, 0.33f, 0.61f);
+		final SSAOFilter ssaoFilter = new SSAOFilter();
 		fpp.addFilter(bloom);
 		fpp.addFilter(ssaoFilter);
 		viewPort.addProcessor(fpp);
