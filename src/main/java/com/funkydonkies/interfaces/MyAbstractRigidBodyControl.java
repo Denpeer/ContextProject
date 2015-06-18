@@ -48,8 +48,19 @@ public class MyAbstractRigidBodyControl extends RigidBodyControl {
 		final String nameA = e.getNodeA().getName();
 		final String nameB = e.getNodeB().getName();
 		
-		return (c1.equals(nameA) && c2.equals(nameB)
-				|| c2.equals(nameA) && c1.equals(nameB));
+		return c1.equals(nameA) && c2.equals(nameB)
+				|| c2.equals(nameA) && c1.equals(nameB);
+	}
+	
+	/**
+	 * Destroys this object, removes it from the scene.
+	 * @see com.jme3.bullet.objects.PhysicsRigidBody#destroy()
+	 */
+	@Override
+	public void destroy() {
+		super.destroy();
+		this.setEnabled(false);
+		spatial.removeFromParent();
 	}
 
 	/** Checks whether the event has/is null.
@@ -101,9 +112,9 @@ public class MyAbstractRigidBodyControl extends RigidBodyControl {
 	 * @return null if there is no such node
 	 */
 	public Spatial getCollisionSpatial(final PhysicsCollisionEvent e, final String name) {
-		if (e.getNodeA().getName() == name) {
+		if (e.getNodeA().getName().equals(name)) {
 			return e.getNodeA();
-		} else if (e.getNodeB().getName() == name) {
+		} else if (e.getNodeB().getName().equals(name)) {
 			return e.getNodeB();
 		} else {
 			return null;

@@ -95,7 +95,7 @@ public class ThunderControlTest {
 		final ThunderControl tc = new ThunderControl(shape, sManager, 0);
 		tc.setSpatial(spatial);
 		tc.init();
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(1)).getState(CurveState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 	}
 
@@ -141,11 +141,10 @@ public class ThunderControlTest {
 	@Test
 	public void testCollision() {
 		final ThunderControl tc = new ThunderControl(shape, sManager, 0);
-		final int four = 4;
 		tc.setSpatial(spatial);
 		tc.init();
 		tc.collision(event);
-		Mockito.verify(sManager, Mockito.times(four)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 		Mockito.verify(ds).resetDiff();
 	}
 }

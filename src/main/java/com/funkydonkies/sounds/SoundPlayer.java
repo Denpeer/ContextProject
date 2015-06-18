@@ -16,7 +16,6 @@ import com.jme3.audio.AudioNode;
 public class SoundPlayer {
 	private static final String PENGUIN_SPAWN_SOUND_PATH = "/Sounds/241809__suntemple__magic-sfx-for-games.wav";
 	private static final String KRILL_COLLISION_SOUND_PATH = "/Sounds/56229__pera__3beeps.wav";
-	private static final String OBSTACLE_SPAWN_SOUND_PATH = "/Sounds/186896__mrmacross__negativebuzz.wav";
 	private static final String TARGET_COLLISION_SOUND_PATH = "/Sounds/263133__pan14__tone-beep.wav";
 	private static final String OBSTACLE_COLLISION_SOUND_PATH = "/Sounds/87535__flasher21__splat.wav";
 	private static final String COMBO_NEW_LEVEL_SOUND_PATH = "/Sounds/126422__cabeeno-rossley__level-up.wav";
@@ -79,7 +78,6 @@ public class SoundPlayer {
 	private void initSounds() {
 		penguinSpawnAudioNode = new AudioNode(assetManager, PENGUIN_SPAWN_SOUND_PATH, false);
 		krillCollisionAudioNode = new AudioNode(assetManager, KRILL_COLLISION_SOUND_PATH, false);
-		obstacleSpawnAudioNode = new AudioNode(assetManager, OBSTACLE_SPAWN_SOUND_PATH, false);
 		targetCollisionAudioNode = new AudioNode(assetManager, TARGET_COLLISION_SOUND_PATH, false);
 		obstacleCollisionAudioNode = new AudioNode(assetManager, OBSTACLE_COLLISION_SOUND_PATH,
 				false);
@@ -98,25 +96,24 @@ public class SoundPlayer {
 		powerupSpeedEndAudioNode = new AudioNode(assetManager, POWERUP_SPEED_END_SOUND_PATH, false);
 		powerupVoiceAudioNode = new AudioNode(assetManager, POWERUP_VOICE_SOUND_PATH, false);
 		
-		initSingleSound(penguinSpawnAudioNode, PENGUIN_SPAWN_SOUND_PATH);
-		initSingleSound(krillCollisionAudioNode, KRILL_COLLISION_SOUND_PATH);
-		initSingleSound(obstacleSpawnAudioNode, OBSTACLE_SPAWN_SOUND_PATH);
-		initSingleSound(targetCollisionAudioNode, TARGET_COLLISION_SOUND_PATH);
-		initSingleSound(obstacleCollisionAudioNode, OBSTACLE_COLLISION_SOUND_PATH);
-		initSingleSound(comboNewLevelAudioNode, COMBO_NEW_LEVEL_SOUND_PATH);
-		initSingleSound(comboLostAudioNode, COMBO_LOST_SOUND_PATH);
-		initSingleSound(powerupInverseAudioNode, POWERUP_INVERSE_SOUND_PATH);
-		initSingleSound(powerupInverseEndAudioNode, POWERUP_INVERSE_END_SOUND_PATH);
-		initSingleSound(comboVoiceAudioNode, COMBO_VOICE_SOUND_PATH);
-		initSingleSound(spearThrowAudioNode, SPEAR_THROW_SOUND_PATH);
-		initSingleSound(thunderHitAudioNode, THUNDER_HIT_SOUND_PATH);
-		initSingleSound(whaleSpawnAudioNode, WHALE_SPAWN_SOUND_PATH);
-		initSingleSound(snowballWaveCollisionAudioNode, SNOWBALL_WAVE_COLLISION_SOUND_PATH);
-		initSingleSound(bearHitAudioNode, BEAR_HIT_SOUND_PATH);
-		initSingleSound(dangerAboveAudioNode, DANGER_ABOVE_SOUND_PATH);
-		initSingleSound(powerupSpeedAudioNode, POWERUP_SPEED_SOUND_PATH);
-		initSingleSound(powerupSpeedEndAudioNode, POWERUP_SPEED_END_SOUND_PATH);
-		initSingleSound(powerupVoiceAudioNode, POWERUP_VOICE_SOUND_PATH);
+		initSingleSound(penguinSpawnAudioNode);
+		initSingleSound(krillCollisionAudioNode);
+		initSingleSound(targetCollisionAudioNode);
+		initSingleSound(obstacleCollisionAudioNode);
+		initSingleSound(comboNewLevelAudioNode);
+		initSingleSound(comboLostAudioNode);
+		initSingleSound(powerupInverseAudioNode);
+		initSingleSound(powerupInverseEndAudioNode);
+		initSingleSound(comboVoiceAudioNode);
+		initSingleSound(spearThrowAudioNode);
+		initSingleSound(thunderHitAudioNode);
+		initSingleSound(whaleSpawnAudioNode);
+		initSingleSound(snowballWaveCollisionAudioNode);
+		initSingleSound(bearHitAudioNode);
+		initSingleSound(dangerAboveAudioNode);
+		initSingleSound(powerupSpeedAudioNode);
+		initSingleSound(powerupSpeedEndAudioNode);
+		initSingleSound(powerupVoiceAudioNode);
 	}
 
 	/**
@@ -124,10 +121,8 @@ public class SoundPlayer {
 	 * 
 	 * @param audioNode
 	 *            name of the audionode the sound will be attached to.
-	 * @param path
-	 *            of the sound file (under assets/Sounds).
 	 */
-	private void initSingleSound(final AudioNode audioNode, final String path) {
+	private void initSingleSound(final AudioNode audioNode) {
 		audioNode.setPositional(false);
 		audioNode.setLooping(false);
 		audioNode.setVolume(1);

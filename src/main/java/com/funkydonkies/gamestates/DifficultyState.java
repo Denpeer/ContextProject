@@ -29,7 +29,6 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private final int tierBorder = 3;
 	private App app;
 
-	private ComboDisplay combo;
 	private int currCombo = 0;
 	private int highestCombo = 0;
 	private boolean changed;
@@ -44,6 +43,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private AppStateManager stateManager;
 
 	/**
+	 * @param sManager AppStateManager
+	 * @param appl Application
 	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager,
 	 *      com.jme3.app.Application)
 	 */
@@ -106,10 +107,11 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void enableTier(final String name) {
 		final Iterator<Tier> it = tierMap.values().iterator();
 		while (it.hasNext()) {
-			final DisabledState tier = it.next();
-			tier.setEnabled(false);
-			if (tier.equals(tierMap.get(name))) {
+			final Tier tier = it.next();	
+			if (tier.equals(tierMap.get(name)) && !tier.isEnabled()) {
 				tier.setEnabled(true);
+			} else if (!tier.equals(tierMap.get(name))) {
+				tier.setEnabled(false);
 			}
 		}
 	}
@@ -209,6 +211,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
+	 * @param tpf time since last frame
 	 * @see com.jme3.app.state.AbstractAppState#update(float)
 	 */
 	@Override

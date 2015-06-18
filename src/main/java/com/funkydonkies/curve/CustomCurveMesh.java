@@ -14,10 +14,12 @@ import com.jme3.util.BufferUtils;
 public class CustomCurveMesh {
 	private static float launchPadHeight;
 	private static final float LAUNCHPAD_WIDTH = 50f;
+	private static final int COORDS_PER_TRIANGLE = 3;
 	private Vector3f[] meshStructurePoints;
 	private int[] meshStructureTrianglesIndices;
 	private Vector3f[] splinePoints;
 	private Vector2f[] texCoords;
+	private float[] normals;
 	/**
 	 * This class take care of the mesh for the spline.
 	 * @param sPoints the spline points on the surface of the spline
@@ -29,6 +31,7 @@ public class CustomCurveMesh {
 		meshStructurePoints = new Vector3f[meshStructurePointsSize];
 		meshStructureTrianglesIndices = new int[(splinePoints.length - 1) * additionalSplinePointLength + launchpadTriangleSize];
 		texCoords = new Vector2f[splinePoints.length];
+		normals = new float[meshStructurePointsSize * COORDS_PER_TRIANGLE];
 	}
 	
 	/**
@@ -41,6 +44,12 @@ public class CustomCurveMesh {
 			setTriangleIndices(i);
 			texCoords[i] = new Vector2f(1, 1);
 		}	
+		final int offSet = 3;
+		for (int i = 0; i < normals.length; i = i + offSet) {
+			normals[i] = 0;
+			normals[i + 1] = 0;
+			normals[i + 2] = 1;
+		}
 		launchPadHeight = splinePoints[0].getY();
 		final Mesh mesh = new Mesh();
 		final int indexBuffer = 3;
@@ -49,6 +58,7 @@ public class CustomCurveMesh {
 		mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(texCoords));
 		mesh.setBuffer(Type.Index, indexBuffer, 
 				BufferUtils.createIntBuffer(meshStructureTrianglesIndices));
+		mesh.setBuffer(Type.Normal, indexBuffer, BufferUtils.createFloatBuffer(normals));
 		mesh.updateBound();
 		return mesh;
 	}

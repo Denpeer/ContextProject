@@ -8,9 +8,7 @@ import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.shape.Box;
+import com.jme3.scene.Spatial;
 
 /**
  * This class represent the factory for the target.
@@ -27,44 +25,43 @@ public class KrillFactory implements FactoryInterface {
 	private static final float KRILL_DEPTH = 5;
 	
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md"; 
+	private static final String MODEL_PATH = "Models/KRILL.j3o"; 
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
 
 	@Override
-	public Geometry makeObject(final AppStateManager sManager, final SimpleApplication appl) {
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
 
-		final Geometry krill = makeKrill();
-
+		final Spatial krill = makeKrill();
 		return krill;
 	}
 
 	/**
-	 * Instantiates krill geometry and adds its Control(s).
+	 * Instantiates krill spatial and adds its Control(s).
 	 * 
 	 * @return newly created Krill geometry
 	 */
-	public Geometry makeKrill() {
-		final Mesh mesh = new Box(KRILL_WIDTH, KRILL_HEIGHT, KRILL_DEPTH);
-		final Geometry geom = makeGeometry(mesh);
-		geom.setMaterial(getkrillMaterial());
-
+	public Spatial makeKrill() {
+		final Spatial krill = makeSpatial();
+		krill.setMaterial(getkrillMaterial());
 		final KrillControl tarCont = new KrillControl(new BoxCollisionShape(new Vector3f(
 				KRILL_WIDTH, KRILL_HEIGHT, KRILL_DEPTH)), stateManager);
-		geom.addControl(tarCont);
+		krill.addControl(tarCont);
 
-		return geom;
+		return krill;
 	}
 	
 	/**
-	 * This method makes a geometry.
-	 * @param mesh the mesh of the krill
+	 * This method makes a spatial.
 	 * @return a krill geometry
 	 */
-	public Geometry makeGeometry(final Mesh mesh) {
-		return new Geometry(KRILL_NAME, mesh);
+	public Spatial makeSpatial() {
+		final Spatial krill = app.getAssetManager().loadModel(MODEL_PATH);
+		krill.setName(KRILL_NAME);
+		return krill;
 	}
 
 

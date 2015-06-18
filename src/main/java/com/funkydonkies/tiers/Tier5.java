@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
-import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
@@ -17,6 +16,11 @@ public class Tier5 extends Tier {
 
 	/**
 	 * The initialize method.
+	 * 
+	 * @param stateManager
+	 *            AppStateManager
+	 * @param app
+	 *            Application The initialize method.
 	 */
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
@@ -25,17 +29,19 @@ public class Tier5 extends Tier {
 		obstacleArray = new ArrayList<FactoryInterface>();
 		addObstacleArray();
 	}
-	
+
 	/**
 	 * This method is performed when this class is enabled.
-	 * @param enabled boolean for enabling / disabling
+	 * 
+	 * @param enabled
+	 *            boolean for enabling / disabling
 	 */
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
 			setText("Tier 5: Activated!");
-		} 
+		}
 	}
 
 	/**
@@ -47,6 +53,7 @@ public class Tier5 extends Tier {
 
 	/**
 	 * The getter for the obstacle array.
+	 * @return obstacleArray
 	 */
 	@Override
 	public ArrayList<FactoryInterface> getObstacleArray() {

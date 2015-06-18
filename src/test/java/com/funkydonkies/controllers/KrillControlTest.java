@@ -121,11 +121,9 @@ public class KrillControlTest {
 		kc.init();
 		kc.collision(event1);
 		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
-		Mockito.verify(ds).incDiff(2);
 		Mockito.verify(ds).activateInvertControls();
 		kc.collision(event2);
 		Mockito.verify(sManager, Mockito.times(four)).getState(SoundState.class);
-		Mockito.verify(ds, Mockito.times(2)).incDiff(2);
 		Mockito.verify(ds, Mockito.times(2)).activateInvertControls();
 	}
 }

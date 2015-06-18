@@ -124,11 +124,9 @@ public class YetiControlTest {
 	@Test
 	public void testMove() {
 		final YetiControl yc = new YetiControl(sManager);
-		final int three = 3;
 		yc.setSpatial(spatial);
 		yc.update(TPF);
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 		Mockito.verify(spatial).setLocalTranslation(Mockito.any(Vector3f.class));
-		Mockito.verify(spatial, Mockito.times(three)).getLocalTranslation();
+		Mockito.verify(spatial, Mockito.times(4)).getLocalTranslation();
 	}
 }

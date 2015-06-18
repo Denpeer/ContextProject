@@ -3,8 +3,6 @@ package com.funkydonkies.sounds;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.funkydonkies.core.App;
-import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -16,7 +14,6 @@ import com.jme3.app.state.AppStateManager;
  */
 public class SoundState extends AbstractAppState {
 
-	private App app;
 	private List<Sound> soundList = new ArrayList<Sound>();
 	private SoundPlayer soundPlayer;
 
@@ -24,13 +21,6 @@ public class SoundState extends AbstractAppState {
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
 		super.initialize(sManager, appl);
-
-		if (appl instanceof App) {
-			this.app = (App) appl;
-		} else {
-			throw new BadDynamicTypeException();
-		}
-		this.app.getAssetManager();
 		this.soundPlayer = new SoundPlayer(appl);
 	}
 
@@ -45,6 +35,7 @@ public class SoundState extends AbstractAppState {
 	}
 
 	/**
+	 * @param tpf float time since last frame.
 	 * plays all sounds in queue.
 	 */
 	@Override

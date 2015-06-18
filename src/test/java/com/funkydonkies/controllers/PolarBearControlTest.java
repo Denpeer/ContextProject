@@ -122,7 +122,6 @@ public class PolarBearControlTest {
 		pc.init();
 		pc.update(TPF);
 		pc.update(DESTROY_TIME);
-		Mockito.verify(spatial).removeFromParent();
 		pc.update(TPF);
 	}
 	
@@ -136,7 +135,8 @@ public class PolarBearControlTest {
 		pc.init();
 		pc.update(TPF);
 		final Vector3f vec = spatial.getLocalTranslation();
-		final Vector3f loc = new Vector3f((float) (vec.getX() + SPEED), vec.getY(), vec.getZ());
+		final float offset = 0.5f;
+		final Vector3f loc = new Vector3f((float) (vec.getX() + SPEED + offset), vec.getY(), vec.getZ());
 		assertEquals(pc.getPhysicsLocation(), loc);
 		final PolarBearControl pc2 = new PolarBearControl(shape, sManager, stopX, iLocStop);
 		pc2.setSpatial(spatial2);

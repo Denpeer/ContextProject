@@ -4,27 +4,24 @@ import com.funkydonkies.controllers.FishControl;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.shape.Box;
+import com.jme3.scene.Spatial;
 
 /**
  * This class represent the factory for the target.
  */
 public class FishFactory implements FactoryInterface {
 
-	private static final float FISH_WIDTH = 5;
-	private static final float FISH_HEIGHT = 5;
-	private static final float FISH_DEPTH = 5;
+	private static final float RADIUS = 8;
 	public static final String FISH_NAME = "fish";
-	
+	private static final String MODEL_PATH = "Models/TUNA.j3o";
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private AppStateManager stateManager;
 	private SimpleApplication app;
+	private Spatial fish;
 	
 	/**
 	 * The create method for a fish object.
@@ -32,25 +29,22 @@ public class FishFactory implements FactoryInterface {
 	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a fish object
 	 */
-	public Geometry makeObject(final AppStateManager sManager, final SimpleApplication appl) {
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
-		final Geometry fish = makeFish();
-		return fish;
+		return makeFish();
 	}
 	
 	/**
 	 * Makes a new fish geometry and sets its material and control(s).
 	 * @return new fish geometry instance
 	 */
-	public Geometry makeFish() {
-		final Mesh mesh = new Box(FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH);
-		final Geometry geom = makeGeometry(mesh);
-		geom.setMaterial(getFishMaterial());
-		
+	public Spatial makeFish() {
+		fish = makeSpatial();
+		fish.setMaterial(getFishMaterial());
 		final FishControl control = makeFishControl();
-		geom.addControl(control);
-		return geom;
+		fish.addControl(control);
+		return fish;
 	}
 	
 	/**
@@ -59,17 +53,18 @@ public class FishFactory implements FactoryInterface {
 	 */
 	public FishControl makeFishControl() {
 		final CollisionShape colShape = 
-				new BoxCollisionShape(new Vector3f(FISH_WIDTH, FISH_HEIGHT, FISH_DEPTH));	
+				new SphereCollisionShape(RADIUS);	
 		return new FishControl(colShape, stateManager);
 	}
 	
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the fish
 	 * @return a fish geometry
 	 */
-	public Geometry makeGeometry(final Mesh mesh) {
-		return new Geometry(FISH_NAME, mesh);
+	public Spatial makeSpatial() {
+		final Spatial f = app.getAssetManager().loadModel(MODEL_PATH);
+		f.setName(FISH_NAME);
+		return f;
 	}
 	
 	/**
@@ -77,8 +72,8 @@ public class FishFactory implements FactoryInterface {
 	 * @return a Material object
 	 */
 	public Material getFishMaterial() {
-		final Material mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Green);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
+		mat.setColor("Color", ColorRGBA.Red);
 		return mat;
 	}
 

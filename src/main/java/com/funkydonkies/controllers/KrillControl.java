@@ -42,6 +42,7 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	public void init() {
 		respawn();
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		
 	}
 
 	@Override
@@ -62,16 +63,14 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 		if (checkCollision(event, KrillFactory.KRILL_NAME, PenguinFactory.PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new KrillCollisionSound());
 			stateManager.getState(SoundState.class).queueSound(new PowerupVoiceSound());
-			diffState.incDiff(2);
 			diffState.activateInvertControls();
-			destroy(event, PenguinFactory.PENGUIN_NAME);
+			destroy(event, KrillFactory.KRILL_NAME);
 		}
 		if (checkCollision(event, KrillFactory.KRILL_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new KrillCollisionSound());
 			stateManager.getState(SoundState.class).queueSound(new PowerupVoiceSound());
-			diffState.incDiff(2);
 			diffState.activateInvertControls();
-			destroy(event, PenguinFactory.PENGUIN_NAME);
+			destroy(event, KrillFactory.KRILL_NAME);
 		}
 	}
 }

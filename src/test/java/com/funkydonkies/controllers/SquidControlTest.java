@@ -143,11 +143,9 @@ public class SquidControlTest {
 		sc.init();
 		sc.collision(event1);
 		Mockito.verify(sManager).getState(SoundState.class);
-		Mockito.verify(ds).incDiff();
 		Mockito.verify(ds).activateSnowBallPowerup();
 		sc.collision(event2);
 		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
-		Mockito.verify(ds, Mockito.times(2)).incDiff();
 		Mockito.verify(ds, Mockito.times(2)).activateSnowBallPowerup();
 	}
 }

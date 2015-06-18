@@ -1,6 +1,7 @@
 package com.funkydonkies.controllers;
 
 import com.funkydonkies.curve.CustomCurveMesh;
+import com.funkydonkies.curve.SplineCurve;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractRigidBodyControl;
@@ -12,6 +13,7 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 
 /**
@@ -21,13 +23,16 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		PhysicsCollisionListener {
 	protected static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-
-	private static final String CURVE_NAME = "curve";
+	
+	private static final float PENGUIN_SPEED = 15f;
+	private static final float Y_DESTROY_THRESHOLD = -10;
 	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
+	
 	private AppStateManager stateManager;
 	private Vector3f initialSpawn;
-	private float ydiff = 0;
 	private float prevY = 0;
+	private boolean touchingCurve = false;
+	private boolean updateMeshRotation = true;
 	private boolean goingDown = false;
 
 	/**
@@ -92,6 +97,8 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	/**
 	 * Performed before each physics tick. Sets the z location to 0 to restrict the object from
 	 * moving on the z-axis.
+	 * @param space PhysicsSpace of the scene.
+	 * @param tpf float time per frame.
 	 */
 	@Override
 	public void prePhysicsTick(final PhysicsSpace space, final float tpf) {
@@ -108,8 +115,27 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 			angularvel.x = 0;
 			this.setAngularVelocity(angularvel);
 		}
+		if (touchingCurve) {
+			final Vector3f velocity = getLinearVelocity();
+			velocity.x = FastMath.interpolateLinear(tpf * 2 * 2, velocity.x, PENGUIN_SPEED);
+			setLinearVelocity(velocity);
+		}
+		
 	}
 
+	@Override
+	public void update(final float tpf) {
+		super.update(tpf);
+		final Vector3f direction = getLinearVelocity();
+		if (updateMeshRotation) {
+			spatial.lookAt(direction, new Vector3f(0, 1, 0));
+		}
+		if (getPhysicsLocation().y < Y_DESTROY_THRESHOLD) {
+			destroy();
+		}
+		
+	}
+	
 	/**
 	 * Listens for collisions. If the ball collides (touches) with the curve and its speed is too
 	 * low, increase it so that the ball can move uphill
@@ -118,13 +144,19 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	 *            a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, CURVE_NAME, PenguinFactory.PENGUIN_NAME)) {
-			final Vector3f velocity = getLinearVelocity();
-			if (velocity.x <= 5) {
-				velocity.x = 5;
-				setLinearVelocity(velocity);
-			}
+		if (checkCollision(event, SplineCurve.CURVE_NAME, PenguinFactory.PENGUIN_NAME)) {
+			touchingCurve = true;
+		} else {
+			touchingCurve = false;
 		}
 	}
+	
+	/**
+	 * Disables the rotation of the penguin idependent from its collisionshape.
+	 */
+	public void disableMeshRotation() {
+		updateMeshRotation = false;
+	}
 
+	
 }

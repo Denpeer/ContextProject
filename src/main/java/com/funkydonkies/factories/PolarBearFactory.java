@@ -8,22 +8,17 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 
 /**
  * This class represent the factory for the target.
  */
 public class PolarBearFactory implements FactoryInterface {
 
-	private static final float BEAR_WIDTH = 12;
-	private static final float BEAR_HEIGHT = 20;
-	private static final float BEAR_DEPTH = 20;
+	private static final float BEAR_WIDTH = 11;
+	private static final float BEAR_HEIGHT = 18;
+	private static final float BEAR_DEPTH = 18;
 
 	private static final float START_RIGHT = 500;
 	private static final float START_LEFT = -200;
@@ -33,6 +28,7 @@ public class PolarBearFactory implements FactoryInterface {
 	public static final String COLOR = "Color";
 	public static final String POLAR_BEAR_NAME = "polar bear";
 	public static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MODEL_PATH = "Models/POLARBEAR.j3o";
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -50,7 +46,7 @@ public class PolarBearFactory implements FactoryInterface {
 		stateManager = sManager;
 		app = appl;
 
-		final Geometry polarBear = makePolarBear();
+		final Spatial polarBear = makePolarBear();
 
 		return polarBear;
 	}
@@ -60,10 +56,8 @@ public class PolarBearFactory implements FactoryInterface {
 	 * 
 	 * @return newly created Polar bear geometry
 	 */
-	public Geometry makePolarBear() {
-		final Mesh mesh = new Box(BEAR_WIDTH, BEAR_HEIGHT, BEAR_DEPTH);
-		final Geometry geom = makeGeometry(mesh);
-		geom.setMaterial(getPolarBearMaterial());
+	public Spatial makePolarBear() {
+		final Spatial geom = makeSpatial();
 		geom.addControl(makePolarBearControl());
 
 		return geom;
@@ -88,11 +82,12 @@ public class PolarBearFactory implements FactoryInterface {
 
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the polar bear
 	 * @return a polar bear geometry
 	 */
-	public Geometry makeGeometry(final Mesh mesh) {
-		return new Geometry(POLAR_BEAR_NAME, mesh);
+	public Spatial makeSpatial() {
+		final Spatial bear = app.getAssetManager().loadModel(MODEL_PATH);
+		bear.setName(POLAR_BEAR_NAME);
+		return bear;
 	}
 	
 	/**
@@ -128,17 +123,6 @@ public class PolarBearFactory implements FactoryInterface {
 		} else {
 			return START_LEFT;
 		}
-	}
-
-	/**
-	 * This method gets the polar bear material.
-	 * 
-	 * @return the polar bear material
-	 */
-	public Material getPolarBearMaterial() {
-		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Green);
-		return mat;
 	}
 
 }

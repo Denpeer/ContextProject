@@ -1,6 +1,7 @@
 package com.funkydonkies.interfaces;
 
-import com.funkydonkies.gamestates.CurveState;
+import java.util.Random;
+
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.GhostControl;
@@ -13,7 +14,9 @@ import com.jme3.scene.control.Control;
  * Abstract class for custom GhostControl methods.
  */
 public abstract class MyAbstractGhostControl extends GhostControl {
-	private static final float Y_PADDING = CurveState.POINTS_HEIGHT * 0.2f;
+	private static final float PADDING = 20f;
+	private static final int RANDOM_X = 280;
+	private static final int RANDOM_Y = 80;
 
 	/** Constructor for the AbstractGhostControl, takes a desired collision shape.
 	 * @param colShape desired collision shape
@@ -48,8 +51,8 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		final String nameA = e.getNodeA().getName();
 		final String nameB = e.getNodeB().getName();
 		
-		return (c1.equals(nameA) && c2.equals(nameB)
-				|| c2.equals(nameA) && c1.equals(nameB));
+		return c1.equals(nameA) && c2.equals(nameB)
+				|| c2.equals(nameA) && c1.equals(nameB);
 	}
 
 	/** Checks whether the event has/is null.
@@ -77,6 +80,17 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		}
 		return false;
 	}
+	
+	/**
+	 * Destroys the object and disables control.
+	 * @see com.jme3.bullet.objects.PhysicsGhostObject#destroy()
+	 */
+	@Override
+	public void destroy() {
+		super.destroy();
+		spatial.removeFromParent();
+		this.setEnabled(false);
+	}
 
 	/**
 	 * Disables all the PhysicsControllers on the given spatial.
@@ -98,10 +112,10 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 	 * TODO make sure its reachable
 	 */
 	public void respawn() {
-		final float x = (float) Math.random() * (CurveState.POINT_DISTANCE 
-				* CurveState.DEFAULT_CONTROL_POINTS_COUNT);
+		final Random rand = new Random();
+		final float x = (float) rand.nextInt(RANDOM_X) + PADDING;
 		
-		final float y = (float) Math.random() * CurveState.POINTS_HEIGHT + Y_PADDING;
+		final float y = (float)rand.nextInt(RANDOM_Y) + PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		spatial.setLocalTranslation(respawnlocation);
 		setPhysicsLocation(respawnlocation);
@@ -115,9 +129,9 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 	 * @return null if there is no such node
 	 */
 	public Spatial getCollisionSpatial(final PhysicsCollisionEvent e, final String name) {
-		if (e.getNodeA().getName() == name) {
+		if (e.getNodeA().getName().equals(name)) {
 			return e.getNodeA();
-		} else if (e.getNodeB().getName() == name) {
+		} else if (e.getNodeB().getName().equals(name)) {
 			return e.getNodeB();
 		} else {
 			return null;

@@ -1,15 +1,16 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.spatials.Snowball;
+import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Sphere;
 
 /**
  * Control for turning penguins into invincible snowballs.
@@ -21,8 +22,9 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	private static final float SCALE_UP_FACTOR = 0.15f;
 	private static final float SCALE_TIME = 0.25f;
 	private static final float MAX_RADIUS = 10f;
-	private static final float SCALE_OFFSET = 0.5f; // Dont touch, should be 1/2
+	private static final int SNOWBALL_SAMPLES = 30;
 	private float timer = 0;
+	private AppStateManager stateManager;
 
 	/**
 	 * Constructor for GrowingSnowBallControl.
@@ -37,6 +39,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 	public GrowingSnowballControl(final SphereCollisionShape sphereCollisionShape,
 			final float mass, final AppStateManager sManager) {
 		super(sphereCollisionShape, mass, sManager);
+		stateManager = sManager;
 	}
 
 	@Override
@@ -44,6 +47,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
 		space.addTickListener(this);
+
 	}
 
 	@Override
@@ -54,6 +58,8 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 
 	@Override
 	public void init() {
+		disableMeshRotation();
+		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 		// do nothing
 	}
 
@@ -71,24 +77,11 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 			timer = 0;
 			if (radius < MAX_RADIUS) {
 				final Spatial snowBall = ((Node) spatial).getChild(SNOW_BALL_NAME);
-				((Snowball) snowBall)
-						.setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
-
-				final Vector3f loc = snowBall.getLocalTranslation();
-				loc.x = loc.x - SCALE_OFFSET * SCALE_UP_FACTOR;
-				loc.y = loc.y - SCALE_OFFSET * SCALE_UP_FACTOR;
-
-				setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * SCALE_OFFSET));
-				snowBall.setLocalTranslation(loc);
+				((Geometry) snowBall).setMesh(new Sphere(SNOWBALL_SAMPLES, SNOWBALL_SAMPLES, radius
+						+ SCALE_UP_FACTOR));
+				setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR));
 			}
 		}
-	}
-
-	/**
-	 * Scales the Snow Balls to normal.
-	 */
-	public void scaleBack() {
-		spatial.scale(1 / spatial.getWorldScale().x);
 	}
 
 	@Override

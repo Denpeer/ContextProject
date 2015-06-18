@@ -21,11 +21,11 @@ import com.jme3.audio.AudioSource;
  */
 public class GameBackgroundMusicState extends AbstractAppState {
 	private static final Path BACKGROUND_MUSIC1_PATH = Paths
-			.get("/Sound/Free_The_Robots_-_Yoga_Fire.wav");
+			.get("Sound/Free_The_Robots_-_Yoga_Fire.wav");
 	private static final Path BACKGROUND_MUSIC2_PATH = Paths
-			.get("/Sound/Free_The_Robots_-_Jupiter.wav");
+			.get("Sound/Free_The_Robots_-_Jupiter.wav");
 	private static final Path BACKGROUND_MUSIC3_PATH = Paths
-			.get("/Sound/Free_The_Robots_-_Jazzhole.wav");
+			.get("Sound/Free_The_Robots_-_Jazzhole.wav");
 
 	private static final Path[] BG_MUSIC_PATHS = { BACKGROUND_MUSIC1_PATH,
 			BACKGROUND_MUSIC2_PATH, BACKGROUND_MUSIC3_PATH };

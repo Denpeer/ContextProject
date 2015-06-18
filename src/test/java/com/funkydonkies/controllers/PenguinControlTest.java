@@ -31,7 +31,7 @@ public class PenguinControlTest {
 	private static final String CURVE_NAME = "curve";
 
 	// Moving fast, not affected by prePhysicsTick (x > 1)
-	private static final Vector3f SPEED_HIGH = new Vector3f(5f, 0f, 0f);
+	private static final Vector3f SPEED_HIGH = new Vector3f(15f, 1f, 1f);
 
 	// Not moving, is affected by prePhysicstTick (x <= 1)
 	private static final Vector3f SPEED_ZERO = new Vector3f(0f, 0f, 0f);
@@ -41,7 +41,7 @@ public class PenguinControlTest {
 
 	// Normal speed, this is the speed after the x value was modified by
 	// prePhysicsTick
-	private static final Vector3f SPEED_NORMAL = new Vector3f(5f, 1f, 1f);
+	private static final Vector3f SPEED_NORMAL = new Vector3f(1f, 1f, 1f);
 	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
 
 	private static PenguinControl contr;
@@ -108,10 +108,12 @@ public class PenguinControlTest {
 	 */
 	@Test
 	public void testPrePhyTickMaxRotDev() {
+		assertEquals(contr.getLinearVelocity(), SPEED_NORMAL);
 		contr.setAngularVelocity(vec);
 		contr.prePhysicsTick(new PhysicsSpace(), 1);
 		assertEquals(contr.getAngularVelocity(), new Vector3f(0, 0, 0));
-	}
+		assertEquals(contr.getLinearVelocity(), SPEED_HIGH);
+}
 
 	/**
 	 * Tests prePhysicsTick for if loc.z > MAX_DEVIANCE_ON_Z to make sure the
@@ -148,7 +150,7 @@ public class PenguinControlTest {
 		assertEquals(new Vector3f(0f, 0f, 0f), contr.getLinearVelocity());
 
 		contr.collision(eventMock);
-		assertEquals(new Vector3f(5f, 0f, 0f), contr.getLinearVelocity());
+		assertEquals(new Vector3f(0f, 0f, 0f), contr.getLinearVelocity());
 	}
 
 	/**

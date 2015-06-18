@@ -11,7 +11,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 
@@ -27,8 +26,7 @@ public class CurveState extends AbstractAppState {
 	private static final float MAX_SLOPE_ANGLE = 70f;
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
 	private static final float SPEED_MULTIPLIER = 1.5f;
-	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
-	private static final String COLOR = "Color";
+	private static final String MATERIAL_PATH = "Materials/ice.j3m";
 
 	// set to 32 as default this is what we currently use to test the program.
 	private int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
@@ -65,6 +63,7 @@ public class CurveState extends AbstractAppState {
 		curveMaterial = initializeMaterial();
 		oldRigi = new RigidBodyControl(0f);
 		splineCurve = initializeSplineCurve();
+		
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class CurveState extends AbstractAppState {
 	 * @return SplineCurve.
 	 */
 	public SplineCurve initializeSplineCurve() {
-		return new SplineCurve(SplineType.CatmullRom, true);
+		return new SplineCurve(curveMaterial, SplineType.CatmullRom, true);
 	}
 
 	/**
@@ -82,8 +81,7 @@ public class CurveState extends AbstractAppState {
 	 * @return curveMaterial Material, the material to be used for the curve.
 	 */
 	public Material initializeMaterial() {
-		final Material curveMat = new Material(app.getAssetManager(), MATERIAL_PATH);
-		curveMat.setColor(COLOR, ColorRGBA.White);
+		final Material curveMat = app.getAssetManager().loadMaterial(MATERIAL_PATH);
 		return curveMat;
 	}
 
@@ -96,11 +94,7 @@ public class CurveState extends AbstractAppState {
 		final float[] points = initPoints();
 
 		if (updateEnabled) {
-			if (bridge != null && bridge.isBgSet()) {
-				scaleValues(points);
-			} else {
-				scaleValues(points);
-			}
+			scaleValues(points);
 			updatedXPoints = points;
 			final Vector3f[] updatedPoints = createVecArray(points, tpf * SPEED_MULTIPLIER);
 			splineCurve.setCurvePoints(updatedPoints);
@@ -134,8 +128,8 @@ public class CurveState extends AbstractAppState {
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
-		splineCurve.drawCurve(curveMaterial, stateManager.getState(PlayState.class)
-				.getPhysicsSpace(), rigi, app.getRootNode());
+		splineCurve.drawCurve(stateManager.getState(PlayState.class).getPhysicsSpace(), rigi,
+				app.getRootNode());
 		splineCurve.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 	}
@@ -184,9 +178,11 @@ public class CurveState extends AbstractAppState {
 		return cp;
 	}
 
-	/** 
+	/**
 	 * Use to invert the controls on the camera detection.
-	 * @param b invert state of the control points
+	 * 
+	 * @param b
+	 *            invert state of the control points
 	 */
 	public void setInvertControlPoints(final boolean b) {
 		invertControlPoints = b;
@@ -269,7 +265,7 @@ public class CurveState extends AbstractAppState {
 
 		final Vector3f[] currentPoints = splineCurve.getCurvePoints();
 
-		if ((currentPoints.length != res.length)) {
+		if (currentPoints.length != res.length) {
 			// create from scratch
 			initPoints(res);
 		} else {
@@ -298,9 +294,12 @@ public class CurveState extends AbstractAppState {
 	/**
 	 * Updates the vector array with the values from the point array.
 	 * 
-	 * @param res final vector used by SplineCurve
-	 * @param points values to create vector with
-	 * @param tpf time per frame
+	 * @param res
+	 *            final vector used by SplineCurve
+	 * @param points
+	 *            values to create vector with
+	 * @param tpf
+	 *            time per frame
 	 */
 	private void updatePoints(final Vector3f[] res, final float[] points, final float tpf) {
 		for (int i = 0; i < points.length; i++) {
@@ -371,7 +370,8 @@ public class CurveState extends AbstractAppState {
 		final Vector3f[] points = new Vector3f[DEFAULT_CONTROL_POINTS_COUNT];
 
 		for (int i = 0; i < points.length; i++) {
-			Arrays.fill(points, i, points.length, new Vector3f(i * POINT_DISTANCE, 2 * 2 * 2 * 2, 0));
+			Arrays.fill(points, i, points.length,
+					new Vector3f(i * POINT_DISTANCE, 2 * 2 * 2 * 2, 0));
 		}
 
 		return points;
@@ -382,6 +382,14 @@ public class CurveState extends AbstractAppState {
 	 */
 	public void toggleCameraEnabled() {
 		cameraEnabled = !cameraEnabled;
+	}
+	
+	/**
+	 * Sets the cameraEnabled bit.
+	 * @param b boolean 
+	 */
+	public void setCameraEnabled(boolean b) {
+		cameraEnabled = b;
 	}
 
 	/**
