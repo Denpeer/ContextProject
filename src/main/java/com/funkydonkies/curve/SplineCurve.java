@@ -69,6 +69,7 @@ public class SplineCurve extends Spline {
 		final Mesh mesh = curve.createMesh();
 		
 		curveGeom.setMesh(mesh);
+		curveGeom.updateModelBound();
 		curveGeom.addControl(phys);
 		phys.setRestitution(RESTITUTION);
 		phys.setFriction(FRICTION);
