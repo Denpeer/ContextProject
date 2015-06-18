@@ -33,6 +33,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 	private static final String MODEL_PATH = "Models/ORCA.j3o";
 
 	private static final float WARNING_LINE_ALPHA = 0.2f;
+	private static final float WARNING_LINE_Y = -30;
 	
 	private static final float WHALE_WIDTH = 50;
 	private static final float WHALE_HEIGHT = 100; 
@@ -95,7 +96,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 		
-		final WarningLineControl warningLineControl = new WarningLineControl(x, 0);
+		final WarningLineControl warningLineControl = new WarningLineControl(x, WARNING_LINE_Y);
 		geom.addControl(warningLineControl);
 		return geom;
 	}
