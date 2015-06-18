@@ -9,6 +9,7 @@ import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.sounds.ObstacleCollisionSound;
 import com.funkydonkies.sounds.ObstacleSpawnSound;
+import com.funkydonkies.sounds.SnowballWaveCollisionSound;
 import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
@@ -73,6 +74,7 @@ public class YetiControl extends MyAbstractGhostControl implements PhysicsCollis
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, YetiFactory.YETI_NAME, PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new SnowballWaveCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);
 		}

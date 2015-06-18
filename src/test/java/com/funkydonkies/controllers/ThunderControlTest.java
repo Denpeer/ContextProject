@@ -141,11 +141,11 @@ public class ThunderControlTest {
 	@Test
 	public void testCollision() {
 		final ThunderControl tc = new ThunderControl(shape, sManager, 0);
-		final int three = 3;
+		final int four = 4;
 		tc.setSpatial(spatial);
 		tc.init();
 		tc.collision(event);
-		Mockito.verify(sManager, Mockito.times(three)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(four)).getState(SoundState.class);
 		Mockito.verify(ds).resetDiff();
 	}
 }

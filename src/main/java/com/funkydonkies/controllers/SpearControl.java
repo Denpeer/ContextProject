@@ -6,8 +6,8 @@ import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.sounds.ObstacleCollisionSound;
-import com.funkydonkies.sounds.ObstacleSpawnSound;
 import com.funkydonkies.sounds.SoundState;
+import com.funkydonkies.sounds.SpearThrowSound;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -62,7 +62,6 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	 * An initialize method for the controller.
 	 */
 	public final void init() {
-		stateManager.getState(SoundState.class).queueSound(new ObstacleSpawnSound());
 		spatial.setLocalTranslation(initialLoc);
 		setPhysicsLocation(initialLoc);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
@@ -108,6 +107,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, SpearFactory.SPEAR_NAME, PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new SpearThrowSound());
 			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);

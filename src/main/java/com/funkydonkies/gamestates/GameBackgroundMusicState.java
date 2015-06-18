@@ -29,7 +29,7 @@ public class GameBackgroundMusicState extends AbstractAppState {
 
 	private static final Path[] BG_MUSIC_PATHS = { BACKGROUND_MUSIC1_PATH,
 			BACKGROUND_MUSIC2_PATH, BACKGROUND_MUSIC3_PATH };
-	private static final int DEFAULT_START_MUSIC_ID = 0;
+	private static final int DEFAULT_START_MUSIC_ID = 1;
 
 	private AudioNode bgMusic;
 	private int playingMusicId;
@@ -76,7 +76,13 @@ public class GameBackgroundMusicState extends AbstractAppState {
 		bgMusic.play();
 	}
 	
-	public AudioNode createAudioNode(String path) {
+	/**
+	 * create the audionode to be able to play the music.
+	 * streaming is set to true.
+	 * @param path of the sound ressource
+	 * @return the built audionode
+	 */
+	public AudioNode createAudioNode(final String path) {
 		return new AudioNode(assetManager, path, true);
 	}
 

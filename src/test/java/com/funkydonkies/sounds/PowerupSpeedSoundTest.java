@@ -5,13 +5,13 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Play the sound.
+ * tests the power up speed sound class.
  * @author Olivier Dikken
  *
  */
-public class TargetSpawnSoundTest {
-	
-	private SoundPlayer soundPlayerMock;
+public class PowerupSpeedSoundTest {
+
+private SoundPlayer soundPlayerMock;
 	
 	/**
 	 * mock a SoundPlayer class.
@@ -26,8 +26,8 @@ public class TargetSpawnSoundTest {
 	 */
 	@Test
 	public void testPlay() {
-		new TargetSpawnSound().play(soundPlayerMock);
-		Mockito.verify(soundPlayerMock).targetSpawnSound();
+		new PowerupSpeedSound().play(soundPlayerMock);
+		Mockito.verify(soundPlayerMock).powerupSpeedSound();
 	}
 
 }

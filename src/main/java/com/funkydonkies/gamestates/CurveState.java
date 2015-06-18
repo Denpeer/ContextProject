@@ -165,19 +165,19 @@ public class CurveState extends AbstractAppState {
 	private float[] removeLargeHeightDifferences(final float[] cp) {
 		for (int i = 0; i < (cp.length - 1); i++) {
 			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
-				if (cp[i] < cp[i + 1]) {
-					cp[i + 1] = cp[i] + (int) maxHeightDifference;
+				if (cp[i] > cp[i + 1]) {
+					cp[i + 1] = cp[i] - maxHeightDifference;
 				} else {
-					cp[i] = cp[i + 1] + (int) maxHeightDifference;
+					cp[i] = cp[i + 1] - maxHeightDifference;
 				}
 			}
 		}
 		for (int i = (cp.length - 2); i > 0; i--) {
 			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
-				if (cp[i] < cp[i + 1]) {
-					cp[i + 1] = cp[i] + (int) maxHeightDifference;
+				if (cp[i] > cp[i + 1]) {
+					cp[i + 1] = cp[i] - maxHeightDifference;
 				} else {
-					cp[i] = cp[i + 1] + (int) maxHeightDifference;
+					cp[i] = cp[i + 1] - maxHeightDifference;
 				}
 			}
 		}
@@ -241,6 +241,7 @@ public class CurveState extends AbstractAppState {
 	private void updateMaxHeightDiff() {
 		maxHeightDifference = (float) (bridge.getxdist() * Math
 				.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
+		maxHeightDifference = maxHeightDifference / bridge.getImageHeight();
 	}
 
 	/**

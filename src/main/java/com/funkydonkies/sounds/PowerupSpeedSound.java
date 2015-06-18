@@ -1,16 +1,16 @@
 package com.funkydonkies.sounds;
 
 /**
- * sound to be triggered at target spawn.
+ * sound to be triggered at speed power up started.
  * 
  * @author Olivier Dikken
  *
  */
-public class TargetSpawnSound implements Sound {
+public class PowerupSpeedSound implements Sound {
 
 	@Override
 	public void play(final SoundPlayer sP) {
-		sP.targetSpawnSound();
+		sP.powerupSpeedSound();
 	}
 
 }

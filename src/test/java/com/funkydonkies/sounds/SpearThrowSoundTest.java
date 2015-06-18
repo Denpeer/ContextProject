@@ -5,13 +5,13 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Play the sound.
+ * tests the spear throw sound class.
  * @author Olivier Dikken
  *
  */
-public class PenguinSavedSoundTest {
-	
-	private SoundPlayer soundPlayerMock;
+public class SpearThrowSoundTest {
+
+private SoundPlayer soundPlayerMock;
 	
 	/**
 	 * mock a SoundPlayer class.
@@ -26,8 +26,8 @@ public class PenguinSavedSoundTest {
 	 */
 	@Test
 	public void testPlay() {
-		new PenguinSavedSound().play(soundPlayerMock);
-		Mockito.verify(soundPlayerMock).penguinSavedSound();
+		new SpearThrowSound().play(soundPlayerMock);
+		Mockito.verify(soundPlayerMock).spearThrowSound();
 	}
 
 }

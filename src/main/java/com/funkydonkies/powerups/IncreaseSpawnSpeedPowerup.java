@@ -2,6 +2,9 @@ package com.funkydonkies.powerups;
 
 import com.funkydonkies.gamestates.DisabledState;
 import com.funkydonkies.gamestates.SpawnState;
+import com.funkydonkies.sounds.PowerupSpeedEndSound;
+import com.funkydonkies.sounds.PowerupSpeedSound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
@@ -38,8 +41,10 @@ public class IncreaseSpawnSpeedPowerup extends DisabledState {
 		super.setEnabled(enabled);
 		if (enabled) {
 			spawnState.setBallSpawnTime(speedMultiplier);
+			sManager.getState(SoundState.class).queueSound(new PowerupSpeedSound());
 		} else {
 			spawnState.setBallSpawnTime(SpawnState.DEFAULT_BALL_SPAWN_TIME);
+			sManager.getState(SoundState.class).queueSound(new PowerupSpeedEndSound());
 		}
 	}
 }

@@ -96,7 +96,7 @@ public class PolarBearControlTest {
 		final PolarBearControl pc = new PolarBearControl(shape, sManager, stopX, iLoc);
 		pc.setSpatial(spatial);
 		pc.init();
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager).getState(DifficultyState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 		assertEquals(pc.getPhysicsLocation(), iLoc);
 	}
@@ -156,7 +156,7 @@ public class PolarBearControlTest {
 		pc.init();
 		pc.update(TPF);
 		pc.collision(event);
-		Mockito.verify(sManager, Mockito.times(three)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 		Mockito.verify(ds).resetDiff();
 	}
 

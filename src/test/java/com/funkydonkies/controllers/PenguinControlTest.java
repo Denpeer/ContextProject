@@ -41,7 +41,7 @@ public class PenguinControlTest {
 
 	// Normal speed, this is the speed after the x value was modified by
 	// prePhysicsTick
-	private static final Vector3f SPEED_NORMAL = new Vector3f(2f, 1f, 1f);
+	private static final Vector3f SPEED_NORMAL = new Vector3f(5f, 1f, 1f);
 	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
 
 	private static PenguinControl contr;
@@ -148,7 +148,7 @@ public class PenguinControlTest {
 		assertEquals(new Vector3f(0f, 0f, 0f), contr.getLinearVelocity());
 
 		contr.collision(eventMock);
-		assertEquals(new Vector3f(2f, 0f, 0f), contr.getLinearVelocity());
+		assertEquals(new Vector3f(5f, 0f, 0f), contr.getLinearVelocity());
 	}
 
 	/**

@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.funkydonkies.core.App;
 import com.funkydonkies.gamestates.CurveState;
 import com.funkydonkies.gamestates.SpawnState;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;
 
 public class ÌncreaseSpawnSpeedTest {
@@ -23,6 +24,7 @@ public class ÌncreaseSpawnSpeedTest {
 	private IncreaseSpawnSpeedPowerup powerupSpy;
 	private CurveState curveState;
 	private SpawnState spawnState;
+	private SoundState ss;
 	
 	@Before
 	public void setUp() {
@@ -36,6 +38,8 @@ public class ÌncreaseSpawnSpeedTest {
 		when(sManager.getState(SpawnState.class)).thenReturn(spawnState);
 		powerup.initialize(sManager, app);
 		powerupSpy.initialize(sManager, app);
+		ss = mock(SoundState.class);
+		when(sManager.getState(SoundState.class)).thenReturn(ss);
 	}
 	
 	@Test

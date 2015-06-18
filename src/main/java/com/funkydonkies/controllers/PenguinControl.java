@@ -26,6 +26,9 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
 	private AppStateManager stateManager;
 	private Vector3f initialSpawn;
+	private float ydiff = 0;
+	private float prevY = 0;
+	private boolean goingDown = false;
 
 	/**
 	 * Constructor for ball physics controller.
@@ -52,6 +55,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		stateManager.getState(SoundState.class).queueSound(new PenguinSpawnSound());
 		setPhysicsLocation(initialSpawn);
 		setLinearVelocity(INITIAL_SPEED);
+		prevY = this.getPhysicsLocation().getY();
 	}
 
 	/**
@@ -69,6 +73,20 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 
 	@Override
 	public void physicsTick(final PhysicsSpace space, final float tpf) {
+		if ((this.getPhysicsLocation().getY() - prevY) < -1) {
+			goingDown = true;
+		} else {
+			goingDown = false;
+		}
+		prevY = this.getPhysicsLocation().getY();
+		
+		final Vector3f softGrav = new Vector3f(0,-20f,0);
+		final Vector3f hardGrav = new Vector3f(0,-30f,0);
+		if (goingDown) {
+			this.setGravity(hardGrav);
+		} else {
+			this.setGravity(softGrav);
+		}
 	}
 
 	/**
@@ -80,7 +98,6 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		final Vector3f loc = this.getPhysicsLocation();
 		final Vector3f angularvel = this.getAngularVelocity();
 
-		// velocity.z = 0;
 		if (Math.abs(loc.z) > MAX_DEVIANCE_ON_Z) {
 			loc.z = 0;
 			this.setPhysicsLocation(loc);
@@ -103,8 +120,8 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, CURVE_NAME, PenguinFactory.PENGUIN_NAME)) {
 			final Vector3f velocity = getLinearVelocity();
-			if (velocity.x <= 1) {
-				velocity.x = 2;
+			if (velocity.x <= 5) {
+				velocity.x = 5;
 				setLinearVelocity(velocity);
 			}
 		}

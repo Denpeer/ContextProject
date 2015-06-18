@@ -5,6 +5,7 @@ import com.funkydonkies.factories.PolarBearFactory;
 import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
+import com.funkydonkies.sounds.BearHitSound;
 import com.funkydonkies.sounds.ObstacleCollisionSound;
 import com.funkydonkies.sounds.ObstacleSpawnSound;
 import com.funkydonkies.sounds.SoundState;
@@ -67,7 +68,6 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	@Override
 	public void init() {
-		stateManager.getState(SoundState.class).queueSound(new ObstacleSpawnSound());
 		spatial.setLocalTranslation(initialLoc);
 		setPhysicsLocation(initialLoc);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
@@ -121,10 +121,10 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	public void collision(final PhysicsCollisionEvent event) {
 		if (doneMoving) {
 			if (checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME, PenguinFactory.PENGUIN_NAME)) {
+				stateManager.getState(SoundState.class).queueSound(new BearHitSound());
 				stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 				diffState.resetDiff();
 				destroy(event, PenguinFactory.PENGUIN_NAME);
-
 			}
 		}
 	}
