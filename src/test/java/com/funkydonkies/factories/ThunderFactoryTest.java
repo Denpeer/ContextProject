@@ -42,7 +42,6 @@ public class ThunderFactoryTest {
 	private Node rootNodeMock;
 	private Material matMock;
 	private RenderState renderStateMock;
-	private final int numThree = 3;
 	private SoundState soundState;
 	
 	/**
@@ -114,7 +113,7 @@ public class ThunderFactoryTest {
 		tf.makeObject(asmMock, saMock);
 		final Object mat = tf.getThunderMaterial();
 		assertTrue(mat instanceof Material);
-		Mockito.verify(saMock, Mockito.times(numThree)).getRootNode();
+		Mockito.verify(saMock, Mockito.times(2)).getRootNode();
 	}
 	
 	/**
@@ -125,6 +124,6 @@ public class ThunderFactoryTest {
 		tf.makeObject(asmMock, saMock);
 		final Object mat = tf.getWarningLineMaterial();
 		assertTrue(mat instanceof Material);
-		Mockito.verify(saMock, Mockito.times(numThree)).getRootNode();
+		Mockito.verify(saMock, Mockito.times(1)).getRootNode();
 	}
 }

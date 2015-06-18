@@ -29,7 +29,6 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private final int tierBorder = 3;
 	private App app;
 
-	private ComboDisplay combo;
 	private int currCombo = 0;
 	private int highestCombo = 0;
 	private boolean changed;

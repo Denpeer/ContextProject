@@ -1,7 +1,5 @@
 package com.funkydonkies.interfaces;
 
-import com.funkydonkies.interfaces.Observable;
-
 /**
  * Observer interface for the observer pattern.
  *

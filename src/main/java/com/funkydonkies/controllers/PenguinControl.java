@@ -12,12 +12,9 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 
 /**
  * Control class for the penguin. Takes care of collisions between the penguin and the curve.
@@ -83,6 +80,8 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	/**
 	 * Performed before each physics tick. Sets the z location to 0 to restrict the object from
 	 * moving on the z-axis.
+	 * @param space PhysicsSpace of the scene.
+	 * @param tpf float time per frame.
 	 */
 	@Override
 	public void prePhysicsTick(final PhysicsSpace space, final float tpf) {
@@ -112,7 +111,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	public void update(final float tpf) {
 		super.update(tpf);
 		final Vector3f direction = getLinearVelocity();
-		if(updateMeshRotation) {
+		if (updateMeshRotation) {
 			spatial.lookAt(direction, new Vector3f(0, 1, 0));
 		}
 	}

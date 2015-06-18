@@ -34,25 +34,23 @@ public class ThunderFactory implements FactoryInterface {
 	private static final float WARNING_LINE_WIDTH = 5;
 	private static final float WARNING_LINE_HEIGHT = 200;
 	private static final float WARNING_LINE_DEPTH = 1;
+	private static final int MAX_X_COORD = 320;
 	
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	public static final String THUNDER_NAME = "thunder";
+	public static final String WARNING_LINE_NAME = "warning line";
+	private static final String DEFAULT_MATERIAL = "default material";
+	private static final String COLOR = "Color";
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
-
-	private final int maxRand = 320;
-
-	public static final String THUNDER_NAME = "thunder";
-	public static final String WARNING_LINE_NAME = "warning line";
-	private final String defaultMaterial = "default material";
-	private final String color = "Color";
 
 	@Override
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
 
-		final int randomInt = getRand(maxRand);
+		final int randomInt = getRand(MAX_X_COORD);
 
 		final Node thunderNode = new Node();
 		thunderNode.attachChild(makeThunder(randomInt));
@@ -121,7 +119,7 @@ public class ThunderFactory implements FactoryInterface {
 	 */
 	public Material getThunderMaterial() {
 		Material thunderMaterial;
-		thunderMaterial = ((Material) app.getRootNode().getUserData(defaultMaterial)).clone();
+		thunderMaterial = ((Material) app.getRootNode().getUserData(DEFAULT_MATERIAL)).clone();
 		thunderMaterial.setColor("Diffuse", ColorRGBA.White);
 	    thunderMaterial.setColor("Specular", ColorRGBA.White);
 	    thunderMaterial.setColor("GlowColor", ColorRGBA.White);
@@ -137,7 +135,7 @@ public class ThunderFactory implements FactoryInterface {
 		Material warningLineMaterial;
 		final float colorAlpha = 0.4f;
 		warningLineMaterial = new Material(app.getAssetManager(), MATERIAL_PATH);
-		warningLineMaterial.setColor(color, new ColorRGBA(1, 0, 0, (float) colorAlpha));
+		warningLineMaterial.setColor(COLOR, new ColorRGBA(1, 0, 0, (float) colorAlpha));
 		warningLineMaterial.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return warningLineMaterial;
 	}

@@ -24,7 +24,7 @@ public class PlayState extends AbstractAppState {
 
 	private App app;
 
-	private static BulletAppState bulletAppState;
+	private BulletAppState bulletAppState;
 	
 	private GameInputState gameInputState;
 	private CurveState curveState;

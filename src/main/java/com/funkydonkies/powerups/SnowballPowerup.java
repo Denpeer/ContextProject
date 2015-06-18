@@ -7,7 +7,6 @@ import com.funkydonkies.controllers.PenguinControl;
 import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
 import com.funkydonkies.gamestates.DisabledState;
-import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -15,7 +14,6 @@ import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
@@ -32,7 +30,6 @@ public class SnowballPowerup extends DisabledState implements PhysicsCollisionLi
 
 	private boolean enablePowerupNextCycle = false;
 	public static final String SNOW_PENGUIN_NAME = "snowBallPenguin";
-	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application appl) {

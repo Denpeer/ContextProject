@@ -16,6 +16,7 @@ import com.jme3.scene.Node;
 public class ComboDisplay implements Observer {
 	public static final Vector3f COUNTER_LOCATION = new Vector3f(250, 100, 0);
 	public static final int TEXT_SIZE = 30;
+	private static final float X_TRANSLATION = 500;
 	private BitmapText comboText;
 	private BitmapText highestComboText;
 	private Node guiNode;
@@ -25,7 +26,7 @@ public class ComboDisplay implements Observer {
 	/**
 	 * Constructor for Combo.
 	 * 
-	 * @param app
+	 * @param appl
 	 *            App to get nodes, sManager, etc
 	 */
 	public ComboDisplay(final App appl) {
@@ -46,6 +47,9 @@ public class ComboDisplay implements Observer {
 		updateText();
 	}
 
+	/**
+	 * Creates the BitMapTExt that displays the current combo count.
+	 */
 	public void createCurrentComboText() {
 		comboText = createText();
 		comboText.setSize(TEXT_SIZE);
@@ -55,12 +59,15 @@ public class ComboDisplay implements Observer {
 		guiNode.attachChild(comboText);
 	}
 
+	/**
+	 * Creates the BitMapTExt that displays the highest combo count yet.
+	 */
 	public void createHighestComboText() {
 		highestComboText = createText();
 		highestComboText.setSize(TEXT_SIZE);
 		highestComboText.setColor(ColorRGBA.Yellow);
 		COUNTER_LOCATION.y = highestComboText.getLineHeight();
-		highestComboText.setLocalTranslation(COUNTER_LOCATION.setX(500));
+		highestComboText.setLocalTranslation(COUNTER_LOCATION.setX(X_TRANSLATION));
 		guiNode.attachChild(highestComboText);
 	}
 
@@ -86,12 +93,13 @@ public class ComboDisplay implements Observer {
 	}
 
 	/**
-	 * 
+	 * @param o the Observable that called the update.
+	 * @paran arg Object, not used in our app.
 	 * @see com.funkydonkies.interfaces.Observer#update(com.funkydonkies.interfaces.Observable,
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(final Observable o, final Object arg) {
 		updateText();
 	}
 }
