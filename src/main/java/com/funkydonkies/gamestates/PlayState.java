@@ -97,7 +97,7 @@ public class PlayState extends AbstractAppState {
 	public void handleBulletAppState() {
 		bulletAppState = makeBulletAppState();
 		stateManage.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
+		bulletAppState.setDebugEnabled(false);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	

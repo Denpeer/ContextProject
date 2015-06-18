@@ -337,7 +337,12 @@ public class Mat2Image implements Bridge {
 	 * @return float array containing the control points
 	 */
 	public float[] getControlPoints() {
-		final float[] normCP = Arrays.copyOf(interestPoints, numPoints);
+		float[] normCP = new float[32];
+		Arrays.fill(normCP, 0);
+		
+		if (interestPoints != null)
+			normCP = Arrays.copyOf(interestPoints, numPoints);
+		
 		for (int i = 0; i < normCP.length; i++) {
 			normCP[i] = normCP[i] - upperBound;
 			normCP[i] = Math.abs(normCP[i] - (lowerBound - upperBound));

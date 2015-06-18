@@ -63,6 +63,7 @@ public class CurveState extends AbstractAppState {
 		curveMaterial = initializeMaterial();
 		oldRigi = new RigidBodyControl(0f);
 		splineCurve = initializeSplineCurve();
+		
 	}
 
 	/**
@@ -380,6 +381,14 @@ public class CurveState extends AbstractAppState {
 	 */
 	public void toggleCameraEnabled() {
 		cameraEnabled = !cameraEnabled;
+	}
+	
+	/**
+	 * Sets the cameraEnabled bit.
+	 * @param b boolean 
+	 */
+	public void setCameraEnabled(boolean b) {
+		cameraEnabled = b;
 	}
 
 	/**
