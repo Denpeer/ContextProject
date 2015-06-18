@@ -130,6 +130,7 @@ public class SpearFactory implements FactoryInterface {
 		final Spatial spear = app.getAssetManager().loadModel(MODEL_PATH);
 		spear.setName(SPEAR_NAME);
 		spear.scale(SPEAR_SCALE);
+		spear.setQueueBucket(Bucket.Transparent);
 		return spear;
 	}
 }

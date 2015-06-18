@@ -39,7 +39,7 @@ public class SceneState extends AbstractAppState {
 	
 	private static final int WATER_SCALE = 60;
 	
-	private static final float AMBIENT_MUL = 10f;
+	private static final float AMBIENT_MUL = 1f;
 
 	@Override
 	public final void initialize(final AppStateManager sManager,
@@ -119,7 +119,5 @@ public class SceneState extends AbstractAppState {
 		gameLevel.setLocalScale(scale);
 		sceneNode.attachChild(gameLevel);
 		app.getRootNode().attachChild(sceneNode);
-		final int x = 100;
-		gameLevel.move(x, 0, 0);
 	}
 }

@@ -6,6 +6,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
@@ -43,6 +44,7 @@ public class SplineCurve extends Spline {
 	public SplineCurve(final Material mat, final SplineType splineType, final boolean cycle) {
 		super(splineType, CurveState.getStartingPoints(), TENSION, cycle);
 		curveGeom = new Geometry(CURVE_NAME);
+		curveGeom.setQueueBucket(Bucket.Transparent);
 		curveGeom.setMaterial(mat);
 		curvePoints = CurveState.getStartingPoints();
 
@@ -65,6 +67,7 @@ public class SplineCurve extends Spline {
 
 		final CustomCurveMesh curve = new CustomCurveMesh(getSplinePoints());
 		final Mesh mesh = curve.createMesh();
+		
 		curveGeom.setMesh(mesh);
 		curveGeom.addControl(phys);
 		phys.setRestitution(RESTITUTION);
