@@ -15,6 +15,7 @@ import com.funkydonkies.controllers.FishControl;
 import com.funkydonkies.controllers.PenguinControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -29,6 +30,7 @@ public class PenguinFactoryTest {
 	private AppStateManager assManager;
 	private SimpleApplication app;
 	private Node node;
+	private AssetManager assetManager;
 
 	/**
 	 * Do this before executing tests.
@@ -39,10 +41,13 @@ public class PenguinFactoryTest {
 		fac = new PenguinFactory();
 		node = mock(Node.class);
 		app = mock(SimpleApplication.class);
+		assetManager = mock(AssetManager.class);
 		assManager = new AppStateManager(app);
 		mockFactory = spy(PenguinFactory.class);
-	    doReturn(mock(Material.class)).when(mockFactory).getPenguinMaterial();
 	    doReturn(node).when(mockFactory).makePengNode();
+	    
+	    doReturn(assetManager).when(app).getAssetManager();
+	    doReturn(node).when(assetManager).loadModel(any(String.class));
 	}
 
 	/**
@@ -59,7 +64,10 @@ public class PenguinFactoryTest {
 	 */
 	@Test
 	public void testMakeNode() {
-		assertFalse(fac.makePengNode() == null);
+		PenguinFactory facSpy = spy(fac);
+		doReturn(node).when(facSpy).makePengNode();
+		facSpy.makeNode();
+		verify(node).addControl(any(PenguinControl.class));
 	}
 	
 
