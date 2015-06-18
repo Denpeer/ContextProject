@@ -1,7 +1,5 @@
 package com.funkydonkies.factories;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -12,14 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.controllers.FishControl;
-import com.funkydonkies.controllers.KrillControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.shape.Box;
+import com.jme3.scene.Spatial;
 /**
  * This class tests the Krill factory class.
  */
@@ -29,6 +25,7 @@ public class KrillFactoryTest {
 	private Geometry geom;
 	private AppStateManager assManager;
 	private SimpleApplication app;
+	private AssetManager assetManager;
 
 	/**
 	 * Do this before executing tests.
@@ -40,9 +37,13 @@ public class KrillFactoryTest {
 		assManager = new AppStateManager(app);
 		geom = mock(Geometry.class);
 		mockFactory = spy(KrillFactory.class);
+		assetManager = mock(AssetManager.class);
 		fac = new KrillFactory();
 	    doReturn(mock(Material.class)).when(mockFactory).getkrillMaterial();
-	    doReturn(geom).when(mockFactory).makeGeometry(any(Box.class));
+	    doReturn(geom).when(mockFactory).makeSpatial();
+	    
+	    doReturn(assetManager).when(app).getAssetManager();
+	    doReturn(geom).when(assetManager).loadModel(any(String.class));
 	}
 	
 	/**
@@ -60,7 +61,7 @@ public class KrillFactoryTest {
 	@Test
 	public void methodsCalled() {
 		@SuppressWarnings("unused")
-		final Geometry krill = mockFactory.makeObject(assManager, app);
+		final Spatial krill = mockFactory.makeObject(assManager, app);
 		verify(mockFactory).makeKrill();
 	}
 	
@@ -69,7 +70,12 @@ public class KrillFactoryTest {
 	 */
 	@Test
 	public void testMakeGeometry() {
-		assertFalse(fac.makeGeometry(new Box(1, 1, 1)) == null);
+		KrillFactory facSpy = spy(fac);
+	    doReturn(mock(Material.class)).when(facSpy).getkrillMaterial();
+		facSpy.makeObject(assManager, app);
+		
+//		facSpy.makeSpatial();
+		verify(geom).setName(KrillFactory.KRILL_NAME);
 	}
 
 }

@@ -8,11 +8,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
 
 /**
  * This class represent the factory for the target.
@@ -22,8 +19,10 @@ public class PenguinFactory implements FactoryInterface {
 	public static final float DEFAULT_RADIUS = 4f;
 
 	private static final String COLOR = "Color";
-	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
-	private static final int SAMPLES = 20;
+	private static final String MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
+	private static final String MODEL_PATH = "Models/PENGUIN.j3o";
+	
+//	private static final String[] PenguinGeometry
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -42,7 +41,7 @@ public class PenguinFactory implements FactoryInterface {
 		app = appl;
 
 		final Node node = makeNode();
-		final Geometry penguin = makePenguin();
+		final Spatial penguin = makePenguin();
 
 		node.attachChild(penguin);
 
@@ -70,30 +69,19 @@ public class PenguinFactory implements FactoryInterface {
 	 * 
 	 * @return newly created Penguin
 	 */
-	public Geometry makePenguin() {
-		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
-		final Geometry geom = new Geometry(PENGUIN_NAME, mesh);
-		geom.setMaterial(getPenguinMaterial());
-
-		return geom;
+	public Spatial makePenguin() {
+		final Spatial penguin = app.getAssetManager().loadModel(MODEL_PATH);
+		penguin.setName(PENGUIN_NAME);
+		return penguin;
 	}
-	
+
 	/**
 	 * This method makes a node.
+	 * 
 	 * @return a penguin node
 	 */
 	public Node makePengNode() {
 		return new Node(PENGUIN_NAME);
-	}
-
-	/**
-	 * This method gets the material for the penguin.
-	 * @return the penguin material
-	 */
-	public Material getPenguinMaterial() {
-		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
-		mat.setColor(COLOR, ColorRGBA.Orange);
-		return mat;
 	}
 
 	/**

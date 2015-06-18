@@ -3,6 +3,9 @@ package com.funkydonkies.core;
 import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.BloomFilter;
+import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.scene.Node;
 /**
  * Game is run through this class.
@@ -35,6 +38,20 @@ public class App extends SimpleApplication {
 		
 		setDisplayFps(false);
 		setDisplayStatView(false);
+		
+		addEffects();
+	}
+	
+	/**
+	 * Adds Bloom (objects can glow) and ambient occlusion.
+	 */
+	public void addEffects() {
+		final FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+		final BloomFilter bloom = new BloomFilter(BloomFilter.GlowMode.Objects);
+		final SSAOFilter ssaoFilter = new SSAOFilter();
+		fpp.addFilter(bloom);
+		fpp.addFilter(ssaoFilter);
+		getViewPort().addProcessor(fpp);
 	}
 	
 	/**

@@ -27,6 +27,7 @@ import com.jme3.scene.Spatial;
 public class KillerWhaleControlTest {
 	
 	private static final float TPF = 0.01f;
+	private static final float TIME_MORE_THAN_TWO = 3.0f;
 	private static final float SMALLER_DESTROY_HEIGHT = -1000;
 	private AppStateManager sManager;
 	private CollisionShape colShape;
@@ -34,9 +35,11 @@ public class KillerWhaleControlTest {
 	private PhysicsSpace ps;
 	private Spatial spatial;
 	private Spatial spatial2;
+	private Spatial spatial3;
 	private SoundState ss;
 	private PlayState plays;
 	private Vector3f tf;
+	private Vector3f tf2;
 	private Quaternion quat;
 	private PhysicsCollisionEvent event;
 	private DifficultyState ds;
@@ -55,8 +58,10 @@ public class KillerWhaleControlTest {
 		ss = Mockito.mock(SoundState.class);
 		plays = Mockito.mock(PlayState.class);
 		tf = new Vector3f(0, SMALLER_DESTROY_HEIGHT, 0);
+		tf2 = new Vector3f(0, 0, 0);
 		spatial = Mockito.mock(Spatial.class);
 		spatial2 = Mockito.mock(Spatial.class);
+		spatial3 = Mockito.mock(Spatial.class);
 		quat = new Quaternion();
 		event = Mockito.mock(PhysicsCollisionEvent.class);
 		ds = Mockito.mock(DifficultyState.class);
@@ -72,6 +77,10 @@ public class KillerWhaleControlTest {
 		Mockito.when(event.getNodeB()).thenReturn(spatial2);
 		Mockito.when(spatial.getName()).thenReturn(KillerWhaleFactory.WHALE_NAME);
 		Mockito.when(spatial2.getName()).thenReturn(PenguinFactory.PENGUIN_NAME);
+		Mockito.when(spatial3.getLocalTranslation()).thenReturn(tf2);
+		Mockito.when(spatial3.getWorldTranslation()).thenReturn(tf2);
+		Mockito.when(spatial3.getLocalRotation()).thenReturn(quat);
+		Mockito.when(spatial3.getWorldRotation()).thenReturn(quat);
 	}
 
 	/**
@@ -134,7 +143,12 @@ public class KillerWhaleControlTest {
 	 */
 	@Test
 	public void testMoveSpatial() {
-		
+		final KillerWhaleControl kwc = new KillerWhaleControl(colShape, sManager, vec);
+		kwc.setSpatial(spatial);
+		kwc.update(TIME_MORE_THAN_TWO);
+		kwc.setSpatial(spatial3);
+		kwc.update(TIME_MORE_THAN_TWO);
+		Mockito.verify(spatial, Mockito.times(2)).setLocalTranslation(Mockito.any(Vector3f.class));
 	}
 	
 	/**

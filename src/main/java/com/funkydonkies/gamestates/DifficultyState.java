@@ -29,7 +29,6 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private final int tierBorder = 3;
 	private App app;
 
-	private ComboDisplay combo;
 	private int currCombo = 0;
 	private int highestCombo = 0;
 	private boolean changed;
@@ -86,7 +85,6 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void checkTierenabling() {
 		final int enabledTier = currCombo / tierBorder;
 		final Iterator<String> it = tierMap.keySet().iterator();
-		System.out.println(enabledTier);
 		while (it.hasNext()) {
 			final String name = it.next();
 			if (enabledTier == 0) {

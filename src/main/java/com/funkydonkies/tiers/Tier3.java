@@ -15,7 +15,7 @@ public class Tier3 extends Tier {
 	private IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
-	private final float spawnSpeedTime = 3f;
+	private static final float NEW_SPAWN_SPEED = 3f;
 
 	/**
 	 * The initialize method.

@@ -79,7 +79,7 @@ public class SoundStateTest {
 		soundState.initialize(stateManager, app);
 		// called once by soundState.initialize() and once by SoundPlayer's
 		// constructor
-		Mockito.verify(app, Mockito.times(2)).getAssetManager();
+		Mockito.verify(app, Mockito.times(1)).getAssetManager();
 		assertTrue(soundState.isInitialized());
 	}
 

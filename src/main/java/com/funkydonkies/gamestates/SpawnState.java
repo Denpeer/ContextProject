@@ -15,7 +15,6 @@ import com.funkydonkies.tiers.Tier;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.material.Material;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
@@ -31,7 +30,6 @@ public class SpawnState extends AbstractAppState {
 	public static final float SPECIAL_FISH_SPAWN_TIME = 30;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String TIER_PACKAGE = "com.funkydonkies.tiers";
-	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private HashMap<String, FactoryInterface> facHm;
 	private HashMap<String, Tier> tierMap;
 
@@ -68,7 +66,6 @@ public class SpawnState extends AbstractAppState {
 		stateManager = sManager;
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		spawn(facHm.get("FishFactory"), app.getRootNode());
-		initRootNodeMat(app);
 		rand = new Random();
 	}
 
@@ -96,7 +93,6 @@ public class SpawnState extends AbstractAppState {
 		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
 			specialFishTimer = 0;
 			chooseTargetToSpawn();
-			
 		}
 	}
 	/**
@@ -111,8 +107,6 @@ public class SpawnState extends AbstractAppState {
 				if (!obstacleList.contains(tier.getObstacleArray().get(0))) {
 					obstacleList.addAll(tier.getObstacleArray());
 				}
-				System.out.println(obstacleList.size());
-				
 				final int rInt = rand.nextInt(obstacleList.size());
 				spawn(obstacleList.get(rInt), app.getRootNode());
 				noTiersEnabled = false;
@@ -162,7 +156,7 @@ public class SpawnState extends AbstractAppState {
 		final Set<Class<? extends FactoryInterface>> classes = reflections
 				.getSubTypesOf(FactoryInterface.class);
 		
-		for (Class c : classes) {
+		for (Class<? extends FactoryInterface> c : classes) {
 			try {
 				
 				facHm.put(c.getSimpleName(), (FactoryInterface) c.newInstance());
@@ -183,7 +177,7 @@ public class SpawnState extends AbstractAppState {
 		final Set<Class<? extends Tier>> classes = reflections
 				.getSubTypesOf(Tier.class);
 		
-		for (Class c : classes) {
+		for (Class<? extends Tier> c : classes) {
 			try {			
 				tierMap.put(c.getSimpleName(), (Tier) c.newInstance());
 			} catch (final InstantiationException e) {
@@ -206,10 +200,6 @@ public class SpawnState extends AbstractAppState {
 	 * This method creates a default material.
 	 * @param appl the simple application
 	 */
-	public void initRootNodeMat(final App appl) {
-		final Material mat = new Material(appl.getAssetManager(), MATERIAL_PATH);
-		appl.getRootNode().setUserData("default material", mat);
-	}
 	
 	/**
 	 * The getter for the tiermap.

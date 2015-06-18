@@ -22,7 +22,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	private static final float SPEED = 5;
 	private float time = 0;
 
-	private final float destroyXCoordinate = -100;
+	private static final float DESTROY_X_COORDINATE = -100;
 	private AppStateManager stateManager;
 	private Vector3f initialLoc;
 
@@ -78,7 +78,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	public void update(final float tpf) {
 		move();
 		time += tpf;
-		if (spatial.getLocalTranslation().getX() < destroyXCoordinate) {
+		if (spatial.getLocalTranslation().getX() < DESTROY_X_COORDINATE) {
 			spatial.removeFromParent();
 			setEnabled(false);
 		}

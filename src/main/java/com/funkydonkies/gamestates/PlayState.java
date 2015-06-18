@@ -8,8 +8,8 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 
 /**
@@ -18,11 +18,13 @@ import com.jme3.math.Vector3f;
  */
 public class PlayState extends AbstractAppState {
 	public static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
-	public static final Vector3f CAM_LOCATION = new Vector3f(135, 25, 235);
+	public static final Vector3f CAM_LOCATION = new Vector3f(160, 25, 200);
+	
+	private static final String MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 
 	private App app;
 
-	private static BulletAppState bulletAppState;
+	private BulletAppState bulletAppState;
 	
 	private GameInputState gameInputState;
 	private CurveState curveState;
@@ -51,11 +53,12 @@ public class PlayState extends AbstractAppState {
 		}
 		stateManage = stateManager;
 
-		app.getFlyByCamera().setEnabled(true);
+		app.getFlyByCamera().setEnabled(!false);
 		app.getCamera().setLocation(CAM_LOCATION);
 		
 		handleBulletAppState();
 		initStates();
+		initRootNodeMat(app);
 	}
 	/**
 	 * This method initializes the states.
@@ -94,7 +97,7 @@ public class PlayState extends AbstractAppState {
 	public void handleBulletAppState() {
 		bulletAppState = makeBulletAppState();
 		stateManage.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(false);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	
@@ -112,5 +115,19 @@ public class PlayState extends AbstractAppState {
 	 */
 	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
+	}
+	
+	/**
+	 * @param appl
+	 */
+	public void initRootNodeMat(final App appl) {
+		final Material mat = new Material(appl.getAssetManager(), MATERIAL_PATH);
+		mat.setBoolean("UseMaterialColors", true);    
+	    mat.setColor("Diffuse", ColorRGBA.randomColor());
+	    mat.setColor("Specular", ColorRGBA.randomColor());
+	    final float shininess = 64f;
+	    mat.setFloat("Shininess", shininess);
+	    mat.setColor("GlowColor", ColorRGBA.Black);
+		appl.getRootNode().setUserData("default material", mat);
 	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
-import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 

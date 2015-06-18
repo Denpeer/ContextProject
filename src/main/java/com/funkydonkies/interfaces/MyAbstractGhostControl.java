@@ -48,8 +48,8 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		final String nameA = e.getNodeA().getName();
 		final String nameB = e.getNodeB().getName();
 		
-		return (c1.equals(nameA) && c2.equals(nameB)
-				|| c2.equals(nameA) && c1.equals(nameB));
+		return c1.equals(nameA) && c2.equals(nameB)
+				|| c2.equals(nameA) && c1.equals(nameB);
 	}
 
 	/** Checks whether the event has/is null.
@@ -76,6 +76,17 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Destroys the object and disables control.
+	 * @see com.jme3.bullet.objects.PhysicsGhostObject#destroy()
+	 */
+	@Override
+	public void destroy() {
+		super.destroy();
+		spatial.removeFromParent();
+		this.setEnabled(false);
 	}
 
 	/**
@@ -115,9 +126,9 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 	 * @return null if there is no such node
 	 */
 	public Spatial getCollisionSpatial(final PhysicsCollisionEvent e, final String name) {
-		if (e.getNodeA().getName() == name) {
+		if (e.getNodeA().getName().equals(name)) {
 			return e.getNodeA();
-		} else if (e.getNodeB().getName() == name) {
+		} else if (e.getNodeB().getName().equals(name)) {
 			return e.getNodeB();
 		} else {
 			return null;

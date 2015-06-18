@@ -16,7 +16,8 @@ import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 
 /**
- * Control class for the target. Takes care of collisions between the ball and target.
+ * Control class for the target. Takes care of collisions between the ball and
+ * target.
  */
 public class KrillControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 
@@ -42,6 +43,7 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 		stateManager.getState(SoundState.class).queueSound(new TargetSpawnSound());
 		respawn();
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		
 	}
 
 	@Override
@@ -51,24 +53,25 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 	}
 
 	/**
-	 * Handles a collision between ball and target. Calls methods to increase the combo and respawn
-	 * the target.
+	 * Handles a collision between ball and target. Calls methods to increase
+	 * the combo and respawn the target.
 	 * 
 	 * @param event
-	 *            PhysicsCollisionEvent containing information about the collision
+	 *            PhysicsCollisionEvent containing information about the
+	 *            collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, KrillFactory.KRILL_NAME, PenguinFactory.PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
 			diffState.incDiff(2);
 			diffState.activateInvertControls();
-			destroy(event, PenguinFactory.PENGUIN_NAME);
+			destroy(event, KrillFactory.KRILL_NAME);
 		}
 		if (checkCollision(event, KrillFactory.KRILL_NAME, SnowballPowerup.SNOW_PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
 			diffState.incDiff(2);
 			diffState.activateInvertControls();
-			destroy(event, PenguinFactory.PENGUIN_NAME);
+			destroy(event, KrillFactory.KRILL_NAME);
 		}
 	}
 }
