@@ -8,10 +8,8 @@ import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 
 /**
  * This class represent the factory for the target.
@@ -39,7 +37,6 @@ public class KrillFactory implements FactoryInterface {
 		app = appl;
 
 		final Spatial krill = makeKrill();
-
 		return krill;
 	}
 
@@ -51,8 +48,6 @@ public class KrillFactory implements FactoryInterface {
 	public Spatial makeKrill() {
 		final Spatial krill = makeSpatial();
 		krill.setMaterial(getkrillMaterial());
-//		krill.scale(2);
-		krill.setLocalTranslation(0, -5, 0);
 		final KrillControl tarCont = new KrillControl(new BoxCollisionShape(new Vector3f(
 				KRILL_WIDTH, KRILL_HEIGHT, KRILL_DEPTH)), stateManager);
 		krill.addControl(tarCont);

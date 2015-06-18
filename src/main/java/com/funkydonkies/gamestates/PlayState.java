@@ -53,7 +53,7 @@ public class PlayState extends AbstractAppState {
 		}
 		stateManage = stateManager;
 
-		app.getFlyByCamera().setEnabled(false);
+		app.getFlyByCamera().setEnabled(!false);
 		app.getCamera().setLocation(CAM_LOCATION);
 		
 		handleBulletAppState();
@@ -97,7 +97,7 @@ public class PlayState extends AbstractAppState {
 	public void handleBulletAppState() {
 		bulletAppState = makeBulletAppState();
 		stateManage.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(false);
+		bulletAppState.setDebugEnabled(true);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	

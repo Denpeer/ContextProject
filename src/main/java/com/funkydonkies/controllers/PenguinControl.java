@@ -12,9 +12,12 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
+import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 /**
  * Control class for the penguin. Takes care of collisions between the penguin and the curve.
@@ -31,6 +34,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	private AppStateManager stateManager;
 	private Vector3f initialSpawn;
 	private boolean touchingCurve = false;
+	private boolean updateMeshRotation = true;
 
 	/**
 	 * Constructor for ball physics controller.
@@ -108,7 +112,9 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	public void update(final float tpf) {
 		super.update(tpf);
 		final Vector3f direction = getLinearVelocity();
-		spatial.lookAt(direction, new Vector3f(0, 1, 0));
+		if(updateMeshRotation) {
+			spatial.lookAt(direction, new Vector3f(0, 1, 0));
+		}
 	}
 	
 	/**
@@ -125,5 +131,13 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 			touchingCurve = false;
 		}
 	}
+	
+	/**
+	 * Disables the rotation of the penguin idependent from its collisionshape.
+	 */
+	public void disableMeshRotation() {
+		updateMeshRotation = false;
+	}
 
+	
 }
