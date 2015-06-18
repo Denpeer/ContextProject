@@ -34,13 +34,11 @@ public class SpawnStateTest {
 		spawnState = new SpawnState();
 		spy = spy(spawnState);
 		doNothing().when(spy).spawn(any(FactoryInterface.class), any(Node.class));
-		doNothing().when(spy).initRootNodeMat(app);
 	}
 	
 	@Test
 	public void initializeTest(){
 		spy.initialize(sManager, app);
 		verify(spy).spawn(any(FactoryInterface.class), any(Node.class));
-		verify(spy).initRootNodeMat(app);
 	}
 }
