@@ -56,7 +56,7 @@ public class CurveStateTest {
 		sManager = mock(AppStateManager.class);
 		app = mock(App.class);
 		camState = mock(CameraState.class);
-		splineCurve = new SplineCurve(SplineType.CatmullRom, true);
+		splineCurve = new SplineCurve(material, SplineType.CatmullRom, true);
 		spySplineCurve = spy(splineCurve);
 		material = mock(Material.class);
 		node = mock(Node.class);
@@ -76,7 +76,7 @@ public class CurveStateTest {
 		when(bridge.getControlPoints()).thenReturn(getTestPoints());
 		doReturn(material).when(spyCurveState).initializeMaterial();
 		doNothing().when(spySplineCurve).drawCurve(
-				material, physicsSpace, control, node);
+				physicsSpace, control, node);
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class CurveStateTest {
 		spyCurveState.initialize(sManager, app);
 		spyCurveState.update(0.01f);
 		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
@@ -126,7 +126,7 @@ public class CurveStateTest {
 		assertTrue(spyCurveState.getCameraEnabled());
 		spyCurveState.update(0.01f);
 		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
@@ -142,7 +142,7 @@ public class CurveStateTest {
 		spyCurveState.setUpdateEnabled(true);
 		spyCurveState.update(0.01f);
 		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(material, physicsSpace, control, node);
+		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
@@ -151,9 +151,6 @@ public class CurveStateTest {
 		spyCurveState.update(0.1f);
 
 		Vector3f[] points = splineCurve.getCurvePoints();
-		for (Vector3f point : points) {
-			System.out.println(point);
-		}
 		/* TODO check scaleValues and the curvepoints, but they're NaN?? */
 	}
 

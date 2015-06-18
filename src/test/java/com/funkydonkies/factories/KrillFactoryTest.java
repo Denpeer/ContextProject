@@ -1,7 +1,5 @@
 package com.funkydonkies.factories;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -12,15 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.controllers.FishControl;
-import com.funkydonkies.controllers.KrillControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 /**
  * This class tests the Krill factory class.
  */
