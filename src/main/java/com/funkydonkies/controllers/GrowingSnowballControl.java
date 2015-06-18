@@ -1,15 +1,15 @@
 package com.funkydonkies.controllers;
 
-import com.funkydonkies.spatials.Snowball;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
-import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Sphere;
 
 /**
  * Control for turning penguins into invincible snowballs.
@@ -54,6 +54,7 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 
 	@Override
 	public void init() {
+		disableMeshRotation();
 		// do nothing
 	}
 
@@ -69,18 +70,12 @@ public class GrowingSnowballControl extends PenguinControl implements PhysicsCol
 			final CollisionShape s = getCollisionShape();
 			final float radius = ((SphereCollisionShape) s).getRadius();
 			timer = 0;
-			if (radius < MAX_RADIUS) {
+//			if (radius < MAX_RADIUS) {
 				final Spatial snowBall = ((Node) spatial).getChild(SNOW_BALL_NAME);
-				((Snowball) snowBall)
-						.setRadius(((Snowball) snowBall).getRadius() + SCALE_UP_FACTOR);
-
-				final Vector3f loc = snowBall.getLocalTranslation();
-				loc.x = loc.x - SCALE_OFFSET * SCALE_UP_FACTOR;
-				loc.y = loc.y - SCALE_OFFSET * SCALE_UP_FACTOR;
-
-				setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR * SCALE_OFFSET));
-				snowBall.setLocalTranslation(loc);
-			}
+//				float r = ((Sphere) ((Geometry) snowBall).getMesh()).radius;
+				((Geometry) snowBall).setMesh(new Sphere(30, 30, radius + SCALE_UP_FACTOR));
+				setCollisionShape(new SphereCollisionShape(radius + SCALE_UP_FACTOR));
+//			}
 		}
 	}
 

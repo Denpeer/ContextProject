@@ -43,6 +43,7 @@ public class KrillControl extends MyAbstractGhostControl implements PhysicsColli
 		stateManager.getState(SoundState.class).queueSound(new TargetSpawnSound());
 		respawn();
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		
 	}
 
 	@Override
