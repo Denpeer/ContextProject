@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -46,6 +47,7 @@ public class PlayStateTest {
 		
 		doReturn(flyCam).when(app).getFlyByCamera();
 		doReturn(cam).when(app).getCamera();
+		doNothing().when(playSpy).initRootNodeMat(app);
 		doReturn(bullet).when(playSpy).makeBulletAppState();
 		when(bullet.getPhysicsSpace()).thenReturn(phySpace);
 		when(app.getPenguinNode()).thenReturn(penguinNode);
