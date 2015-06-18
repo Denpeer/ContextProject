@@ -51,7 +51,7 @@ public class App extends SimpleApplication {
 		final SSAOFilter ssaoFilter = new SSAOFilter();
 		fpp.addFilter(bloom);
 		fpp.addFilter(ssaoFilter);
-		viewPort.addProcessor(fpp);
+		getViewPort().addProcessor(fpp);
 	}
 	
 	/**

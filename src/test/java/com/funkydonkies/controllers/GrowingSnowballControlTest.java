@@ -5,8 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.funkydonkies.gamestates.PlayState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -32,6 +34,8 @@ public class GrowingSnowballControlTest {
 	private Vector3f tf;
 	private Quaternion quat;
 	private Geometry snowball;
+	private PlayState playState;
+	private PhysicsSpace phySpace;
 	/**
 	 * prepare the mocks.
 	 * @throws Exception catches exception
@@ -44,6 +48,8 @@ public class GrowingSnowballControlTest {
 		ps = Mockito.mock(PhysicsSpace.class);
 		spatial = Mockito.mock(Node.class);
 		snowball = Mockito.mock(Geometry.class);
+		playState = Mockito.mock(PlayState.class);
+		phySpace = Mockito.mock(PhysicsSpace.class);
 		tf = new Vector3f(0, 0, 0);
 		quat = new Quaternion();
 		Mockito.when(spatial.getLocalTranslation()).thenReturn(tf);
@@ -52,6 +58,9 @@ public class GrowingSnowballControlTest {
 		Mockito.when(spatial.getWorldRotation()).thenReturn(quat);
 		Mockito.when(spatial.getChild(GrowingSnowballControl.SNOW_BALL_NAME)).thenReturn(snowball);
 		Mockito.when(spatial.getWorldScale()).thenReturn(tf);
+		Mockito.doReturn(playState).when(sManager).getState(PlayState.class);
+		Mockito.doReturn(phySpace).when(playState).getPhysicsSpace();
+		Mockito.doNothing().when(phySpace).add(Mockito.any());
 	}
 
 	/**
@@ -118,5 +127,15 @@ public class GrowingSnowballControlTest {
 		final GrowingSnowballControl gsc = new GrowingSnowballControl(sphereCollisionShape, mass,
 				sManager);
 		gsc.prePhysicsTick(ps, TPF);
+	}
+	
+	@Test
+	public void testInit() {
+		final GrowingSnowballControl gsc = new GrowingSnowballControl(sphereCollisionShape, mass,
+				sManager);
+		GrowingSnowballControl spy = Mockito.spy(gsc);
+		spy.init();
+		Mockito.verify(spy).disableMeshRotation();
+		Mockito.verify(phySpace).add(spy);
 	}
 }
