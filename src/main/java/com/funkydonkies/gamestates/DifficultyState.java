@@ -26,7 +26,7 @@ import com.jme3.app.state.AppStateManager;
  * 
  */
 public class DifficultyState extends AbstractAppState implements Observable {
-	private final int tierBorder = 3;
+	private final int tierBorder = 2;
 	private App app;
 
 	private int currCombo = 0;
@@ -90,9 +90,6 @@ public class DifficultyState extends AbstractAppState implements Observable {
 		final Iterator<String> it = tierMap.keySet().iterator();
 		while (it.hasNext()) {
 			final String name = it.next();
-			if (enabledTier == 0) {
-				enableTier(null);
-			}
 			if (Character.getNumericValue(name.charAt(name.length() - 1)) == enabledTier) {
 				enableTier(name);
 			}
@@ -296,7 +293,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * This method get the tier that should be enabled.
 	 * @return the enabled tier.
 	 */
-	public int getEnabledTier(){
+	public int getEnabledTier() {
 		return enabledTier;
 	}
 }
