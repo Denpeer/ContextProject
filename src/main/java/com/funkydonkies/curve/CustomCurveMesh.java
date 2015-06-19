@@ -50,7 +50,6 @@ public class CustomCurveMesh {
 			normals[i + 1] = 0;
 			normals[i + 2] = 1;
 		}
-		launchPadHeight = splinePoints[0].getY();
 		final Mesh mesh = new Mesh();
 		final int indexBuffer = 3;
 		mesh.setBuffer(Type.Position, indexBuffer, 
@@ -62,7 +61,7 @@ public class CustomCurveMesh {
 		mesh.updateBound();
 		return mesh;
 	}
-	
+
 	/**
 	 * This method gets all the points needed to genearate triangles for the mesh at a splinepoint.
 	 * @param i the index of the splinepoint
@@ -214,6 +213,13 @@ public class CustomCurveMesh {
 	 */
 	public static float getLaunchPadHeight() {
 		return launchPadHeight;
+	}
+
+	/**
+	 *  Sets the current LaunchPadHeight.
+	 */
+	public void updateLaunchPadHeight() {
+		launchPadHeight = splinePoints[0].getY();
 	}
 
 

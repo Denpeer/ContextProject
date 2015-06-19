@@ -72,7 +72,7 @@ public class KrillFactory implements FactoryInterface {
 	 * @return loaded material
 	 */
 	public Material getkrillMaterial() {
-		final Material mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor("Color", ColorRGBA.Yellow);
 		return mat;
 	}

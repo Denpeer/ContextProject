@@ -119,7 +119,8 @@ public class GameInputState extends AbstractAppState {
 				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
 			if (name.equals(ENABLE_TIER_ONE) && !keyPressed) {
-				stateManager.getState(DifficultyState.class).incDiff(3);
+				final int step = 3;
+				stateManager.getState(DifficultyState.class).incDiff(step);
 			}
 		}
 	};

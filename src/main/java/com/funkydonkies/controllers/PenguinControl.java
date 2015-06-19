@@ -85,8 +85,8 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		}
 		prevY = this.getPhysicsLocation().getY();
 		
-		final Vector3f softGrav = new Vector3f(0,-20f,0);
-		final Vector3f hardGrav = new Vector3f(0,-30f,0);
+		final Vector3f softGrav = new Vector3f(0, -20f, 0);
+		final Vector3f hardGrav = new Vector3f(0, -30f, 0);
 		if (goingDown) {
 			this.setGravity(hardGrav);
 		} else {

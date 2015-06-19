@@ -7,7 +7,6 @@ import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.sounds.ObstacleCollisionSound;
 import com.funkydonkies.sounds.SoundState;
-import com.funkydonkies.sounds.SpearThrowSound;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;

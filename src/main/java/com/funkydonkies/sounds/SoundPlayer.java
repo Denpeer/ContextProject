@@ -36,7 +36,6 @@ public class SoundPlayer {
 
 	private AudioNode penguinSpawnAudioNode;
 	private AudioNode krillCollisionAudioNode;
-	private AudioNode obstacleSpawnAudioNode;
 	private AudioNode targetCollisionAudioNode;
 	private AudioNode obstacleCollisionAudioNode;
 	private AudioNode comboNewLevelAudioNode;
@@ -145,13 +144,6 @@ public class SoundPlayer {
 	 */
 	public void krillCollisionSound() {
 		krillCollisionAudioNode.playInstance();
-	}
-
-	/**
-	 * sound of obstacle spawning.
-	 */
-	public void obstacleSpawnSound() {
-		obstacleSpawnAudioNode.playInstance();
 	}
 
 	/**

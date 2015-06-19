@@ -388,7 +388,7 @@ public class CurveState extends AbstractAppState {
 	 * Sets the cameraEnabled bit.
 	 * @param b boolean 
 	 */
-	public void setCameraEnabled(boolean b) {
+	public void setCameraEnabled(final boolean b) {
 		cameraEnabled = b;
 	}
 

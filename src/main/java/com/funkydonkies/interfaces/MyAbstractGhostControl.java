@@ -115,7 +115,7 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		final Random rand = new Random();
 		final float x = (float) rand.nextInt(RANDOM_X) + PADDING;
 		
-		final float y = (float)rand.nextInt(RANDOM_Y) + PADDING;
+		final float y = (float) rand.nextInt(RANDOM_Y) + PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		spatial.setLocalTranslation(respawnlocation);
 		setPhysicsLocation(respawnlocation);

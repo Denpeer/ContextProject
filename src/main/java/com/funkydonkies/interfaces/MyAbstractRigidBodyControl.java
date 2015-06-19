@@ -54,7 +54,6 @@ public class MyAbstractRigidBodyControl extends RigidBodyControl {
 	
 	/**
 	 * Destroys this object, removes it from the scene.
-	 * @see com.jme3.bullet.objects.PhysicsRigidBody#destroy()
 	 */
 	@Override
 	public void destroy() {
