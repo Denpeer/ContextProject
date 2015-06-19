@@ -152,7 +152,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	}
 	
 	/**
-	 * Disables the rotation of the penguin idependent from its collisionshape.
+	 * Disables the rotation of the penguin independent from its collisionshape.
 	 */
 	public void disableMeshRotation() {
 		updateMeshRotation = false;

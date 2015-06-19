@@ -149,7 +149,7 @@ public class SpearControlTest {
 		sc.init();
 		sc.update(TPF);
 		sc.collision(event);
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(1)).getState(SoundState.class);
 		Mockito.verify(ds).resetDiff();
 	}
 }

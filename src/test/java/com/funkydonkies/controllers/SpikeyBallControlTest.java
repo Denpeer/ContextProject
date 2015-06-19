@@ -102,8 +102,7 @@ public class SpikeyBallControlTest {
 		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 		final int yOffSet = 50, xOffSet = 100;
-		final Vector3f initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight()
-				+ yOffSet, 0);
+		final Vector3f initialSpawn = new Vector3f(xOffSet, 100, 0);
 		assertEquals(sbc.getPhysicsLocation(), initialSpawn);
 	}
 
