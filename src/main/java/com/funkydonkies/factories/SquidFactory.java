@@ -23,7 +23,9 @@ public class SquidFactory implements FactoryInterface {
 	private static final float SQUID_HEIGHT = 12;
 	private static final float SQUID_DEPTH = 5;
 	public static final String SQUID_NAME = "squid";
-	public static final String MODEL_PATH = "Models/SQUID.j3o";
+	
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+	private static final String MODEL_PATH = "Models/KRILL.j3o";
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -66,8 +68,8 @@ public class SquidFactory implements FactoryInterface {
 	 * @return a Material object
 	 */
 	public Material getSquidMaterial() {
-		final Material mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Yellow);
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
+		mat.setColor("Color", ColorRGBA.Magenta);
 		return mat;
 	}
 	
