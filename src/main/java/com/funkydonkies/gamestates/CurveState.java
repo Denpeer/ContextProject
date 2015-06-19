@@ -25,7 +25,7 @@ public class CurveState extends AbstractAppState {
 	private static final int CHANGE_THRESHOLD = 5;
 	private static final float MAX_SLOPE_ANGLE = 70f;
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
-	private static final float SPEED_MULTIPLIER = 1f;
+	private static final float SPEED_MULTIPLIER = 1.4f;
 	private static final String MATERIAL_PATH = "Materials/ice.j3m";
 
 	// set to 32 as default this is what we currently use to test the program.
