@@ -102,7 +102,6 @@ public class SpawnState extends AbstractAppState {
 	 */
 	public void chooseObstacleToSpawn() {
 		final Iterator<Tier> it = tierMap.values().iterator();
-		boolean noTiersEnabled = true;
 		while (it.hasNext()) {
 			final Tier tier = it.next();
 			if (tier.isEnabled()) {
@@ -111,10 +110,9 @@ public class SpawnState extends AbstractAppState {
 				}
 				final int rInt = rand.nextInt(obstacleList.size());
 				spawn(obstacleList.get(rInt), app.getSceneNode());
-				noTiersEnabled = false;
 			}
 		}
-		if (noTiersEnabled) {
+		if (stateManager.getState(DifficultyState.class).getEnabledTier() == 0) {
 			obstacleList.clear();
 			spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		}
