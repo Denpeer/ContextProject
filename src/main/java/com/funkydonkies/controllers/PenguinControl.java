@@ -159,4 +159,10 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	}
 
 	
+	@Override
+	public void destroy() {
+		super.destroy();
+		stateManager.getState(PlayState.class).getPhysicsSpace().removeCollisionListener(this);
+	}
+	
 }
