@@ -39,8 +39,13 @@ public class Tier3 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			enableIncreasedSpawnSpeed();
+			setIncreasedSpawnSpeedEnabled(true);
 			setText("Tier 3: Activated!");
+		} else {
+			clearText();
+			if (increaseSpawnSpeed != null && increaseSpawnSpeed.isEnabled()) {
+				setIncreasedSpawnSpeedEnabled(false);
+			}
 		}
 	}
 
@@ -62,9 +67,10 @@ public class Tier3 extends Tier {
 
 	/**
 	 * Enable the increase spawn speed power up.
+	 * @param enabled desired state
 	 */
-	public void enableIncreasedSpawnSpeed() {
-		increaseSpawnSpeed.setEnabled(true);
+	public void setIncreasedSpawnSpeedEnabled(final boolean enabled) {
+		increaseSpawnSpeed.setEnabled(enabled);
 	}
 
 	/**

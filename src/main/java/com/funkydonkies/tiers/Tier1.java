@@ -41,6 +41,8 @@ public class Tier1 extends Tier {
 		super.setEnabled(enabled);
 		if (enabled) {
 			setText("Tier 1: Activated!");
+		} else {
+			clearText();
 		}
 	}
 

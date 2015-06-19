@@ -118,6 +118,9 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_ENABLE_CAMERA_DETECTION) && !keyPressed) {
 				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
+			if (name.equals(ENABLE_TIER_ONE) && !keyPressed) {
+				stateManager.getState(DifficultyState.class).incDiff(3);
+			}
 		}
 	};
 	
@@ -126,8 +129,6 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
 				timeCount += tpf;
 				if (timeCount > time) {
-					//final Penguin ball = new Penguin(assetManager);
-					//ball.spawn(app.getRootNode(), PlayState.getPhysicsSpace(), true);
 					timeCount = 0;
 				}
 			}

@@ -41,6 +41,8 @@ public class Tier5 extends Tier {
 		super.setEnabled(enabled);
 		if (enabled) {
 			setText("Tier 5: Activated!");
+		} else {
+			clearText();
 		}
 	}
 
