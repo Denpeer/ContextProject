@@ -40,7 +40,7 @@ public class Tier4 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			setText("Tier 4: Activated!");
+			setText("Tier 4: Grease Lightning!");
 		} else {
 			clearText();
 		}

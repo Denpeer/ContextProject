@@ -40,7 +40,7 @@ public class Tier5 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			setText("Tier 5: Activated!");
+			setText("Tier 5: Help!? Agents!");
 		} else {
 			clearText();
 		}

@@ -40,7 +40,7 @@ public class Tier3 extends Tier {
 		super.setEnabled(enabled);
 		if (enabled) {
 			setIncreasedSpawnSpeedEnabled(true);
-			setText("Tier 3: Activated!");
+			setText("Tier 3: mind your step!");
 		} else {
 			clearText();
 			if (increaseSpawnSpeed != null && increaseSpawnSpeed.isEnabled()) {

@@ -40,7 +40,7 @@ public class Tier2 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			setText("Tier 2: Activated!");
+			setText("Tier 2: the Yetis are coming!");
 		} else {
 			clearText();
 		}
