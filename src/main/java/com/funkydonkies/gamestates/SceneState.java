@@ -39,8 +39,6 @@ public class SceneState extends AbstractAppState {
 	
 	private static final int WATER_SCALE = 60;
 	
-	private static final float AMBIENT_MUL = 1f;
-
 	@Override
 	public final void initialize(final AppStateManager sManager,
 			final Application appl) {
@@ -89,16 +87,6 @@ public class SceneState extends AbstractAppState {
         waterPlane.setLocalTranslation(WATER_LOCATION);
 
         sceneNode.attachChild(waterPlane);
-        
-        final DirectionalLight light = new DirectionalLight();
-        final Vector3f dir = new Vector3f(0, -1, 0);
-        light.setDirection(dir);
-        
-        final AmbientLight aLight = new AmbientLight();
-        aLight.setColor(ColorRGBA.White.mult(AMBIENT_MUL));
-        
-        app.getRootNode().addLight(aLight);
-        app.getRootNode().addLight(light);
 	}
 
 	/**
@@ -111,10 +99,9 @@ public class SceneState extends AbstractAppState {
 	 *            the translation
 	 */
 	private void loadScene(final int scale, final Vector3f trans) {
-		final Spatial gameLevel = assetManager.loadModel(SCENE_PATH);
-		gameLevel.setLocalTranslation(trans);
-		gameLevel.setLocalScale(scale);
-		sceneNode.attachChild(gameLevel);
-		app.getRootNode().attachChild(sceneNode);
+		sceneNode = (Node) assetManager.loadModel(SCENE_PATH);
+		sceneNode.setLocalTranslation(trans);
+		sceneNode.setLocalScale(scale);
+		app.setSceneNode((Node) sceneNode);
 	}
 }

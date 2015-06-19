@@ -53,7 +53,7 @@ public class PlayState extends AbstractAppState {
 		}
 		stateManage = stateManager;
 
-		app.getFlyByCamera().setEnabled(!false);
+		app.getFlyByCamera().setEnabled(true);
 		app.getCamera().setLocation(CAM_LOCATION);
 		
 		handleBulletAppState();
@@ -126,6 +126,8 @@ public class PlayState extends AbstractAppState {
 		mat.setBoolean("UseMaterialColors", true);    
 	    mat.setColor("Diffuse", ColorRGBA.randomColor());
 	    mat.setColor("Specular", ColorRGBA.randomColor());
+	    final float scalar = 0.5f;
+	    mat.setColor("Ambient", ColorRGBA.White.mult(scalar));
 	    final float shininess = 64f;
 	    mat.setFloat("Shininess", shininess);
 	    mat.setColor("GlowColor", ColorRGBA.Black);
