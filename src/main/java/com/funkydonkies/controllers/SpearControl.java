@@ -107,7 +107,6 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, SpearFactory.SPEAR_NAME, PenguinFactory.PENGUIN_NAME)) {
-			stateManager.getState(SoundState.class).queueSound(new SpearThrowSound());
 			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);
