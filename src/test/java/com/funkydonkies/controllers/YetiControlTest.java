@@ -82,7 +82,7 @@ public class YetiControlTest {
 		final YetiControl yc = new YetiControl(sManager);
 		yc.setSpatial(spatial);
 		yc.init();
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(1)).getState(DifficultyState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 	}
 

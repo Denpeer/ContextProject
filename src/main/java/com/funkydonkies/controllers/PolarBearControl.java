@@ -1,5 +1,7 @@
 package com.funkydonkies.controllers;
 
+import java.util.Random;
+
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.PolarBearFactory;
 import com.funkydonkies.gamestates.DifficultyState;
@@ -14,7 +16,6 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial.CullHint;
 
 /**
  * Control class for the polar bear. Takes care of collisions between the polar bear and the
@@ -22,22 +23,23 @@ import com.jme3.scene.Spatial.CullHint;
  */
 public class PolarBearControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 
-	private Vector3f initialLoc;
+	private static final int MAX_HEIGHT = 20;
+	private static final int DESTROY_TIME = 5;
+	private static final float SPEED = 20f;
+	private static final float UP_SPEED = 10f;
+	private static final float REMOVE_TIME = 4.2f;
 
-	private static final int DESTROY_TIME = 3;
+	private Vector3f initialLoc;
 
 	private boolean doneMoving = false;
 
-	private static final float BLINKING_TIME = 0.5f;
-	private static final float SPEED = 1f;
-
-	private float blinkTime = 0;
 	private float killTime = 0;
 	private float time = 0;
 	private float stopCoord;
 	private AppStateManager stateManager;
 	private DifficultyState diffState;
-
+	
+	private int height;
 
 	/**
 	 * The controller for the polar bear. Takes care of the collision between the polar bear and the
@@ -80,6 +82,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 		spatial.setLocalTranslation(initialLoc);
 		setPhysicsLocation(initialLoc);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
+		height = new Random().nextInt(MAX_HEIGHT);
 	}
 
 	/**
@@ -88,78 +91,58 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	 */
 	@Override
 	public void update(final float tpf) {
-		moveSpatial();
+		moveSpatial(doneMoving, tpf);
 
 		if (doneMoving) {
-			if (spatial.getCullHint() == CullHint.Always) {
-				spatial.setCullHint(CullHint.Dynamic);
-			}
 			time += tpf;
 			if (time > DESTROY_TIME) {
 				doneMoving = false;
 				killBear(tpf);
 			}
-		} else {
-			blink(tpf);
 		}
 	}
-
+	
 	/**
 	 * Removes the bear after moving it down.
 	 * @param tpf time per frame
 	 */
 	public void killBear(final float tpf) {
 		killTime += tpf;
-		final float scale = 5;
-		spatial.move(0, -SPEED * tpf * scale, 0);
-		blink(tpf);
-		if (killTime > DESTROY_TIME + 1) {
+		Vector3f loc = getPhysicsLocation();
+		loc.y -= UP_SPEED * tpf;
+		spatial.setLocalTranslation(loc);
+		setPhysicsLocation(loc);
+		if (killTime > REMOVE_TIME) {
 			spatial.removeFromParent();
 			setEnabled(false);
 		}
 	}
 
 	/**
-	 *  Makes the spatial blink.
-	 *  @param tpf time per frame
-	 */
-	public void blink(final float tpf) {
-		blinkTime += tpf;
-		if (blinkTime > BLINKING_TIME) {
-			blinkTime = 0;
-			toggleCulling();
-		}
-	}
-
-	/**
-	 * Toggles visibilty of spatial.
-	 */
-	public void toggleCulling() {
-		if (spatial.getCullHint() != CullHint.Always) {
-			spatial.setCullHint(CullHint.Always);
-		} else {
-			spatial.setCullHint(CullHint.Dynamic);
-		}
-	}
-
-	/**
 	 * This method moves the spatial in the desired direction.
 	 */
-	private void moveSpatial() {
-		Vector3f loc;
+	private void moveSpatial(boolean moveUp, float tpf) {
 		final Vector3f vec = spatial.getLocalTranslation();
-		if (initialLoc.getX() < stopCoord && vec.getX() < stopCoord) {
-			loc = new Vector3f((float) (vec.getX() + SPEED), vec.getY(), vec.getZ());
-			spatial.setLocalTranslation(loc);
-			setPhysicsLocation(loc);
-		} else if (initialLoc.getX() >= stopCoord && vec.getX() >= stopCoord) {
-			loc = new Vector3f((float) (vec.getX() - SPEED), vec.getY(), vec.getZ());
-			spatial.setLocalTranslation(loc);
-			setPhysicsLocation(loc);
+		if (moveUp) {
+			if (vec.y < height) {
+				vec.y += UP_SPEED * tpf;
+				spatial.setLocalTranslation(vec);
+				setPhysicsLocation(vec);
+			}
 		} else {
-			doneMoving = true;
+			Vector3f loc;
+			if (initialLoc.getX() < stopCoord && vec.getX() < stopCoord) {
+				loc = new Vector3f((float) (vec.getX() + SPEED * tpf), vec.getY(), vec.getZ());
+				spatial.setLocalTranslation(loc);
+				setPhysicsLocation(loc);
+			} else if (initialLoc.getX() >= stopCoord && vec.getX() >= stopCoord) {
+				loc = new Vector3f((float) (vec.getX() - SPEED * tpf), vec.getY(), vec.getZ());
+				spatial.setLocalTranslation(loc);
+				setPhysicsLocation(loc);
+			} else {
+				doneMoving = true;
+			}			
 		}
-
 	}
 
 	/**
@@ -170,8 +153,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	 *            PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (doneMoving
-				&& checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME,
+		if (checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME,
 						PenguinFactory.PENGUIN_NAME)) {
 				stateManager.getState(SoundState.class).queueSound(new BearHitSound());
 			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
