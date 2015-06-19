@@ -14,6 +14,7 @@ import com.jme3.scene.Node;
 public class App extends SimpleApplication {
 	private PlayState playState;
 	private Node penguinNode;
+	private Node sceneNode;
 	/**		
 	 * Main method. Instantiates the app and starts its execution.
 	 * 
@@ -30,8 +31,11 @@ public class App extends SimpleApplication {
 		playState = new PlayState();
 		stateManager.attach(playState);
 		
+		sceneNode = new Node("scene");
+		rootNode.attachChild(sceneNode);
+		
 		penguinNode = new Node("penguins");
-		rootNode.attachChild(penguinNode);
+		sceneNode.attachChild(penguinNode);
 		
 		setRootNodeUserData();
 		setPauseOnLostFocus(false);
@@ -68,5 +72,24 @@ public class App extends SimpleApplication {
 	 */
 	public Node getPenguinNode() {
 		return penguinNode;
+	}
+	
+	/**
+	 * Returns the scene node, containing the scene.
+	 * @return penguinNode Node
+	 */
+	public Node getSceneNode() {
+		return sceneNode;
+	}
+	
+	/**
+	 * Returns the scene node, containing the scene.
+	 * @param n new node
+	 */
+	public void setSceneNode(final Node n) {
+		rootNode.detachChild(sceneNode);
+		sceneNode = n;
+		rootNode.attachChild(sceneNode);
+		sceneNode.attachChild(penguinNode);
 	}
 }

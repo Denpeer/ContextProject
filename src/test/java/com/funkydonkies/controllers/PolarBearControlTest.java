@@ -26,7 +26,7 @@ import com.jme3.scene.Spatial;
  */
 public class PolarBearControlTest {
 
-	private static final float SPEED = 1;
+	private static final float SPEED = 20;
 	private static final float TPF = 0.01f;
 	private static final int DESTROY_TIME = 3;
 	private CollisionShape shape;
@@ -96,7 +96,7 @@ public class PolarBearControlTest {
 		final PolarBearControl pc = new PolarBearControl(shape, sManager, stopX, iLoc);
 		pc.setSpatial(spatial);
 		pc.init();
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager).getState(DifficultyState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 		assertEquals(pc.getPhysicsLocation(), iLoc);
 	}
@@ -136,7 +136,7 @@ public class PolarBearControlTest {
 		pc.update(TPF);
 		final Vector3f vec = spatial.getLocalTranslation();
 		final float offset = 0.5f;
-		final Vector3f loc = new Vector3f((float) (vec.getX() + SPEED + offset), vec.getY(), vec.getZ());
+		final Vector3f loc = new Vector3f((float) (vec.getX() + SPEED * TPF), vec.getY(), vec.getZ());
 		assertEquals(pc.getPhysicsLocation(), loc);
 		final PolarBearControl pc2 = new PolarBearControl(shape, sManager, stopX, iLocStop);
 		pc2.setSpatial(spatial2);
@@ -156,7 +156,7 @@ public class PolarBearControlTest {
 		pc.init();
 		pc.update(TPF);
 		pc.collision(event);
-		Mockito.verify(sManager, Mockito.times(three)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 		Mockito.verify(ds).resetDiff();
 	}
 

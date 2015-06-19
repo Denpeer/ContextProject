@@ -2,8 +2,6 @@ package com.funkydonkies.powerups;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
@@ -11,6 +9,7 @@ import org.junit.Test;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.gamestates.CurveState;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;
 
 public class InvertControlsPowerupTest {
@@ -20,6 +19,7 @@ public class InvertControlsPowerupTest {
 	private InvertControlsPowerup powerup;
 	private InvertControlsPowerup powerupSpy;
 	private CurveState curveState;
+	private SoundState ss;
 	
 	@Before
 	public void setUp() {
@@ -31,6 +31,8 @@ public class InvertControlsPowerupTest {
 		when(sManager.getState(CurveState.class)).thenReturn(curveState);
 		powerup.initialize(sManager, app);
 		powerupSpy.initialize(sManager, app);
+		ss = mock(SoundState.class);
+		when(sManager.getState(SoundState.class)).thenReturn(ss);
 	}
 	
 	@Test

@@ -18,7 +18,9 @@ import com.jme3.scene.shape.Sphere;
 public class SpikeyBallFactory implements FactoryInterface {
 	private static final int SAMPLES = 20;
 	private static final float DEFAULT_RADIUS = 10f;
+	public static final float RESTITUTION = 1.35f;
 	public static final String SPIKEYBALL_NAME = "spikeyball";
+	private static final String DEFAULT_MATERIAL = "default material";
 	private SimpleApplication app;
 	private AppStateManager stateManager;
 
@@ -47,8 +49,8 @@ public class SpikeyBallFactory implements FactoryInterface {
 	 */
 	public SpikeyBallControl makeSpikeyBallControl() {
 		final SpikeyBallControl pc = new SpikeyBallControl(
-				new SphereCollisionShape(DEFAULT_RADIUS), stateManager, 10f);
-		pc.setRestitution(1);
+				new SphereCollisionShape(DEFAULT_RADIUS), stateManager, 2f);
+		pc.setRestitution(RESTITUTION);
 		return pc;
 	}
 	
@@ -57,9 +59,9 @@ public class SpikeyBallFactory implements FactoryInterface {
 	 * @return the spikey ball material
 	 */
 	public Material getSpikeyBallMaterial() {
-		final Material mat = new Material(app.getAssetManager(),
-				"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", ColorRGBA.Gray);
+		final Material mat = ((Material) app.getRootNode().getUserData(DEFAULT_MATERIAL)).clone();
+		mat.setColor("Diffuse", ColorRGBA.Gray);
+	    mat.setColor("Specular", ColorRGBA.Gray);
 		return mat;
 	}
 }

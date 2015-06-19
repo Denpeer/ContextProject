@@ -97,7 +97,7 @@ public class PlayState extends AbstractAppState {
 	public void handleBulletAppState() {
 		bulletAppState = makeBulletAppState();
 		stateManage.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(false);
+		bulletAppState.setDebugEnabled(!false);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
 	}
 	
@@ -126,6 +126,8 @@ public class PlayState extends AbstractAppState {
 		mat.setBoolean("UseMaterialColors", true);    
 	    mat.setColor("Diffuse", ColorRGBA.randomColor());
 	    mat.setColor("Specular", ColorRGBA.randomColor());
+	    final float scalar = 0.5f;
+	    mat.setColor("Ambient", ColorRGBA.White.mult(scalar));
 	    final float shininess = 64f;
 	    mat.setFloat("Shininess", shininess);
 	    mat.setColor("GlowColor", ColorRGBA.Black);

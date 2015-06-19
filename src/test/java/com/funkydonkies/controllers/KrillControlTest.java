@@ -94,7 +94,7 @@ public class KrillControlTest {
 		final KrillControl kc = new KrillControl(shape, sManager);
 		kc.setSpatial(spatial);
 		kc.init();
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager).getState(DifficultyState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 	}
 
@@ -120,7 +120,7 @@ public class KrillControlTest {
 		kc.setSpatial(spatial);
 		kc.init();
 		kc.collision(event1);
-		Mockito.verify(sManager, Mockito.times(three)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 		Mockito.verify(ds).activateInvertControls();
 		kc.collision(event2);
 		Mockito.verify(sManager, Mockito.times(four)).getState(SoundState.class);

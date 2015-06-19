@@ -97,7 +97,7 @@ public class FishControlTest {
 		final FishControl fc = new FishControl(shape, sManager);
 		fc.setSpatial(spatial);
 		fc.init();
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager).getState(DifficultyState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 	}
 
@@ -118,14 +118,12 @@ public class FishControlTest {
 	@Test
 	public void testCollision() {
 		final FishControl fc = new FishControl(shape, sManager);
-		final int three = 3;
-		final int four = 4;
 		fc.setSpatial(spatial);
 		fc.init();
 		fc.collision(event1);
-		Mockito.verify(sManager, Mockito.times(three)).getState(SoundState.class);
+		Mockito.verify(sManager).getState(SoundState.class);
 		fc.collision(event2);
-		Mockito.verify(sManager, Mockito.times(four)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 	}
 
 }

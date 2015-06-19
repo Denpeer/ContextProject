@@ -6,8 +6,8 @@ import com.funkydonkies.gamestates.DifficultyState;
 import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.sounds.ObstacleCollisionSound;
-import com.funkydonkies.sounds.ObstacleSpawnSound;
 import com.funkydonkies.sounds.SoundState;
+import com.funkydonkies.sounds.WhaleSpawnSound;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -28,7 +28,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 
 	private DifficultyState diffState;
 
-	private static final float SPEED = 4;;
+	private static final float SPEED = 2;
 	private static final float STOP_HEIGHT = -30;
 	private static final float DESTROY_HEIGHT = -500;
 	private AppStateManager stateManager;
@@ -69,7 +69,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	 * An initialize method for the controller.
 	 */
 	public final void init() {
-		stateManager.getState(SoundState.class).queueSound(new ObstacleSpawnSound());
+		stateManager.getState(SoundState.class).queueSound(new WhaleSpawnSound());
 		spatial.setLocalTranslation(initialLoc);
 		setPhysicsLocation(initialLoc);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);

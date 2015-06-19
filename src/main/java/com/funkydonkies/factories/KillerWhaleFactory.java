@@ -32,7 +32,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String MODEL_PATH = "Models/ORCA.j3o";
 
-	private static final float WARNING_LINE_ALPHA = 0.2f;
+	private static final float WARNING_LINE_ALPHA = 0.4f;
 	private static final float WARNING_LINE_Y = -30;
 	
 	private static final float WHALE_WIDTH = 50;

@@ -30,8 +30,10 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	
 	private AppStateManager stateManager;
 	private Vector3f initialSpawn;
+	private float prevY = 0;
 	private boolean touchingCurve = false;
 	private boolean updateMeshRotation = true;
+	private boolean goingDown = false;
 
 	/**
 	 * Constructor for ball physics controller.
@@ -58,6 +60,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		stateManager.getState(SoundState.class).queueSound(new PenguinSpawnSound());
 		setPhysicsLocation(initialSpawn);
 		setLinearVelocity(INITIAL_SPEED);
+		prevY = this.getPhysicsLocation().getY();
 	}
 
 	/**
@@ -75,6 +78,20 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 
 	@Override
 	public void physicsTick(final PhysicsSpace space, final float tpf) {
+		if ((this.getPhysicsLocation().getY() - prevY) < -1) {
+			goingDown = true;
+		} else {
+			goingDown = false;
+		}
+		prevY = this.getPhysicsLocation().getY();
+		
+		final Vector3f softGrav = new Vector3f(0,-20f,0);
+		final Vector3f hardGrav = new Vector3f(0,-30f,0);
+		if (goingDown) {
+			this.setGravity(hardGrav);
+		} else {
+			this.setGravity(softGrav);
+		}
 	}
 
 	/**
@@ -88,7 +105,6 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		final Vector3f loc = this.getPhysicsLocation();
 		final Vector3f angularvel = this.getAngularVelocity();
 
-		// velocity.z = 0;
 		if (Math.abs(loc.z) > MAX_DEVIANCE_ON_Z) {
 			loc.z = 0;
 			this.setPhysicsLocation(loc);
@@ -136,11 +152,17 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	}
 	
 	/**
-	 * Disables the rotation of the penguin idependent from its collisionshape.
+	 * Disables the rotation of the penguin independent from its collisionshape.
 	 */
 	public void disableMeshRotation() {
 		updateMeshRotation = false;
 	}
 
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		stateManager.getState(PlayState.class).getPhysicsSpace().removeCollisionListener(this);
+	}
 	
 }

@@ -27,7 +27,7 @@ import com.jme3.scene.Spatial;
  *
  */
 public class SpawnState extends AbstractAppState {
-	public static final float DEFAULT_BALL_SPAWN_TIME = 5;
+	public static final float DEFAULT_BALL_SPAWN_TIME = 10;
 	public static final float OBSTACLE_SPAWN_TIME = 8;
 	public static final float SPECIAL_FISH_SPAWN_TIME = 30;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
@@ -67,7 +67,7 @@ public class SpawnState extends AbstractAppState {
 		obstacleList = new ArrayList<FactoryInterface>();
 		stateManager = sManager;
 		spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
-		spawn(facHm.get("FishFactory"), app.getRootNode());
+		spawn(facHm.get("FishFactory"), app.getSceneNode());
 		rand = new Random();
 	}
 
@@ -110,7 +110,7 @@ public class SpawnState extends AbstractAppState {
 					obstacleList.addAll(tier.getObstacleArray());
 				}
 				final int rInt = rand.nextInt(obstacleList.size());
-				spawn(obstacleList.get(rInt), app.getRootNode());
+				spawn(obstacleList.get(rInt), app.getSceneNode());
 				noTiersEnabled = false;
 			}
 		}
@@ -127,13 +127,13 @@ public class SpawnState extends AbstractAppState {
 		final int i = rand.nextInt(2);
 		switch (i) {
 		case 0:
-			if (app.getRootNode().getChild(KrillFactory.KRILL_NAME) == null) {
-			spawn(facHm.get("KrillFactory"), app.getRootNode());
+			if (app.getSceneNode().getChild(KrillFactory.KRILL_NAME) == null) {
+			spawn(facHm.get("KrillFactory"), app.getSceneNode());
 			}
 			break;
 		case 1:
-			if (app.getRootNode().getChild(SquidFactory.SQUID_NAME) == null) {
-			spawn(facHm.get("SquidFactory"), app.getRootNode());
+			if (app.getSceneNode().getChild(SquidFactory.SQUID_NAME) == null) {
+			spawn(facHm.get("SquidFactory"), app.getSceneNode());
 			}
 			break;
 		default:

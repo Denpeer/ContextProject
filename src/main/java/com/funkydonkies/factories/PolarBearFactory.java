@@ -16,14 +16,15 @@ import com.jme3.scene.Spatial;
  */
 public class PolarBearFactory implements FactoryInterface {
 
-	private static final float BEAR_WIDTH = 11;
-	private static final float BEAR_HEIGHT = 18;
+	private static final float BEAR_WIDTH = 9;
+	private static final float BEAR_HEIGHT = 25;
 	private static final float BEAR_DEPTH = 18;
 
 	private static final float START_RIGHT = 500;
 	private static final float START_LEFT = -200;
-	private static final int MAX_HEIGHT = 20;
-	private static final int MAX_STOP = 280;
+	private static final int INITIAL_HEIGHT = -26;
+	private static final int MAX_STOP = 210;
+	private static final int MINIMAL_X = 70;
 
 	public static final String COLOR = "Color";
 	public static final String POLAR_BEAR_NAME = "polar bear";
@@ -71,10 +72,9 @@ public class PolarBearFactory implements FactoryInterface {
 		final Random rand = new Random();
 		final int leftRight = rand.nextInt(2);
 		final float x = getFloatSide(leftRight);
-		final float y = getFloatHeight(rand);
 		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(BEAR_WIDTH, 
 				BEAR_HEIGHT, BEAR_DEPTH));
-		final Vector3f initialLoc = new Vector3f(x, y, 0);
+		final Vector3f initialLoc = new Vector3f(x, INITIAL_HEIGHT, 0);
 
 		final float stopX = getStopCoord(new Random());
 		return new PolarBearControl(colShape, stateManager, stopX, initialLoc);
@@ -98,18 +98,7 @@ public class PolarBearFactory implements FactoryInterface {
 	 * @return the stop coordinate
 	 */
 	public final float getStopCoord(final Random rand) {
-		return rand.nextInt(MAX_STOP);
-	}
-
-	/**
-	 * This method returns the float height of the polar bear.
-	 * 
-	 * @param rand
-	 *            a random object.
-	 * @return the float height of the bear
-	 */
-	public float getFloatHeight(final Random rand) {
-		return rand.nextInt(MAX_HEIGHT);
+		return rand.nextInt(MAX_STOP) + MINIMAL_X;
 	}
 
 	/**

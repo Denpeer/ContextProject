@@ -39,7 +39,7 @@ public class CurveStateTest {
 	private CameraState camState;
 	private SplineCurve splineCurve;
 	private Material material;
-	private Node node;
+	private Node sceneNode;
 	private PhysicsSpace physicsSpace;
 	private RigidBodyControl control;
 	private PlayState playState;
@@ -59,7 +59,7 @@ public class CurveStateTest {
 		splineCurve = new SplineCurve(material, SplineType.CatmullRom, true);
 		spySplineCurve = spy(splineCurve);
 		material = mock(Material.class);
-		node = mock(Node.class);
+		sceneNode = mock(Node.class);
 		physicsSpace = mock(PhysicsSpace.class);
 		control = mock(RigidBodyControl.class);
 		playState = mock(PlayState.class);
@@ -69,14 +69,14 @@ public class CurveStateTest {
 		when(sManager.getState(PlayState.class)).thenReturn(playState);
 		when(camState.getBridge()).thenReturn(bridge);
 		when(bridge.isBgSet()).thenReturn(true);
-		when(app.getRootNode()).thenReturn(node);
+		when(app.getSceneNode()).thenReturn(sceneNode);
 		when(spyCurveState.initializeSplineCurve()).thenReturn(spySplineCurve);
 		when(spyCurveState.makeRigidBodyControl()).thenReturn(control);
 		when(spySplineCurve.getGeometry()).thenReturn(geom);
 		when(bridge.getControlPoints()).thenReturn(getTestPoints());
 		doReturn(material).when(spyCurveState).initializeMaterial();
 		doNothing().when(spySplineCurve).drawCurve(
-				physicsSpace, control, node);
+				physicsSpace, control, sceneNode);
 	}
 
 	@Test
@@ -107,8 +107,8 @@ public class CurveStateTest {
 	public void updateTest() {
 		spyCurveState.initialize(sManager, app);
 		spyCurveState.update(0.01f);
-		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
+		verify(sceneNode).detachChildNamed("curve");
+		verify(spySplineCurve).drawCurve(physicsSpace, control, sceneNode);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
@@ -125,8 +125,8 @@ public class CurveStateTest {
 		spyCurveState.toggleCameraEnabled();
 		assertTrue(spyCurveState.getCameraEnabled());
 		spyCurveState.update(0.01f);
-		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
+		verify(sceneNode).detachChildNamed("curve");
+		verify(spySplineCurve).drawCurve(physicsSpace, control, sceneNode);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
@@ -141,8 +141,8 @@ public class CurveStateTest {
 		spyCurveState.initialize(sManager, app);
 		spyCurveState.setUpdateEnabled(true);
 		spyCurveState.update(0.01f);
-		verify(node).detachChildNamed("curve");
-		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
+		verify(sceneNode).detachChildNamed("curve");
+		verify(spySplineCurve).drawCurve(physicsSpace, control, sceneNode);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);

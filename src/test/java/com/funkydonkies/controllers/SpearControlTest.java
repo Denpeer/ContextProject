@@ -101,7 +101,7 @@ public class SpearControlTest {
 		final SpearControl sc = new SpearControl(shape, sManager, iLoc);
 		sc.setSpatial(spatial);
 		sc.init();
-		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
+		Mockito.verify(sManager).getState(DifficultyState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 		assertEquals(sc.getPhysicsLocation(), iLoc);
 	}
@@ -149,7 +149,7 @@ public class SpearControlTest {
 		sc.init();
 		sc.update(TPF);
 		sc.collision(event);
-		Mockito.verify(sManager, Mockito.times(three)).getState(SoundState.class);
+		Mockito.verify(sManager, Mockito.times(1)).getState(SoundState.class);
 		Mockito.verify(ds).resetDiff();
 	}
 }

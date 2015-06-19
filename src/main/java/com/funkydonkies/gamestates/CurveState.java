@@ -25,7 +25,7 @@ public class CurveState extends AbstractAppState {
 	private static final int CHANGE_THRESHOLD = 5;
 	private static final float MAX_SLOPE_ANGLE = 70f;
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
-	private static final float SPEED_MULTIPLIER = 1.5f;
+	private static final float SPEED_MULTIPLIER = 1.4f;
 	private static final String MATERIAL_PATH = "Materials/ice.j3m";
 
 	// set to 32 as default this is what we currently use to test the program.
@@ -123,13 +123,13 @@ public class CurveState extends AbstractAppState {
 	 * Updates the in-game representation of the curve, along with the collision body.
 	 */
 	private void updateCurve() {
-		app.getRootNode().detachChildNamed("curve");
+		app.getSceneNode().detachChildNamed("curve");
 		if (rigi != null) {
 			oldRigi = rigi;
 		}
 		rigi = new RigidBodyControl(0f);
 		splineCurve.drawCurve(stateManager.getState(PlayState.class).getPhysicsSpace(), rigi,
-				app.getRootNode());
+				app.getSceneNode());
 		splineCurve.getGeometry().removeControl(oldRigi);
 		oldRigi.setEnabled(false);
 	}
@@ -159,19 +159,19 @@ public class CurveState extends AbstractAppState {
 	private float[] removeLargeHeightDifferences(final float[] cp) {
 		for (int i = 0; i < (cp.length - 1); i++) {
 			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
-				if (cp[i] < cp[i + 1]) {
-					cp[i + 1] = cp[i] + (int) maxHeightDifference;
+				if (cp[i] > cp[i + 1]) {
+					cp[i + 1] = cp[i] - maxHeightDifference;
 				} else {
-					cp[i] = cp[i + 1] + (int) maxHeightDifference;
+					cp[i] = cp[i + 1] - maxHeightDifference;
 				}
 			}
 		}
 		for (int i = (cp.length - 2); i > 0; i--) {
 			if (Math.abs(cp[i] - cp[i + 1]) > maxHeightDifference) {
-				if (cp[i] < cp[i + 1]) {
-					cp[i + 1] = cp[i] + (int) maxHeightDifference;
+				if (cp[i] > cp[i + 1]) {
+					cp[i + 1] = cp[i] - maxHeightDifference;
 				} else {
-					cp[i] = cp[i + 1] + (int) maxHeightDifference;
+					cp[i] = cp[i + 1] - maxHeightDifference;
 				}
 			}
 		}
@@ -237,6 +237,7 @@ public class CurveState extends AbstractAppState {
 	private void updateMaxHeightDiff() {
 		maxHeightDifference = (float) (bridge.getxdist() * Math
 				.tan(Math.toRadians(MAX_SLOPE_ANGLE)));
+		maxHeightDifference = maxHeightDifference / bridge.getImageHeight();
 	}
 
 	/**

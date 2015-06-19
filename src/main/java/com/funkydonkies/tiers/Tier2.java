@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
+import com.funkydonkies.sounds.ComboNewLevelSound;
+import com.funkydonkies.sounds.ComboNewLevelVoiceSound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
@@ -13,6 +16,7 @@ import com.jme3.app.state.AppStateManager;
 public class Tier2 extends Tier {
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
+	private AppStateManager sManager;
 
 	/**
 	 * The initialize method.
@@ -25,7 +29,8 @@ public class Tier2 extends Tier {
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
-		spawnState = stateManager.getState(SpawnState.class);
+		sManager = stateManager;
+		spawnState = sManager.getState(SpawnState.class);
 		obstacleArray = new ArrayList<FactoryInterface>();
 		addObstacleArray();
 	}
@@ -40,7 +45,11 @@ public class Tier2 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			setText("Tier 2: Activated!");
+			setText("Tier 2: the Yetis are coming!");
+			sManager.getState(SoundState.class).queueSound(new ComboNewLevelSound());
+			sManager.getState(SoundState.class).queueSound(new ComboNewLevelVoiceSound());
+		} else {
+			clearText();
 		}
 	}
 

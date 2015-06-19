@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
 import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
+import com.funkydonkies.sounds.ComboNewLevelSound;
+import com.funkydonkies.sounds.ComboNewLevelVoiceSound;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
@@ -16,6 +19,7 @@ public class Tier3 extends Tier {
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
 	private static final float NEW_SPAWN_SPEED = 3f;
+	private AppStateManager sManager;
 
 	/**
 	 * The initialize method.
@@ -28,9 +32,10 @@ public class Tier3 extends Tier {
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
+		sManager = stateManager;
 		increaseSpawnSpeed = getIncreasedSpawnSpeed();
-		stateManager.attach(increaseSpawnSpeed);
-		spawnState = stateManager.getState(SpawnState.class);
+		sManager.attach(increaseSpawnSpeed);
+		spawnState = sManager.getState(SpawnState.class);
 		obstacleArray = new ArrayList<FactoryInterface>();
 		addObstacleArray();
 	}
@@ -39,8 +44,15 @@ public class Tier3 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			enableIncreasedSpawnSpeed();
-			setText("Tier 3: Activated!");
+			setIncreasedSpawnSpeedEnabled(true);
+			setText("Tier 3: mind your step!");
+			sManager.getState(SoundState.class).queueSound(new ComboNewLevelSound());
+			sManager.getState(SoundState.class).queueSound(new ComboNewLevelVoiceSound());
+		} else {
+			clearText();
+			if (increaseSpawnSpeed != null && increaseSpawnSpeed.isEnabled()) {
+				setIncreasedSpawnSpeedEnabled(false);
+			}
 		}
 	}
 
@@ -62,9 +74,10 @@ public class Tier3 extends Tier {
 
 	/**
 	 * Enable the increase spawn speed power up.
+	 * @param enabled desired state
 	 */
-	public void enableIncreasedSpawnSpeed() {
-		increaseSpawnSpeed.setEnabled(true);
+	public void setIncreasedSpawnSpeedEnabled(final boolean enabled) {
+		increaseSpawnSpeed.setEnabled(enabled);
 	}
 
 	/**
