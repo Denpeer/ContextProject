@@ -19,6 +19,7 @@ public class SoundPlayer {
 	private static final String TARGET_COLLISION_SOUND_PATH = "/Sounds/263133__pan14__tone-beep.wav";
 	private static final String OBSTACLE_COLLISION_SOUND_PATH = "/Sounds/87535__flasher21__splat.wav";
 	private static final String COMBO_NEW_LEVEL_SOUND_PATH = "/Sounds/126422__cabeeno-rossley__level-up.wav";
+	private static final String COMBO_NEW_LEVEL_VOICE_SOUND_PATH = "/Sounds/96546__corsica-s__the-next-level.wav";
 	private static final String COMBO_VOICE_SOUND_PATH = "/Sounds/93370__corsica-s__combo.wav";
 	private static final String COMBO_LOST_SOUND_PATH = "/Sounds/135831__davidbain__end-game-fail.wav";
 	private static final String POWERUP_INVERSE_SOUND_PATH = "/Sounds/48168__larsyyy__alien.wav";
@@ -52,6 +53,7 @@ public class SoundPlayer {
 	private AudioNode powerupSpeedAudioNode;
 	private AudioNode powerupSpeedEndAudioNode;
 	private AudioNode powerupVoiceAudioNode;
+	private AudioNode comboNewLevelVoiceAudioNode;
 
 	private App app;
 	private AssetManager assetManager;
@@ -95,6 +97,7 @@ public class SoundPlayer {
 		powerupSpeedAudioNode = new AudioNode(assetManager, POWERUP_SPEED_SOUND_PATH, false);
 		powerupSpeedEndAudioNode = new AudioNode(assetManager, POWERUP_SPEED_END_SOUND_PATH, false);
 		powerupVoiceAudioNode = new AudioNode(assetManager, POWERUP_VOICE_SOUND_PATH, false);
+		comboNewLevelVoiceAudioNode = new AudioNode(assetManager, COMBO_NEW_LEVEL_VOICE_SOUND_PATH, false);
 		
 		initSingleSound(penguinSpawnAudioNode);
 		initSingleSound(krillCollisionAudioNode);
@@ -114,6 +117,7 @@ public class SoundPlayer {
 		initSingleSound(powerupSpeedAudioNode);
 		initSingleSound(powerupSpeedEndAudioNode);
 		initSingleSound(powerupVoiceAudioNode);
+		initSingleSound(comboNewLevelVoiceAudioNode);
 	}
 
 	/**
@@ -260,5 +264,12 @@ public class SoundPlayer {
 	 */
 	public void powerupVoiceSound() {
 		powerupVoiceAudioNode.playInstance();
+	}
+	
+	/**
+	 * sound of next combo level.
+	 */
+	public void comboNewLevelVoiceSound() {
+		comboNewLevelVoiceAudioNode.playInstance();
 	}
 }
