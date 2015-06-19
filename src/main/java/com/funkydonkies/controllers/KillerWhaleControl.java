@@ -28,7 +28,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 
 	private DifficultyState diffState;
 
-	private static final float SPEED = 4;;
+	private static final float SPEED = 2;
 	private static final float STOP_HEIGHT = -30;
 	private static final float DESTROY_HEIGHT = -500;
 	private AppStateManager stateManager;

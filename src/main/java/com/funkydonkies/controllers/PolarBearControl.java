@@ -29,7 +29,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	private boolean doneMoving = false;
 
 	private static final float BLINKING_TIME = 0.5f;
-	private static final float SPEED = 1.5f;
+	private static final float SPEED = 1f;
 
 	private float blinkTime = 0;
 	private float killTime = 0;

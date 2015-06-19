@@ -28,7 +28,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 	private Vector3f initialSpawn;
 	private Vector3f initialSpeed = new Vector3f(0, 0, 0);
 	private final DifficultyState diffState;
-
+	
 	/**
 	 * Constructor for ball physics controller.
 	 * 
@@ -56,13 +56,13 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 	@Override
 	public void init() {
 		stateManager.getState(SoundState.class).queueSound(new DangerAboveSound());
-		final int yOffSet = 50, xOffSet = 100;
+		final int yOffSet = 100, xOffSet = 100;
 		initialSpawn = new Vector3f(xOffSet, CustomCurveMesh.getLaunchPadHeight() + yOffSet, 0);
 		setPhysicsLocation(initialSpawn);
 		setLinearVelocity(initialSpeed);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
-
+	
 	/**
 	 * Performed at each physics tick. z-axis.
 	 * 
