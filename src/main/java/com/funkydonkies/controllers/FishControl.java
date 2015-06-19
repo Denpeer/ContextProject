@@ -21,7 +21,6 @@ import com.jme3.math.Vector3f;
  */
 public class FishControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
 	private DifficultyState diffState;
 	private AppStateManager stateManager;
 
@@ -41,7 +40,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 
 	@Override
 	public void init() {
-		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		respawn();
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
