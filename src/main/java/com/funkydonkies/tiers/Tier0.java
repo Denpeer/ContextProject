@@ -48,7 +48,6 @@ public class Tier0 extends Tier {
 		super.update(tpf);
 		timer += tpf;
 		if (timer > textTimer) {
-			System.out.println("ja");
 			setText(sentence);
 			timer = 0;
 		}

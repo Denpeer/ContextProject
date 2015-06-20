@@ -28,7 +28,7 @@ import com.jme3.scene.Spatial;
  */
 public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 10;
-	public static final float OBSTACLE_SPAWN_TIME = 8;
+	public static final float OBSTACLE_SPAWN_TIME = 10;
 	public static final float SPECIAL_FISH_SPAWN_TIME = 60;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String TIER_PACKAGE = "com.funkydonkies.tiers";

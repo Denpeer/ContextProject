@@ -1,6 +1,7 @@
 package com.funkydonkies.camdetect;
 
 import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import org.opencv.core.Core;
@@ -27,6 +28,7 @@ public class Mat2Image implements Bridge {
 	private Mat mat = new Mat();
 	private BufferedImage img;
 	private byte[] dat;
+	private ByteBuffer bbuff = ByteBuffer.allocateDirect(7864322);
 	private Mat bg = new Mat();
 	private Mat res = new Mat();
 	private Boolean bgSet = false;
@@ -325,6 +327,7 @@ public class Mat2Image implements Bridge {
 		getSpace(mat);
 		res.get(0, 0, dat);
 		img.getRaster().setDataElements(0, 0, res.cols(), res.rows(), dat);
+		bbuff.put(dat);
 		return img;
 	}
 
@@ -440,5 +443,9 @@ public class Mat2Image implements Bridge {
 		if (lowerBound < mat.height() - 1) {
 			lowerBound += BOUND_MOVE_AMOUNT;
 		}
+	}
+	
+	public ByteBuffer getByteBuffer() {
+		return bbuff;
 	}
 }
