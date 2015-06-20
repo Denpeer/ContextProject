@@ -24,80 +24,92 @@ import com.jme3.scene.shape.Box;
  * This class represent the factory for the target.
  */
 public class SpearFactory implements FactoryInterface {
-	
+
 	private static final float WARNING_WIDTH = 1000;
 	private static final float SPEAR_WIDTH = 45;
 	private static final float SPEAR_HEIGHT = 1;
 	private static final float SPEAR_DEPTH = 1;
-	
+
 	public static final String SPEAR_NAME = "spear";
 	public static final String WARNING_NAME = "warning line";
 	private static final String COLOR = "Color";
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String MODEL_PATH = "Models/SPEAR.j3o";
 	private static final float WARNING_LINE_ALPHA = 0.2f;
-	
+
 	private static final float SPEAR_SCALE = 0.4f;
 	private static final int SPEAR_X_TRANSLATION = 45;
 
-	
 	private AppStateManager stateManager;
 	private SimpleApplication app;
-	
+
 	/**
 	 * The create method for a spear object.
-	 * @param sManager jme AppStateManager for getting states
-	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
+	 * 
+	 * @param sManager
+	 *            jme AppStateManager for getting states
+	 * @param appl
+	 *            jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a spear object
 	 */
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		app = appl;
 		stateManager = sManager;
-		
+
 		final Random rand = new Random();
 		final float x = 500;
 		final float y = rand.nextInt(100);
-		
-		final Geometry line = makeWarningLine(y); 
+
+		final Geometry line = makeWarningLine(y);
 		final Spatial spear = makeSpear(y, x);
 		final Node obstacleNode = new Node();
 		obstacleNode.attachChild(spear);
 		obstacleNode.attachChild(line);
 		obstacleNode.setLocalTranslation(SPEAR_X_TRANSLATION, 0, 0);
-		
+
 		return obstacleNode;
 	}
-	
+
 	/**
 	 * This method make and returns a spear geometry.
-	 * @param y the initial y of the spear
-	 * @param x the initial x of the spear
+	 * 
+	 * @param y
+	 *            the initial y of the spear
+	 * @param x
+	 *            the initial x of the spear
 	 * @return a spear geometry
 	 */
 	public Spatial makeSpear(final float y, final float x) {
-		
+
 		final Spatial spear = makeSpatial();
 
 		spear.addControl(makeSpearControl(x, y));
-		
+
 		return spear;
 	}
+
 	/**
 	 * This method makes the control for the spear.
-	 * @param x the initial x coordinate of the spear
-	 * @param y the initial y coordinate of the spear
-	 * @return a spear control   
+	 * 
+	 * @param x
+	 *            the initial x coordinate of the spear
+	 * @param y
+	 *            the initial y coordinate of the spear
+	 * @return a spear control
 	 */
 	public SpearControl makeSpearControl(final float x, final float y) {
-		
+
 		final Vector3f loci = new Vector3f(x, y, 0);
-		final CollisionShape colShape = 
-				new BoxCollisionShape(new Vector3f(SPEAR_HEIGHT, SPEAR_WIDTH, SPEAR_DEPTH));
+		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(SPEAR_HEIGHT,
+				SPEAR_WIDTH, SPEAR_DEPTH));
 		return new SpearControl(colShape, stateManager, loci);
 	}
+
 	/**
 	 * This method a warning line geometry.
-	 * @param y the y coordinate of the warning line
+	 * 
+	 * @param y
+	 *            the y coordinate of the warning line
 	 * @return the warning line geometry
 	 */
 	public Geometry makeWarningLine(final float y) {
@@ -105,7 +117,7 @@ public class SpearFactory implements FactoryInterface {
 		final Geometry geom = new Geometry(WARNING_NAME, warningLineMesh);
 		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
-		
+
 		final WarningLineControl warningLineControl = new WarningLineControl(0, y);
 		geom.addControl(warningLineControl);
 		return geom;
@@ -113,6 +125,7 @@ public class SpearFactory implements FactoryInterface {
 
 	/**
 	 * This method gets the material for the warningline.
+	 * 
 	 * @return the line material
 	 */
 	public Material getLineMaterial() {
@@ -124,6 +137,7 @@ public class SpearFactory implements FactoryInterface {
 
 	/**
 	 * This method makes a geometry.
+	 * 
 	 * @return a spear geometry
 	 */
 	public Spatial makeSpatial() {

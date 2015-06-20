@@ -21,49 +21,53 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 /**
- *	Creates a Killer Whale and a Warning line for where it will spawn.
+ * Creates a Killer Whale and a Warning line for where it will spawn.
  */
 public class KillerWhaleFactory implements FactoryInterface {
-	
+
 	public static final String WHALE_NAME = "killerWhale";
 	public static final String WARNING_NAME = "warning line";
-	
+
 	private static final String COLOR = "Color";
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String MODEL_PATH = "Models/ORCA.j3o";
 
 	private static final float WARNING_LINE_ALPHA = 0.4f;
 	private static final float WARNING_LINE_Y = -30;
-	
+
 	private static final float WHALE_WIDTH = 50;
-	private static final float WHALE_HEIGHT = 100; 
+	private static final float WHALE_HEIGHT = 100;
 	private static final float WHALE_DEPTH = 1;
-	
+
 	private AppStateManager stateManager;
 	private SimpleApplication app;
-	
+
 	@Override
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		stateManager = sManager;
 		app = appl;
-		
+
 		final Random rand = new Random();
 		final float x = rand.nextInt(320);
 		final float y = -500;
-		
+
 		final Spatial whale = makeKillerWhale(x, y);
-		final Geometry line = makeWarningLine(x); 
+		final Geometry line = makeWarningLine(x);
 
 		final Node obstacleNode = new Node();
 		obstacleNode.attachChild(whale);
 		obstacleNode.attachChild(line);
-		
+
 		return obstacleNode;
 	}
-	
-	/** Initializes KillerWhale Geometry and its Control(s).
-	 * @param yCoord y point to spawn whale at
-	 * @param xCoord random x point
+
+	/**
+	 * Initializes KillerWhale Geometry and its Control(s).
+	 * 
+	 * @param yCoord
+	 *            y point to spawn whale at
+	 * @param xCoord
+	 *            random x point
 	 * @return new Whale Geometry
 	 */
 	public Spatial makeKillerWhale(final float xCoord, final float yCoord) {
@@ -71,23 +75,30 @@ public class KillerWhaleFactory implements FactoryInterface {
 		whale.addControl(makeWhaleControl(xCoord, yCoord, whale));
 		return whale;
 	}
-	
+
 	/**
 	 * This method makes the whale control.
-	 * @param xCoord the initial xCoord of the whale.
-	 * @param yCoord the initial yCoord of the whale.
-	 * @param spatial Spatial to create a custom collisionshape.
+	 * 
+	 * @param xCoord
+	 *            the initial xCoord of the whale.
+	 * @param yCoord
+	 *            the initial yCoord of the whale.
+	 * @param spatial
+	 *            Spatial to create a custom collisionshape.
 	 * @return a whale control object
 	 */
-	public KillerWhaleControl makeWhaleControl(final float xCoord, final float yCoord, 
+	public KillerWhaleControl makeWhaleControl(final float xCoord, final float yCoord,
 			final Spatial spatial) {
 		final CollisionShape colShape = CollisionShapeFactory.createMeshShape(spatial);
 		final Vector3f loci = new Vector3f(xCoord, yCoord, 0);
 		return new KillerWhaleControl(colShape, stateManager, loci);
 	}
-	
-	/** Initializes Warning Line Geometry and its Control(s).
-	 * @param x random x point
+
+	/**
+	 * Initializes Warning Line Geometry and its Control(s).
+	 * 
+	 * @param x
+	 *            random x point
 	 * @return new Warning Line Geometry
 	 */
 	public Geometry makeWarningLine(final float x) {
@@ -95,14 +106,15 @@ public class KillerWhaleFactory implements FactoryInterface {
 		final Geometry geom = new Geometry(WARNING_NAME, warningLineMesh);
 		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
-		
+
 		final WarningLineControl warningLineControl = new WarningLineControl(x, WARNING_LINE_Y);
 		geom.addControl(warningLineControl);
 		return geom;
 	}
-	
+
 	/**
 	 * This method makes a geometry.
+	 * 
 	 * @return a whale geometry
 	 */
 	public Spatial makeSpatial() {
@@ -111,7 +123,9 @@ public class KillerWhaleFactory implements FactoryInterface {
 		return whale;
 	}
 
-	/** Loads Warning Line Material.
+	/**
+	 * Loads Warning Line Material.
+	 * 
 	 * @return the Warning Line's material
 	 */
 	public Material getLineMaterial() {

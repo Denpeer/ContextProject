@@ -23,11 +23,11 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		PhysicsCollisionListener {
 	protected static final float MAX_DEVIANCE_ON_Z = 0.1f;
 	protected static final float MAX_ROTATIONAL_DEVIANCE = 0.1f;
-	
+
 	private static final float PENGUIN_SPEED = 15f;
 	private static final float Y_DESTROY_THRESHOLD = -10;
 	private static final Vector3f INITIAL_SPEED = new Vector3f(50, 0, 0);
-	
+
 	private AppStateManager stateManager;
 	private Vector3f initialSpawn;
 	private float prevY = 0;
@@ -42,7 +42,8 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	 *            Collision shape used by the physics
 	 * @param mass
 	 *            desired mass of the sphere
-	 * @param sManager the AppStateManager of the game
+	 * @param sManager
+	 *            the AppStateManager of the game
 	 */
 	public PenguinControl(final SphereCollisionShape sphereCollisionShape, final float mass,
 			final AppStateManager sManager) {
@@ -84,9 +85,9 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 			goingDown = false;
 		}
 		prevY = this.getPhysicsLocation().getY();
-		
-		final Vector3f softGrav = new Vector3f(0,-20f,0);
-		final Vector3f hardGrav = new Vector3f(0,-30f,0);
+
+		final Vector3f softGrav = new Vector3f(0, -20f, 0);
+		final Vector3f hardGrav = new Vector3f(0, -30f, 0);
 		if (goingDown) {
 			this.setGravity(hardGrav);
 		} else {
@@ -97,8 +98,11 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 	/**
 	 * Performed before each physics tick. Sets the z location to 0 to restrict the object from
 	 * moving on the z-axis.
-	 * @param space PhysicsSpace of the scene.
-	 * @param tpf float time per frame.
+	 * 
+	 * @param space
+	 *            PhysicsSpace of the scene.
+	 * @param tpf
+	 *            float time per frame.
 	 */
 	@Override
 	public void prePhysicsTick(final PhysicsSpace space, final float tpf) {
@@ -120,7 +124,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 			velocity.x = FastMath.interpolateLinear(tpf * 2 * 2, velocity.x, PENGUIN_SPEED);
 			setLinearVelocity(velocity);
 		}
-		
+
 	}
 
 	@Override
@@ -133,9 +137,9 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		if (getPhysicsLocation().y < Y_DESTROY_THRESHOLD) {
 			destroy();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Listens for collisions. If the ball collides (touches) with the curve and its speed is too
 	 * low, increase it so that the ball can move uphill
@@ -150,7 +154,7 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 			touchingCurve = false;
 		}
 	}
-	
+
 	/**
 	 * Disables the rotation of the penguin independent from its collisionshape.
 	 */
@@ -158,11 +162,10 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		updateMeshRotation = false;
 	}
 
-	
 	@Override
 	public void destroy() {
 		super.destroy();
 		stateManager.getState(PlayState.class).getPhysicsSpace().removeCollisionListener(this);
 	}
-	
+
 }

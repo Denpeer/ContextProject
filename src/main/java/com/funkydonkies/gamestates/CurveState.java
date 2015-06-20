@@ -11,6 +11,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 
@@ -27,6 +28,9 @@ public class CurveState extends AbstractAppState {
 	private static final float DEFAULT_MAX_HEIGHT_DIFFERENCE = 100;
 	private static final float SPEED_MULTIPLIER = 1.4f;
 	private static final String MATERIAL_PATH = "Materials/ice.j3m";
+	public static final ColorRGBA DEFAULT_COLOR = new ColorRGBA(0.6f, 0.8f, 1.0f, 0.7f);
+	public static final ColorRGBA INVERTED_COLOR = new ColorRGBA(0.72156864f, 0.42745098f,
+			0.72156864f, 0.7f);
 
 	// set to 32 as default this is what we currently use to test the program.
 	private int controlPointsCount = DEFAULT_CONTROL_POINTS_COUNT;
@@ -63,7 +67,7 @@ public class CurveState extends AbstractAppState {
 		curveMaterial = initializeMaterial();
 		oldRigi = new RigidBodyControl(0f);
 		splineCurve = initializeSplineCurve();
-		
+
 	}
 
 	/**
@@ -383,12 +387,14 @@ public class CurveState extends AbstractAppState {
 	public void toggleCameraEnabled() {
 		cameraEnabled = !cameraEnabled;
 	}
-	
+
 	/**
 	 * Sets the cameraEnabled bit.
-	 * @param b boolean 
+	 * 
+	 * @param b
+	 *            boolean
 	 */
-	public void setCameraEnabled(boolean b) {
+	public void setCameraEnabled(final boolean b) {
 		cameraEnabled = b;
 	}
 

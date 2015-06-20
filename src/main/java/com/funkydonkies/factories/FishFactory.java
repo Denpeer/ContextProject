@@ -22,11 +22,14 @@ public class FishFactory implements FactoryInterface {
 	private AppStateManager stateManager;
 	private SimpleApplication app;
 	private Spatial fish;
-	
+
 	/**
 	 * The create method for a fish object.
-	 * @param sManager jme AppStateManager for getting states
-	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
+	 * 
+	 * @param sManager
+	 *            jme AppStateManager for getting states
+	 * @param appl
+	 *            jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a fish object
 	 */
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
@@ -34,9 +37,10 @@ public class FishFactory implements FactoryInterface {
 		app = appl;
 		return makeFish();
 	}
-	
+
 	/**
 	 * Makes a new fish geometry and sets its material and control(s).
+	 * 
 	 * @return new fish geometry instance
 	 */
 	public Spatial makeFish() {
@@ -46,19 +50,20 @@ public class FishFactory implements FactoryInterface {
 		fish.addControl(control);
 		return fish;
 	}
-	
+
 	/**
 	 * This method makes the fish control.
+	 * 
 	 * @return a fish control object
 	 */
 	public FishControl makeFishControl() {
-		final CollisionShape colShape = 
-				new SphereCollisionShape(RADIUS);	
+		final CollisionShape colShape = new SphereCollisionShape(RADIUS);
 		return new FishControl(colShape, stateManager);
 	}
-	
+
 	/**
 	 * This method makes a geometry.
+	 * 
 	 * @return a fish geometry
 	 */
 	public Spatial makeSpatial() {
@@ -66,9 +71,10 @@ public class FishFactory implements FactoryInterface {
 		f.setName(FISH_NAME);
 		return f;
 	}
-	
+
 	/**
 	 * This method makes all the required materials.
+	 * 
 	 * @return a Material object
 	 */
 	public Material getFishMaterial() {

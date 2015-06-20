@@ -13,15 +13,12 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.math.Vector3f;
 
 /**
- * Control class for the fish. Takes care of collisions between the fish and the
- * penguins.
+ * Control class for the fish. Takes care of collisions between the fish and the penguins.
  */
 public class FishControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
 
-	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(50f, 30f, 1f);
 	private DifficultyState diffState;
 	private AppStateManager stateManager;
 
@@ -41,7 +38,7 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 
 	@Override
 	public void init() {
-		spatial.setLocalTranslation(INITIAL_SPAWN_LOCATION);
+		respawn();
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
 
@@ -58,12 +55,11 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 	}
 
 	/**
-	 * Handles a collision between penguin and fish. Calls methods to increase
-	 * the combo and respawn the fish.
+	 * Handles a collision between penguin and fish. Calls methods to increase the combo and respawn
+	 * the fish.
 	 * 
 	 * @param event
-	 *            PhysicsCollisionEvent containing information about the
-	 *            collision
+	 *            PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, FishFactory.FISH_NAME, PenguinFactory.PENGUIN_NAME)) {

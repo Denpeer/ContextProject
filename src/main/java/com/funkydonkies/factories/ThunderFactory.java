@@ -35,7 +35,7 @@ public class ThunderFactory implements FactoryInterface {
 	private static final float WARNING_LINE_HEIGHT = 200;
 	private static final float WARNING_LINE_DEPTH = 1;
 	private static final int MAX_X_COORD = 320;
-	
+
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	public static final String THUNDER_NAME = "thunder";
 	public static final String WARNING_LINE_NAME = "warning line";
@@ -106,9 +106,10 @@ public class ThunderFactory implements FactoryInterface {
 		geom.setMaterial(getWarningLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
 
-		final ThunderWarningLineControl warningLineControl = new ThunderWarningLineControl(stateManager, xCoord, 0);
+		final ThunderWarningLineControl warningLineControl = new ThunderWarningLineControl(
+				stateManager, xCoord, 0);
 		geom.addControl(warningLineControl);
-		
+
 		return geom;
 	}
 
@@ -121,8 +122,8 @@ public class ThunderFactory implements FactoryInterface {
 		Material thunderMaterial;
 		thunderMaterial = ((Material) app.getRootNode().getUserData(DEFAULT_MATERIAL)).clone();
 		thunderMaterial.setColor("Diffuse", ColorRGBA.White);
-	    thunderMaterial.setColor("Specular", ColorRGBA.White);
-	    thunderMaterial.setColor("GlowColor", ColorRGBA.White);
+		thunderMaterial.setColor("Specular", ColorRGBA.White);
+		thunderMaterial.setColor("GlowColor", ColorRGBA.White);
 		return thunderMaterial;
 	}
 
@@ -139,10 +140,12 @@ public class ThunderFactory implements FactoryInterface {
 		warningLineMaterial.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		return warningLineMaterial;
 	}
-	
+
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the thunder
+	 * 
+	 * @param mesh
+	 *            the mesh of the thunder
 	 * @return a thunder geometry
 	 */
 	public Geometry makeGeometry(final Mesh mesh) {

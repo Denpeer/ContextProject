@@ -25,7 +25,7 @@ public class Tier extends DisabledState {
 	private App app;
 	private final float fadeTime = 3;
 	private float timer = 0;
-	
+
 	/**
 	 * @param stateManager
 	 *            AppStateManager
@@ -95,7 +95,7 @@ public class Tier extends DisabledState {
 		tierText.setText(text);
 		guiNode.attachChild(tierText);
 	}
-	
+
 	/**
 	 * The clears the text.
 	 * 

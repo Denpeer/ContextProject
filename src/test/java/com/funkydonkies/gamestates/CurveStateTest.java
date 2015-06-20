@@ -30,6 +30,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 
 public class CurveStateTest {
+	private static final float TPF = 0.01f;
 	private CurveState curveState;
 	@Mock private AppStateManager sManager;
 	@Mock private App app;
@@ -66,7 +67,7 @@ public class CurveStateTest {
 		when(sManager.getState(PlayState.class)).thenReturn(playState);
 		when(camState.getBridge()).thenReturn(bridge);
 		when(bridge.isBgSet()).thenReturn(true);
-		when(app.getRootNode()).thenReturn(node);
+		when(app.getSceneNode()).thenReturn(node);
 		when(spyCurveState.initializeSplineCurve()).thenReturn(spySplineCurve);
 		when(spyCurveState.makeRigidBodyControl()).thenReturn(control);
 		when(spySplineCurve.getGeometry()).thenReturn(geom);
@@ -74,6 +75,7 @@ public class CurveStateTest {
 		doReturn(material).when(spyCurveState).initializeMaterial();
 		doNothing().when(spySplineCurve).drawCurve(
 				physicsSpace, control, node);
+		
 	}
 
 	@Test
@@ -103,14 +105,14 @@ public class CurveStateTest {
 	@Test
 	public void updateTest() {
 		spyCurveState.initialize(sManager, app);
-		spyCurveState.update(0.01f);
+		spyCurveState.update(TPF);
 		verify(node).detachChildNamed("curve");
 		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
 		verify(spyCurveState, never()).makeRigidBodyControl();
-		spyCurveState.update(0.01f);
+		spyCurveState.update(TPF);
 		
 	}
 	
@@ -121,7 +123,7 @@ public class CurveStateTest {
 		assertFalse(spyCurveState.getCameraEnabled());
 		spyCurveState.toggleCameraEnabled();
 		assertTrue(spyCurveState.getCameraEnabled());
-		spyCurveState.update(0.01f);
+		spyCurveState.update(TPF);
 		verify(node).detachChildNamed("curve");
 		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
@@ -137,15 +139,14 @@ public class CurveStateTest {
 	public void updateUpdateEnabledTest() {
 		spyCurveState.initialize(sManager, app);
 		spyCurveState.setUpdateEnabled(true);
-		spyCurveState.update(0.01f);
+		spyCurveState.update(TPF);
 		verify(node).detachChildNamed("curve");
 		verify(spySplineCurve).drawCurve(physicsSpace, control, node);
 		verify(geom).removeControl(any(RigidBodyControl.class));
 
 		verify(geom, never()).removeControl(control);
 		verify(spyCurveState, never()).makeRigidBodyControl();
-		spyCurveState.update(0.01f);
-		spyCurveState.update(0.1f);
+		spyCurveState.update(TPF);
 
 		Vector3f[] points = splineCurve.getCurvePoints();
 		/* TODO check scaleValues and the curvepoints, but they're NaN?? */

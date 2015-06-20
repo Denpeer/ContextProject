@@ -26,7 +26,7 @@ import com.jme3.app.state.AppStateManager;
  * 
  */
 public class DifficultyState extends AbstractAppState implements Observable {
-	private final int tierBorder = 3;
+	private final int tierBorder = 2;
 	private App app;
 
 	private int currCombo = 0;
@@ -38,13 +38,16 @@ public class DifficultyState extends AbstractAppState implements Observable {
 
 	private SoundState soundState;
 	private HashMap<String, Tier> tierMap;
+	private int enabledTier;
 
 	private Vector<Observer> obs = new Vector<Observer>();
 	private AppStateManager stateManager;
 
 	/**
-	 * @param sManager AppStateManager
-	 * @param appl Application
+	 * @param sManager
+	 *            AppStateManager
+	 * @param appl
+	 *            Application
 	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager,
 	 *      com.jme3.app.Application)
 	 */
@@ -85,13 +88,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 * This method check if another tier needs to be enabled.
 	 */
 	public void checkTierenabling() {
-		final int enabledTier = currCombo / tierBorder;
+		enabledTier = currCombo / tierBorder;
 		final Iterator<String> it = tierMap.keySet().iterator();
 		while (it.hasNext()) {
 			final String name = it.next();
-			if (enabledTier == 0) {
-				enableTier(null);
-			}
 			if (Character.getNumericValue(name.charAt(name.length() - 1)) == enabledTier) {
 				enableTier(name);
 			}
@@ -107,7 +107,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void enableTier(final String name) {
 		final Iterator<Tier> it = tierMap.values().iterator();
 		while (it.hasNext()) {
-			final Tier tier = it.next();	
+			final Tier tier = it.next();
 			if (tier.equals(tierMap.get(name)) && !tier.isEnabled()) {
 				tier.setEnabled(true);
 			} else if (!tier.equals(tierMap.get(name))) {
@@ -211,7 +211,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * @param tpf time since last frame
+	 * @param tpf
+	 *            time since last frame
 	 * @see com.jme3.app.state.AbstractAppState#update(float)
 	 */
 	@Override
@@ -289,5 +290,14 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	 */
 	public void activateSnowBallPowerup() {
 		snowBallPowerup.setEnabled(true);
+	}
+
+	/**
+	 * This method get the tier that should be enabled.
+	 * 
+	 * @return the enabled tier.
+	 */
+	public int getEnabledTier() {
+		return enabledTier;
 	}
 }

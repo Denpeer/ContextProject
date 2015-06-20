@@ -25,25 +25,24 @@ public class GameInputState extends AbstractAppState {
 	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
 	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
 	private static final float TIME_PER_BALL_SPAWN = 1f;
-	
-	private static final String ENABLE_TIER_ONE = "tier1";
-	private static final String ENABLE_TIER_TWO = "tier2";
-	private static final String ENABLE_TIER_THREE = "tier3";
-	
+
+	private static final int INC_TIMES = 3;
+
+	private static final String INCREMENT_COMBO = "tier1";
+
 	private float time = TIME_PER_BALL_SPAWN;
 	private float timeCount = 0;
-	
+
 	private static final int FLY_BY_CAM_MOVE_SPEED = 50;
-	
+
 	private App app;
 	private InputManager inputManager;
 	private AppStateManager stateManager;
 	private CameraState cameraState;
 	private CurveState curveState;
-	
+
 	@Override
-	public final void initialize(final AppStateManager sManager,
-			final Application appl) {
+	public final void initialize(final AppStateManager sManager, final Application appl) {
 		super.initialize(sManager, appl);
 
 		if (appl instanceof App) {
@@ -56,16 +55,15 @@ public class GameInputState extends AbstractAppState {
 		initKeys();
 		cameraState = stateManager.getState(CameraState.class);
 		app.getFlyByCamera().setMoveSpeed(FLY_BY_CAM_MOVE_SPEED);
-		
+
 		// init stuff that is independent of whether state is PAUSED or RUNNING
 		// this.app.doSomething(); // call custom methods...
 	}
 
-
 	// Note that update is only called while the state is both attached and enabled
 	@Override
 	public final void update(final float tpf) {
-		
+
 		if (curveState == null) {
 			curveState = stateManager.getState(CurveState.class);
 		}
@@ -74,31 +72,25 @@ public class GameInputState extends AbstractAppState {
 
 	/** Custom Keybinding: Map named actions to inputs. */
 	public void initKeys() {
-//		inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
+		// inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
 		inputManager.addMapping(MAPPING_TOGGLE_CAMERA, new KeyTrigger(KeyInput.KEY_C));
 		inputManager.addMapping(MAPPING_TOGGLE_CURVE_UPDATE, new KeyTrigger(KeyInput.KEY_U));
-		
-		//Control for spawning balls
+
+		// Control for spawning balls
 		inputManager.addMapping(MAPPING_SPAWN_BALL, new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping(MAPPING_ENABLE_CAMERA_DETECTION, new KeyTrigger(KeyInput.KEY_T));
 		inputManager.addMapping(INCREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_R));
 		inputManager.addMapping(DECREMENT_HEIGHT_MAPPING, new KeyTrigger(KeyInput.KEY_F));
-		inputManager.addMapping(ENABLE_TIER_ONE, new KeyTrigger(KeyInput.KEY_1));
-		inputManager.addMapping(ENABLE_TIER_TWO, new KeyTrigger(KeyInput.KEY_2));
-		inputManager.addMapping(ENABLE_TIER_THREE, new KeyTrigger(KeyInput.KEY_3));
+		inputManager.addMapping(INCREMENT_COMBO, new KeyTrigger(KeyInput.KEY_1));
 
 		inputManager.addListener(analogListener, INCREMENT_HEIGHT_MAPPING);
 		inputManager.addListener(analogListener, DECREMENT_HEIGHT_MAPPING);
 		// Add the names to the action listener
-		inputManager.addListener(actionListener, MAPPING_TOGGLE_CAMERA, 
+		inputManager.addListener(actionListener, MAPPING_TOGGLE_CAMERA,
 				MAPPING_TOGGLE_CURVE_UPDATE, MAPPING_ENABLE_CAMERA_DETECTION);
-//		inputManager.addListener(analogListener, MAPPING_NAME_LEFT, MAPPING_NAME_RIGHT, 
-//				MAPPING_NAME_ROTATE);
 		inputManager.addListener(analogListener, MAPPING_SPAWN_BALL);
-		
-		inputManager.addListener(actionListener, ENABLE_TIER_ONE);
-		inputManager.addListener(actionListener, ENABLE_TIER_TWO);
-		inputManager.addListener(actionListener, ENABLE_TIER_THREE);
+
+		inputManager.addListener(actionListener, INCREMENT_COMBO);
 
 	}
 
@@ -118,12 +110,12 @@ public class GameInputState extends AbstractAppState {
 			if (name.equals(MAPPING_ENABLE_CAMERA_DETECTION) && !keyPressed) {
 				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
-			if (name.equals(ENABLE_TIER_ONE) && !keyPressed) {
-				stateManager.getState(DifficultyState.class).incDiff(3);
+			if (name.equals(INCREMENT_COMBO) && !keyPressed) {
+				stateManager.getState(DifficultyState.class).incDiff(INC_TIMES);
 			}
 		}
 	};
-	
+
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
 			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
@@ -139,8 +131,10 @@ public class GameInputState extends AbstractAppState {
 			}
 		}
 	};
-	
-	/** Returns ActionListener that implements actions mapped to keypresses.
+
+	/**
+	 * Returns ActionListener that implements actions mapped to keypresses.
+	 * 
 	 * @return ActionListener that implements actions mapped to keypresses
 	 */
 	public ActionListener getActionListener() {

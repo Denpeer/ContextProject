@@ -2,21 +2,18 @@ package com.funkydonkies.tiers;
 
 import java.util.ArrayList;
 
-import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
-import com.funkydonkies.sounds.ComboNewLevelSound;
-import com.funkydonkies.sounds.ComboNewLevelVoiceSound;
-import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
 /**
  * This class represents the first difficulty tier.
  */
-public class Tier5 extends Tier {
-	private SpawnState spawnState;
+public class Tier0 extends Tier {
 	private ArrayList<FactoryInterface> obstacleArray;
-	private AppStateManager sManager;
+	private final float textTimer = 15;
+	private float timer = 0;
+	private String sentence = "The penguins like Fish!";
 
 	/**
 	 * The initialize method.
@@ -29,10 +26,7 @@ public class Tier5 extends Tier {
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
-		sManager = stateManager;
-		spawnState = sManager.getState(SpawnState.class);
 		obstacleArray = new ArrayList<FactoryInterface>();
-		addObstacleArray();
 	}
 
 	/**
@@ -44,20 +38,20 @@ public class Tier5 extends Tier {
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
-		if (enabled) {
-			setText("Tier 5: Danger from Above!");
-			sManager.getState(SoundState.class).queueSound(new ComboNewLevelSound());
-			sManager.getState(SoundState.class).queueSound(new ComboNewLevelVoiceSound());
-		} else {
+		if (!enabled) {
 			clearText();
 		}
 	}
 
-	/**
-	 * Add obstacles to the spawn array.
-	 */
-	public void addObstacleArray() {
-		obstacleArray.add(spawnState.getObstacles().get("SpikeyBallFactory"));
+	@Override
+	public void update(final float tpf) {
+		super.update(tpf);
+		timer += tpf;
+		if (timer > textTimer) {
+			setText(sentence);
+			timer = 0;
+		}
+
 	}
 
 	/**
