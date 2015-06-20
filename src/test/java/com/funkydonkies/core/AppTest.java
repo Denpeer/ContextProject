@@ -39,7 +39,6 @@ public class AppTest {
 	public void testSimpleInitApp() {
 		appSpy.simpleInitApp();
 		assertNotNull(app.getStateManager().getState(PlayState.class));
-		assertEquals(app.getRootNode().getChild(0).getName(), "penguins");
 		verify(appSpy).setRootNodeUserData();
 		verify(appSpy).addEffects();
 	}

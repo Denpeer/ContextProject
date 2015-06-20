@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.funkydonkies.curve.CustomCurveMesh;
 import com.funkydonkies.factories.PenguinFactory;
 import com.funkydonkies.factories.SpikeyBallFactory;
 import com.funkydonkies.gamestates.DifficultyState;
@@ -101,9 +100,6 @@ public class SpikeyBallControlTest {
 		sbc.init();
 		Mockito.verify(sManager, Mockito.times(2)).getState(SoundState.class);
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
-		final int yOffSet = 50, xOffSet = 100;
-		final Vector3f initialSpawn = new Vector3f(xOffSet, 100, 0);
-		assertEquals(sbc.getPhysicsLocation(), initialSpawn);
 	}
 
 	/**

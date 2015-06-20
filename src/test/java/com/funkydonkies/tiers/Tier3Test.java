@@ -7,12 +7,14 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.funkydonkies.core.App;
 import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapText;
 
@@ -23,12 +25,14 @@ public class Tier3Test {
 	private Tier3 tier;
 	private IncreaseSpawnSpeedPowerup iSSP;
 	private IncreaseSpawnSpeedPowerup powerUp;
-	
+	private AppStateManager mockStateManager;
 	/**
 	 * Do this before the tests.
 	 */
 	@Before
 	public void setUp() {
+		mockStateManager = mock(AppStateManager.class);
+		when(mockStateManager.getState(SoundState.class)).thenReturn(mock(SoundState.class));
 		powerUp = new IncreaseSpawnSpeedPowerup(1);
 		tier = spy(Tier3.class);
 		iSSP = spy(powerUp);
@@ -44,7 +48,7 @@ public class Tier3Test {
 	 */
 	@Test
 	public void testInit() {
-		tier.initialize(mock(AppStateManager.class), mock(App.class));
+		tier.initialize(mockStateManager, mock(App.class));
 		verify(tier).addObstacleArray();
 	}
 	
@@ -53,7 +57,7 @@ public class Tier3Test {
 	 */
 	@Test
 	public void testObstacleArray() {
-		tier.initialize(mock(AppStateManager.class), mock(App.class));
+		tier.initialize(mockStateManager, mock(App.class));
 		assertTrue(tier.getObstacleArray().size() == 0);
 	}
 
@@ -63,7 +67,7 @@ public class Tier3Test {
 	 */
 	@Test
 	public void testEnabled() {
-		tier.initialize(mock(AppStateManager.class), mock(App.class));
+		tier.initialize(mockStateManager, mock(App.class));
 		tier.setEnabled(true);
 		assertTrue(tier.isEnabled());
 	}
