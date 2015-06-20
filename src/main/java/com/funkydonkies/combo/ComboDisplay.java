@@ -15,8 +15,8 @@ import com.jme3.scene.Node;
  */
 public class ComboDisplay implements Observer {
 	public static final Vector3f COUNTER_LOCATION = new Vector3f(250, 100, 0);
-	public static final int TEXT_SIZE = 30;
-	private static final float X_TRANSLATION = 500;
+	public static final int TEXT_SIZE = 60;
+	private static final float X_TRANSLATION = 800;
 	private BitmapText comboText;
 	private BitmapText highestComboText;
 	private Node guiNode;

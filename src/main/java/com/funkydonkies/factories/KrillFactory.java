@@ -20,8 +20,8 @@ public class KrillFactory implements FactoryInterface {
 
 	public static final String KRILL_NAME = "krill";
 
-	private static final float KRILL_WIDTH = 3;
-	private static final float KRILL_HEIGHT = 3;
+	private static final float KRILL_WIDTH = 10;
+	private static final float KRILL_HEIGHT = 10;
 	private static final float KRILL_DEPTH = 5;
 	
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md"; 
