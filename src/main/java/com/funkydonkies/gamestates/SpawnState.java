@@ -29,7 +29,7 @@ import com.jme3.scene.Spatial;
 public class SpawnState extends AbstractAppState {
 	public static final float DEFAULT_BALL_SPAWN_TIME = 10;
 	public static final float OBSTACLE_SPAWN_TIME = 8;
-	public static final float SPECIAL_FISH_SPAWN_TIME = 30;
+	public static final float SPECIAL_FISH_SPAWN_TIME = 60;
 	private static final String FACTORY_PACKAGE = "com.funkydonkies.factories";
 	private static final String TIER_PACKAGE = "com.funkydonkies.tiers";
 	private HashMap<String, FactoryInterface> facHm;
@@ -102,19 +102,19 @@ public class SpawnState extends AbstractAppState {
 	 */
 	public void chooseObstacleToSpawn() {
 		final Iterator<Tier> it = tierMap.values().iterator();
-		boolean noTiersEnabled = true;
 		while (it.hasNext()) {
 			final Tier tier = it.next();
 			if (tier.isEnabled()) {
-				if (!obstacleList.contains(tier.getObstacleArray().get(0))) {
+				if (!tier.getObstacleArray().isEmpty() && !obstacleList.contains(tier.getObstacleArray().get(0))) {
 					obstacleList.addAll(tier.getObstacleArray());
 				}
-				final int rInt = rand.nextInt(obstacleList.size());
-				spawn(obstacleList.get(rInt), app.getSceneNode());
-				noTiersEnabled = false;
+				if (!obstacleList.isEmpty()) {
+					final int rInt = rand.nextInt(obstacleList.size());
+					spawn(obstacleList.get(rInt), app.getSceneNode());
+				}
 			}
 		}
-		if (noTiersEnabled) {
+		if (stateManager.getState(DifficultyState.class).getEnabledTier() == 0) {
 			obstacleList.clear();
 			spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		}

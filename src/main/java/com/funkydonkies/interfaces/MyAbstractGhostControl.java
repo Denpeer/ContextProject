@@ -16,7 +16,7 @@ import com.jme3.scene.control.Control;
 public abstract class MyAbstractGhostControl extends GhostControl {
 	private static final float PADDING = 20f;
 	private static final int RANDOM_X = 280;
-	private static final int RANDOM_Y = 80;
+	private static final int RANDOM_Y = 60;
 
 	/** Constructor for the AbstractGhostControl, takes a desired collision shape.
 	 * @param colShape desired collision shape
@@ -115,7 +115,7 @@ public abstract class MyAbstractGhostControl extends GhostControl {
 		final Random rand = new Random();
 		final float x = (float) rand.nextInt(RANDOM_X) + PADDING;
 		
-		final float y = (float)rand.nextInt(RANDOM_Y) + PADDING;
+		final float y = (float) rand.nextInt(RANDOM_Y) + PADDING;
 		final Vector3f respawnlocation = new Vector3f(x, y, 1.5f);
 		spatial.setLocalTranslation(respawnlocation);
 		setPhysicsLocation(respawnlocation);

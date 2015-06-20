@@ -14,6 +14,7 @@ import com.jme3.app.state.AppStateManager;
 public class InvertControlsPowerup extends DisabledState {
 	
 	private static final float INVERT_TIME = 10;
+	private static final String COLOR = "Diffuse";
 	private CurveState curveState;
 	private float timer = 0;
 	private AppStateManager sManager;
@@ -30,9 +31,11 @@ public class InvertControlsPowerup extends DisabledState {
 		super.setEnabled(enabled);
 		curveState.setInvertControlPoints(enabled);
 		if (enabled) {
+			curveState.getSplineCurve().getGeometry().getMaterial().setColor(COLOR, CurveState.INVERTED_COLOR);
 			sManager.getState(SoundState.class).queueSound(new PowerupInverseSound());
 		} else {
 			timer = 0;
+			curveState.getSplineCurve().getGeometry().getMaterial().setColor(COLOR, CurveState.DEFAULT_COLOR);
 		}
 	}
 	
