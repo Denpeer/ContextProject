@@ -21,7 +21,7 @@ import com.jme3.math.Vector3f;
  * 
  */
 public class ThunderControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
-	
+
 	private static final Vector3f INITIAL_SPAWN_LOCATION = new Vector3f(-200, 0, 0);
 	private static final float TIME_TO_LIVE = 3;
 
@@ -31,6 +31,7 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 
 	private CurveState curveState;
 	private AppStateManager stateManager;
+
 	/**
 	 * Constructor method for ThunderControl.
 	 * 
@@ -91,7 +92,7 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 		spatial.setLocalTranslation(updateX, spatial.getLocalTranslation().y,
 				spatial.getLocalTranslation().z);
 	}
-	
+
 	/**
 	 * Handles a collision between penguin and thunder. Kill penguin and reset difficulty.
 	 * 

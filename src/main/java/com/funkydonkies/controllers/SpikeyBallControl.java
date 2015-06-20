@@ -28,7 +28,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 	private Vector3f initialSpawn;
 	private Vector3f initialSpeed = new Vector3f(0, 0, 0);
 	private final DifficultyState diffState;
-	
+
 	/**
 	 * Constructor for ball physics controller.
 	 * 
@@ -45,7 +45,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 		diffState = sManager.getState(DifficultyState.class);
 		stateManager = sManager;
 	}
-	
+
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
@@ -62,7 +62,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 		setLinearVelocity(initialSpeed);
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
-	
+
 	/**
 	 * Performed at each physics tick. z-axis.
 	 * 
@@ -108,8 +108,7 @@ public class SpikeyBallControl extends MyAbstractRigidBodyControl implements Phy
 	 *            a PhysicsCollisionEvent which stores information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, SpikeyBallFactory.SPIKEYBALL_NAME,
-				PenguinFactory.PENGUIN_NAME)) {
+		if (checkCollision(event, SpikeyBallFactory.SPIKEYBALL_NAME, PenguinFactory.PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);

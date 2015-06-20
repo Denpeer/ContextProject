@@ -23,7 +23,7 @@ public class SquidFactory implements FactoryInterface {
 	private static final float SQUID_HEIGHT = 12;
 	private static final float SQUID_DEPTH = 5;
 	public static final String SQUID_NAME = "squid";
-	
+
 	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
 	private static final String MODEL_PATH = "Models/KRILL.j3o";
 
@@ -49,6 +49,7 @@ public class SquidFactory implements FactoryInterface {
 
 	/**
 	 * Makes a new squid geometry and sets its material and control(s).
+	 * 
 	 * @return new squid geometry instance
 	 */
 	public Spatial makeSquid() {
@@ -56,15 +57,16 @@ public class SquidFactory implements FactoryInterface {
 		squid.setMaterial(getSquidMaterial());
 		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(SQUID_WIDTH,
 				SQUID_HEIGHT, SQUID_DEPTH));
-		
+
 		final SquidControl squidControl = new SquidControl(colShape, stateManager);
 		squid.addControl(squidControl);
-		
+
 		return squid;
 	}
 
 	/**
 	 * This method makes all the required materials.
+	 * 
 	 * @return a Material object
 	 */
 	public Material getSquidMaterial() {
@@ -72,9 +74,10 @@ public class SquidFactory implements FactoryInterface {
 		mat.setColor("Color", ColorRGBA.Magenta);
 		return mat;
 	}
-	
+
 	/**
 	 * This method makes a geometry.
+	 * 
 	 * @return a krill geometry
 	 */
 	public Spatial makeSpatial() {

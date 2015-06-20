@@ -1,8 +1,8 @@
 package com.funkydonkies.sounds;
 
 /**
- * sound to be triggered at combo new level. combo new level is reached when the
- * combo count passes a certain threshold.
+ * sound to be triggered at combo new level. combo new level is reached when the combo count passes
+ * a certain threshold.
  * 
  * @author Olivier Dikken
  *

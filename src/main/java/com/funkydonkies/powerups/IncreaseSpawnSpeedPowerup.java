@@ -14,27 +14,30 @@ import com.jme3.app.state.AppStateManager;
  */
 public class IncreaseSpawnSpeedPowerup extends DisabledState {
 	private float speedMultiplier = 0;
-	
+
 	private AppStateManager sManager;
 	private SpawnState spawnState;
-	
+
 	/**
-	 * @param multiplier change speed multiplier
+	 * @param multiplier
+	 *            change speed multiplier
 	 */
 	public IncreaseSpawnSpeedPowerup(final float multiplier) {
 		speedMultiplier = multiplier;
 	}
-	
+
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
 		sManager = stateManager;
 		spawnState = sManager.getState(SpawnState.class);
 	}
-	
+
 	/**
 	 * Enables or disables the powerup by setting the ballspawntime variable on spawnstate.
-	 * @param enabled boolean to enable or disable
+	 * 
+	 * @param enabled
+	 *            boolean to enable or disable
 	 * @see com.funkydonkies.gamestates.DisabledState#setEnabled(boolean)
 	 */
 	@Override

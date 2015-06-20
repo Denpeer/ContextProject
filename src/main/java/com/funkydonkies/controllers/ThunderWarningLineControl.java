@@ -17,8 +17,7 @@ public class ThunderWarningLineControl extends MyAbstractControl {
 	private CurveState curveState;
 
 	/**
-	 * Constructor method for warning line control. Sets the initialSpawn
-	 * location.
+	 * Constructor method for warning line control. Sets the initialSpawn location.
 	 * 
 	 * @param sManager
 	 *            the stateManager
@@ -34,10 +33,11 @@ public class ThunderWarningLineControl extends MyAbstractControl {
 	}
 
 	/**
-	 * This Method calls initialization which should occur after the control has
-	 * been added to the spatial. setSpatial(spatial) is called by
-	 * addControl(control) in Spatial.
-	 * @param spatial the spatial to set.
+	 * This Method calls initialization which should occur after the control has been added to the
+	 * spatial. setSpatial(spatial) is called by addControl(control) in Spatial.
+	 * 
+	 * @param spatial
+	 *            the spatial to set.
 	 */
 	@Override
 	public void setSpatial(final Spatial spatial) {

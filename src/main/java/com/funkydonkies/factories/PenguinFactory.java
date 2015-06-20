@@ -21,8 +21,8 @@ public class PenguinFactory implements FactoryInterface {
 	private static final String COLOR = "Color";
 	private static final String MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 	private static final String MODEL_PATH = "Models/PENGUIN.j3o";
-	
-//	private static final String[] PenguinGeometry
+
+	// private static final String[] PenguinGeometry
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;

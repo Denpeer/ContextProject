@@ -13,8 +13,7 @@ import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
 
 /**
- * keeps track of the background music and switches to next song when current
- * song is done playing.
+ * keeps track of the background music and switches to next song when current song is done playing.
  * 
  * @author Olivier Dikken
  *
@@ -27,8 +26,8 @@ public class GameBackgroundMusicState extends AbstractAppState {
 	private static final Path BACKGROUND_MUSIC3_PATH = Paths
 			.get("Sound/Free_The_Robots_-_Jazzhole.wav");
 
-	private static final Path[] BG_MUSIC_PATHS = { BACKGROUND_MUSIC1_PATH,
-			BACKGROUND_MUSIC2_PATH, BACKGROUND_MUSIC3_PATH };
+	private static final Path[] BG_MUSIC_PATHS = { BACKGROUND_MUSIC1_PATH, BACKGROUND_MUSIC2_PATH,
+			BACKGROUND_MUSIC3_PATH };
 	private static final int DEFAULT_START_MUSIC_ID = 1;
 
 	private AudioNode bgMusic;
@@ -38,8 +37,7 @@ public class GameBackgroundMusicState extends AbstractAppState {
 	private AssetManager assetManager;
 
 	@Override
-	public final void initialize(final AppStateManager sManager,
-			final Application appl) {
+	public final void initialize(final AppStateManager sManager, final Application appl) {
 		super.initialize(sManager, appl);
 
 		if (appl instanceof App) {
@@ -48,7 +46,7 @@ public class GameBackgroundMusicState extends AbstractAppState {
 			throw new BadDynamicTypeException();
 		}
 		this.assetManager = this.app.getAssetManager();
-		
+
 		initBgMusic();
 	}
 
@@ -75,11 +73,12 @@ public class GameBackgroundMusicState extends AbstractAppState {
 		app.getRootNode().attachChild(bgMusic);
 		bgMusic.play();
 	}
-	
+
 	/**
-	 * create the audionode to be able to play the music.
-	 * streaming is set to true.
-	 * @param path of the sound ressource
+	 * create the audionode to be able to play the music. streaming is set to true.
+	 * 
+	 * @param path
+	 *            of the sound ressource
 	 * @return the built audionode
 	 */
 	public AudioNode createAudioNode(final String path) {
@@ -99,7 +98,7 @@ public class GameBackgroundMusicState extends AbstractAppState {
 			initBackgroundMusic(BG_MUSIC_PATHS[playingMusicId]);
 		}
 	}
-	
+
 	@Override
 	public final void update(final float tpf) {
 		updateBgMusic();

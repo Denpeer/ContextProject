@@ -16,7 +16,7 @@ public class CameraState extends AbstractAppState {
 	private AppStateManager sManager;
 	private boolean cameraPointsActivated = false;
 	private CurveState curveState;
-	
+
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
