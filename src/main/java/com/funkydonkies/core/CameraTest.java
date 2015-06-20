@@ -9,6 +9,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Image;
 import com.jme3.texture.Image.Format;
+import com.jme3.texture.Texture.WrapAxis;
+import com.jme3.texture.Texture.WrapMode;
 import com.jme3.texture.Texture2D;
 
 /**
@@ -22,13 +24,13 @@ public class CameraTest extends SimpleApplication {
 	private Texture2D quadTex;
 
 	public static void main(String[] args) {
-		CameraTest app = new CameraTest();
+		final CameraTest app = new CameraTest();
 		app.setPauseOnLostFocus(false);
 		app.start();
 	}
 	
 	public CameraTest() {
-		MyFrame f = new MyFrame();
+		final MyFrame f = new MyFrame();
 		new Thread(f).start();
 		m2 = f.getVideoCap().getMat2Image(); 
 		quadTex = new Texture2D();
@@ -40,7 +42,7 @@ public class CameraTest extends SimpleApplication {
 		cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
 
 		quadTex = new Texture2D();
-		// setup main scene
+
 		quad = new Geometry("box", new Box(Vector3f.ZERO, 1, 1, 1));
 
 		quadMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -50,10 +52,14 @@ public class CameraTest extends SimpleApplication {
 	}
 
 	@Override
-	public void simpleUpdate(float tpf) {
-		quadTex = new Texture2D(new Image(Format.RGB8, 512, 512, m2.getByteBuffer()));
-		quadMat.setTexture("ColorMap", quadTex);
-		quad.setMaterial(quadMat);
+	public void simpleUpdate(final float tpf) {
+		if (m2 != null) {
+			final Image im = new Image(Format.RGB8, m2.getImageWidth(), m2.getImageHeight(), m2.getByteBuffer());
+			quadTex.setImage(im);
+			quadMat.clearParam("ColorMap");
+			quadMat.setTexture("ColorMap", quadTex);
+			quad.setMaterial(quadMat);
+		}
 	}
 
 }

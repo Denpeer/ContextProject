@@ -28,7 +28,8 @@ public class Mat2Image implements Bridge {
 	private Mat mat = new Mat();
 	private BufferedImage img;
 	private byte[] dat;
-	private ByteBuffer bbuff = ByteBuffer.allocateDirect(7864322);
+	private static final int BUFFER_SIZE = 921601;
+	private ByteBuffer bbuff = ByteBuffer.allocateDirect(BUFFER_SIZE);
 	private Mat bg = new Mat();
 	private Mat res = new Mat();
 	private Boolean bgSet = false;
@@ -327,6 +328,7 @@ public class Mat2Image implements Bridge {
 		getSpace(mat);
 		res.get(0, 0, dat);
 		img.getRaster().setDataElements(0, 0, res.cols(), res.rows(), dat);
+		bbuff.clear();
 		bbuff.put(dat);
 		return img;
 	}

@@ -1,5 +1,6 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.camdetect.Mat2Image;
 import com.funkydonkies.camdetect.MyFrame;
 import com.funkydonkies.interfaces.Bridge;
 import com.jme3.app.Application;
@@ -16,6 +17,7 @@ public class CameraState extends AbstractAppState {
 	private AppStateManager sManager;
 	private boolean cameraPointsActivated = false;
 	private CurveState curveState;
+	private InGameCameraState gameCameraState;
 	
 	@Override
 	public void initialize(final AppStateManager stateManager, final Application app) {
@@ -23,6 +25,8 @@ public class CameraState extends AbstractAppState {
 		super.setEnabled(false);
 		sManager = stateManager;
 		curveState = sManager.getState(CurveState.class);
+		gameCameraState = new InGameCameraState((Mat2Image) bridge);
+		sManager.attach(gameCameraState);
 	}
 
 	/**
@@ -37,6 +41,7 @@ public class CameraState extends AbstractAppState {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (!enabled) {
+			
 			cameraFrame.dispose();
 			cameraOpened = false;
 			cameraPointsActivated = false;
