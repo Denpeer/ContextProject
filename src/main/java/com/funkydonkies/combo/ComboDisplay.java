@@ -93,8 +93,10 @@ public class ComboDisplay implements Observer {
 	}
 
 	/**
-	 * @param o the Observable that called the update.
-	 * @param arg Object, not used in our app.
+	 * @param o
+	 *            the Observable that called the update.
+	 * @param arg
+	 *            Object, not used in our app.
 	 * @see com.funkydonkies.interfaces.Observer#update(com.funkydonkies.interfaces.Observable,
 	 *      java.lang.Object)
 	 */

@@ -1,8 +1,7 @@
 package com.funkydonkies.sounds;
 
 /**
- * sound to be triggered at combo lost. combo is lost when a penguin collides
- * with an obstacle.
+ * sound to be triggered at combo lost. combo is lost when a penguin collides with an obstacle.
  * 
  * @author Olivier Dikken
  *

@@ -44,8 +44,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	private AppStateManager stateManager;
 
 	/**
-	 * @param sManager AppStateManager
-	 * @param appl Application
+	 * @param sManager
+	 *            AppStateManager
+	 * @param appl
+	 *            Application
 	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager,
 	 *      com.jme3.app.Application)
 	 */
@@ -105,7 +107,7 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void enableTier(final String name) {
 		final Iterator<Tier> it = tierMap.values().iterator();
 		while (it.hasNext()) {
-			final Tier tier = it.next();	
+			final Tier tier = it.next();
 			if (tier.equals(tierMap.get(name)) && !tier.isEnabled()) {
 				tier.setEnabled(true);
 			} else if (!tier.equals(tierMap.get(name))) {
@@ -209,7 +211,8 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	}
 
 	/**
-	 * @param tpf time since last frame
+	 * @param tpf
+	 *            time since last frame
 	 * @see com.jme3.app.state.AbstractAppState#update(float)
 	 */
 	@Override
@@ -288,9 +291,10 @@ public class DifficultyState extends AbstractAppState implements Observable {
 	public void activateSnowBallPowerup() {
 		snowBallPowerup.setEnabled(true);
 	}
-	
+
 	/**
 	 * This method get the tier that should be enabled.
+	 * 
 	 * @return the enabled tier.
 	 */
 	public int getEnabledTier() {

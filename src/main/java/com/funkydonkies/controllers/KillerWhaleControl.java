@@ -51,7 +51,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 		stateManager = sManager;
 		diffState = sManager.getState(DifficultyState.class);
 	}
-	
+
 	/**
 	 * Set the physics space and add this controller as tick listener.
 	 * 
@@ -63,7 +63,6 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
 	}
-
 
 	/**
 	 * An initialize method for the controller.
@@ -129,8 +128,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	 *            PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, KillerWhaleFactory.WHALE_NAME,
-				PenguinFactory.PENGUIN_NAME)) {
+		if (checkCollision(event, KillerWhaleFactory.WHALE_NAME, PenguinFactory.PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);

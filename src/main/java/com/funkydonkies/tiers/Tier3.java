@@ -74,7 +74,9 @@ public class Tier3 extends Tier {
 
 	/**
 	 * Enable the increase spawn speed power up.
-	 * @param enabled desired state
+	 * 
+	 * @param enabled
+	 *            desired state
 	 */
 	public void setIncreasedSpawnSpeedEnabled(final boolean enabled) {
 		increaseSpawnSpeed.setEnabled(enabled);
@@ -82,6 +84,7 @@ public class Tier3 extends Tier {
 
 	/**
 	 * The getter for the obstacle array.
+	 * 
 	 * @return obstacleArray
 	 */
 	@Override

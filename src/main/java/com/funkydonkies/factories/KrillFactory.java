@@ -23,9 +23,9 @@ public class KrillFactory implements FactoryInterface {
 	private static final float KRILL_WIDTH = 10;
 	private static final float KRILL_HEIGHT = 10;
 	private static final float KRILL_DEPTH = 5;
-	
-	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md"; 
-	 
+
+	private static final String MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
+
 	public static final String MODEL_PATH = "Models/SQUID.j3o";
 
 	private AppStateManager stateManager;
@@ -54,9 +54,10 @@ public class KrillFactory implements FactoryInterface {
 
 		return krill;
 	}
-	
+
 	/**
 	 * This method makes a spatial.
+	 * 
 	 * @return a krill geometry
 	 */
 	public Spatial makeSpatial() {
@@ -65,14 +66,13 @@ public class KrillFactory implements FactoryInterface {
 		return krill;
 	}
 
-
 	/**
 	 * This method makes all the required materials.
 	 * 
 	 * @return loaded material
 	 */
 	public Material getkrillMaterial() {
-		final Material mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		final Material mat = new Material(app.getAssetManager(), MATERIAL_PATH);
 		mat.setColor("Color", ColorRGBA.Yellow);
 		return mat;
 	}

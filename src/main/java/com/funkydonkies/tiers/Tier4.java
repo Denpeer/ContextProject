@@ -62,6 +62,7 @@ public class Tier4 extends Tier {
 
 	/**
 	 * The getter for the obstacle array.
+	 * 
 	 * @return obstacleArray
 	 */
 	@Override

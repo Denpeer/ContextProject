@@ -38,7 +38,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	private float stopCoord;
 	private AppStateManager stateManager;
 	private DifficultyState diffState;
-	
+
 	private int height;
 
 	/**
@@ -65,7 +65,9 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	/**
 	 * Set the physics space and add this controller as tick listener.
-	 * @param space PhysicsSpace of the scene.
+	 * 
+	 * @param space
+	 *            PhysicsSpace of the scene.
 	 */
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
@@ -75,6 +77,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	/**
 	 * Initialized the control, eg. sets location and plays sound.
+	 * 
 	 * @see com.funkydonkies.interfaces.MyAbstractGhostControl#init()
 	 */
 	@Override
@@ -87,7 +90,9 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	/**
 	 * The update method for the contoller.
-	 * @param tpf float the time since last frame.
+	 * 
+	 * @param tpf
+	 *            float the time since last frame.
 	 */
 	@Override
 	public void update(final float tpf) {
@@ -101,14 +106,16 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 			}
 		}
 	}
-	
+
 	/**
 	 * Removes the bear after moving it down.
-	 * @param tpf time per frame
+	 * 
+	 * @param tpf
+	 *            time per frame
 	 */
 	public void killBear(final float tpf) {
 		killTime += tpf;
-		Vector3f loc = getPhysicsLocation();
+		final Vector3f loc = getPhysicsLocation();
 		loc.y -= UP_SPEED * tpf;
 		spatial.setLocalTranslation(loc);
 		setPhysicsLocation(loc);
@@ -120,8 +127,13 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 
 	/**
 	 * This method moves the spatial in the desired direction.
+	 * 
+	 * @param moveUp
+	 *            use to pick direction
+	 * @param tpf
+	 *            time per frame
 	 */
-	private void moveSpatial(boolean moveUp, float tpf) {
+	private void moveSpatial(final boolean moveUp, final float tpf) {
 		final Vector3f vec = spatial.getLocalTranslation();
 		if (moveUp) {
 			if (vec.y < height) {
@@ -141,7 +153,7 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 				setPhysicsLocation(loc);
 			} else {
 				doneMoving = true;
-			}			
+			}
 		}
 	}
 
@@ -153,9 +165,8 @@ public class PolarBearControl extends MyAbstractGhostControl implements PhysicsC
 	 *            PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
-		if (checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME,
-						PenguinFactory.PENGUIN_NAME)) {
-				stateManager.getState(SoundState.class).queueSound(new BearHitSound());
+		if (checkCollision(event, PolarBearFactory.POLAR_BEAR_NAME, PenguinFactory.PENGUIN_NAME)) {
+			stateManager.getState(SoundState.class).queueSound(new BearHitSound());
 			stateManager.getState(SoundState.class).queueSound(new ObstacleCollisionSound());
 			diffState.resetDiff();
 			destroy(event, PenguinFactory.PENGUIN_NAME);

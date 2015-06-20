@@ -120,8 +120,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	}
 
 	/**
-	 * Loads the native libraries (opencv), setting the java.library.path in the
-	 * process.
+	 * Loads the native libraries (opencv), setting the java.library.path in the process.
 	 */
 	public static void loadLib() {
 		final String javaLibPath = "java.library.path";
@@ -144,8 +143,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	}
 
 	/**
-	 * Create the frame. Load the library. Set the key bindings. Start the
-	 * thread.
+	 * Create the frame. Load the library. Set the key bindings. Start the thread.
 	 */
 	public MyFrame() {
 		try {
@@ -304,8 +302,8 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	}
 
 	/**
-	 * draws the next frame to be displayed. calls videocap.[...] method which
-	 * returns a processed video frame
+	 * draws the next frame to be displayed. calls videocap.[...] method which returns a processed
+	 * video frame
 	 * 
 	 * @param g
 	 *            graphics

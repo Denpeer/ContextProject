@@ -63,17 +63,18 @@ public class PolarBearFactory implements FactoryInterface {
 
 		return geom;
 	}
-	
+
 	/**
 	 * This method makes a polar bear control.
+	 * 
 	 * @return a polar bear control
 	 */
 	public PolarBearControl makePolarBearControl() {
 		final Random rand = new Random();
 		final int leftRight = rand.nextInt(2);
 		final float x = getFloatSide(leftRight);
-		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(BEAR_WIDTH, 
-				BEAR_HEIGHT, BEAR_DEPTH));
+		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(BEAR_WIDTH, BEAR_HEIGHT,
+				BEAR_DEPTH));
 		final Vector3f initialLoc = new Vector3f(x, INITIAL_HEIGHT, 0);
 
 		final float stopX = getStopCoord(new Random());
@@ -82,6 +83,7 @@ public class PolarBearFactory implements FactoryInterface {
 
 	/**
 	 * This method makes a geometry.
+	 * 
 	 * @return a polar bear geometry
 	 */
 	public Spatial makeSpatial() {
@@ -89,7 +91,7 @@ public class PolarBearFactory implements FactoryInterface {
 		bear.setName(POLAR_BEAR_NAME);
 		return bear;
 	}
-	
+
 	/**
 	 * This method get the stop coordinate op the polear bear.
 	 * 
@@ -103,7 +105,9 @@ public class PolarBearFactory implements FactoryInterface {
 
 	/**
 	 * This method decides fro which side the polar bear floats in.
-	 * @param i the integer to check if the bear floats left or right.
+	 * 
+	 * @param i
+	 *            the integer to check if the bear floats left or right.
 	 * @return the side from which the bear floats in
 	 */
 	public float getFloatSide(final int i) {

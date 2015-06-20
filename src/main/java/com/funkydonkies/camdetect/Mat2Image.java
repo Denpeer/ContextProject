@@ -12,13 +12,12 @@ import org.opencv.imgproc.Imgproc;
 import com.funkydonkies.interfaces.Bridge;
 
 /**
- * This class performs the image matrix math and is used by VideoCap to get the
- * current image to display in the frame. this includes setting the bg,
- * thresholding into foreground/background, and identifying the interestPoints
- * which are used as controlPoints and can be accessed via the Bridge method
- * getControlPoints() and getXDIST() to know the x interval between elements of
- * the array returned by getControlPoints(). also the found interestPoints are
- * draws on the image as visual reference.
+ * This class performs the image matrix math and is used by VideoCap to get the current image to
+ * display in the frame. this includes setting the bg, thresholding into foreground/background, and
+ * identifying the interestPoints which are used as controlPoints and can be accessed via the Bridge
+ * method getControlPoints() and getXDIST() to know the x interval between elements of the array
+ * returned by getControlPoints(). also the found interestPoints are draws on the image as visual
+ * reference.
  * 
  * @author Olivier Dikken
  *
@@ -49,9 +48,9 @@ public class Mat2Image implements Bridge {
 	private int lowerBound = DEFAULT_HEIGHT - 1;
 
 	private int xDist = DEFAULT_XDIST;
-
+	
 	private int numPoints = 0;
-
+	
 	/**
 	 * Empty Constructor.
 	 */
@@ -60,8 +59,8 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Mat matrix to image; get space of mat matrix -> does image processing and
-	 * finds interest points.
+	 * Mat matrix to image; get space of mat matrix -> does image processing and finds interest
+	 * points.
 	 * 
 	 * @param imMatrix
 	 *            matrix of image
@@ -81,9 +80,9 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * When 'b' is pressed the class MyFrame calls setBG on VideoCap which calls
-	 * this method. the current image matrix becomes the mat matrix identifying
-	 * the background (used by threshIt method).
+	 * When 'b' is pressed the class MyFrame calls setBG on VideoCap which calls this method. the
+	 * current image matrix becomes the mat matrix identifying the background (used by threshIt
+	 * method).
 	 */
 	public void setBg() {
 		bg = mat.clone();
@@ -91,8 +90,8 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Note: absdiff(img,bg)>img2GRAY>blur>thresh. Res is used instead of mat to
-	 * keep mat as the 'input matrix'.
+	 * Note: absdiff(img,bg)>img2GRAY>blur>thresh. Res is used instead of mat to keep mat as the
+	 * 'input matrix'.
 	 * 
 	 * @param imIn
 	 *            incomming frame
@@ -112,8 +111,7 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * This method finds the highest point for every x belonging to xDist*k with
-	 * k a natural.
+	 * This method finds the highest point for every x belonging to xDist*k with k a natural.
 	 * 
 	 * @param im
 	 *            input matrix of image
@@ -148,14 +146,14 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Checks if the concerned pixel is the center of a block of connected
-	 * pixels. (i.e. not a single pixel)
+	 * Checks if the concerned pixel is the center of a block of connected pixels. (i.e. not a
+	 * single pixel)
 	 * 
 	 * @param im
 	 *            the mat of the current image being processed
 	 * @param blockSize
-	 *            is minimum size the connected pixel block has to be for it to
-	 *            pass. Should be uneven.
+	 *            is minimum size the connected pixel block has to be for it to pass. Should be
+	 *            uneven.
 	 * @param pixelX
 	 *            the x of the pixel being checked
 	 * @param pixelY
@@ -193,9 +191,8 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * checks whether the interest points have not made a big jump since the
-	 * last frame. it is supposed to take care of flickering spots detected by
-	 * the camera.
+	 * checks whether the interest points have not made a big jump since the last frame. it is
+	 * supposed to take care of flickering spots detected by the camera.
 	 * 
 	 * @param prev
 	 *            the previous interest point height
@@ -211,8 +208,8 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * reset the previousInterestPoints Array and prevPreviousInterestPoints
-	 * Array and fill with the default value.
+	 * reset the previousInterestPoints Array and prevPreviousInterestPoints Array and fill with the
+	 * default value.
 	 * 
 	 * @param im
 	 *            the mat of the image currently being processed
@@ -233,15 +230,14 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Draws red dots at the locations of the found interestPoints to be used as
-	 * visual feedback.
+	 * Draws red dots at the locations of the found interestPoints to be used as visual feedback.
 	 * 
 	 * @param matMatrix
 	 *            the image matrix
 	 * @param iP
 	 *            array of interestPoints
-	 * @return the processed image converted to BGR with red circles drawn at
-	 *         the interest point locations
+	 * @return the processed image converted to BGR with red circles drawn at the interest point
+	 *         locations
 	 */
 	public Mat drawInterestPoints(final Mat matMatrix, final float[] iP) {
 		final Mat im = new Mat();
@@ -270,8 +266,7 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Make sure the byte and bufferedimage are of right size and 'color'
-	 * settings.
+	 * Make sure the byte and bufferedimage are of right size and 'color' settings.
 	 * 
 	 * @param matMatrix
 	 *            matrix of the image
@@ -289,8 +284,8 @@ public class Mat2Image implements Bridge {
 
 	/**
 	 * Sets the matrix properties. calls the methods to threshold the matrix
-	 * (foreground/background). then calls the methods to update the
-	 * interestPoints and draw them on the image as visual feedback.
+	 * (foreground/background). then calls the methods to update the interestPoints and draw them on
+	 * the image as visual feedback.
 	 * 
 	 * @param matMatrix
 	 *            the image matrix
@@ -313,8 +308,8 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * This method is called by the VideoCap class. it calls the image
-	 * processing method and returns the processed segmented contoured image.
+	 * This method is called by the VideoCap class. it calls the image processing method and returns
+	 * the processed segmented contoured image.
 	 * 
 	 * @param matMatrix
 	 *            matrix of image
@@ -329,20 +324,21 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Method comes from implementing the bridge interface. It is used by
-	 * classes outside of camdetect package to access the control points.
-	 * Normalize the control points between 0 and 1 with 0 being lowest and 1
-	 * highest along the vertical axis.
+	 * Method comes from implementing the bridge interface. It is used by classes outside of
+	 * camdetect package to access the control points. Normalize the control points between 0 and 1
+	 * with 0 being lowest and 1 highest along the vertical axis.
 	 * 
 	 * @return float array containing the control points
 	 */
 	public float[] getControlPoints() {
-		float[] normCP = new float[32];
+		
+		float[] normCP = new float[getImageWidth() / xDist];
 		Arrays.fill(normCP, 0);
-		
-		if (interestPoints != null)
+
+		if (interestPoints != null) {
 			normCP = Arrays.copyOf(interestPoints, numPoints);
-		
+		}
+
 		for (int i = 0; i < normCP.length; i++) {
 			normCP[i] = normCP[i] - upperBound;
 			normCP[i] = Math.abs(normCP[i] - (lowerBound - upperBound));
@@ -352,10 +348,9 @@ public class Mat2Image implements Bridge {
 	}
 
 	/**
-	 * Method comes from implementing the bridge interface. used by classes
-	 * outside of camdetect package to access horizontal interval between
-	 * control points. this is used to be able to interpret the interestPoints
-	 * array returned by the getControlPoints() method.
+	 * Method comes from implementing the bridge interface. used by classes outside of camdetect
+	 * package to access horizontal interval between control points. this is used to be able to
+	 * interpret the interestPoints array returned by the getControlPoints() method.
 	 * 
 	 * @return the xDist as int
 	 */

@@ -86,19 +86,22 @@ public class SoundPlayer {
 		comboNewLevelAudioNode = new AudioNode(assetManager, COMBO_NEW_LEVEL_SOUND_PATH, false);
 		comboLostAudioNode = new AudioNode(assetManager, COMBO_LOST_SOUND_PATH, false);
 		powerupInverseAudioNode = new AudioNode(assetManager, POWERUP_INVERSE_SOUND_PATH, false);
-		powerupInverseEndAudioNode = new AudioNode(assetManager, POWERUP_INVERSE_END_SOUND_PATH, false);
+		powerupInverseEndAudioNode = new AudioNode(assetManager, POWERUP_INVERSE_END_SOUND_PATH,
+				false);
 		comboVoiceAudioNode = new AudioNode(assetManager, COMBO_VOICE_SOUND_PATH, false);
 		spearThrowAudioNode = new AudioNode(assetManager, SPEAR_THROW_SOUND_PATH, false);
 		thunderHitAudioNode = new AudioNode(assetManager, THUNDER_HIT_SOUND_PATH, false);
 		whaleSpawnAudioNode = new AudioNode(assetManager, WHALE_SPAWN_SOUND_PATH, false);
-		snowballWaveCollisionAudioNode = new AudioNode(assetManager, SNOWBALL_WAVE_COLLISION_SOUND_PATH, false);
+		snowballWaveCollisionAudioNode = new AudioNode(assetManager,
+				SNOWBALL_WAVE_COLLISION_SOUND_PATH, false);
 		bearHitAudioNode = new AudioNode(assetManager, BEAR_HIT_SOUND_PATH, false);
 		dangerAboveAudioNode = new AudioNode(assetManager, DANGER_ABOVE_SOUND_PATH, false);
 		powerupSpeedAudioNode = new AudioNode(assetManager, POWERUP_SPEED_SOUND_PATH, false);
 		powerupSpeedEndAudioNode = new AudioNode(assetManager, POWERUP_SPEED_END_SOUND_PATH, false);
 		powerupVoiceAudioNode = new AudioNode(assetManager, POWERUP_VOICE_SOUND_PATH, false);
-		comboNewLevelVoiceAudioNode = new AudioNode(assetManager, COMBO_NEW_LEVEL_VOICE_SOUND_PATH, false);
-		
+		comboNewLevelVoiceAudioNode = new AudioNode(assetManager, COMBO_NEW_LEVEL_VOICE_SOUND_PATH,
+				false);
+
 		initSingleSound(penguinSpawnAudioNode);
 		initSingleSound(krillCollisionAudioNode);
 		initSingleSound(targetCollisionAudioNode);
@@ -181,91 +184,91 @@ public class SoundPlayer {
 	public void comboLostSound() {
 		comboLostAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of inverse controls power up started.
 	 */
 	public void powerupInverseSound() {
 		powerupInverseAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of end of inverse controls power up.
 	 */
 	public void powerupInverseEndSound() {
 		powerupInverseEndAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of combo voice saying 'combo'.
 	 */
 	public void comboVoiceSound() {
 		comboVoiceAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of spear throw.
 	 */
 	public void spearThrowSound() {
 		spearThrowAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of thunder hit.
 	 */
 	public void thunderHitSound() {
 		thunderHitAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of whale spawn.
 	 */
 	public void whaleSpawnSound() {
 		whaleSpawnAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of snowball thumping into the wave.
 	 */
 	public void snowballWaveCollisionSound() {
 		snowballWaveCollisionAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of bear roaring when it makes the hit.
 	 */
 	public void bearHitSound() {
 		bearHitAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of spikey ball spawn.
 	 */
 	public void dangerAboveSound() {
 		dangerAboveAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of speed power up kicking in.
 	 */
 	public void powerupSpeedSound() {
 		powerupSpeedAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of speed power up end.
 	 */
 	public void powerupSpeedEndSound() {
 		powerupSpeedEndAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of power up trigger.
 	 */
 	public void powerupVoiceSound() {
 		powerupVoiceAudioNode.playInstance();
 	}
-	
+
 	/**
 	 * sound of next combo level.
 	 */

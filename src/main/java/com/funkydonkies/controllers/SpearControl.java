@@ -7,7 +7,6 @@ import com.funkydonkies.gamestates.PlayState;
 import com.funkydonkies.interfaces.MyAbstractGhostControl;
 import com.funkydonkies.sounds.ObstacleCollisionSound;
 import com.funkydonkies.sounds.SoundState;
-import com.funkydonkies.sounds.SpearThrowSound;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -45,7 +44,7 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 		stateManager = sManager;
 		diffState = sManager.getState(DifficultyState.class);
 	}
-	
+
 	/**
 	 * Set the physics space and add this controller as tick listener.
 	 * 

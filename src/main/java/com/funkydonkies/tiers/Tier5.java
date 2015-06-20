@@ -45,7 +45,7 @@ public class Tier5 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			setText("Tier 5: Help!? Agents!");
+			setText("Tier 5: Danger from Above!");
 			sManager.getState(SoundState.class).queueSound(new ComboNewLevelSound());
 			sManager.getState(SoundState.class).queueSound(new ComboNewLevelVoiceSound());
 		} else {
@@ -62,6 +62,7 @@ public class Tier5 extends Tier {
 
 	/**
 	 * The getter for the obstacle array.
+	 * 
 	 * @return obstacleArray
 	 */
 	@Override

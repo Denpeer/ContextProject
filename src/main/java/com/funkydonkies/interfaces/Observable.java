@@ -6,18 +6,22 @@ package com.funkydonkies.interfaces;
 public interface Observable {
 	/**
 	 * Notifies all the observers in the observer array by calling update.
-	 * @param arg argument
+	 * 
+	 * @param arg
+	 *            argument
 	 */
 	void notifyObservers(final Object arg);
-	
+
 	/**
 	 * Set the changed bit.
 	 */
 	void setChanged();
-	
+
 	/**
 	 * Adds an observer to the observer list to be notified on changes.
-	 * @param o Observer to add.
+	 * 
+	 * @param o
+	 *            Observer to add.
 	 */
 	void addObserver(Observer o);
 }

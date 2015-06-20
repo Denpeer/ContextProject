@@ -82,12 +82,12 @@ public class SpawnState extends AbstractAppState {
 		timeCount += tpf;
 		specialFishTimer += tpf;
 		obstacleTimer += tpf;
-		
+
 		if (obstacleTimer > OBSTACLE_SPAWN_TIME) {
 			obstacleTimer = 0;
 			chooseObstacleToSpawn();
 		}
-		
+
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
 			spawn(facHm.get("PenguinFactory"), app.getPenguinNode());
@@ -97,6 +97,7 @@ public class SpawnState extends AbstractAppState {
 			chooseTargetToSpawn();
 		}
 	}
+
 	/**
 	 * This method chooses and spawn an obstacle depending on the tier.
 	 */
@@ -105,7 +106,8 @@ public class SpawnState extends AbstractAppState {
 		while (it.hasNext()) {
 			final Tier tier = it.next();
 			if (tier.isEnabled()) {
-				if (!tier.getObstacleArray().isEmpty() && !obstacleList.contains(tier.getObstacleArray().get(0))) {
+				if (!tier.getObstacleArray().isEmpty()
+						&& !obstacleList.contains(tier.getObstacleArray().get(0))) {
 					obstacleList.addAll(tier.getObstacleArray());
 				}
 				if (!obstacleList.isEmpty()) {
@@ -119,7 +121,7 @@ public class SpawnState extends AbstractAppState {
 			spawnBallTime = DEFAULT_BALL_SPAWN_TIME;
 		}
 	}
-	
+
 	/**
 	 * This method chooses and spawns a special target.
 	 */
@@ -128,24 +130,27 @@ public class SpawnState extends AbstractAppState {
 		switch (i) {
 		case 0:
 			if (app.getSceneNode().getChild(KrillFactory.KRILL_NAME) == null) {
-			spawn(facHm.get("KrillFactory"), app.getSceneNode());
+				spawn(facHm.get("KrillFactory"), app.getSceneNode());
 			}
 			break;
 		case 1:
 			if (app.getSceneNode().getChild(SquidFactory.SQUID_NAME) == null) {
-			spawn(facHm.get("SquidFactory"), app.getSceneNode());
+				spawn(facHm.get("SquidFactory"), app.getSceneNode());
 			}
 			break;
 		default:
 			break;
 		}
-		
+
 	}
 
 	/**
 	 * Spawn an object.
-	 * @param obstacleFactory the obstaclefactory.
-	 * @param nodeToAttach the node where the objects get attached to
+	 * 
+	 * @param obstacleFactory
+	 *            the obstaclefactory.
+	 * @param nodeToAttach
+	 *            the node where the objects get attached to
 	 */
 	public void spawn(final FactoryInterface obstacleFactory, final Node nodeToAttach) {
 		final Spatial obstacle = obstacleFactory.makeObject(stateManager, app);
@@ -153,7 +158,7 @@ public class SpawnState extends AbstractAppState {
 			nodeToAttach.attachChild(obstacle);
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -162,10 +167,10 @@ public class SpawnState extends AbstractAppState {
 		final Reflections reflections = new Reflections(FACTORY_PACKAGE);
 		final Set<Class<? extends FactoryInterface>> classes = reflections
 				.getSubTypesOf(FactoryInterface.class);
-		
+
 		for (Class<? extends FactoryInterface> c : classes) {
 			try {
-				
+
 				facHm.put(c.getSimpleName(), (FactoryInterface) c.newInstance());
 			} catch (final InstantiationException e) {
 				e.printStackTrace();
@@ -174,18 +179,17 @@ public class SpawnState extends AbstractAppState {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method creates a map containing every tier.
 	 */
 	public void fillTiersMap() {
 		tierMap = new HashMap<String, Tier>();
 		final Reflections reflections = new Reflections(TIER_PACKAGE);
-		final Set<Class<? extends Tier>> classes = reflections
-				.getSubTypesOf(Tier.class);
-		
+		final Set<Class<? extends Tier>> classes = reflections.getSubTypesOf(Tier.class);
+
 		for (Class<? extends Tier> c : classes) {
-			try {			
+			try {
 				tierMap.put(c.getSimpleName(), (Tier) c.newInstance());
 			} catch (final InstantiationException e) {
 				e.printStackTrace();
@@ -197,7 +201,9 @@ public class SpawnState extends AbstractAppState {
 
 	/**
 	 * This method sets the spawntime of the penguins.
-	 * @param newTime the new spawntime of the penguins
+	 * 
+	 * @param newTime
+	 *            the new spawntime of the penguins
 	 */
 	public void setBallSpawnTime(final float newTime) {
 		spawnBallTime = newTime;
@@ -205,23 +211,27 @@ public class SpawnState extends AbstractAppState {
 
 	/**
 	 * This method creates a default material.
-	 * @param appl the simple application
+	 * 
+	 * @param appl
+	 *            the simple application
 	 */
-	
+
 	/**
 	 * The getter for the tiermap.
+	 * 
 	 * @return the hashmap containing the tiers.
 	 */
 	public HashMap<String, Tier> getTiers() {
 		return tierMap;
 	}
-	
+
 	/**
 	 * The getter for the obstacles.
+	 * 
 	 * @return the obstacle map
 	 */
 	public HashMap<String, FactoryInterface> getObstacles() {
 		return facHm;
 	}
-	
+
 }

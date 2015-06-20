@@ -16,11 +16,10 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.math.Vector3f;
 
 /**
- * Control class for the target. Takes care of collisions between the ball and
- * target.
+ * Control class for the target. Takes care of collisions between the ball and target.
  */
 public class SquidControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
-	
+
 	private static final float TIME_TO_MOVE_IN_ONE_DIRECTION = 4;
 	private static final float STEP_SIZE = 0.5f;
 	private AppStateManager stateManager;
@@ -42,7 +41,7 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 		diffState = sManager.getState(DifficultyState.class);
 		stateManager = sManager;
 	}
-	
+
 	@Override
 	public void setPhysicsSpace(final PhysicsSpace space) {
 		super.setPhysicsSpace(space);
@@ -54,7 +53,7 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 		respawn();
 		stateManager.getState(PlayState.class).getPhysicsSpace().add(this);
 	}
-	
+
 	@Override
 	public void update(final float tpf) {
 		time += tpf;
@@ -82,17 +81,16 @@ public class SquidControl extends MyAbstractGhostControl implements PhysicsColli
 	}
 
 	/**
-	 * Handles a collision between penguin and squid. Calls methods to increase
-	 * the combo and activate snow ball powerup.
+	 * Handles a collision between penguin and squid. Calls methods to increase the combo and
+	 * activate snow ball powerup.
 	 * 
 	 * @param event
-	 *            PhysicsCollisionEvent containing information about the
-	 *            collision
+	 *            PhysicsCollisionEvent containing information about the collision
 	 */
 	public void collision(final PhysicsCollisionEvent event) {
 		if (checkCollision(event, SquidFactory.SQUID_NAME, PenguinFactory.PENGUIN_NAME)) {
 			stateManager.getState(SoundState.class).queueSound(new PowerupVoiceSound());
-			//stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
+			// stateManager.getState(SoundState.class).queueSound(new TargetCollisionSound());
 			diffState.activateSnowBallPowerup();
 			destroy(event, SquidFactory.SQUID_NAME);
 		}

@@ -30,6 +30,7 @@ public class YetiControl extends MyAbstractGhostControl implements PhysicsCollis
 	private Vector3f loc;
 	private DifficultyState diffState;
 	private AppStateManager stateManager;
+
 	/**
 	 * Constructor method for yeti control.
 	 * 

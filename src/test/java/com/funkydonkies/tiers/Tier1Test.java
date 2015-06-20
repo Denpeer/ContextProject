@@ -22,7 +22,7 @@ import com.jme3.font.BitmapText;
  */
 public class Tier1Test {
 	private Tier1 tier;
-	private AppStateManager mockStateManager;
+	private AppStateManager stateManager;
 	
 	/**
 	 * Do this before the tests.
@@ -30,8 +30,8 @@ public class Tier1Test {
 	@Before
 	public void setUp() {
 		tier = spy(Tier1.class);
-		mockStateManager = mock(AppStateManager.class);
-		when(mockStateManager.getState(SoundState.class)).thenReturn(mock(SoundState.class));
+		stateManager = mock(AppStateManager.class);
+		when(stateManager.getState(SoundState.class)).thenReturn(mock(SoundState.class));
 		doNothing().when(tier).setText(any(String.class));
 		doNothing().when(tier).addObstacleArray();
 		doReturn(mock(BitmapText.class)).when(tier).createText();
@@ -42,7 +42,7 @@ public class Tier1Test {
 	 */
 	@Test
 	public void testInit() {
-		tier.initialize(mockStateManager, mock(App.class));
+		tier.initialize(stateManager, mock(App.class));
 		verify(tier).addObstacleArray();
 	}
 	
@@ -51,7 +51,7 @@ public class Tier1Test {
 	 */
 	@Test
 	public void testObstacleArray() {
-		tier.initialize(mockStateManager, mock(App.class));
+		tier.initialize(stateManager, mock(App.class));
 		assertTrue(tier.getObstacleArray().size() == 0);
 	}
 
@@ -61,7 +61,7 @@ public class Tier1Test {
 	 */
 	@Test
 	public void testEnabled() {
-		tier.initialize(mockStateManager, mock(App.class));
+		tier.initialize(stateManager, mock(App.class));
 		tier.setEnabled(true);
 		assertTrue(tier.isEnabled());
 	}

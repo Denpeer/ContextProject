@@ -56,7 +56,7 @@ public class YetiFactory implements FactoryInterface {
 
 		final YetiControl control = new YetiControl(stateManager);
 		geom.addControl(control);
-		
+
 		return geom;
 	}
 
@@ -69,15 +69,17 @@ public class YetiFactory implements FactoryInterface {
 		Material snowMaterial;
 		snowMaterial = ((Material) app.getRootNode().getUserData("default material")).clone();
 		snowMaterial.setColor("Diffuse", ColorRGBA.White);
-	    snowMaterial.setColor("Specular", ColorRGBA.White);
-	    snowMaterial.setColor("GlowColor", ColorRGBA.White);
-	    snowMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
+		snowMaterial.setColor("Specular", ColorRGBA.White);
+		snowMaterial.setColor("GlowColor", ColorRGBA.White);
+		snowMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
 		return snowMaterial;
 	}
-	
+
 	/**
 	 * This method makes a geometry.
-	 * @param mesh the mesh of the krill
+	 * 
+	 * @param mesh
+	 *            the mesh of the krill
 	 * @return a krill geometry
 	 */
 	public Geometry makeGeometry(final Mesh mesh) {

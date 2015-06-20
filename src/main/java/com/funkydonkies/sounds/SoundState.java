@@ -18,8 +18,7 @@ public class SoundState extends AbstractAppState {
 	private SoundPlayer soundPlayer;
 
 	@Override
-	public final void initialize(final AppStateManager sManager,
-			final Application appl) {
+	public final void initialize(final AppStateManager sManager, final Application appl) {
 		super.initialize(sManager, appl);
 		this.soundPlayer = new SoundPlayer(appl);
 	}
@@ -35,8 +34,8 @@ public class SoundState extends AbstractAppState {
 	}
 
 	/**
-	 * @param tpf float time since last frame.
-	 * plays all sounds in queue.
+	 * @param tpf
+	 *            float time since last frame. plays all sounds in queue.
 	 */
 	@Override
 	public final void update(final float tpf) {

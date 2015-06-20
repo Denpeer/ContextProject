@@ -26,12 +26,14 @@ public class SpikeyBallFactory implements FactoryInterface {
 
 	/**
 	 * The create method for a spikey ball object.
-	 * @param sManager jme AppStateManager for getting states
-	 * @param appl jme SimpleApplication for getting rootNode or physicsSpace
+	 * 
+	 * @param sManager
+	 *            jme AppStateManager for getting states
+	 * @param appl
+	 *            jme SimpleApplication for getting rootNode or physicsSpace
 	 * @return a spikey ball object
 	 */
-	public Spatial makeObject(final AppStateManager sManager,
-			final SimpleApplication appl) {
+	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
 		app = appl;
 		stateManager = sManager;
 		final Mesh mesh = new Sphere(SAMPLES, SAMPLES, DEFAULT_RADIUS);
@@ -42,9 +44,10 @@ public class SpikeyBallFactory implements FactoryInterface {
 
 		return spikeyBall;
 	}
-	
+
 	/**
 	 * This method make a spikeyball Control.
+	 * 
 	 * @return a spikeybal control.
 	 */
 	public SpikeyBallControl makeSpikeyBallControl() {
@@ -53,15 +56,16 @@ public class SpikeyBallFactory implements FactoryInterface {
 		pc.setRestitution(RESTITUTION);
 		return pc;
 	}
-	
+
 	/**
 	 * This method gets the material for the spikey ball.
+	 * 
 	 * @return the spikey ball material
 	 */
 	public Material getSpikeyBallMaterial() {
 		final Material mat = ((Material) app.getRootNode().getUserData(DEFAULT_MATERIAL)).clone();
 		mat.setColor("Diffuse", ColorRGBA.Gray);
-	    mat.setColor("Specular", ColorRGBA.Gray);
+		mat.setColor("Specular", ColorRGBA.Gray);
 		return mat;
 	}
 }
