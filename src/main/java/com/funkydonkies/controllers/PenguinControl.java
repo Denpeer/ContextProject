@@ -14,6 +14,7 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 /**
@@ -132,7 +133,11 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		super.update(tpf);
 		final Vector3f direction = getLinearVelocity();
 		if (updateMeshRotation) {
-			spatial.lookAt(direction, new Vector3f(0, 1, 0));
+			Quaternion newRotation = new Quaternion();
+			Quaternion rot = spatial.getLocalRotation();
+			newRotation.lookAt(direction.mult(-1), new Vector3f(0, 1, 0));
+			newRotation.slerp(rot, tpf);
+			spatial.setLocalRotation(newRotation);
 		}
 		if (getPhysicsLocation().y < Y_DESTROY_THRESHOLD) {
 			destroy();
