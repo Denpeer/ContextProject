@@ -38,6 +38,8 @@ public class KillerWhaleFactory implements FactoryInterface {
 	private static final float WHALE_WIDTH = 50;
 	private static final float WHALE_HEIGHT = 100;
 	private static final float WHALE_DEPTH = 1;
+	
+	private static final float MARGIN = 15;
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
@@ -102,7 +104,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 	 * @return new Warning Line Geometry
 	 */
 	public Geometry makeWarningLine(final float x) {
-		final Mesh warningLineMesh = new Box(WHALE_WIDTH, WHALE_HEIGHT, WHALE_DEPTH);
+		final Mesh warningLineMesh = new Box(WHALE_WIDTH - MARGIN, WHALE_HEIGHT - MARGIN, WHALE_DEPTH);
 		final Geometry geom = new Geometry(WARNING_NAME, warningLineMesh);
 		geom.setMaterial(getLineMaterial());
 		geom.setQueueBucket(Bucket.Transparent);
