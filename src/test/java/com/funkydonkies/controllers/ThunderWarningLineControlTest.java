@@ -23,7 +23,7 @@ import com.jme3.scene.Spatial;
 public class ThunderWarningLineControlTest {
 
 	private static final float TPF = 0.01f;
-	private static final float TIME_ONE = 1f;
+	private static final float TIME_ONE = 2f;
 	private AppStateManager sManager;
 	private SoundState ss;
 	private Spatial spatial;
