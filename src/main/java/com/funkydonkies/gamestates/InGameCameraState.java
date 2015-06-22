@@ -73,7 +73,6 @@ public class InGameCameraState extends AbstractAppState {
 		if (m2 != null) {
 			final Image im = new Image(Format.RGB8, m2.getImageWidth(), m2.getImageHeight(), m2.getByteBuffer());
 			quadTex.setImage(im);
-			quadMat.clearParam(COLOR_MAP);
 			quadMat.setTexture(COLOR_MAP, quadTex);
 			quad.setMaterial(quadMat);
 		} else {

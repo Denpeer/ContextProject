@@ -28,7 +28,7 @@ public class Mat2Image implements Bridge {
 	private Mat mat = new Mat();
 	private BufferedImage img;
 	private byte[] dat;
-	private static final int BUFFER_SIZE = 921601;
+	private static final int BUFFER_SIZE = 921600 * 2;
 	private ByteBuffer bbuff = ByteBuffer.allocateDirect(BUFFER_SIZE);
 	private Mat bg = new Mat();
 	private Mat res = new Mat();
