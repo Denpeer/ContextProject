@@ -105,12 +105,8 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 
 		final int labelWidth = 500, labelHeight = 75;
 		label.setSize(labelWidth, labelHeight);
-		// May need to be changed due to after exporting the location of the
-		// icon may not be correct
-		// anymore
-		// @see
-		// http://stackoverflow.com/questions/17752884/jbutton-image-icon-not-displaying-png-file
-		final ImageIcon icon = new ImageIcon("refresh-icon.png", "");
+
+		final ImageIcon icon = new ImageIcon(getClass().getResource("assets/refresh-icon.png"));
 
 		final int xLoc = 585, yLoc = 2, buttonWidth = 40, buttonHeight = 40;
 		refreshButton = new JButton(icon);
