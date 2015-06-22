@@ -2,7 +2,7 @@ package com.funkydonkies.interfaces;
 
 /**
  * Bridge between openCV and DetectionInterpreter.
- * 
+ * This is the key to the bridge pattern.
  * @author Danilo
  *
  */

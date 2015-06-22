@@ -6,7 +6,7 @@ import com.jme3.scene.Spatial;
 
 /**
  * This is the factory interface for obstacles.
- * 
+ * This class is key of the Abstract Factory pattern.
  * @author SDumasy
  *
  */

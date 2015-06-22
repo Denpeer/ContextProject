@@ -13,7 +13,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 
 /**
- * This class represent the factory for the target.
+ * This class represent the factory for the spikey ball.
  */
 public class SpikeyBallFactory implements FactoryInterface {
 	private static final int SAMPLES = 20;

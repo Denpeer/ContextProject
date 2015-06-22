@@ -11,7 +11,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 /**
- * This class represent the factory for the target.
+ * This class represent the factory for the krill.
  * 
  * @author SDumasy
  *

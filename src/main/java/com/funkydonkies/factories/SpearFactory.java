@@ -21,7 +21,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 /**
- * This class represent the factory for the target.
+ * This class represent the factory for the spear.
  */
 public class SpearFactory implements FactoryInterface {
 
