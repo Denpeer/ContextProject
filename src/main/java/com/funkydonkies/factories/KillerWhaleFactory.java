@@ -51,7 +51,7 @@ public class KillerWhaleFactory implements FactoryInterface {
 
 		final Random rand = new Random();
 		final float x = rand.nextInt(320);
-		final float y = -500;
+		final float y = -300;
 
 		final Spatial whale = makeKillerWhale(x, y);
 		final Geometry line = makeWarningLine(x);
