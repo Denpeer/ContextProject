@@ -97,10 +97,10 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 		final boolean right_move = randGen.nextInt(2) % 2 == 0;
 		final Vector3f currLoc = spatial.getLocalTranslation();
 		if (right_move) {
-			spatial.setLocalTranslation(updateX + randGen.nextFloat(), currLoc.y,
+			spatial.setLocalTranslation(updateX + randGen.nextFloat() * 2, currLoc.y,
 					currLoc.z);
 		} else {
-			spatial.setLocalTranslation(updateX - randGen.nextFloat(), currLoc.y,
+			spatial.setLocalTranslation(updateX - randGen.nextFloat() * 2, currLoc.y,
 					currLoc.z);
 		}
 	}
