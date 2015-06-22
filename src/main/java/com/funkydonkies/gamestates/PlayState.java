@@ -1,51 +1,51 @@
 package com.funkydonkies.gamestates;
 
+import com.funkydonkies.core.App;
 import com.funkydonkies.exceptions.BadDynamicTypeException;
-import com.funkydonkies.obstacles.MovingBox;
-import com.funkydonkies.obstacles.ObstacleFactory;
-import com.funkydonkies.obstacles.Target;
-import com.funkydonkies.w4v3.App;
-import com.funkydonkies.w4v3.Combo;
+import com.funkydonkies.sounds.SoundState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 
 /**
- * The AppState that controls the basic aspects of the game, it is responsible for initializing the 
+ * The AppState that controls the basic aspects of the game, it is responsible for initializing the
  * game.
  */
 public class PlayState extends AbstractAppState {
-	private static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
-	private static final String COLOR = "Color";
-	private static final String UNSHADED_MATERIAL_PATH = "Common/MatDefs/Misc/Unshaded.j3md";
-	private static final Vector3f CAM_LOCATION = new Vector3f(160, 70, 190);
+	public static final Vector3f GRAVITY = new Vector3f(0f, -9.81f, 0f);
+	public static final Vector3f CAM_LOCATION = new Vector3f(160, 25, 200);
+
+	private static final String MATERIAL_PATH = "Common/MatDefs/Light/Lighting.j3md";
 
 	private App app;
-	private Target target;
-	private MovingBox movBox;
-	private Combo combo;
-	private ObstacleFactory factory;
 
-	private static BulletAppState bulletAppState = new BulletAppState();
+	private BulletAppState bulletAppState;
+
 	private GameInputState gameInputState;
-	private CurveState spController;
+	private CurveState curveState;
 	private CameraState cameraState;
-	private SceneState sceneState;
+	private SoundState soundState;
 	private GameBackgroundMusicState gameSoundState;
-	
+	private SpawnState spawnState;
+	private DifficultyState difficultyState;
+	private AppStateManager stateManage;
+	private SceneState sceneState;
+
 	/**
 	 * Initializes the basic components of the game.
-	 * @param stateManager AppStateManager, the statemanager of the application, 
-	 * passed by the SimpleApplication
-	 * @param appl Application: The main Application
-	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager, 
-	 * com.jme3.app.Application)
+	 * 
+	 * @param stateManager
+	 *            AppStateManager, the statemanager of the application, passed by the
+	 *            SimpleApplication
+	 * @param appl
+	 *            Application: The main Application
+	 * @see com.jme3.app.state.AbstractAppState#initialize(com.jme3.app.state.AppStateManager,
+	 *      com.jme3.app.Application)
 	 */
 	public void initialize(final AppStateManager stateManager, final Application appl) {
 		super.initialize(stateManager, appl);
@@ -54,52 +54,90 @@ public class PlayState extends AbstractAppState {
 		} else {
 			throw new BadDynamicTypeException();
 		}
-		
-		factory = new ObstacleFactory();
-		
-		final BitmapText comboText = new BitmapText(
-				app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"), false);
-		combo = new Combo(app.getGuiNode(), comboText);
-		movBox = factory.makeMovingBox(app.getRootNode(), app.getAssetManager());
-		target = factory.makeTarget(app.getRootNode());
-		target.getControl().setCombo(combo);
-		
-		stateManager.attach(bulletAppState);
-		bulletAppState.setDebugEnabled(true);
-		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
-//		app.getFlyByCamera().setEnabled(false);
+		stateManage = stateManager;
 
-		cameraState = new CameraState();
-		stateManager.attach(cameraState);
-		
-		gameInputState = new GameInputState();
-		stateManager.attach(gameInputState);
-		
-		spController = new CurveState();
-		stateManager.attach(spController);
-		
-		sceneState = new SceneState();
-		stateManager.attach(sceneState);
-		
-		gameSoundState = new GameBackgroundMusicState();
-		stateManager.attach(gameSoundState);
-
-		final Material mat2 = new Material(app.getAssetManager(), UNSHADED_MATERIAL_PATH);
-		mat2.setColor(COLOR, ColorRGBA.Red);
-		movBox.draw(mat2, getPhysicsSpace());
-		target.draw(mat2, bulletAppState.getPhysicsSpace());
+		app.getFlyByCamera().setEnabled(false);
 		app.getCamera().setLocation(CAM_LOCATION);
-		combo.display();
+
+		handleBulletAppState();
+		initStates();
+		initRootNodeMat(app);
 	}
-	
+
+	/**
+	 * This method initializes the states.
+	 */
+	public void initStates() {
+		cameraState = new CameraState();
+		stateManage.attach(cameraState);
+
+		gameInputState = new GameInputState();
+		stateManage.attach(gameInputState);
+
+		curveState = new CurveState();
+		stateManage.attach(curveState);
+
+		soundState = new SoundState();
+		stateManage.attach(soundState);
+
+		sceneState = new SceneState();
+		stateManage.attach(sceneState);
+
+		gameSoundState = new GameBackgroundMusicState();
+		stateManage.attach(gameSoundState);
+
+		spawnState = new SpawnState();
+		stateManage.attach(spawnState);
+
+		difficultyState = new DifficultyState();
+		stateManage.attach(difficultyState);
+
+	}
+
+	/**
+	 * This method handles bulletAppState.
+	 */
+	public void handleBulletAppState() {
+		bulletAppState = makeBulletAppState();
+		stateManage.attach(bulletAppState);
+		bulletAppState.setDebugEnabled(false);
+		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
+	}
+
+	/**
+	 * Instantiates the BulletAppState.
+	 * 
+	 * @return new BulletAppState
+	 */
+	public BulletAppState makeBulletAppState() {
+		return new BulletAppState();
+	}
+
 	/**
 	 * Returns the physicsSpace of the application, taken from bulletAppState.
+	 * 
 	 * @return PhysicsSpace
 	 */
-	public static PhysicsSpace getPhysicsSpace() {
+	public PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
-	
-	
-	
+
+	/**
+	 * Adds the default material to the rootnode as user data.
+	 * 
+	 * @param appl
+	 *            App to get the assetManager.
+	 */
+	public void initRootNodeMat(final App appl) {
+		final Material mat = new Material(appl.getAssetManager(), MATERIAL_PATH);
+		mat.setBoolean("UseMaterialColors", true);
+		mat.setColor("Diffuse", ColorRGBA.randomColor());
+		mat.setColor("Specular", ColorRGBA.randomColor());
+		final float scalar = 0.5f;
+		mat.setColor("Ambient", ColorRGBA.White.mult(scalar));
+		final float shininess = 64f;
+		mat.setFloat("Shininess", shininess);
+		mat.setColor("GlowColor", ColorRGBA.Black);
+		appl.getRootNode().setUserData("default material", mat);
+	}
 }

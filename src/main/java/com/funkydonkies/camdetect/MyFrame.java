@@ -49,11 +49,15 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	private JButton refreshButton;
 	private JPanel upperblock;
 	private JTextArea label;
-	
+	private static final int CONTROL_TEXT_X = 10;
+	private static final int CONTROL_TEXT_Y = 470;
+	private static final int CONTROL_TEXT_BOX_YDIFF = -15;
+	private static final int CONTROL_TEXT_BOX_WIDTH = 370;
+	private static final int CONTROL_TEXT_BOX_HEIGHT = 20;
 
 	// the video capture object handles camera input
 	private VideoCap videoCap;
-	
+
 	/**
 	 * Runs the thread that paints the frames.
 	 * 
@@ -76,7 +80,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		kill();
 		videoCap.releaseCap();
 	}
-	
+
 	/**
 	 * Accessor method to get this video capture object.
 	 * 
@@ -85,7 +89,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	public VideoCap getVideoCap() {
 		return videoCap;
 	}
-	
+
 	/**
 	 * Creates the frame's layout for choosing the camera input.
 	 */
@@ -98,14 +102,11 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		label.setEditable(false);
 		final float[] hsb = Color.RGBtoHSB(238, 238, 238, null);
 		label.setBackground(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
-		
+
 		final int labelWidth = 500, labelHeight = 75;
 		label.setSize(labelWidth, labelHeight);
-		//May need to be changed due to after exporting the location of the icon may not be correct 
-		//anymore 
-		//@see http://stackoverflow.com/questions/17752884/jbutton-image-icon-not-displaying-png-file
-		final ImageIcon icon = new ImageIcon("assets/refresh-icon.png",
-                "");
+
+		final ImageIcon icon = new ImageIcon("assets/refresh-icon.png", "");
 
 		final int xLoc = 585, yLoc = 2, buttonWidth = 40, buttonHeight = 40;
 		refreshButton = new JButton(icon);
@@ -115,8 +116,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	}
 
 	/**
-	 * Loads the native libraries (opencv), setting the java.library.path in the
-	 * process.
+	 * Loads the native libraries (opencv), setting the java.library.path in the process.
 	 */
 	public static void loadLib() {
 		final String javaLibPath = "java.library.path";
@@ -139,13 +139,12 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	}
 
 	/**
-	 * Create the frame. Load the library. Set the key bindings. Start the
-	 * thread.
+	 * Create the frame. Load the library. Set the key bindings. Start the thread.
 	 */
 	public MyFrame() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (final ClassNotFoundException | InstantiationException | IllegalAccessException 
+		} catch (final ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
@@ -157,6 +156,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		contentPane = new JPanel();
 		initBgSetKey();
 		initXDAmountSetKey();
+		initMoveBoundSetKey();
 		final int top = 5, left = 5, bottom = 5, right = 5;
 		contentPane.setBorder(new EmptyBorder(top, left, bottom, right));
 		final int rows = 5, cols = 1;
@@ -173,7 +173,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	public void initVideoCap() {
 		videoCap = new VideoCap();
 	}
-	
+
 	/**
 	 * press 'b' to set background to current frame.
 	 */
@@ -193,7 +193,6 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 
 			public void actionPerformed(final ActionEvent e) {
 				if ("n".equals(e.getActionCommand())) {
-					System.out.println("n called");
 					initVideoCap();
 				}
 			}
@@ -210,16 +209,12 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		final String callStartVid = "start video";
 		final String callBack = "back";
 
-		contentPane.getInputMap()
-				.put(KeyStroke.getKeyStroke('b'), callSetTheBg);
-		contentPane.getInputMap()
-				.put(KeyStroke.getKeyStroke('n'), callStartVid);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('b'), callSetTheBg);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('n'), callStartVid);
 		contentPane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), callBack);
 		contentPane.getActionMap().put(callSetTheBg, setTheBg);
 		contentPane.getActionMap().put(callStartVid, startVid);
 		contentPane.getActionMap().put(callBack, goBack);
-		
-		
 	}
 
 	/**
@@ -241,7 +236,6 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 				videoCap.decXD();
 			}
 		};
-		// add keypress 'b' sets current frame as background
 		final String callIncXD = "incXD";
 		contentPane.getInputMap().put(KeyStroke.getKeyStroke('+'), callIncXD);
 		contentPane.getActionMap().put(callIncXD, incXD);
@@ -251,16 +245,77 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 	}
 
 	/**
-	 * draws the next frame to be displayed. calls videocap.[...] method which
-	 * returns a processed video frame
+	 * set the keys to move the bounds within which the camera detection works.
+	 */
+	public void initMoveBoundSetKey() {
+		Action upInc = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.upInc();
+			}
+		};
+		Action upDec = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.upDec();
+			}
+		};
+		Action lowInc = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.lowInc();
+			}
+		};
+		Action lowDec = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(final ActionEvent e) {
+				videoCap.lowDec();
+			}
+		};
+		final String callUpInc = "upInc";
+		final String callUpDec = "upDec";
+		final String callLowInc = "lowInc";
+		final String callLowDec = "lowDec";
+
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('u'), callUpInc);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('i'), callUpDec);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('j'), callLowInc);
+		contentPane.getInputMap().put(KeyStroke.getKeyStroke('k'), callLowDec);
+
+		contentPane.getActionMap().put(callUpInc, upInc);
+		contentPane.getActionMap().put(callUpDec, upDec);
+		contentPane.getActionMap().put(callLowInc, lowInc);
+		contentPane.getActionMap().put(callLowDec, lowDec);
+
+	}
+
+	/**
+	 * draws the next frame to be displayed. calls videocap.[...] method which returns a processed
+	 * video frame
 	 * 
-	 * @param g graphics
+	 * @param g
+	 *            graphics
 	 */
 	public void paint(final Graphics g) {
 		try {
 			if (videoCap != null) {
 				contentPane.removeAll();
 				g.drawImage(videoCap.getOneFrame(), 0, 0, this);
+				g.setColor(Color.GRAY);
+				g.fillRect(CONTROL_TEXT_X, CONTROL_TEXT_Y + CONTROL_TEXT_BOX_YDIFF,
+						CONTROL_TEXT_BOX_WIDTH, CONTROL_TEXT_BOX_HEIGHT);
+				g.setColor(Color.GREEN);
+				g.drawString(
+						"Controls: -b setBg(), -u upInc(), -i upDec(), -j lowInc(), -k lowDec()",
+						CONTROL_TEXT_X, CONTROL_TEXT_Y);
 			}
 		} catch (final CameraNotOnException e) {
 			contentPane.removeAll();
@@ -278,13 +333,14 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 				contentPane.add(jButton);
 			}
 			setContentPane(contentPane);
-			
 		}
 	}
-	
+
 	/**
 	 * Creates a new button for selecting an input source.
-	 * @param name String to be displayed on the button.
+	 * 
+	 * @param name
+	 *            String to be displayed on the button.
 	 * @return button JButton
 	 */
 	private JButton makeButton(final String name) {
@@ -294,7 +350,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		button.setEnabled(true);
 		return button;
 	}
-	
+
 	/**
 	 * Shuts the running thread down.
 	 */

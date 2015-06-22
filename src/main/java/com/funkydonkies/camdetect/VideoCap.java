@@ -14,7 +14,7 @@ import org.opencv.highgui.VideoCapture;
  *
  */
 public class VideoCap {
-	
+
 	private static final int INPUTS = 4;
 	private VideoCapture cap;
 	private Mat2Image mat2Img = new Mat2Image();
@@ -30,7 +30,9 @@ public class VideoCap {
 
 	/**
 	 * Opens camera indicated by input.
-	 * @param input int Source number of the camera to open.
+	 * 
+	 * @param input
+	 *            int Source number of the camera to open.
 	 */
 	public void openCamera(final int input) {
 		cap.open(input);
@@ -42,7 +44,7 @@ public class VideoCap {
 			camOn = true;
 		}
 	}
-	
+
 	/**
 	 * Closes the camera and resets the camOn boolean to false.
 	 */
@@ -53,6 +55,7 @@ public class VideoCap {
 
 	/**
 	 * Tries on which input number a camera can be found and adds it to the cameras list.
+	 * 
 	 * @return cameras ArrayList containing all the working inputssourcenumbers.
 	 */
 	public ArrayList<Integer> tryCameras() {
@@ -135,5 +138,33 @@ public class VideoCap {
 	 */
 	public void releaseCap() {
 		cap.release();
+	}
+
+	/**
+	 * called by MyFrame when user pressed key to move the upper bound up.
+	 */
+	public void upInc() {
+		mat2Img.upInc();
+	}
+
+	/**
+	 * called by MyFrame when user pressed key to move the upper bound down.
+	 */
+	public void upDec() {
+		mat2Img.upDec();
+	}
+
+	/**
+	 * called by MyFrame when user pressed key to move the lower bound up.
+	 */
+	public void lowInc() {
+		mat2Img.lowInc();
+	}
+
+	/**
+	 * called by MyFrame when user pressed key to move the lower bound down.
+	 */
+	public void lowDec() {
+		mat2Img.lowDec();
 	}
 }

@@ -31,6 +31,18 @@
        			<artifactId>maven-site-plugin</artifactId>
     			<version>3.3</version>
    			</plugin>
+   			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <configuration>
+		          <archive>
+		            <manifest>
+		              <addClasspath>true</addClasspath>
+		              <mainClass>com.funkydonkies.core.App</mainClass>
+		            </manifest>
+		          </archive>
+		        </configuration>
+		      </plugin>
    			<!--
    			<plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
@@ -309,6 +321,11 @@
    		<version>2.0.7-beta</version>
 		<scope>test</scope>
     </dependency>
+    <dependency>
+		<groupId>org.reflections</groupId>
+		<artifactId>reflections-maven</artifactId>
+		<version>0.9.8</version>
+	</dependency>
 
   </dependencies>
   
