@@ -28,7 +28,8 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 
 	private DifficultyState diffState;
 
-	private static final float SPEED = 2;
+	private static final float SPEED = 80;
+	private static final float WHALE_SPAWN_TIME = 1;
 	private static final float STOP_HEIGHT = -30;
 	private static final float DESTROY_HEIGHT = -500;
 	private AppStateManager stateManager;
@@ -83,7 +84,7 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	@Override
 	public void update(final float tpf) {
 		time += tpf;
-		moveSpatial();
+		moveSpatial(tpf);
 		removeCheck();
 	}
 
@@ -100,20 +101,20 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 	/**
 	 * This method moves the spatial in the desired direction.
 	 */
-	private void moveSpatial() {
+	private void moveSpatial(float tpf) {
 		Vector3f loc;
 
-		if (spatial != null && time > 2) {
+		if (spatial != null && time > WHALE_SPAWN_TIME) {
 			final Vector3f vec = spatial.getLocalTranslation();
 			if (vec.getY() > STOP_HEIGHT) {
 				moveUp = false;
 			}
 			if (moveUp) {
-				loc = new Vector3f(vec.getX(), (float) (vec.getY() + SPEED), vec.getZ());
+				loc = new Vector3f(vec.getX(), (float) (vec.getY() + SPEED * tpf), vec.getZ());
 				spatial.setLocalTranslation(loc);
 				setPhysicsLocation(loc);
 			} else {
-				loc = new Vector3f(vec.getX(), (float) (vec.getY() - SPEED), vec.getZ());
+				loc = new Vector3f(vec.getX(), (float) (vec.getY() - SPEED * tpf), vec.getZ());
 				spatial.setLocalTranslation(loc);
 				setPhysicsLocation(loc);
 			}
