@@ -110,7 +110,7 @@ public class MyFrame extends JFrame implements Runnable, ActionListener {
 		// anymore
 		// @see
 		// http://stackoverflow.com/questions/17752884/jbutton-image-icon-not-displaying-png-file
-		final ImageIcon icon = new ImageIcon("assets/refresh-icon.png", "");
+		final ImageIcon icon = new ImageIcon("refresh-icon.png", "");
 
 		final int xLoc = 585, yLoc = 2, buttonWidth = 40, buttonHeight = 40;
 		refreshButton = new JButton(icon);
