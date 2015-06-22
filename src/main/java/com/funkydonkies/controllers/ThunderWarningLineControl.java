@@ -11,10 +11,16 @@ import com.jme3.scene.Spatial;
  * 
  */
 public class ThunderWarningLineControl extends MyAbstractControl {
+
+	private static final float REMOVE_WARNING = 2;
+
 	private float time = 0;
 
 	private Vector3f initialSpawn;
 	private CurveState curveState;
+
+	private boolean setHitLoc = false;
+	private ThunderControl linkedControl;
 
 	/**
 	 * Constructor method for warning line control. Sets the initialSpawn location.
@@ -55,13 +61,19 @@ public class ThunderWarningLineControl extends MyAbstractControl {
 		time += tpf;
 
 		final float updateX = curveState.getHighestPointX();
-		if (updateX > 0) {
+		if (updateX > 0 && !setHitLoc) {
 			moveToX(updateX);
 		}
 
 		if (time > 1) {
-			spatial.removeFromParent();
-			setEnabled(false);
+			if (linkedControl != null && !setHitLoc) {
+				linkedControl.setHitLocation(updateX);
+				setHitLoc = true;
+			}
+			if(time > REMOVE_WARNING) {
+				spatial.removeFromParent();
+				setEnabled(false);
+			}
 		}
 	}
 
@@ -74,6 +86,14 @@ public class ThunderWarningLineControl extends MyAbstractControl {
 	public void moveToX(final float updateX) {
 		spatial.setLocalTranslation(updateX, spatial.getLocalTranslation().y,
 				spatial.getLocalTranslation().z);
+	}
+
+	/**
+	 * Links an Thundercontrol to this warning line so that its hit location can be set.
+	 * @param control the Thundercontrol
+	 */
+	public void setLinkedControl(ThunderControl control) {
+		linkedControl = control;
 	}
 
 }

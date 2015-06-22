@@ -44,6 +44,8 @@ public class ThunderFactory implements FactoryInterface {
 
 	private AppStateManager stateManager;
 	private SimpleApplication app;
+	
+	private ThunderControl control;
 
 	@Override
 	public Spatial makeObject(final AppStateManager sManager, final SimpleApplication appl) {
@@ -87,7 +89,7 @@ public class ThunderFactory implements FactoryInterface {
 		final CollisionShape colShape = new BoxCollisionShape(new Vector3f(THUNDER_WIDTH,
 				THUNDER_HEIGHT, THUNDER_DEPTH));
 
-		final ThunderControl control = new ThunderControl(colShape, stateManager, xCoord);
+		control = new ThunderControl(colShape, stateManager, xCoord);
 		geom.addControl(control);
 		return geom;
 	}
@@ -108,6 +110,7 @@ public class ThunderFactory implements FactoryInterface {
 
 		final ThunderWarningLineControl warningLineControl = new ThunderWarningLineControl(
 				stateManager, xCoord, 0);
+		warningLineControl.setLinkedControl(control);
 		geom.addControl(warningLineControl);
 
 		return geom;
