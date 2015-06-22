@@ -100,8 +100,9 @@ public class KillerWhaleControl extends MyAbstractGhostControl implements Physic
 
 	/**
 	 * This method moves the spatial in the desired direction.
+	 * @param tpf float time per frame to normalize speed
 	 */
-	private void moveSpatial(float tpf) {
+	private void moveSpatial(final float tpf) {
 		Vector3f loc;
 
 		if (spatial != null && time > WHALE_SPAWN_TIME) {

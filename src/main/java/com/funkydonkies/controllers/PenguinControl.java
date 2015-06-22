@@ -133,8 +133,8 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		super.update(tpf);
 		final Vector3f direction = getLinearVelocity();
 		if (updateMeshRotation) {
-			Quaternion newRotation = new Quaternion();
-			Quaternion rot = spatial.getLocalRotation();
+			final Quaternion newRotation = new Quaternion();
+			final Quaternion rot = spatial.getLocalRotation();
 			newRotation.lookAt(direction.mult(-1), new Vector3f(0, 1, 0));
 			newRotation.slerp(rot, tpf);
 			spatial.setLocalRotation(newRotation);
