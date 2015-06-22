@@ -70,7 +70,7 @@ public class ThunderWarningLineControl extends MyAbstractControl {
 				linkedControl.setHitLocation(updateX);
 				setHitLoc = true;
 			}
-			if(time > REMOVE_WARNING) {
+			if (time > REMOVE_WARNING) {
 				spatial.removeFromParent();
 				setEnabled(false);
 			}
@@ -92,7 +92,7 @@ public class ThunderWarningLineControl extends MyAbstractControl {
 	 * Links an Thundercontrol to this warning line so that its hit location can be set.
 	 * @param control the Thundercontrol
 	 */
-	public void setLinkedControl(ThunderControl control) {
+	public void setLinkedControl(final ThunderControl control) {
 		linkedControl = control;
 	}
 

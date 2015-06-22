@@ -94,9 +94,9 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 	 *            desired x location
 	 */
 	public void moveToX(final float updateX) {
-		final boolean right_move = randGen.nextInt(2) % 2 == 0;
+		final boolean moveRight = randGen.nextInt(2) % 2 == 0;
 		final Vector3f currLoc = spatial.getLocalTranslation();
-		if (right_move) {
+		if (moveRight) {
 			spatial.setLocalTranslation(updateX + randGen.nextFloat() * 2, currLoc.y,
 					currLoc.z);
 		} else {
@@ -125,7 +125,7 @@ public class ThunderControl extends MyAbstractGhostControl implements PhysicsCol
 	 * Sets the location for the thunder to hit.
 	 * @param hitLoc float x-coordinate
 	 */
-	public void setHitLocation(float hitLoc) {
+	public void setHitLocation(final float hitLoc) {
 		hitLocation = hitLoc;
 	}
 

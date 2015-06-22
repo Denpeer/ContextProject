@@ -11,7 +11,7 @@ import com.jme3.app.state.AppStateManager;
  */
 public class Tier0 extends Tier {
 	private ArrayList<FactoryInterface> obstacleArray;
-	private final float textTimer = 15;
+	private static final float TEXT_TIMER = 15;
 	private float timer = 0;
 	private String sentence = "The penguins like Fish!";
 
@@ -47,7 +47,7 @@ public class Tier0 extends Tier {
 	public void update(final float tpf) {
 		super.update(tpf);
 		timer += tpf;
-		if (timer > textTimer) {
+		if (timer > TEXT_TIMER) {
 			setText(sentence);
 			timer = 0;
 		}
