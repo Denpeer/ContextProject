@@ -102,6 +102,9 @@ public class PlayState extends AbstractAppState {
 		stateManage.attach(bulletAppState);
 		bulletAppState.setDebugEnabled(false);
 		bulletAppState.getPhysicsSpace().setGravity(GRAVITY);
+//		getPhysicsSpace().setMaxSubSteps(2);
+		getPhysicsSpace().setAccuracy(1f/80f);
+		
 	}
 
 	/**
