@@ -74,8 +74,8 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	@Override
 	public void update(final float tpf) {
-		move(tpf);
 		time += tpf;
+		move(tpf);
 		if (spatial.getLocalTranslation().getX() < DESTROY_X_COORDINATE) {
 			spatial.removeFromParent();
 			setEnabled(false);
