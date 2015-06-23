@@ -75,7 +75,7 @@ public class SceneState extends AbstractAppState {
 		
 		//create processor
         final SimpleWaterProcessor waterProcessor = new SimpleWaterProcessor(assetManager);
-        waterProcessor.setReflectionScene(app.getRootNode());
+        waterProcessor.setReflectionScene(app.getSceneNode());
         waterProcessor.setDebug(false);
         
         app.getViewPort().addProcessor(waterProcessor);

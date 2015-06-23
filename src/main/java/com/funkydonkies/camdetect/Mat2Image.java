@@ -3,8 +3,10 @@ package com.funkydonkies.camdetect;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.List;
 
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -28,6 +30,7 @@ public class Mat2Image implements Bridge {
 	private Mat mat = new Mat();
 	private BufferedImage img;
 	private byte[] dat;
+	private byte[] video;
 	private static final int BUFFER_SIZE = 921600 * 2;
 	private ByteBuffer bbuff = ByteBuffer.allocateDirect(BUFFER_SIZE);
 	private Mat bg = new Mat();
@@ -283,6 +286,7 @@ public class Mat2Image implements Bridge {
 		final int w = mat.cols(), h = mat.rows();
 		if (dat == null || dat.length != w * h * NUMCHANNELS) {
 			dat = new byte[w * h * NUMCHANNELS];
+			video = new byte[w * h * NUMCHANNELS];
 		}
 		if (img == null || img.getWidth() != w || img.getHeight() != h
 				|| img.getType() != BufferedImage.TYPE_3BYTE_BGR) {
@@ -304,8 +308,7 @@ public class Mat2Image implements Bridge {
 		if (bgSet) { // if bg is set then subtract foreground from background
 			res = threshIt(mat, bg);
 			updateIP(res);
-			// convert to color image and draw red dots at the interest point
-			// locations
+			// convert to color image and draw red dots at the interest point locations
 			res = drawInterestPoints(res, interestPoints);
 			res = drawInfluenceZoneDelimiters(res);
 			prepareSpace(res);
@@ -327,9 +330,13 @@ public class Mat2Image implements Bridge {
 		Core.flip(mat, mat, 1);
 		getSpace(mat);
 		res.get(0, 0, dat);
+		
+		Core.flip(mat, mat, 1);
+		res.get(0, 0, video);
+		
 		img.getRaster().setDataElements(0, 0, res.cols(), res.rows(), dat);
 		bbuff.clear();
-		bbuff.put(dat);
+		bbuff.put(video);
 		return img;
 	}
 
