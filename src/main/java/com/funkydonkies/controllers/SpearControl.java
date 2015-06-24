@@ -18,7 +18,7 @@ import com.jme3.math.Vector3f;
  * Control class for the spear. Takes care of collisions between the fish and the spear.
  */
 public class SpearControl extends MyAbstractGhostControl implements PhysicsCollisionListener {
-	private static final float SPEED = 5;
+	private static final float SPEED = 200;
 	private float time = 0;
 
 	private static final float DESTROY_X_COORDINATE = -100;
@@ -74,8 +74,8 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 	 */
 	@Override
 	public void update(final float tpf) {
-		move();
 		time += tpf;
+		move(tpf);
 		if (spatial.getLocalTranslation().getX() < DESTROY_X_COORDINATE) {
 			spatial.removeFromParent();
 			setEnabled(false);
@@ -85,12 +85,13 @@ public class SpearControl extends MyAbstractGhostControl implements PhysicsColli
 
 	/**
 	 * This method moves the spatial in the desired direction.
+	 * @param tpf float time since last frame.
 	 */
-	private void move() {
+	private void move(final float tpf) {
 		Vector3f loc;
 		if (spatial != null && time > 2) {
 			final Vector3f vec = spatial.getLocalTranslation();
-			loc = new Vector3f((float) (vec.getX() - SPEED), vec.getY(), vec.getZ());
+			loc = new Vector3f((float) (vec.getX() - SPEED * tpf), vec.getY(), vec.getZ());
 			spatial.setLocalTranslation(loc);
 			setPhysicsLocation(loc);
 		}

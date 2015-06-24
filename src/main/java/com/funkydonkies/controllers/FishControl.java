@@ -53,6 +53,16 @@ public class FishControl extends MyAbstractGhostControl implements PhysicsCollis
 		super.setPhysicsSpace(space);
 		space.addCollisionListener(this);
 	}
+	
+	/**
+	 * Rotates the target spatial.
+	 * @see com.jme3.bullet.control.GhostControl#update(float)
+	 */
+	@Override
+	public void update(float tpf) {
+		super.update(tpf);
+		spatial.rotate(0, tpf, 0);
+	}
 
 	/**
 	 * Handles a collision between penguin and fish. Calls methods to increase the combo and respawn

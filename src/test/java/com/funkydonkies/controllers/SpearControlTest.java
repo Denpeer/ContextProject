@@ -21,12 +21,13 @@ import com.jme3.scene.Spatial;
 
 /**
  * test the SpearControl class.
+ * 
  * @author Olivier Dikken
  *
  */
 public class SpearControlTest {
-	
-	private static final float SPEED = 5;
+
+	private static final float SPEED = 200;
 	private static final float TPF = 0.01f;
 	private static final float TIME_TWO = 2;
 	private CollisionShape shape;
@@ -44,7 +45,9 @@ public class SpearControlTest {
 
 	/**
 	 * prepare all mocks.
-	 * @throws Exception catches exception.
+	 * 
+	 * @throws Exception
+	 *             catches exception.
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -81,7 +84,7 @@ public class SpearControlTest {
 		new SpearControl(shape, sManager, iLoc);
 		Mockito.verify(sManager).getState(DifficultyState.class);
 	}
-	
+
 	/**
 	 * test setPhysicsSpace.
 	 */
@@ -92,7 +95,7 @@ public class SpearControlTest {
 		assertEquals(sc.getPhysicsSpace(), ps);
 		Mockito.verify(ps).addCollisionListener(sc);
 	}
-	
+
 	/**
 	 * test init.
 	 */
@@ -105,15 +108,17 @@ public class SpearControlTest {
 		Mockito.verify(sManager, Mockito.times(2)).getState(PlayState.class);
 		assertEquals(sc.getPhysicsLocation(), iLoc);
 	}
-	
+
 	/**
 	 * test update.
 	 */
 	@Test
 	public void testUpdate() {
 		final float destroyXCoordinate = -100;
-		Mockito.when(spatial2.getLocalTranslation()).thenReturn(new Vector3f(destroyXCoordinate - 1, 0, 0));
-		Mockito.when(spatial2.getWorldTranslation()).thenReturn(new Vector3f(destroyXCoordinate - 1, 0, 0));
+		Mockito.when(spatial2.getLocalTranslation()).thenReturn(
+				new Vector3f(destroyXCoordinate - 1, 0, 0));
+		Mockito.when(spatial2.getWorldTranslation()).thenReturn(
+				new Vector3f(destroyXCoordinate - 1, 0, 0));
 		Mockito.when(spatial2.getLocalRotation()).thenReturn(quat);
 		Mockito.when(spatial2.getWorldRotation()).thenReturn(quat);
 		final SpearControl sc = new SpearControl(shape, sManager, iLoc);
@@ -122,7 +127,7 @@ public class SpearControlTest {
 		sc.update(TPF);
 		Mockito.verify(spatial2).removeFromParent();
 	}
-	
+
 	/**
 	 * test move.
 	 */
@@ -132,12 +137,13 @@ public class SpearControlTest {
 		sc.setSpatial(spatial);
 		sc.init();
 		final Vector3f vec = spatial.getLocalTranslation();
-		sc.update(TIME_TWO + TPF);
-		sc.update(TIME_TWO + TPF);
-		final Vector3f loc = new Vector3f((float) (vec.getX() - SPEED), vec.getY(), vec.getZ());
+		sc.update(2);
+		sc.update(TPF);
+		final Vector3f loc = new Vector3f((float) (vec.getX() - SPEED * TPF), vec.getY(),
+				vec.getZ());
 		assertEquals(sc.getPhysicsLocation(), loc);
 	}
-	
+
 	/**
 	 * test Collision.
 	 */
