@@ -24,14 +24,8 @@ public class GameInputState extends AbstractAppState {
 	private static final String MAPPING_ENABLE_CAMERA_DETECTION = "Start Camera";
 	private static final String DECREMENT_HEIGHT_MAPPING = "decrement height";
 	private static final String INCREMENT_HEIGHT_MAPPING = "increment height";
-	private static final float TIME_PER_BALL_SPAWN = 1f;
-
-	private static final int INC_TIMES = 3;
 
 	private static final String INCREMENT_COMBO = "tier1";
-
-	private float time = TIME_PER_BALL_SPAWN;
-	private float timeCount = 0;
 
 	private static final int FLY_BY_CAM_MOVE_SPEED = 50;
 
@@ -72,7 +66,6 @@ public class GameInputState extends AbstractAppState {
 
 	/** Custom Keybinding: Map named actions to inputs. */
 	public void initKeys() {
-		// inputManager.addMapping(MAPPING_NAME_ROTATE, new KeyTrigger(MouseInput.BUTTON_LEFT));
 		inputManager.addMapping(MAPPING_TOGGLE_CAMERA, new KeyTrigger(KeyInput.KEY_C));
 		inputManager.addMapping(MAPPING_TOGGLE_CURVE_UPDATE, new KeyTrigger(KeyInput.KEY_U));
 
@@ -111,19 +104,13 @@ public class GameInputState extends AbstractAppState {
 				stateManager.getState(CameraState.class).toggleEnabled(); // S KEY
 			}
 			if (name.equals(INCREMENT_COMBO) && !keyPressed) {
-				stateManager.getState(DifficultyState.class).incDiff(INC_TIMES);
+				stateManager.getState(DifficultyState.class).incDiff(DifficultyState.TIER_BORDER);
 			}
 		}
 	};
 
 	private AnalogListener analogListener = new AnalogListener() {
 		public void onAnalog(final String name, final float value, final float tpf) {
-			if (name.equals(MAPPING_SPAWN_BALL)) { // SPACEBAR KEY
-				timeCount += tpf;
-				if (timeCount > time) {
-					timeCount = 0;
-				}
-			}
 			if (name.equals(INCREMENT_HEIGHT_MAPPING)) { // R KEY
 				curveState.getSplineCurve().incrementPoints();
 			} else if (name.equals(DECREMENT_HEIGHT_MAPPING)) { // F KEY
