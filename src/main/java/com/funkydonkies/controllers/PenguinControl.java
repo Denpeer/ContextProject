@@ -122,8 +122,10 @@ public class PenguinControl extends MyAbstractRigidBodyControl implements Physic
 		}
 		if (touchingCurve) {
 			final Vector3f velocity = getLinearVelocity();
-			velocity.x = FastMath.interpolateLinear(tpf * 2 * 2, velocity.x, PENGUIN_SPEED);
-			setLinearVelocity(velocity);
+			if (velocity.x < PENGUIN_SPEED) {
+				velocity.x = FastMath.interpolateLinear(tpf * 2 * 2, velocity.x, PENGUIN_SPEED);
+				setLinearVelocity(velocity);
+			}
 		}
 
 	}
