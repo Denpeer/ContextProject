@@ -26,7 +26,7 @@ import com.jme3.app.state.AppStateManager;
  * 
  */
 public class DifficultyState extends AbstractAppState implements Observable {
-	private final int tierBorder = 2;
+	public static final int TIER_BORDER = 2;
 	private App app;
 
 	private int currCombo = 0;
