@@ -2,7 +2,9 @@ package com.funkydonkies.tiers;
 
 import java.util.ArrayList;
 
+import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
+import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
@@ -14,7 +16,8 @@ public class Tier0 extends Tier {
 	private static final float TEXT_TIMER = 15;
 	private float timer = 0;
 	private String sentence = "The penguins like Fish!";
-
+	IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
+	
 	/**
 	 * The initialize method.
 	 * 
@@ -27,6 +30,8 @@ public class Tier0 extends Tier {
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
 		obstacleArray = new ArrayList<FactoryInterface>();
+		increaseSpawnSpeed = IncreaseSpawnSpeedPowerup.getInstance(SpawnState.DEFAULT_BALL_SPAWN_TIME);
+		stateManager.attach(increaseSpawnSpeed);
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
+import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
 import com.funkydonkies.sounds.ComboNewLevelSound;
 import com.funkydonkies.sounds.ComboNewLevelVoiceSound;
 import com.funkydonkies.sounds.SoundState;
@@ -14,6 +15,8 @@ import com.jme3.app.state.AppStateManager;
  * This class represents the first difficulty tier.
  */
 public class Tier4 extends Tier {
+	private static final float TIER4_SPAWN_SPEED = 4f;
+	private IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
 	private AppStateManager sManager;
@@ -46,10 +49,14 @@ public class Tier4 extends Tier {
 		super.setEnabled(enabled);
 		if (enabled) {
 			setText("Tier 4: Grease Lightning!");
+			increaseSpawnSpeed = IncreaseSpawnSpeedPowerup.getInstance(TIER4_SPAWN_SPEED);
+			increaseSpawnSpeed.setEnabled(true);
 			sManager.getState(SoundState.class).queueSound(new ComboNewLevelSound());
 			sManager.getState(SoundState.class).queueSound(new ComboNewLevelVoiceSound());
 		} else {
 			clearText();
+			//if (increaseSpawnSpeed != null && increaseSpawnSpeed.isEnabled())
+				//increaseSpawnSpeed.setEnabled(false);
 		}
 	}
 

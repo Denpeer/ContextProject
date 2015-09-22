@@ -17,13 +17,25 @@ public class IncreaseSpawnSpeedPowerup extends DisabledState {
 
 	private AppStateManager sManager;
 	private SpawnState spawnState;
+	
+	private static IncreaseSpawnSpeedPowerup instance = null;
 
 	/**
 	 * @param multiplier
 	 *            change speed multiplier
+	 * @return 
 	 */
-	public IncreaseSpawnSpeedPowerup(final float multiplier) {
+	protected IncreaseSpawnSpeedPowerup(final float multiplier) {
 		speedMultiplier = multiplier;
+	}
+	
+	public static IncreaseSpawnSpeedPowerup getInstance(final float multiplier){
+		if (instance == null){
+			instance = new IncreaseSpawnSpeedPowerup(multiplier);
+		} else {
+			instance.speedMultiplier = multiplier;
+		}
+		return instance;
 	}
 
 	@Override
@@ -44,9 +56,12 @@ public class IncreaseSpawnSpeedPowerup extends DisabledState {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
+			System.out.println("setting spawn time " + speedMultiplier);
 			spawnState.setBallSpawnTime(speedMultiplier);
 			sManager.getState(SoundState.class).queueSound(new PowerupSpeedSound());
 		} else {
+			System.out.println("setting spawn time dfault");
+
 			spawnState.setBallSpawnTime(SpawnState.DEFAULT_BALL_SPAWN_TIME);
 			sManager.getState(SoundState.class).queueSound(new PowerupSpeedEndSound());
 		}

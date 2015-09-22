@@ -15,10 +15,10 @@ import com.jme3.app.state.AppStateManager;
  * This class represents the first difficulty tier.
  */
 public class Tier3 extends Tier {
+	private static final float TIER3_SPAWN_SPEED = 6f;
 	private IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
-	private static final float NEW_SPAWN_SPEED = 3f;
 	private AppStateManager sManager;
 
 	/**
@@ -33,8 +33,7 @@ public class Tier3 extends Tier {
 	public void initialize(final AppStateManager stateManager, final Application app) {
 		super.initialize(stateManager, app);
 		sManager = stateManager;
-		increaseSpawnSpeed = getIncreasedSpawnSpeed();
-		sManager.attach(increaseSpawnSpeed);
+		//sManager.attach(increaseSpawnSpeed);
 		spawnState = sManager.getState(SpawnState.class);
 		obstacleArray = new ArrayList<FactoryInterface>();
 		addObstacleArray();
@@ -44,6 +43,7 @@ public class Tier3 extends Tier {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
+			increaseSpawnSpeed = getIncreasedSpawnSpeed();
 			setIncreasedSpawnSpeedEnabled(true);
 			setText("Tier 3: mind your step!");
 			sManager.getState(SoundState.class).queueSound(new ComboNewLevelSound());
@@ -51,7 +51,7 @@ public class Tier3 extends Tier {
 		} else {
 			clearText();
 			if (increaseSpawnSpeed != null && increaseSpawnSpeed.isEnabled()) {
-				setIncreasedSpawnSpeedEnabled(false);
+				//setIncreasedSpawnSpeedEnabled(false);
 			}
 		}
 	}
@@ -62,7 +62,7 @@ public class Tier3 extends Tier {
 	 * @return the increased spawn speed power up.
 	 */
 	public IncreaseSpawnSpeedPowerup getIncreasedSpawnSpeed() {
-		return new IncreaseSpawnSpeedPowerup(NEW_SPAWN_SPEED);
+		return IncreaseSpawnSpeedPowerup.getInstance(TIER3_SPAWN_SPEED);
 	}
 
 	/**

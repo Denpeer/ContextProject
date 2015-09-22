@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.funkydonkies.gamestates.SpawnState;
 import com.funkydonkies.interfaces.FactoryInterface;
+import com.funkydonkies.powerups.IncreaseSpawnSpeedPowerup;
 import com.funkydonkies.sounds.ComboNewLevelSound;
 import com.funkydonkies.sounds.ComboNewLevelVoiceSound;
 import com.funkydonkies.sounds.SoundState;
@@ -14,8 +15,10 @@ import com.jme3.app.state.AppStateManager;
  * This class represents the first difficulty tier.
  */
 public class Tier2 extends Tier {
+	private static final float TIER2_SPAWN_SPEED = 8f;
 	private SpawnState spawnState;
 	private ArrayList<FactoryInterface> obstacleArray;
+	private IncreaseSpawnSpeedPowerup increaseSpawnSpeed;
 	private AppStateManager sManager;
 
 	/**
@@ -46,10 +49,14 @@ public class Tier2 extends Tier {
 		super.setEnabled(enabled);
 		if (enabled) {
 			setText("Tier 2: the Yetis are coming!");
+			increaseSpawnSpeed = IncreaseSpawnSpeedPowerup.getInstance(TIER2_SPAWN_SPEED);
+			increaseSpawnSpeed.setEnabled(true);
 			sManager.getState(SoundState.class).queueSound(new ComboNewLevelSound());
 			sManager.getState(SoundState.class).queueSound(new ComboNewLevelVoiceSound());
 		} else {
 			clearText();
+			//if (increaseSpawnSpeed != null && increaseSpawnSpeed.isEnabled())
+				//increaseSpawnSpeed.setEnabled(false);
 		}
 	}
 

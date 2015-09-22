@@ -90,6 +90,7 @@ public class SpawnState extends AbstractAppState {
 
 		if (timeCount > spawnBallTime) {
 			timeCount = 0;
+			System.out.println("Spawning penguin after " + spawnBallTime + " seconds");
 			spawn(facHm.get("PenguinFactory"), app.getPenguinNode());
 		}
 		if (specialFishTimer > SPECIAL_FISH_SPAWN_TIME) {
